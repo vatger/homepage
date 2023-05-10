@@ -1,0 +1,9 @@
+[submodule "modules/atciss"]
+	path = modules/atciss
+	url = https://git.vatsim-germany.org/website/atciss.git
+	branch = develop
+[submodule "modules/statistics-center"]
+    path = modules/statistics-center
+    url = https://git.vatsim-germany.org/website/statistics-center.git
+	branch = develop
+

@@ -1,0 +1,58 @@
+<?php
+
+return [
+    'atc' => [
+        'title' => 'ATC Buchungen',
+        'text' => [
+            'landing' => 'ATC Stationen, die in den nächsten 5 Tagen gebucht worden sind.',
+            'index' => '',
+        ],
+        'created' => 'ATC Buchung erfolgreich gespeichert.',
+        'updated' => 'ATC Buchung wurde erfolgreich aktualisiert.',
+        'deleted' => 'ATC Buchung wurde gelöscht!',
+        'personal' => [
+            'title' => 'Deine gebuchten ATC Sitzungen',
+            'text' => 'Dies sind alle deine zukünfitigen ATC Buchungen.',
+        ],
+        'errors' => [
+            'alreadyBooked' => 'Die Station ist im ausgewählten Zeitraum bereits besetzt.',
+            'toFarFuture' => 'Der ausgewählte Zeitraum liegt zu weit in der Zukunft.',
+            'notController' => 'Du bist nicht der Lotse dieser Session.',
+            'notEligable' => 'Du benötigst mindestens ein S1 Rating um eine Buchung vornehmen zu können.',
+            'timeframeLimits' =>
+                'Die zeitlichen Beschränkungen einer Buchung wurden nicht eingehalten. Es muss für mindestens 60 Minuten gebucht werden. Eine Buchung darf einen Zeitraum von 24 Stunden nicht überschreiten.',
+            'timeframePast' => 'Die Buchung darf maximal 2 Stunden in der Vergangenheit beginnen.',
+            'timeframeSense' => 'Bitte stelle sicher, dass der Beginn zeitlich vor dem geplanten Ende der Buchung liegt.',
+        ],
+        'search' => [
+            'from-text' => 'Suche nach Anfangsdatum',
+            'till-text' => 'Suche nach Enddatum',
+            'filter-button-text' => 'Suchen!',
+        ],
+        'edit' => [
+            'breadcrumb' => 'Bearbeiten',
+            'title' => 'Buchung bearbeiten',
+            'date-text' => 'Der Tag ab dem die Buchung sein soll.',
+            'start-time-text' => 'Die Tageszeit in UTC, an der die Sitzung beginnen soll.',
+            'end-time-text' => 'Die Tageszeit in UTC, an der die Sitzung beendet wird.',
+            'station-text' => 'Die Station, die gebucht werden soll.',
+            'voice-text' => 'Es wird Voice-Kommunikation angeboten.',
+            'event-text' => 'Diese Buchung ist Teil eines Events.',
+            'training-text' => 'Diese Sitzung ist Teil eines Trainings.',
+            'save-button-text' => 'Buchung speichern.',
+        ],
+        'create' => [
+            'breadcrumb' => 'Erstellen',
+            'title' => 'Buchung erstellen',
+            'create-button-text' => 'ATC Sitzung buchen',
+            'date-text' => 'Der Tag ab dem die Buchung sein soll.',
+            'start-time-text' => 'Die Tageszeit in UTC, an der die Sitzung beginnen soll.',
+            'end-time-text' => 'Die Tageszeit in UTC, an der die Sitzung beendet wird.',
+            'station-text' => 'Die Station, die gebucht werden soll.',
+            'voice-text' => 'Es wird Voice-Kommunikation angeboten.',
+            'event-text' => 'Diese Buchung ist Teil eines Events.',
+            'training-text' => 'Diese Sitzung ist Teil eines Trainings.',
+            'save-button-text' => 'Buchung speichern.',
+        ],
+    ],
+];

@@ -1,0 +1,41 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('partners', function (Blueprint $table) {
+            $table->id();
+            $table
+                ->foreignId('created_by')
+                ->nullable()
+                ->constrained('user_users')
+                ->onUpdate('NO ACTION')
+                ->onDelete('SET NULL');
+            $table->string('name');
+            $table->string('logo_url')->nullable();
+            $table->string('link_url')->nullable();
+            $table->longText('description_de')->nullable();
+            $table->longText('description_en')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('partners');
+    }
+};

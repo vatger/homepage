@@ -1,0 +1,19 @@
+{
+    "phpVersion": "8.1",
+    "printWidth": 150,
+    "tabWidth": 4,
+    "singleQuote": true,
+    "trailingCommaPHP": true,
+    "braceStyle": "psr-2",
+    "endOfLine": "lf",
+    "overrides": [
+        {
+            "files": ["*.blade.php"],
+            "options": {
+                "tabWidth": 4,
+                "parser": "blade",
+                "printWidth": 150
+            }
+        }
+    ]
+}
