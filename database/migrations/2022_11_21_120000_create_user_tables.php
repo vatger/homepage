@@ -78,6 +78,7 @@ return new class extends Migration {
             $table->timestamp('last_rating_change_at')->nullable();
             $table->integer('rating_atc')->default(0); // VATSIM Controller Rating
             $table->integer('rating_pilot')->default(0); // VATSIM Pilot Rating ( BITMASK )
+            $table->integer('rating_military')->default(0);
             $table
                 ->double('time_atc', 9, 3)
                 ->unsigned()
