@@ -1,6 +1,6 @@
 <script src="https://cdn.jsdelivr.net/npm/luxon@2.3.0/build/global/luxon.min.js"></script>
 <!-- javascript -->
-<script src="{{ asset('js/app.js') }}"></script>
+@vite(['resources/js/app.js'])
 <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
 <script>
     feather.replace()
