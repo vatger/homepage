@@ -14,7 +14,7 @@ const mix = require('laravel-mix');
 mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/app-admin.js', 'public/js')
     .js('resources/js/tiny-slider.js', 'public/js')
-    .sass('modules/atciss/resources/scss/atciss.scss', 'public/css/atciss')
+    //.sass('modules/atciss/resources/scss/atciss.scss', 'public/css/atciss')
     .sass('resources/scss/app.scss', 'public/css')
     .sass('resources/scss/app-dark.scss', 'public/css')
     .sass('resources/scss/app-admin.scss', 'public/css')

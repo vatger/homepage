@@ -19,13 +19,6 @@ use Illuminate\Support\Facades\Session;
 */
 
 ####################
-# SUBMODULES       #
-####################
-require_once 'web/atciss.php';
-
-require_once 'web/statisticscenter.php';
-
-####################
 # Main Website     #
 ####################
 Route::domain(parse_url(config('app.url'), PHP_URL_HOST))->group(function () {

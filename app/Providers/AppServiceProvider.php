@@ -28,14 +28,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         /* Load Languages */
-        if (file_exists(base_path('modules/atciss/resources/lang/en/atciss.php'))) {
-            $this->loadTranslationsFrom(base_path('modules/atciss/resources/lang'), 'atciss');
-        }
+        //if (file_exists(base_path('modules/atciss/resources/lang/en/atciss.php'))) {
+        //    $this->loadTranslationsFrom(base_path('modules/atciss/resources/lang'), 'atciss');
+        //}
 
         /* Load Migrations */
-        if (is_dir(base_path('modules/atciss/database/migrations/')) !== false) {
-            $this->loadMigrationsFrom(base_path('modules/atciss/database/migrations'));
-        }
+        //if (is_dir(base_path('modules/atciss/database/migrations/')) !== false) {
+        //    $this->loadMigrationsFrom(base_path('modules/atciss/database/migrations'));
+        //}
 
         // Force HTTPS
         if (config('app.forcehttps') == true) {

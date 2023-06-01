@@ -8,8 +8,4 @@
 | Other API requests shall be handled by api.php
 |
 */
-if (file_exists(base_path('modules/atciss/routes/atciss/api.php'))) {
-    include base_path('modules/atciss/routes/atciss/api.php');
-}
-
 require_once 'web_api/api.php';

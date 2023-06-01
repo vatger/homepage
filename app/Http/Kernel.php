@@ -16,7 +16,7 @@ use App\OpenApi\Middleware\Authenticate;
 use App\OpenApi\Middleware\JsonResponse;
 use App\OpenApi\Middleware\LogRequests;
 use App\OpenApi\Middleware\OptionalAuthenticate;
-use Fruitcake\Cors\HandleCors;
+use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
