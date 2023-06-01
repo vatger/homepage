@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Navigation;
+namespace App\Libraries;
 
-use CobaltGrid\VatsimStandStatus\StandStatus as BaseStatus;
+//use CobaltGrid\VatsimStandStatus\StandStatus as BaseStatus;
 use Illuminate\Support\Str;
 
-class StandStatus extends BaseStatus
+class StandStatus // extends BaseStatus
 {
     private $maxStandDistance = 0.07; // In kilometeres
     private $hideStandSidesWhenOccupied = true;
@@ -20,7 +20,7 @@ class StandStatus extends BaseStatus
      */
     function __construct($latitude, $longitude)
     {
-        parent::__construct($latitude, $longitude);
+        //parent::__construct($latitude, $longitude);
     }
 
     /**
