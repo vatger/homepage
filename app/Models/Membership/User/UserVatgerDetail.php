@@ -19,7 +19,7 @@ class UserVatgerDetail extends Model
 
     public $timestamps = false;
 
-    protected $dates = ['last_seen_at', 'registered_at', 'vatger_member_at', 'inactive_at'];
+    protected $casts = ['last_seen_at' => 'datetime', 'registered_at' => 'datetime', 'vatger_member_at' => 'datetime', 'inactive_at' => 'datetime'];
 
     public function user(): BelongsTo
     {

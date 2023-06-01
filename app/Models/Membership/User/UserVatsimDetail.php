@@ -90,7 +90,7 @@ class UserVatsimDetail extends Model
         'rating_military_long',
     ];
 
-    protected $dates = ['registered_at'];
+    protected $casts = ['registered_at' => 'datetime'];
 
     public function user(): BelongsTo
     {
