@@ -10,9 +10,8 @@
 
 ## Installation
 
-1. Clone this git repo `git clone https://git.vatsim-germany.org/website/vacc-germany-website.git && git checkout develop`
-2. Init and pull the submodules `git submodule init && git submodule update`
-3. Install `php`, `composer`, `node`, `npm`
+1. Clone this git repo `git clone https://github.com/vatger/homepage.git`
+3. Install `php ^8.2`, `composer ^2`, `node`, `npm`
 4. Setup a mysql database (e.g. `mariadb`)
 5. copy `.env.example` to `.env` and edit its contents (maybe ask someone for the best settings)
 6. in your console run
@@ -20,7 +19,7 @@
     2. `npm update`
     3. `php artisan migrate`
     4. `php artisan db:seed`
-    5. `npm run dev`
+    5. `npm run dev` or `npm run build`
 7. to start the website run
     1. `php artisan serve --port=80`
     2. or set up your own php-fpm/cgi webserver according to the laravel documentation
@@ -30,4 +29,4 @@
 
 ### Other things
 
-The vACC Germany Webservices Code is closed source only available for active developers.
+The vACC Germany Website Code is closed source, due to legal reasons.
