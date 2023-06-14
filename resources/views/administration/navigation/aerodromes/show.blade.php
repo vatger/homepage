@@ -446,93 +446,99 @@
             height: 100%;
             min-height: 200px;
             width: 100%;
-            @auth @if (\Auth::user()->settings->dark_mode)background: linear-gradient(to right, transparent 0%, rgb(64 64 64 / 39%) 50%, transparent 100%);
-        @else background: linear-gradient(to right, transparent 0%, rgb(229, 229, 229) 50%, transparent 100%);
-            @endif@else background: linear-gradient(to right, transparent 0%, rgb(229, 229, 229) 50%, transparent 100%);
-        @endauth animation: 1.5s ease-in-out 0s infinite normal none running;
-        animation-name: load;
-    }
-</style>
-@endsection
 
-@push('custom-script')
-<script>
-    function updateAerodromeData() {
-        let formData = new FormData();
-        formData = $('#editAerodromeDataForm').serialize();
+            @auth @if (\Auth::user()->settings->dark_mode)
+                    background: linear-gradient(to right, transparent 0%, rgb(64 64 64 / 39%) 50%, transparent 100%);
+                @else
+                    background: linear-gradient(to right, transparent 0%, rgb(229, 229, 229) 50%, transparent 100%);
+                @endif
+            @else
+                background: linear-gradient(to right, transparent 0%, rgb(229, 229, 229) 50%, transparent 100%);
+            @endauth
+            animation: 1.5s ease-in-out 0s infinite normal none running;
+            animation-name: load;
+            }
+        </style>
+    @endsection
 
-        axios.post('{{ route('administration.navigation.aerodromes.update', ['aerodrome' => $aerodrome]) }}', formData)
-            .then(res => {
-                if (res.data) location.reload();
-            }).catch(function(error) {
-                console.log(error.data.toJSON());
+    @push('custom-script')
+        <script>
+            function updateAerodromeData() {
+                let formData = new FormData();
+                formData = $('#editAerodromeDataForm').serialize();
+
+                axios.post('{{ route('administration.navigation.aerodromes.update', ['aerodrome' => $aerodrome]) }}', formData)
+                    .then(res => {
+                        if (res.data) location.reload();
+                    }).catch(function(error) {
+                        console.log(error.data.toJSON());
+                    });
+            }
+
+            $(document).ready(function() {
+                // $("#assignChartForm").on("submit", function(event) {
+                //     event.preventDefault();
+
+                //     let formVars = $(this).serialize();
+                //     $.ajax({
+                //         data: formVars,
+                //         type: 'PATCH',
+                //         url: '{{ route('administration.navigation.aerodromes.update', ['aerodrome' => $aerodrome]) }}',
+                //         success: function (data)
+                //         {
+                //             new Noty({
+                //                 text: '@lang('profile.profile.notifications.settings-saved-successfully')',
+                //                 progressBar: true,
+                //                 modal: false,
+                //                 maxVisible: 1,
+                //                 timeout: 5000,
+                //                 layout: 'topRight',
+                //                 type: 'success',
+                //                 callbacks: {
+                //                         onClose: function () {
+                //                             location.reload();
+                //                         }
+                //                     }
+                //             }).show();
+                //         }
+                //     });
+                // });
+
+                $("#upload-image-form").on('submit', function(event) {
+                    event.preventDefault();
+
+                    let formData = new FormData(this);
+
+                    $("#banner-image-container").css('background', '').attr('style',
+                        'background-color: white !important');
+                    $("#img-loader").css('display', 'block');
+
+                    $.ajax({
+                        method: 'POST',
+                        url: '{{ route('administration.navigation.aerodromes.update', ['aerodrome' => $aerodrome]) }}',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        cache: false,
+                        dataType: 'JSON',
+                        success: (data) => {
+                            // We need to add a cache-buster at the end to force image reload
+                            $("#banner-image-container").attr('style',
+                                `background: url('{{ asset('images/aerodromes/' . strtolower($aerodrome->icao) . '.jpg?' . \Carbon\Carbon::now()->timestamp) }}') center center; background-size: cover; background-color: white !important`
+                            )
+
+                            $("#img-loader").css('display', 'none');
+                        },
+                        error: (data) => {
+                            console.log(data['responseJSON']['message']);
+                            showNoty(data['responseJSON']['message'], 'error');
+                            $("#banner-image-container").attr('style',
+                                `background: url('{{ asset('images/aerodromes/' . strtolower($aerodrome->icao) . '.jpg') }}') center center; background-size: cover;`
+                            );
+                            $("#img-loader").css('display', 'none');
+                        }
+                    });
+                });
             });
-    }
-
-    $(document).ready(function() {
-        // $("#assignChartForm").on("submit", function(event) {
-        //     event.preventDefault();
-
-        //     let formVars = $(this).serialize();
-        //     $.ajax({
-        //         data: formVars,
-        //         type: 'PATCH',
-        //         url: '{{ route('administration.navigation.aerodromes.update', ['aerodrome' => $aerodrome]) }}',
-        //         success: function (data)
-        //         {
-        //             new Noty({
-        //                 text: '@lang('profile.profile.notifications.settings-saved-successfully')',
-        //                 progressBar: true,
-        //                 modal: false,
-        //                 maxVisible: 1,
-        //                 timeout: 5000,
-        //                 layout: 'topRight',
-        //                 type: 'success',
-        //                 callbacks: {
-        //                         onClose: function () {
-        //                             location.reload();
-        //                         }
-        //                     }
-        //             }).show();
-        //         }
-        //     });
-        // });
-
-        $("#upload-image-form").on('submit', function(event) {
-            event.preventDefault();
-
-            let formData = new FormData(this);
-
-            $("#banner-image-container").css('background', '').attr('style',
-                'background-color: white !important');
-            $("#img-loader").css('display', 'block');
-
-            $.ajax({
-                method: 'POST',
-                url: '{{ route('administration.navigation.aerodromes.update', ['aerodrome' => $aerodrome]) }}',
-                data: formData,
-                contentType: false,
-                processData: false,
-                cache: false,
-                dataType: 'JSON',
-                success: (data) => {
-                    // We need to add a cache-buster at the end to force image reload
-                    $("#banner-image-container").attr('style',
-                        `background: url('{{ asset('images/aerodromes/' . strtolower($aerodrome->icao) . '.jpg?' . \Carbon\Carbon::now()->timestamp) }}') center center; background-size: cover; background-color: white !important`
-                    )
-
-                    $("#img-loader").css('display', 'none');
-                },
-                error: (data) => {
-                    console.log(data['responseJSON']['message']);
-                    showNoty(data['responseJSON']['message'], 'error');
-                    $("#banner-image-container").attr('style',
-                        `background: url('{{ asset('images/aerodromes/' . strtolower($aerodrome->icao) . '.jpg') }}') center center; background-size: cover;`
-                    );
-                    $("#img-loader").css('display', 'none');
-                }
-            });
-        });
-    });
-</script>
-@endpush
+        </script>
+    @endpush

@@ -46,16 +46,22 @@
             height: 100%;
             min-height: 200px;
             width: 100%;
-            @auth @if (Auth::user()->settings->dark_mode)background: linear-gradient(to right, transparent 0%, rgb(64 64 64 / 39%) 50%, transparent 100%);
-        @else background: linear-gradient(to right, transparent 0%, rgb(229, 229, 229) 50%, transparent 100%);
-            @endif@else background: linear-gradient(to right, transparent 0%, rgb(229, 229, 229) 50%, transparent 100%);
-        @endauth animation: 1.5s ease-in-out 0s infinite normal none running;
-        animation-name: load;
-    }
-</style>
-@endsection
 
-@push('custom-script')
-<script src="{{ asset('/js/tiny-slider.js') }}"></script>
-<script src="{{ asset('/js/custom/general/landing.js') }}"></script>
-@endpush
+            @auth @if (Auth::user()->settings->dark_mode)
+                    background: linear-gradient(to right, transparent 0%, rgb(64 64 64 / 39%) 50%, transparent 100%);
+                @else
+                    background: linear-gradient(to right, transparent 0%, rgb(229, 229, 229) 50%, transparent 100%);
+                @endif
+            @else
+                background: linear-gradient(to right, transparent 0%, rgb(229, 229, 229) 50%, transparent 100%);
+            @endauth
+            animation: 1.5s ease-in-out 0s infinite normal none running;
+            animation-name: load;
+            }
+        </style>
+    @endsection
+
+    @push('custom-script')
+        @vite(['resources/js/tiny-slider.js'])
+        @vite(['resources/js/custom/general/landing.js'])
+    @endpush
