@@ -32,6 +32,4 @@
         window.matchMedia("(prefers-color-scheme: dark)").addListener(update_color_scheme);
 </script>
 
-@include('homepage.partials.includes.config')
-
 @stack('custom-script')

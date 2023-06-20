@@ -1,13 +1,17 @@
-window._ = require('lodash');
+import _ from 'lodash';
+window._ = _;
+
+import jQuery from 'jquery';
+import * as bootstrap from 'bootstrap';
 
 /**
  * Try to load the bootstrap javascript library
  */
 try{
-    // window.Popper = require('popper.js').default;
-    window.$ = window.jQuery = require('jquery');
-
-    window.bootstrap = require('bootstrap');
+    // window.Popper = require('popper.js').default;   
+    
+    window.$ = window.jQuery = jQuery    ;
+    window.bootstrap = bootstrap;
 } catch(e){}
 
 
@@ -16,8 +20,8 @@ try{
  * to our Laravel back-end. This library automatically handles sending the
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
-
-window.axios = require('axios');
+import * as axios from 'axios';
+window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 

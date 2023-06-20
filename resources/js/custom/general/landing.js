@@ -1,3 +1,5 @@
+import '../../app';
+
 let g_eventCount = -1;
 
 $(function () {

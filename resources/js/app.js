@@ -1,10 +1,10 @@
-require('./bootstrap');
+import './bootstrap'
 
-require('./aos');
-require('./apexcharts');
-require('./ckeditor');
-require('./datepicker');
-require('./gumshoe.polyfills');
+import './aos';
+import './apexcharts'
+import './ckeditor'
+import './datepicker'
+import './gumshoe.polyfills'
 
 import Noty from "noty";
 import Shuffle from "shufflejs";
@@ -12,17 +12,17 @@ import Shuffle from "shufflejs";
 window.Noty = Noty;
 window.Shuffle = Shuffle;
 
-require('./parallax');
+import './parallax'
 //require('./shuffle');
-require('./simplebar');
-require('./sweetalert2.all');
-require('./swiper');
-require('./tiny-slider');
-require('tobii');
+import './simplebar'
+import './sweetalert2.all'
+import './swiper'
+import './tiny-slider'
+import './tobii'
 
 window.tns = tns;
 
-require('./plugins.init')
+import './plugins.init'
 
 window.addEventListener('load', fn, false)
 

@@ -5,6 +5,11 @@ import * as path from 'path';
 // import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
+    server: {
+        hmr: {
+            host: 'vatger.test',
+        },
+    },
     plugins: [
         laravel([
             'resources/scss/app.scss',
@@ -17,6 +22,7 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'resources'),
+            '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
         },
     },
 });
