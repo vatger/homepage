@@ -107,6 +107,12 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('nav');
+        Schema::dropIfExists('nav_aerodrome_navaids');
+        Schema::dropIfExists('nav_navaids');
+        Schema::dropIfExists('nav_runways');
+        Schema::dropIfExists('nav_aerodrome_stations');
+        Schema::dropIfExists('nav_stations');
+        Schema::dropIfExists('nav_aerodromes');
+        Schema::dropIfExists('nav_firs');
     }
 };

@@ -4,8 +4,7 @@
     "description": "The vACC Germany Website.",
     "keywords": [
         "vatger",
-        "vatsim",
-        "laravel"
+        "vatsim"
     ],
     "license": "none",
     "repositories": [],

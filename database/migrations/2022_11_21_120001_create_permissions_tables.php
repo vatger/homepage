@@ -100,13 +100,10 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('user_users');
-        Schema::dropIfExists('user_passwords');
-        Schema::dropIfExists('user_settings');
-        Schema::dropIfExists('user_service_accounts');
-        Schema::dropIfExists('user_vatger_details');
-        Schema::dropIfExists('user_vatsim_details');
-        Schema::dropIfExists('user_bans');
-        Schema::dropIfExists('user_notes');
+        $tableNames = config('permission.table_names');
+
+        foreach ($tableNames as $tableName) {
+            Schema::dropIfExists($tableName);
+        }
     }
 };
