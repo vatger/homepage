@@ -7,15 +7,16 @@
 
 return [
     'introduction' => [
-        'title' => 'Welcome to VATSIM',
-        'breadcrumb' => 'Getting Started',
+        'title' => 'Willkommen bei VATSIM',
+        'breadcrumb' => 'Los Geht Es',
 
         'text-title' => 'Introduction to VATSIM Germany',
         'text-content' => [
-            "VATSIM Germany is part of the <a>VATSIM Europe Division</a>, which together with other divisions forms the VATSIM Europe, Middle East and Africa Region. Altogether they are a part of the global VATSIM network,
-        which provides ATC services over the internet free of charge to pilots connected to this network using their flight simulator. Please take a couple of minutes to read the following information, as it will significantly simplify your initial experience making it more enjoyable.
-        <br><br>
-        Enjoy your stay in German airspace!",
+            '<p class="pb-20">
+                VATSIM Germany ist Mitglied in der <b><a href="https://www.vateud.net" target="_blank">VATSIM Europe Division</a></b>, die wiederum mit weiteren Divisions die <b><a href="https://www.vatsim.eu/" target="_blank">VATSIM Europe, Middle East and Africa Region</a></b> bildet. Insgesamt sind sie Teil des globalen <a href="https://www.vatsim.net" target="_blank"><b>VATSIM</b></a>-Netzwerks, das Piloten, die mit ihrem Flugsimulator an dieses Netzwerk angeschlossen sind, ATC-Dienste über das Internet kostenlos zur Verfügung stellt.
+            </p><p>
+                Viel Spaß im virtuellen deutschen Luftraum
+            </p>',
         ],
 
         'newbieday' => [
