@@ -19,7 +19,7 @@ class Station extends Model
 
     public function aerodromes(): BelongsToMany
     {
-        return $this->belongsToMany(Aerodrome::class, 'nav_aerodrome_station', 'station_id', 'aerodrome_id')->withPivot('order');
+        return $this->belongsToMany(Aerodrome::class, 'nav_aerodrome_stations', 'station_id', 'aerodrome_id')->withPivot('order');
     }
 
     public function bookings(): HasMany

@@ -18,30 +18,22 @@ return new class extends Migration {
             $table->timestamps();
         });
         */
-        Schema::create('cm_communities', function (Blueprint $table) {
+        Schema::create('fir_firs', function (Blueprint $table) {
             $table->id();
             $table->string('slug')->unique();
             $table->string('name');
             $table->text('description');
             $table->string('mail');
+            $table->foreignId('chief1')->constrained('user_users');
+            $table->foreignId('chief2')->constrained('user_users');
             $table->timestamps();
         });
 
-        Schema::create('cm_community_managers', function (Blueprint $table) {
+        Schema::create('fir_users', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained('user_users');
-            $table->foreignId('community_id')->constrained('cm_communities');
-            $table->primary(['user_id', 'community_id']);
-            $table->string('description');
-            $table->string('fir');
-            $table->timestamps();
-        });
-
-        Schema::create('cm_community_users', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained('user_users');
-            $table->foreignId('community_id')->constrained('cm_communities');
-            $table->primary(['user_id', 'community_id']);
+            $table->foreignId('fir_id')->constrained('fir_firs');
+            $table->primary(['user_id', 'fir_id']);
             $table->timestamp('joined_at')->useCurrent();
-            $table->timestamp('fullmember_at')->nullable();
             $table->timestamps();
         });
     }
@@ -53,6 +45,7 @@ return new class extends Migration {
      */
     public function down()
     {
-        //Schema::dropIfExists('regionalgroup_tables');
+        Schema::dropIfExists('fir_users');
+        Schema::dropIfExists('fir_firs');
     }
 };

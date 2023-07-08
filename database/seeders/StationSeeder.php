@@ -34,7 +34,7 @@ class StationSeeder extends Seeder
             $ns->frequency = $s->frequency;
             $ns->description = $s->description;
             $ns->bookable = $s->bookable;
-            $ns->atis = $s->atis;
+            //$ns->atis = $s->atis;
             $ns->save();
             $this->command->getOutput()->progressAdvance();
         }

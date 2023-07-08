@@ -109,7 +109,7 @@ class AerodromeSeeder extends Seeder
     public function run()
     {
         $current_a_count = Aerodrome::all()->count();
-        if ($current_a_count == 28830) {
+        if ($current_a_count > 28800) {
             $this->command->getOutput()->writeln('Already found ' . $current_a_count . ' aerodromes in DB. Skipping...');
             return;
         }
