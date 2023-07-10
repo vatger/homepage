@@ -25,7 +25,6 @@ return new class extends Migration {
                 ->nullable()
                 ->constrained('booking_groups');
             $table->unsignedBigInteger('vatsim_booking_id')->nullable();
-            $table->unsignedBigInteger('vatbook_id')->nullable();
             $table->foreignId('controller_id')->constrained('user_users');
             $table->foreignId('station_id')->constrained('nav_stations');
             $table->boolean('voice')->default(true);

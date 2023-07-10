@@ -54,7 +54,6 @@ return new class extends Migration {
                 ->primary()
                 ->constrained('user_users');
             $table->unsignedInteger('forum_id')->nullable();
-            $table->unsignedInteger('gitlab_id')->nullable();
         });
 
         Schema::create('user_vatger_details', function (Blueprint $table) {

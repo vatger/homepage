@@ -49,7 +49,6 @@ return new class extends Migration {
         Schema::create('nav_stations', function (Blueprint $table) {
             $table->id();
             $table->string('ident', 32)->unique();
-            $table->foreignId('fir_id')->constrained('nav_firs');
             $table->string('name');
             $table->double('frequency', 6, 3);
             $table->text('description')->nullable();

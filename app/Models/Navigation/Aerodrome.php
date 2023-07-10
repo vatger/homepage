@@ -5,7 +5,9 @@ namespace App\Models\Navigation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as DBuilder;
+use Illuminate\Database\Eloquent\Builder as EBuilder;
+
 
 class Aerodrome extends Model
 {
@@ -38,7 +40,7 @@ class Aerodrome extends Model
      */
     public function runways(): HasMany
     {
-        $this->hasMany(Runway::class, 'aerodrome_id', 'id');
+        return $this->hasMany(Runway::class, 'aerodrome_id', 'id');
     }
 
     /**
@@ -62,7 +64,7 @@ class Aerodrome extends Model
     /**
      * Get an aerodrome by its icao
      */
-    public function scopeIcao(Builder $query, string $icao): Builder
+    public function scopeIcao(DBuilder|EBuilder $query, string $icao): DBuilder|EBuilder
     {
         return $query->where('icao', $icao);
     }
@@ -70,7 +72,7 @@ class Aerodrome extends Model
     /**
      * Get only aerodromes that are assigned to Germany
      */
-    public function scopeIsDe(Builder $query): Builder
+    public function scopeIsDe(DBuilder|EBuilder $query): DBuilder|EBuilder
     {
         return $query->where('country_short', 'DE');
     }

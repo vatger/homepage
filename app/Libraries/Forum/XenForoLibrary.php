@@ -10,30 +10,28 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
+use Psr\Http\Message\ResponseInterface;
 
 class XenForoLibrary
 {
     /**
      * Send an actual call to the XenForo API.
-     *
-     * @param [type] $endpoint [description]
-     * @param [type] $data     [description]
-     *
-     * @return [type] [description]
      */
-    private static function _sendAPICommand($endpoint, $data)
+    private static function send(string $method, string $endpoint, array $data): false|ResponseInterface
     {
-        $data['headers'] = [
-            'Accept' => 'application/json',
-            'XF-Api-Key' => config('forum.apikey'),
-            'XP-Api-User' => 1,
-        ];
+        $client = new Client([
+            'headers' => [
+                'Accept' => 'application/json',
+                'XF-Api-Key' => config('forum.apikey'),
+                'XP-Api-User' => 1,
+            ],
+            'connect_timeout' => 25,
+        ]);
         $data['api_bypass_permissions'] = 1;
-        $client = new Client();
-        try {
-            $response = $client->get(config('forum.url') . '/api/' . $endpoint, $data);
+        $url = config('forum.url') . '/api/' . $endpoint . '?api_bypass_permissions=1';
 
-            return $response;
+        try {
+            return $client->request($method, $url, ['form_params' => $data]);
         } catch (GuzzleException $e) {
             Log::debug($e->getMessage());
             return false;
@@ -48,7 +46,7 @@ class XenForoLibrary
      *
      * @return [type] [description]
      */
-    private static function _sendAPIPostCommand($endpoint, $formData)
+    private static function _sendAPIPostCommandd($endpoint, $formData)
     {
         $data['headers'] = [
             'Accept' => 'application/json',
@@ -76,7 +74,7 @@ class XenForoLibrary
      *
      * @return [type] [description]
      */
-    private static function _sendAPIPatchCommand($endpoint, $formData)
+    private static function _sendAPIPatchCommandd($endpoint, $formData)
     {
         $data['headers'] = [
             'Accept' => 'application/json',
@@ -104,7 +102,7 @@ class XenForoLibrary
      *
      * @return [type] [description]
      */
-    private static function _sendAPIDeleteCommand($endpoint, $formData)
+    private static function _sendAPIDeleteCommandd($endpoint, $formData)
     {
         $data['headers'] = [
             'Accept' => 'application/json',
@@ -127,8 +125,8 @@ class XenForoLibrary
     /**
      * A function to create an Account for the XenForo Application via API call.
      *
-     * @param User $user  [description]
-     * @param string  $password [description]
+     * @param User $user [description]
+     * @param string $password [description]
      *
      * @return bool
      */
@@ -178,7 +176,7 @@ class XenForoLibrary
             'vatsimid' => $user->id,
         ];
 
-        $result = self::_sendAPIPostCommand('users', $dataArray);
+        $result = self::send('POST', 'users', $dataArray);
         if ($result && 200 == $result->getStatusCode()) {
             $body = $result->getBody()->getContents();
             $forumUserObject = json_decode($body);
@@ -226,7 +224,7 @@ class XenForoLibrary
          * 2. Compare the names
          * 3. If mismatch: set new name
          */
-        $result = self::_sendAPICommand('users/' . $user->settings->forum_id, []);
+        $result = self::send('GET', 'users/' . $user->settings->forum_id, []);
 
         if (!$result) {
             return false;
@@ -259,6 +257,7 @@ class XenForoLibrary
          * Assign forum groups based upon regionalgroup status
          *
          */
+        /* TODO
         $fgrps = ForumGroup::all();
         foreach ($user->regionalgroups as $rg) {
             if ($rg->chief_id == $user->id || $rg->deputy_id == $user->id) {
@@ -312,7 +311,7 @@ class XenForoLibrary
                 }
             }
         }
-
+        */
         $dataArray['secondary_group_ids'] = [];
         if (!empty($secondaryGroups)) {
             $dataArray['secondary_group_ids'] = $secondaryGroups;
