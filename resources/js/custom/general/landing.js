@@ -1,4 +1,4 @@
-import '../../app';
+import '../../app.js';
 
 let g_eventCount = -1;
 

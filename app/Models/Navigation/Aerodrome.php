@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as DBuilder;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
 
+
 class Aerodrome extends Model
 {
     protected $table = 'nav_aerodromes';
