@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Mail\BasicNotificationMail;
+use App\Models\Membership\User\User;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -30,22 +32,16 @@ class BasicNotification extends Notification
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
      */
-    public function via($notifiable)
+    public function via(object $notifiable): array
     {
-        return ['database', BoardChannel::class];
+        return ['database', BoardChannel::class, 'mail'];
     }
 
     /**
      * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
      */
-    public function toArray($notifiable)
+    public function toArray(object $notifiable): array
     {
         return [
             'title' => $this->title,
@@ -58,16 +54,30 @@ class BasicNotification extends Notification
 
     /**
      * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
      */
-    public function toBoard($notifiable)
+    public function toBoard(object $notifiable): array
     {
         return [
             'message' => strip_tags($this->title) . ': {link}',
             'link_text' => 'mehr Details',
             'link_url' => 'vatger.de', //route("") to notifications
         ];
+    }
+
+    /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail(object $notifiable)
+    {
+        $url = url('/');
+        $mail = new BasicNotificationMail($this);
+        if (!$notifiable instanceof User) {
+            return null;
+        }
+        $user = User::query()->find($notifiable->id);
+        if (empty($user)) {
+            return null;
+        }
+        return $mail->toUser($user);
     }
 }

@@ -373,18 +373,19 @@ class XenForoLibrary
      */
     public static function sendForumAlert(User $user, string $message, string $link_url = '', string $link_text = ''): bool
     {
-        if ($user?->settings()->get('forum_id') == null) {
+        $forum_user_id = $user?->serviceAccounts()->get('forum_id');
+        if ($forum_user_id == null) {
             return false;
         }
         $dataArray = [];
-        $dataArray['to_user_id'] = $user->settings()->get('forum_id');
+        $dataArray['to_user_id'] = $forum_user_id;
         $dataArray['alert'] = $message;
         $dataArray['from_user_id'] = 0; //anonymous
         if (!empty($link_url) && !empty($link_text)) {
             $dataArray['link_url'] = $link_url;
             $dataArray['link_title'] = $link_text;
         }
-        $res = self::_sendAPIPostCommand('alerts/', $dataArray);
+        $res = self::send('POST', 'alerts/', $dataArray);
         if (!$res) {
             return false;
         }

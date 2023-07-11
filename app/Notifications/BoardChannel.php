@@ -12,7 +12,7 @@ class BoardChannel
      * Send the given notification.
      *
      */
-    public function send($notifiable, Notification $notification): void
+    public function send(mixed $notifiable, Notification $notification): void
     {
         // Send notification to the $notifiable instance...
 
