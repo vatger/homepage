@@ -22,7 +22,11 @@ class StationSeeder extends Seeder
         $stations_data = $datafile->data;
 
         $count = count($stations_data);
-        DB::statement('DELETE FROM nav_stations');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('nav_aerodrome_stations')->truncate();
+        DB::table('nav_stations')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
         $this->command->getOutput()->writeln('Truncated stations table.');
 
         $this->command->getOutput()->writeln('Starting seeding of new information...');

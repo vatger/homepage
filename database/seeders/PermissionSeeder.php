@@ -90,7 +90,7 @@ class PermissionSeeder extends Seeder
         foreach ($this->permissions as $name => $description) {
             $p = new Permission();
             $p->name = $name;
-            $p->description = $description;
+            //$p->description = $description;
             $p->save();
             $this->command->getOutput()->progressAdvance();
         }
@@ -105,46 +105,15 @@ class PermissionSeeder extends Seeder
 
         // IF WE ARE IN DEVELOPMENT ASSIGN TESTUSER WEB10 TO THE ADMINROLE
         if (config('app.env') !== 'production') {
-            if (
-                !User::query()
-                    ->where('id', 10000010)
-                    ->exists()
-            ) {
-                User::query()->updateOrCreate([
+            $user = User::find(10000010);
+            if (!$user) {
+                User::updateOrCreate([
                     'id' => 10000010,
                     'firstname' => 'Test',
                     'lastname' => '10000010',
                     'email' => '10000010@mail.com',
                 ]);
             }
-            if (
-                !UserData::query()
-                    ->where('account_id', 10000010)
-                    ->exists()
-            ) {
-                UserData::query()->updateOrCreate([
-                    'account_id' => 10000010,
-                    'rating_atc' => 3,
-                    'rating_pilot' => 1,
-                    'region_code' => 'EMEA',
-                    'region_name' => 'Europe, Middle East and Africa',
-                    'division_code' => 'EUD',
-                    'division_name' => 'Europe (except UK)',
-                    'subdivision_code' => null,
-                    'subdivision_name' => null,
-                ]);
-            }
-            if (
-                !UserSetting::query()
-                    ->where('account_id', 10000010)
-                    ->exists()
-            ) {
-                UserSetting::query()->updateOrCreate([
-                    'account_id' => 10000010,
-                    'language' => 'en',
-                ]);
-            }
-
             $adminUser = User::find(10000010);
             if ($adminUser !== null) {
                 $adminUser->assignRole($adminRole);

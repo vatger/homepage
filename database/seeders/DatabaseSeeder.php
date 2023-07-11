@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
 
         $this->call(StationSeeder::class);
 
-        //$this->call(PermissionSeeder::class);
+        $this->call(PermissionSeeder::class);
 
         //$this->call(RegionalgroupSeeder::class);
 
-        //$this->call(DemoSeeder::class);
+        $this->call(DemoSeeder::class);
     }
 }

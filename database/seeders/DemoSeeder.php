@@ -5,7 +5,9 @@ namespace Database\Seeders;
 use App\Models\Membership\User\User;
 use App\Models\Membership\User\UserData;
 use App\Models\Membership\User\UserSetting;
+use App\Models\Membership\User\UserVatgerDetail;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Session;
 
 class DemoSeeder extends Seeder
 {
@@ -18,45 +20,41 @@ class DemoSeeder extends Seeder
     {
         if (config('app.env') !== 'production') {
             for ($i = 20000000; $i < 20000000 + 9999; $i++) {
-                User::query()->updateOrCreate([
+                $user = User::updateOrCreate([
                     'id' => $i,
                     'firstname' => 'Test',
                     'lastname' => "$i",
                     'email' => "$i@mail.com",
                 ]);
 
-                if (
-                    UserData::query()
-                        ->where('account_id', $i)
-                        ->exists()
-                ) {
-                    continue;
-                }
+                $user->passwords()->updateOrCreate([]);
+                $user->settings()->updateOrCreate([]);
+                $user->settings()->update([
+                    'language' => Session::has('language') ? Session::get('language') : 'de',
+                ]);
 
-                UserData::query()->updateOrCreate([
-                    'account_id' => $i,
+                $user->serviceAccounts()->updateOrCreate([]);
+
+                $user->vatgerDetails()->updateOrCreate([]);
+
+                $user->vatsimDetails()->updateOrCreate([]);
+                $user->vatsimDetails()->update([
                     'rating_atc' => 3,
-                    'rating_pilot' => 1,
+                    'rating_pilot' => 0b11,
+                    'country_code' => 'DE',
+                    'country_name' => 'Germany',
                     'region_code' => 'EMEA',
-                    'region_name' => 'Europe, Middle East and Africa',
+                    'region_name' => 'Europe ...',
                     'division_code' => 'EUD',
-                    'division_name' => 'Europe (except UK)',
-                    'subdivision_code' => null,
-                    'subdivision_name' => null,
+                    'division_name' => 'VATEUD',
+                    'subdivision_code' => 'GER',
+                    'subdivision_name' => 'Germany',
                 ]);
 
-                if (
-                    UserSetting::query()
-                        ->where('account_id', $i)
-                        ->exists()
-                ) {
-                    continue;
-                }
+                UserVatgerDetail::check_status($user);
 
-                UserSetting::query()->updateOrCreate([
-                    'account_id' => $i,
-                    'language' => 'en',
-                ]);
+                $user->tokens()->delete();
+                $user->createToken('api-token');
             }
         }
     }
