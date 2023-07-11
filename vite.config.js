@@ -10,7 +10,7 @@ export default defineConfig({
             host: 'vatger.test',
         },
     },
-    plugins: [laravel(['resources/scss/app.scss', 'resources/scss/app-dark.scss', 'resources/js/app.js'])],
+    plugins: [laravel(['resources/scss/app.scss', 'resources/scss/app-dark.scss', 'resources/ts/app.ts'])],
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'resources'),
