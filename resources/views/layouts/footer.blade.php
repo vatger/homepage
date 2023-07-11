@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="footer-py-60" style="padding-bottom: 0px">
+                <div class="footer-py-60" style="padding-bottom: 0">
                     <div class="row">
                         <div class="col-lg-4 col-12 mb-0 mb-md-4 pb-0 pb-md-2">
                             <img src="{{ asset('images/vacc_logo_white.png') }}" width="55%">
@@ -66,7 +66,7 @@
             <div class="row align-items-center">
                 <div class="col-sm-6">
                     <div class="text-sm-start">
-                        <p class="mb-0">© {{ \Carbon\Carbon::now()->year }} VATSIM Germany</p>
+                        <p class="mb-0">&copy; {{ \Carbon\Carbon::now()->year }} VATSIM Germany</p>
                     </div>
                 </div>
                 <!--end col-->

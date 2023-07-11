@@ -106,8 +106,8 @@ function topFunction() {
 })();
 
 // dd-menu
-var ddmenu = document.getElementsByClassName('dd-menu');
-for (var i = 0, len = ddmenu.length; i < len; i++) {
+const ddmenu = document.getElementsByClassName('dd-menu');
+for (let i = 0, len = ddmenu.length; i < len; i++) {
     let ddelem = ddmenu[i] as HTMLElement;
     ddelem.onclick = function (elem) {
         elem.stopPropagation();

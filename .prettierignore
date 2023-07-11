@@ -4,6 +4,7 @@ docker
 storage
 public
 resources/js
+resources/views_old
 
 .phpstorm.meta.php
 _ide_helper.php
