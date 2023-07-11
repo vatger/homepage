@@ -93,7 +93,7 @@
                         <li><a href="ts3server://ts3.vatsim-germany.org" class="sub-menu-item">@lang('navigation.community.teamspeak')</a>
                         </li>
                         <li><a href="https://board.vatsim-germany.org" class="sub-menu-item">@lang('navigation.community.forum')</a></li>
-                        <li><a href="https://wiki.vatsim-germany.org" class="sub-menu-item">@lang('navigation.community.wiki')</a></li>
+                        <li><a href="https://knowledgebase.vatsim-germany.org/" class="sub-menu-item">@lang('navigation.community.wiki')</a></li>
                         <li><a href="https://vatsim-germany.myspreadshop.de/" target="_blank" class="sub-menu-item">@lang('navigation.community.fan-shop')</a>
                         </li>
                         @if (Route::has('stats.landing'))
@@ -109,10 +109,10 @@
                         <li><a href="https://support.vatsim-germany.org/" class="sub-menu-item">@lang('navigation.hilfe.support')</a>
                         </li>
                         @if (Session::has('language') && Session::get('language') == 'de')
-                            <li><a href="https://de.wiki.vatsim-germany.org/Ansprechpartner_VATSIM_Germany"
+                            <li><a href="https://knowledgebase.vatsim-germany.org/books/contact/page/contact-vatsim-germany"
                                     class="sub-menu-item">@lang('navigation.hilfe.personal')</a></li>
                         @else
-                            <li><a href="https://en.wiki.vatsim-germany.org/Contact_VATSIM_Germany" class="sub-menu-item">@lang('navigation.hilfe.personal')</a>
+                            <li><a href="https://knowledgebase.vatsim-germany.org/books/contact/page/contact-vatsim-germany" class="sub-menu-item">@lang('navigation.hilfe.personal')</a>
                             </li>
                         @endif
 
