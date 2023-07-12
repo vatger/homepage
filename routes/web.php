@@ -95,7 +95,7 @@ Route::domain(parse_url(config('app.url'), PHP_URL_HOST))->group(function () {
     Route::get('/', function () {
         $partners = Partner::all();
 
-        return view('pages.landing.index')->with(['partners' => $partners]);
+        return view('pages.landing')->with(['partners' => $partners]);
     })->name('landing');
 
     ############

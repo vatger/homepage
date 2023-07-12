@@ -20,7 +20,7 @@ class ProfileController extends Controller
         //Auth::user()->notify(new BasicNotification("Hello World!", "This is the message", "Demo"));
         //return $this->prepareView('homepage.members.profile.profile'); //->with(['regionalgroups' => $regionalGroups]);
 
-        return view('homepage.members.profile.profile')->with(['user' => $this->user()]);
+        return view('pages.membership')->with(['user' => $this->user()]);
     }
 
     /**

@@ -8,3 +8,8 @@ import * as bootstrap from 'bootstrap';
 import initTemplate from './template';
 
 initTemplate();
+
+import { registerLibs, setupLibs } from './boot';
+
+registerLibs();
+setupLibs();
