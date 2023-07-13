@@ -1,3 +1,5 @@
+import { replace as featherReplace } from 'feather-icons';
+
 export default function initTemplate() {
     window.addEventListener('load', loadpreloader, false);
     clickablemenu();
@@ -12,6 +14,8 @@ export default function initTemplate() {
     loadDDMenu();
     loadTooltips();
     loadSmallMenu();
+
+    featherReplace();
 }
 
 function loadpreloader() {
