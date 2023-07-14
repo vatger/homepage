@@ -13,3 +13,12 @@ import { registerLibs, setupLibs } from './boot';
 
 registerLibs();
 setupLibs();
+
+import { loadLivewireExtensions } from './livewire_extensions';
+
+loadLivewireExtensions();
+
+import { laravelFireNoty, registerNoty } from './noty';
+
+registerNoty();
+laravelFireNoty();

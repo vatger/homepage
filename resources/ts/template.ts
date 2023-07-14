@@ -1,7 +1,7 @@
 import { replace as featherReplace } from 'feather-icons';
 
 export default function initTemplate() {
-    window.addEventListener('load', loadpreloader, false);
+    window.addEventListener('load', loadPreloader, false);
     clickablemenu();
     window.addEventListener('scroll', (ev) => {
         ev.preventDefault();
@@ -18,7 +18,7 @@ export default function initTemplate() {
     featherReplace();
 }
 
-function loadpreloader() {
+function loadPreloader() {
     // Preloader
     const preloader = document.getElementById('preloader');
     if (preloader) {

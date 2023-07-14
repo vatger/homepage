@@ -5,18 +5,16 @@ const config = {
     routes: {
         api: {
             events: {
-                'loadEvents': "{{ route('api.loadEvents') }}",
+                loadEvents: "{{ route('api.loadEvents') }}",
             },
             atcfb: {
-                'checkUser': "{{ route('api.user.check') }}"
-            }
+                checkUser: "{{ route('api.user.check') }}",
+            },
         },
-        global: {
-
-        }
+        global: {},
     },
     tinyMce: {
-        'default': {
+        default: {
             skin: 'oxide-dark',
             content_css: 'dark',
             plugins: 'lists',
@@ -24,8 +22,8 @@ const config = {
             toolbar: 'undo redo | styleselect | bold italic | bullist numlist',
             toolbar_mode: 'floating',
             selector: 'textarea',
-        }
-    }
+        },
+    },
 };
 
 /**
@@ -33,25 +31,9 @@ const config = {
  */
 $.ajaxSetup({
     headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+    },
 });
-
-/**
- * Show new noty message with custom (or default) parameters
- * @param message
- * @param type
- * @param timeout
- */
-function showNoty(message, type = 'success', timeout = 2500) {
-    new Noty({
-        text: message,
-        progressBar: true,
-        timeout: timeout,
-        layout: 'topRight',
-        type: type,
-    }).show();
-}
 
 /**
  * Returns the corresponding short ATC rating from its ID
@@ -61,47 +43,47 @@ function showNoty(message, type = 'success', timeout = 2500) {
 function convertAtcRating(id) {
     switch (id) {
         case -1:
-            return "INAC";
+            return 'INAC';
 
         case 0:
-            return "SUS";
+            return 'SUS';
 
         case 1:
-            return "OBS";
+            return 'OBS';
 
         case 2:
-            return "S1";
+            return 'S1';
 
         case 3:
-            return "S2";
+            return 'S2';
 
         case 4:
-            return "S3";
+            return 'S3';
 
         case 5:
-            return "C1";
+            return 'C1';
 
         case 6:
-            return "C2";
+            return 'C2';
 
         case 7:
-            return "C3";
+            return 'C3';
 
         case 8:
-            return "I1";
+            return 'I1';
 
         case 9:
-            return "I2";
+            return 'I2';
 
         case 10:
-            return "I3";
+            return 'I3';
 
         case 11:
-            return "SUP";
+            return 'SUP';
 
         case 12:
-            return "ADM";
+            return 'ADM';
     }
 
-    return "err";
+    return 'err';
 }
