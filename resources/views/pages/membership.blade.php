@@ -150,10 +150,11 @@
 
                 <div class="col-lg-8 col-12 tab-content">
                     <div class="tab-content" id="pills-tabContent">
+                        @component('components.profile.profile', ['user' => $user])
+                        @endcomponent
                         {{--
                         @include('homepage.members.profile.partials.profile')
 
-                        {{--
                         @include('homepage.members.profile.partials.notification')
 
                         @include('homepage.members.profile.partials.settings')
