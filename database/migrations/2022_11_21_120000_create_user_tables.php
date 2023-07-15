@@ -63,8 +63,13 @@ return new class extends Migration {
                 ->constrained('user_users');
             $table->timestamp('last_seen_at')->useCurrent();
             $table->timestamp('registered_at')->useCurrent();
+            $table->timestamp('active_member_at')->nullable();
             $table->timestamp('vatger_member_at')->nullable();
+            $table->timestamp('active_vatger_member_at')->nullable();
+            $table->timestamp('warning_inactive_at')->nullable();
             $table->timestamp('inactive_at')->nullable();
+            $table->timestamp('warning_delete_at')->nullable();
+            $table->timestamp('delete_at')->nullable();
         });
 
         Schema::create('user_vatsim_details', function (Blueprint $table) {

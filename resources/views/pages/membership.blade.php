@@ -42,7 +42,7 @@
             <div class="row">
                 <div class="col-log-auto col-lg-4 col-12 mb-4">
                     <div class="sidebar sticky-bar p-4 rounded shadow">
-                        <div class="widget pb-4 border-bottom">
+                        {{--<div class="widget pb-4 border-bottom">
                             <h5 class="widget-title">Ratings:</h5>
                             <div class="row mt-4">
                                 <div class="col-6 text-center">
@@ -75,8 +75,9 @@
                             </div>
                             <!--end row-->
                         </div>
+                        --}}
 
-                        <div class="widget mt-4">
+                        <div class="widget">
                             <ul class="nav nav-pills nav-justified flex-column bg-white p-3 mb-0" id="pills-tab" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link rounded active" id="profile" data-bs-toggle="pill" href="#profile-tab" role="tab"
@@ -152,6 +153,8 @@
                     <div class="tab-content" id="pills-tabContent">
                         @component('components.profile.profile', ['user' => $user])
                         @endcomponent
+
+
                         {{--
                         @include('homepage.members.profile.partials.profile')
 
