@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Libraries\Membership\MembershipLibrary;
 use App\Models\Membership\User\User;
 use App\Models\Membership\User\UserData;
 use App\Models\Membership\User\UserSetting;
@@ -51,7 +52,7 @@ class DemoSeeder extends Seeder
                     'subdivision_name' => 'Germany',
                 ]);
 
-                UserVatgerDetail::check_status($user);
+                MembershipLibrary::seen($user);
 
                 $user->tokens()->delete();
                 $user->createToken('api-token');
