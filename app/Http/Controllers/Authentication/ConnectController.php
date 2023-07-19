@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Authentication;
 
 use App\Http\Controllers\Controller;
+use App\Libraries\Membership\MembershipLibrary;
 use App\Models\Membership\User\User;
 use App\Models\Membership\User\UserVatgerDetail;
 use App\Providers\VATSIM\ConnectProvider;
@@ -174,7 +175,7 @@ class ConnectController extends Controller
             'subdivision_name' => config('app.env') !== 'production' ? 'Germany' : $resourceOwner->data->vatsim->subdivision->name,
         ]);
 
-        UserVatgerDetail::check_status($user);
+        MembershipLibrary::seen($user);
 
         $user->tokens()->delete();
         $user->createToken('api-token');
