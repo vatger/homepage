@@ -21,4 +21,14 @@ Route::prefix('authentication')
         })
             ->name('check-terms')
             ->middleware('auth');
+
+
+        Route::get('test', function () {
+            $user = Auth::user();
+            \App\Libraries\Membership\MembershipLibrary::seen($user);
+            $user->loadMissing(['settings', 'vatgerDetails', 'vatsimDetails']);
+            return $user;
+        })
+            ->name('check-terms')
+            ->middleware('auth');
     });

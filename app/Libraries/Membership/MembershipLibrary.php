@@ -13,6 +13,7 @@ class MembershipLibrary
     public static function seen(User $user): void
     {
         $user->vatgerDetails->update(['last_seen_at' => Carbon::now()]);
+        $user = $user->fresh();
         self::check_status($user);
     }
 
@@ -20,6 +21,7 @@ class MembershipLibrary
     {
         $user->loadMissing('vatgerDetails', 'vatsimDetails');
         $vatger = $user->vatgerDetails;
+        $vatsim = $user->vatsimDetails;
 
         $warning_inactive = Carbon::now()->diffInDays($vatger->last_seen_at, true) > 180 - 30;
         $inactive = Carbon::now()->diffInDays($vatger->last_seen_at, true) > 180;
@@ -59,20 +61,29 @@ class MembershipLibrary
                 'active_member_at' => null,
                 'active_vatger_member_at' => null,
             ]);
+            $user = $user->fresh();
         }
 
         // user became vatger full member start time (independent from inactive status)
-        if ($vatger->vatger_member_at == null && $vatger->subdivision_code == 'GER') {
+        if ($vatger->vatger_member_at == null && $vatsim->subdivision_code == 'GER') {
             $user->vatgerDetails->update(['vatger_member_at' => Carbon::now()]);
+            $user = $user->fresh();
+        }
+        // user is guest member start continuous active times
+        if (!$inactive && $vatger->active_member_at == null) {
+            $user->vatgerDetails->update(['active_member_at' => Carbon::now()]);
+            $user = $user->fresh();
         }
         // user is vatger full member start continuous active times
-        if (!$inactive && $vatger->active_vatger_member_at == null && $vatger->subdivision_code == 'GER') {
+        if (!$inactive && $vatger->active_vatger_member_at == null && $vatsim->subdivision_code == 'GER') {
             $user->vatgerDetails->update(['active_vatger_member_at' => Carbon::now()]);
+            $user = $user->fresh();
         }
         //user has left vatger full member
-        if ($vatger->subdivision_code != 'GER' && ($vatger->active_member_at || $vatger->active_vatger_member_at)) {
+        if ($vatsim->subdivision_code != 'GER' && ($vatger->active_member_at || $vatger->active_vatger_member_at)) {
             //TODO kick from FIRs
             $user->vatgerDetails->update(['vatger_member_at' => null, 'active_vatger_member_at' => null]);
+            $user = $user->fresh();
         }
     }
 
