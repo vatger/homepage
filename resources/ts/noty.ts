@@ -1,5 +1,7 @@
 import { Type } from 'noty';
 
+const noty = require('noty');
+
 /**
  * Show new noty message with custom (or default) parameters
  * @param message
@@ -19,7 +21,7 @@ export function showNoty(message, type = 'success', timeout = 2500) {
 }
 
 export function registerNoty() {
-    window['Noty'] = require('noty');
+    window['Noty'] = noty;
     window['showNoty'] = showNoty;
 }
 
