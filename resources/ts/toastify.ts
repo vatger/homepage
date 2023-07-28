@@ -1,15 +1,9 @@
 import * as Toastify from 'toastify-js';
 
-/**
- * Show new noty message with custom (or default) parameters
- * @param message
- * @param type
- * @param timeout
- */
-export function showNoty(message, type = 'success', timeout = 2500) {
+function makeToast() {
     Toastify({
-        text: message,
-        duration: timeout,
+        text: 'This is a toast',
+        duration: 3000,
         destination: 'https://github.com/apvarun/toastify-js',
         newWindow: true,
         close: true,
@@ -21,12 +15,4 @@ export function showNoty(message, type = 'success', timeout = 2500) {
         },
         onClick: function () {}, // Callback after click
     }).showToast();
-}
-
-export function registerNoty() {
-    window['showNoty'] = showNoty;
-}
-
-export function laravelFireNoty() {
-    window.dispatchEvent(new Event('laravel_showNoty'));
 }

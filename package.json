@@ -32,15 +32,16 @@
   "dependencies": {
     "@popperjs/core": "^2.6.0",
     "@ryangjchandler/alpine-clipboard": "^2.2.0",
+    "@types/toastify-js": "^1.12.0",
     "apexcharts": "^3.35.0",
     "bootstrap": "^5.0.1",
     "feather-icons": "^4.29.0",
     "gumshoejs": "^5.1.2",
     "jquery": "^3.6.0",
     "luxon": "^2.3.2",
-    "noty": "^3.1.4",
     "shufflejs": "^6.1.0",
     "tinymce": "^5.10.4",
+    "toastify-js": "^1.12.0",
     "tobii": "^2.0.0-alpha"
   },
   "name": "vacc-germany-website",
