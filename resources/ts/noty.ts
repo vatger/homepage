@@ -8,16 +8,19 @@ import { Type } from 'noty';
  * @param timeout
  */
 export function showNoty(message, type = 'success', timeout = 2500) {
-    new Noty({
+    let nc = window['Noty'];
+    let n = new nc({
         text: message,
         progressBar: true,
         timeout: timeout,
         layout: 'topRight',
         type: type as Type,
-    }).show();
+    });
+    n.show();
 }
 
 export function registerNoty() {
+    window['Noty'] = Noty;
     window['showNoty'] = showNoty;
 }
 

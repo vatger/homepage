@@ -1,5 +1,4 @@
 import { showNoty } from './noty';
-import * as $ from 'jquery';
 
 //for Livewire3
 //import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
@@ -8,6 +7,7 @@ import * as $ from 'jquery';
 export function loadLivewireExtensions() {
     //Alpine.plugin(Clipboard);
     //Livewire.start();
+    let $ = window['jquery'];
 
     window.addEventListener('livewire_showNoty', (event) => {
         showNoty(event['detail'].message, event['detail'].type, event['detail'].timeout);
