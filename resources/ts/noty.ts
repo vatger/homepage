@@ -1,4 +1,3 @@
-import * as Noty from 'noty';
 import { Type } from 'noty';
 
 /**
@@ -20,7 +19,7 @@ export function showNoty(message, type = 'success', timeout = 2500) {
 }
 
 export function registerNoty() {
-    window['Noty'] = Noty;
+    window['Noty'] = require('noty');
     window['showNoty'] = showNoty;
 }
 
