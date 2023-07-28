@@ -17,6 +17,8 @@
 
     @vite('resources/scss/app.scss')
 
+    {{--@livewireStyles--}}
+
     @stack('styles')
 </head>
 
@@ -28,6 +30,10 @@
 @include('layouts.footer')
 
 @vite(['resources/ts/app.ts'])
+
+{{-- @livewireScriptConfig --}}
+
+@livewireScripts
 
 @include('layouts.noty')
 

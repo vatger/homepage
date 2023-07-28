@@ -50,6 +50,6 @@ class Memberlist extends Component
         $filtered_members = collect($userquery->get());
         $this->searchCollectionModifier($filtered_members, $search_str);
 
-        return view('administration.membership.membership.partials.memberlist_lw')->with(['filtered_members' => $filtered_members->paginate()]);
+        return view('administration.membership.membership.partials.memberlist_lw')->with(['filtered_members' => $filtered_members->paginate(5)]);
     }
 }

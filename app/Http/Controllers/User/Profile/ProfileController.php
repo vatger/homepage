@@ -11,15 +11,8 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    /**
-     * @return Factory|View|Application
-     */
     public function viewProfile(): Factory|View|Application
     {
-        //$regionalGroups = Regionalgroup::all();
-        //Auth::user()->notify(new BasicNotification("Hello World!", "This is the message", "Demo"));
-        //return $this->prepareView('homepage.members.profile.profile'); //->with(['regionalgroups' => $regionalGroups]);
-
         return view('pages.membership')->with(['user' => $this->user()]);
     }
 

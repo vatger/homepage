@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import * as path from 'path';
 // import react from '@vitejs/plugin-react';
@@ -10,7 +10,7 @@ export default defineConfig({
             host: 'vatger.test',
         },
     },
-    plugins: [laravel(['resources/scss/app.scss', 'resources/scss/app-dark.scss', 'resources/ts/app.ts'])],
+    plugins: [laravel(['resources/scss/app.scss', 'resources/scss/app-dark.scss', 'resources/ts/app.ts']), splitVendorChunkPlugin()],
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'resources'),

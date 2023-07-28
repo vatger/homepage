@@ -1,6 +1,7 @@
 @php
     use \Illuminate\Support\Facades\Session;
 @endphp
+
 <script>
   window.addEventListener("laravel_showNoty", (event) => {
       @foreach ($errors->all() as $error)

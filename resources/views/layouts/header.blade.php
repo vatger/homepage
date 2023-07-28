@@ -141,11 +141,13 @@
                 </li>
                 @auth
                     <li class="parent-menu-item">
-                        <a href="{{ route('member.profile') }}#notification-tab"><span class="mdi mdi-bell">
+                        <a href="{{ route('member.profile') }}?tab=notifications">
+                            <span class="">
                                 @if (count(Auth::user()->unreadNotifications) > 0)
-                                    <span class="badge badge-warning navbar-badge">{{ count(Auth::user()->unreadNotifications) }}</span>
+                                    <i class="" data-feather="bell"></i><span> {{ count(Auth::user()->unreadNotifications) }} </span>
                                 @endif
-                            </span></a>
+                            </span>
+                        </a>
                     </li>
                 @endauth
             </ul>

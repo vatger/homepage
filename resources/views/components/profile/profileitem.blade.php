@@ -6,5 +6,6 @@
         <a class="text-muted">
             {{ $text ? : '-' }} {{ $subtext ? '('. $subtext .')': '' }}
         </a>
+        {{ $slot }}
     </div>
 </div>

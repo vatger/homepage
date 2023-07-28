@@ -9,7 +9,7 @@ trait PaginationTrait
     use WithPagination;
 
     protected $paginationTheme = 'custom';
-
+    
     public function updatingPaginationTrait(): void
     {
         $this->resetPage();
