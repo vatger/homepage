@@ -66,7 +66,7 @@ class Kernel extends HttpKernel
             VerifyCsrfToken::class,
             SubstituteBindings::class,
             LocaleMiddleware::class,
-            //\Spatie\CookieConsent\CookieConsentMiddleware::class,
+            \Spatie\CookieConsent\CookieConsentMiddleware::class,
             PreventRequestsDuringMaintenance::class,
             SysLogMiddleware::class,
         ],
