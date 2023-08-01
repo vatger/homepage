@@ -30,7 +30,7 @@ return new class extends Migration {
                 ->primary()
                 ->constrained('user_users');
             $table->string('password')->nullable(); // Nullable password field.
-            $table->string('remember_token', 100)->nullable(); // Session Remember token (To keep login alive)
+            $table->rememberToken(); // Session Remember token (To keep login alive)
             $table->text('oauth_access_token')->nullable();
             $table->text('oauth_refresh_token')->nullable();
             $table->unsignedBigInteger('oauth_token_expires')->nullable();
