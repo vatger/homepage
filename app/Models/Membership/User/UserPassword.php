@@ -18,6 +18,11 @@ class UserPassword extends Model
 
     protected $hidden = ['password', 'remember_token', 'oauth_access_token', 'oauth_refresh_token', 'oauth_token_expires'];
 
+    /**
+     * Returns the user belonging to these credentials
+     *
+     * @return BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

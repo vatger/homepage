@@ -41,30 +41,16 @@ class ConnectController extends Controller
      */
     public function login(Request $request): RedirectResponse
     {
+        // TODO: Move the callback to a separate function to remove the redundant "$req->has('code')" check
         // Use this line only if you want to test the "LOCAL" backup authentication
         // while developing. NEVER USE IT IN PRODUCTION
         // if(config('app.env') !== 'production') return redirect()->route('vatsim.authentication.connect.local');
 
         // Initiation state is without 'code' and 'state'
         if (!$request->has('code') || !$request->has('state')) {
-            try {
-                // Initiate the authentication process using VATSIM Connect
-                // 1. Test if the service is available at all.
-                // 2. If available: Prepare the authentication url and send the user away to it
-                // 3. If NOT available: Fall back to local authentication
-                $response = Http::timeout(5)->get(config('vatsim.authentication.connect.base'));
-                if ($response->successful()) {
-                    $authenticationUrl = $this->_provider->getAuthorizationUrl();
-                    $request->session()->put('vatsim.authentication.connect.state', $this->_provider->getState());
-                    return redirect()->away($authenticationUrl);
-                } else {
-                    // Send the user to the service unavailable page
-                    return redirect()->route('vatsim.authentication.connect.local');
-                }
-            } catch (ConnectionException $ce) {
-                // Send the user to the service unavailable page
-                return redirect()->route('vatsim.authentication.connect.local');
-            }
+            $authenticationUrl = $this->_provider->getAuthorizationUrl();
+            $request->session()->put('vatsim.authentication.connect.state', $this->_provider->getState());
+            return redirect()->away($authenticationUrl);
         } elseif ($request->input('state') !== session()->pull('vatsim.authentication.connect.state')) {
             // Within this state there is no state. The only option here is to start again.
             $request->session()->invalidate(); // Invalidate and regenerate the session
