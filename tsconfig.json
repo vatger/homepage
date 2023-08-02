@@ -8,7 +8,8 @@
     // Enable strict type-checking options
     "skipLibCheck": true,
     // Skip type checking of declaration files
-    "noImplicitAny": false
+    "noImplicitAny": false,
     // Bypass raising errors on `any` type
+    "allowSyntheticDefaultImports": true
   }
 }

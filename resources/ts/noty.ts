@@ -1,27 +1,30 @@
-import * as Toastify from 'toastify-js';
+import Toastify from 'toastify-js';
 
 /**
  * Show new noty message with custom (or default) parameters
- * @param message
- * @param type
- * @param timeout
  */
-export function showNoty(message, type = 'success', timeout = 2500) {
+export const showNoty = function (
+    message,
+    type = 'success',
+    timeout = 2500,
+    destination: string | undefined = undefined,
+    onclick: (() => void) | undefined = undefined
+) {
     Toastify({
         text: message,
         duration: timeout,
-        destination: 'https://github.com/apvarun/toastify-js',
+        destination: destination,
         newWindow: true,
         close: true,
         gravity: 'top', // `top` or `bottom`
-        position: 'left', // `left`, `center` or `right`
+        position: 'right', // `left`, `center` or `right`
         stopOnFocus: true, // Prevents dismissing of toast on hover
         style: {
             background: 'linear-gradient(to right, #00b09b, #96c93d)',
         },
-        onClick: function () {}, // Callback after click
+        onClick: onclick, // Callback after click
     }).showToast();
-}
+};
 
 export function registerNoty() {
     window['showNoty'] = showNoty;

@@ -14,21 +14,17 @@ export function registerLibs() {
         window['axios'] = axios;
         window['DateTime'] = DateTime;
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
 export function setupLibs() {
     window['axios'].defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
     let token = document.head.querySelector('meta[name="csrf-token"]');
-
     if (token) {
         let token_content = token['content'];
-
-        window['axios'].defaults.headers.common['X-CSRF-TOKEN'] = token;
-
-        window['$'].ajaxSetup({ headers: { 'X-CSRF-TOKEN': token } });
+        window['axios'].defaults.headers.common['X-CSRF-TOKEN'] = token_content;
+        window['$'].ajaxSetup({ headers: { 'X-CSRF-TOKEN': token_content } });
     } else {
         console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
     }
