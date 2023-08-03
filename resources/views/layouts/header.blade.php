@@ -57,7 +57,7 @@
                         <li><a href="javascript:void(0)" class="sub-menu-item">@lang('navigation.piloten.training')</a>
                         </li>
                         <li><a href="{{ route('pilots.aerodromes.viewall') }}" class="sub-menu-item">@lang('navigation.piloten.flugplaetze')</a></li>
-                        <li><a href="{{ route('eventroutes.info') }}" class="sub-menu-item">@lang('navigation.piloten.eventroutes')</a></li>
+                        <li><a href="https://tours.vatger.de" class="sub-menu-item">@lang('navigation.piloten.eventroutes')</a></li>
                         <li><a href="{{ route('pilots.livemap') }}" class="sub-menu-item">Network Livemap</a></li>
                     </ul>
                 </li>

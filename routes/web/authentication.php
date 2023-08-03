@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Authentication\ConnectController;
+use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('authentication')
@@ -15,11 +16,7 @@ Route::prefix('authentication')
             Route::get('failed', [ConnectController::class, 'failed'])->name('vatsim.authentication.connect.failed');
         });
 
-        Route::get('check_terms', function () {
-            $user = Auth::user();
-            $user->loadMissing(['settings', 'vatgerDetails', 'vatsimDetails']);
-            return $user;
-        })
+        Route::get('check_terms', [PagesController::class, 'terms'])
             ->name('check-terms')
             ->middleware('auth');
 

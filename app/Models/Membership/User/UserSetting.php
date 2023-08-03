@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class UserSetting extends Model
 {
@@ -28,12 +29,15 @@ class UserSetting extends Model
 
     public function getGdprAgreedAttribute(): bool
     {
-        return $this->gdpr_agreed_at > Carbon::createFromFormat('Y-m-d', '2022-12-01'); /* config('vatger.gdpr_date')*/
+        return $this->gdpr_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('policies/gdpr.html')) &&
+            $this->gdpr_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('policies/imprint.html'));
+        /* config('vatger.gdpr_date')*/
     }
 
     public function getTermsofuseAgreedAttribute(): bool
     {
-        return $this->termsofuse_agreed_at > Carbon::createFromFormat('Y-m-d', '2022-12-02'); /* config('vatger.termsofuse_date') */
+        return $this->termsofuse_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('policies/termsofuse.txt'));
+        /* config('vatger.termsofuse_date') */
     }
 
     public function getAgreedAttribute(): bool
