@@ -51,19 +51,27 @@ class ConnectController extends Controller
             $authenticationUrl = $this->_provider->getAuthorizationUrl();
             $request->session()->put('vatsim.authentication.connect.state', $this->_provider->getState());
             return redirect()->away($authenticationUrl);
-        } elseif ($request->input('state') !== session()->pull('vatsim.authentication.connect.state')) {
+        }
+        //($request->input('state') !== session()->pull('vatsim.authentication.connect.state'))
+        // Within this state there is no state. The only option here is to start again.
+        $request->session()->invalidate(); // Invalidate and regenerate the session
+        return redirect()->route('vatsim.authentication.connect.login');
+    }
+
+    public function callback(Request $request): RedirectResponse
+    {
+        if ($request->input('state') !== session()->pull('vatsim.authentication.connect.state')) {
             // Within this state there is no state. The only option here is to start again.
             $request->session()->invalidate(); // Invalidate and regenerate the session
             return redirect()->route('vatsim.authentication.connect.login');
-        } else {
-            return $this->_verifyLogin($request);
         }
+        return $this->_verifyLogin($request);
     }
 
     /**
      * Check that all required data is received from the VATSIM Connect authentication system
      */
-    protected function _verifyLogin(Request $request): RedirectResponse
+    private function _verifyLogin(Request $request): RedirectResponse
     {
         try {
             $accessToken = $this->_provider->getAccessToken('authorization_code', [

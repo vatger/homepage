@@ -12,7 +12,7 @@ class ConnectProvider extends GenericProvider
     /**
      * The route where we will redirect to after connect sign-on
      */
-    private string $_redirectAtferAuthentication = 'vatsim.authentication.connect.login';
+    private string $_redirectAtferAuthentication = 'vatsim.authentication.connect.callback';
 
     /**
      * Force required scopes
