@@ -10,7 +10,7 @@ export default defineConfig({
             host: 'vatger.test',
         },
     },
-    plugins: [laravel(['resources/scss/app.scss', 'resources/scss/app-dark.scss', 'resources/ts/app.ts']), splitVendorChunkPlugin()],
+    plugins: [laravel(['resources/scss/app.scss', 'resources/scss/app-dark.scss', 'resources/ts/app.ts', 'resources/ts/landing/events.ts']), splitVendorChunkPlugin()],
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'resources'),

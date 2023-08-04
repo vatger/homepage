@@ -23,6 +23,7 @@ class QueryVatsimAPIController extends Controller
      * API Endpoint: https://my.vatsim.net/api/v1/events/all
      *
      * @param Request $request
+     * @param int $count
      * @return string
      */
     public function loadEvents(Request $request, int $count = 9): string

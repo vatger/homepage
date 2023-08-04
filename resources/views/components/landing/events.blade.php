@@ -8,9 +8,6 @@
                 <div class="section-title mb-4 pb-2">
                     <h4 class="title mb-4">@lang('landing.events.title')</h4>
                     <p class="text-muted para-desc mx-auto mb-0">@lang('landing.events.text')</p>
-
-                    <div class="alert alert-danger mt-5" role="alert" id="danger-alert-event" style="display: none; width: 60%; margin-left: 20%">
-                    </div>
                 </div>
             </div>
             <!--end col-->
@@ -24,7 +21,7 @@
                     <a href="javascript:void(0)" id="event-readmore-{{ $i }}">
                         <div class="card blog rounded border-0 shadow overflow-hidden">
                             <div class="position-relative">
-                                <div style="width: 100%; height: 100%; position: absolute" id="event-loader-{{ $i }}" class="loader-show">
+                                <div style="width: 100%; height: 100%; position: absolute" id="event-loader-{{ $i }}" class="event-loader-show">
                                 </div>
                                 <div class="overlay rounded-top"></div>
                                 <div class="card-img-top loader-show overflow-hidden" id="event-banner-{{ $i }}"
@@ -63,3 +60,7 @@
 </section>
 <!--end section-->
 <!-- section End -->
+
+@push('scripts')
+    @vite(['resources/ts/landing/events.ts'])
+@endpush
