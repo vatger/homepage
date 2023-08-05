@@ -10,6 +10,17 @@
     // Skip type checking of declaration files
     "noImplicitAny": false,
     // Bypass raising errors on `any` type
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": [
+        "./resources/*"
+      ],
+      "~bootstrap": [
+        "./node_modules/bootstrap/*"
+      ],
+      "~vendor": [
+        "./vendor/*"
+      ]
+    }
   }
 }

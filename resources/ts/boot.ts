@@ -1,5 +1,4 @@
 import _ from 'lodash';
-
 import jQuery from 'jquery';
 import * as bootstrap from 'bootstrap';
 import * as axios from 'axios';
