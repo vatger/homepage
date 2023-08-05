@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import dayjs from 'dayjs';
-import { zroute } from '../myziggy';
+import { zroute } from '@/ts/myziggy';
 
 const EVENT_QUERY_COUNT = 9;
 const API_URI = zroute('api.loadEvents', { count: EVENT_QUERY_COUNT }); //window.location.origin + "/web_api/queryevents/" + EVENT_QUERY_COUNT;

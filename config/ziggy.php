@@ -1,5 +1,5 @@
 <?php
 return [
-    'except' => ['debugbar.*'],
+    'except' => ['debugbar.*', 'livewire.*'],
     'output' => ['path' => 'resources/js/ziggy_autogen.js'],
 ];

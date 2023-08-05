@@ -21,89 +21,88 @@ use Illuminate\Support\Facades\Session;
 ####################
 # Main Website     #
 ####################
-Route::domain(parse_url(config('app.url'), PHP_URL_HOST))->group(function () {
-    ##############
-    # SHORT LINK #
-    ##############
-    Route::get('/r/{shortLink}', [ShortLinkController::class, 'viewLink']);
 
-    ##################
-    # AUTHENTICATION #
-    ##################
-    require_once 'web/authentication.php';
+##############
+# SHORT LINK #
+##############
+Route::get('/r/{shortLink}', [ShortLinkController::class, 'viewLink']);
 
-    ##########
-    # PILOTS #
-    ##########
-    require_once 'web/pilots.php';
+##################
+# AUTHENTICATION #
+##################
+require_once 'web/authentication.php';
 
-    ###############
-    # CONTROLLERS #
-    ###############
-    require_once 'web/controllers.php';
+##########
+# PILOTS #
+##########
+require_once 'web/pilots.php';
 
-    ##############
-    # MEMBERSHIP #
-    ##############
-    require_once 'web/membership.php';
+###############
+# CONTROLLERS #
+###############
+require_once 'web/controllers.php';
 
-    ##############
-    # EVENTS     #
-    ##############
-    require_once 'web/events.php';
+##############
+# MEMBERSHIP #
+##############
+require_once 'web/membership.php';
 
-    ###################
-    # GETTING STARTED #
-    ###################
-    require_once 'web/getting-started.php';
+##############
+# EVENTS     #
+##############
+require_once 'web/events.php';
 
-    ########
-    # HELP #
-    ########
-    require_once 'web/help.php';
+###################
+# GETTING STARTED #
+###################
+require_once 'web/getting-started.php';
 
-    ##################
-    # ADMINISTRATION #
-    ##################
-    require_once 'web/admin.php';
+########
+# HELP #
+########
+require_once 'web/help.php';
 
-    ##################
-    # SPECIAL ROUTES #
-    ##################
+##################
+# ADMINISTRATION #
+##################
+require_once 'web/admin.php';
 
-    require_once 'web/euroscope.php';
+##################
+# SPECIAL ROUTES #
+##################
 
-    Route::get('resources/media/{mediaFilePath}', [MediaController::class, 'showPublic']);
+require_once 'web/euroscope.php';
 
-    Route::get('/gdpr', function () {
-        return view('homepage.general.extra.gdpr');
-    })->name('gdpr');
+Route::get('resources/media/{mediaFilePath}', [MediaController::class, 'showPublic']);
 
-    ###################
-    # CHANGE LANGUAGE #
-    ###################
-    Route::get('language/{lang?}', function ($lang = 'de') {
-        Session::put('language', $lang);
-        return redirect()
-            ->back()
-            ->withInput();
-    })->name('language.change');
+Route::get('/gdpr', function () {
+    return view('homepage.general.extra.gdpr');
+})->name('gdpr');
 
-    ############################
-    # LANDING & COVER ALL PAGE #
-    ############################
-    Route::get('/', function () {
-        $partners = Partner::all();
+###################
+# CHANGE LANGUAGE #
+###################
+Route::get('language/{lang?}', function ($lang = 'de') {
+    Session::put('language', $lang);
+    return redirect()
+        ->back()
+        ->withInput();
+})->name('language.change');
 
-        return view('pages.landing')->with(['partners' => $partners]);
-    })->name('landing');
+############################
+# LANDING & COVER ALL PAGE #
+############################
+Route::get('/', function () {
+    $partners = Partner::all();
 
-    ############
-    # API DOKU #
-    ############
-    Route::get('documentation', function () {
-        return view('homepage.general.extra.apidoku');
-    });
+    return view('pages.landing')->with(['partners' => $partners]);
+})->name('landing');
 
-    Route::get('/partners', [PartnerController::class, 'viewAll'])->name('partners');
+############
+# API DOKU #
+############
+Route::get('documentation', function () {
+    return view('homepage.general.extra.apidoku');
 });
+
+Route::get('/partners', [PartnerController::class, 'viewAll'])->name('partners');

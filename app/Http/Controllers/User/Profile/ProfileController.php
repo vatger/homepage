@@ -11,11 +11,6 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    public function viewProfile(): Factory|View|Application
-    {
-        return view('pages.membership')->with(['user' => $this->user()]);
-    }
-
     /**
      * @param Request $request
      * @return LengthAwarePaginator

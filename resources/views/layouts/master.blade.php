@@ -17,23 +17,24 @@
 
     @vite('resources/scss/app.scss')
 
-    {{--@livewireStyles--}}
-
     @stack('styles')
 </head>
 
 <body>
 @include('layouts.header')
 
+
 @yield('content')
+
+{{ $slot ?? '' }}
+
 
 @include('layouts.footer')
 
 @vite(['resources/ts/app.ts'])
 
-{{-- @livewireScriptConfig --}}
+@livewireScriptConfig
 
-@livewireScripts
 
 @include('layouts.noty')
 

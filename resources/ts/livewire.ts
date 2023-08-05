@@ -1,12 +1,12 @@
 import { showNoty } from './noty';
 
 //for Livewire3
-//import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
-//import Clipboard from '@ryangjchandler/alpine-clipboard';
+import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
+import Clipboard from '@ryangjchandler/alpine-clipboard';
 
 export function loadLivewireExtensions() {
-    //Alpine.plugin(Clipboard);
-    //Livewire.start();
+    Alpine.plugin(Clipboard);
+    Livewire.start();
     let $ = window['jquery'];
 
     window.addEventListener('livewire_showNoty', (event) => {

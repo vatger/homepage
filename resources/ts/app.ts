@@ -14,7 +14,7 @@ import { registerLibs, setupLibs } from './boot';
 registerLibs();
 setupLibs();
 
-import { loadLivewireExtensions } from './livewire_extensions';
+import { loadLivewireExtensions } from './livewire';
 
 loadLivewireExtensions();
 

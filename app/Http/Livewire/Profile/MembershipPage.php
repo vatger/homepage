@@ -2,20 +2,18 @@
 
 namespace App\Http\Livewire\Profile;
 
-use App\Http\Livewire\Helpers\PaginationTrait;
-use App\Http\Livewire\Helpers\SearchTrait;
-
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class MembershipPage extends Component
 {
-    protected $queryString = ['tab'];
-    public $tab = 'profile';
+    protected array $queryString = ['tab'];
+    public string $tab = 'profile';
 
-    public function render()
+    public function render(): View
     {
         $user = auth()->user();
-        return view('components.profile.membershippage_lw')->with(['user' => $user, 'tab' => $this->tab]);
+        return view('pages.membership')->with(['user' => $user, 'tab' => $this->tab]);
     }
 
     public function sel(string $sel): void
