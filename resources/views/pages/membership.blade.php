@@ -80,13 +80,13 @@
                     <div class="tab-content" id="pills-tabContent">
                         @switch($tab)
                             @case('notifications')
-                                @livewire('profile.notificationlist')
+                                @livewire('profile.notificationtab')
                                 @break
                             @case('settings')
-                                @livewire('profile.notificationlist')
+                                @livewire('profile.notificationtab')
                                 @break
                             @default
-                                @component('components.profile.profile', ['user' => $user])@endcomponent
+                                @livewire('profile.profiletab')
                         @endswitch
 
 

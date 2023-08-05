@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('members')
     ->middleware(['auth', 'banned'])
     ->group(function () {
-        Route::get('/profile', \App\Http\Livewire\Profile\MembershipPage::class)->name('member.profile');
+        Route::get('/profile', \App\Livewire\Profile\MembershipPage::class)->name('member.profile');
         Route::get('/profile/notifications', [ProfileController::class, 'getNotificationsPaginated'])->name('member.profile.notifications');
 
         Route::prefix('regionalgroup')->group(function () {

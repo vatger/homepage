@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Livewire\Administration\Tech;
+namespace App\Livewire\Administration\Tech;
 
-use App\Http\Livewire\Helpers\PaginationTrait;
-use App\Http\Livewire\Helpers\SearchTrait;
-use App\Http\Livewire\Helpers\SortableTrait;
+use App\Livewire\Helpers\PaginationTrait;
+use App\Livewire\Helpers\SearchTrait;
+use App\Livewire\Helpers\SortableTrait;
 use App\OpenApi\Models\ApiLog;
 use Illuminate\View\View;
 use Livewire\Component;

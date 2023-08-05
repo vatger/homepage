@@ -120,7 +120,6 @@ class EventLibrary
 
         // Loop through response array (i.e. through events)
         foreach ($events as $event) {
-
             foreach ($event->airports as $event_airport) {
                 $icao = substr($event_airport->icao, 0, 2);
 

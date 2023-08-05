@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\Administration\Regionalgroup;
+namespace App\Livewire\Administration\Regionalgroup;
 
-use App\Http\Livewire\Helpers\NotyTrait;
+use App\Livewire\Helpers\NotyTrait;
 use App\Models\Membership\User\User;
 use App\Models\Regionalgroup\Regionalgroup;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;

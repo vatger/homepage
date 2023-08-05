@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Livewire\Administration\Membership\Membership;
+namespace App\Livewire\Administration\Membership\Membership;
 
-use App\Http\Livewire\Helpers\PaginationTrait;
-use App\Http\Livewire\Helpers\SearchTrait;
-use App\Http\Livewire\Helpers\SortableTrait;
+use App\Livewire\Helpers\PaginationTrait;
+use App\Livewire\Helpers\SearchTrait;
+use App\Livewire\Helpers\SortableTrait;
 use App\Models\Membership\User\User;
 use Illuminate\View\View;
 use Livewire\Component;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Helpers;
+namespace App\Livewire\Helpers;
 
 use Illuminate\Contracts\Database\Eloquent\Builder as DBuilder;
 use Illuminate\Database\Eloquent\Builder as EBuilder;

@@ -1,7 +1,5 @@
 @php
-    use App\Http\Livewire\Administration\Tech\Apilogtable;
-    use Carbon\Carbon;
-@endphp
+        @endphp
 @extends('administration.partials.master')
 
 @section('content')

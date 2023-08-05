@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Helpers;
+namespace App\Livewire\Helpers;
 
 trait ModalTrait
 {

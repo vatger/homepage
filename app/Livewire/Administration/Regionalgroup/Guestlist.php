@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Livewire\Administration\Regionalgroup;
+namespace App\Livewire\Administration\Regionalgroup;
 
-use App\Http\Livewire\Helpers\ModalTrait;
-use App\Http\Livewire\Helpers\NotyTrait;
-use App\Http\Livewire\Helpers\PaginationTrait;
-use App\Http\Livewire\Helpers\SearchTrait;
-use App\Http\Livewire\Helpers\SortableTrait;
+use App\Livewire\Helpers\ModalTrait;
+use App\Livewire\Helpers\NotyTrait;
+use App\Livewire\Helpers\PaginationTrait;
+use App\Livewire\Helpers\SearchTrait;
+use App\Livewire\Helpers\SortableTrait;
 use App\Models\Membership\User\User;
 use App\Models\Regionalgroup\Regionalgroup;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;

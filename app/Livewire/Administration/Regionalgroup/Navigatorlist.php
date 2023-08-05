@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Livewire\Administration\Regionalgroup;
+namespace App\Livewire\Administration\Regionalgroup;
 
-use App\Http\Livewire\Helpers\NotyTrait;
-use App\Http\Livewire\Helpers\PaginationTrait;
+use App\Livewire\Helpers\NotyTrait;
+use App\Livewire\Helpers\PaginationTrait;
 use App\Models\Membership\User\User;
 use App\Models\Regionalgroup\Regionalgroup;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\View\View;
 use Livewire\Component;
 
-class Eventlerlist extends Component
+class Navigatorlist extends Component
 {
     use NotyTrait, AuthorizesRequests, PaginationTrait;
 
@@ -30,9 +30,9 @@ class Eventlerlist extends Component
     public function render(): View
     {
         // build sql query
-        $userquery = $this->rg->eventler();
+        $userquery = $this->rg->navigators();
 
-        return view('administration.regionalgroup.partials.eventlerlist_lw')->with([
+        return view('administration.regionalgroup.partials.navigatorlist_lw')->with([
             'members' => $userquery->paginate(),
         ]);
     }
@@ -45,8 +45,8 @@ class Eventlerlist extends Component
             $this->showNoty('User nicht gefunden!', 'error');
             return;
         }
-        $this->rg->eventler()->detach($user->id);
-        $this->rg->eventler()->attach($user->id);
+        $this->rg->navigators()->detach($user->id);
+        $this->rg->navigators()->attach($user->id);
         $this->showNoty('Eventler hinzugefügt!');
         $this->membersearch = '';
     }
@@ -54,12 +54,12 @@ class Eventlerlist extends Component
     public function kick(int $user_id): void
     {
         $this->authorize('update', $this->rg);
-        $user = $this->rg->eventler()->find($user_id);
+        $user = $this->rg->navigators()->find($user_id);
         if (empty($user)) {
             $this->showNoty('User nicht gefunden!', 'error');
             return;
         }
-        $this->rg->eventler()->detach($user->id);
+        $this->rg->navigators()->detach($user->id);
         $this->showNoty('Eventler entfernt!');
         $this->membersearch = '';
     }
@@ -67,24 +67,24 @@ class Eventlerlist extends Component
     public function toggle_chief(int $user_id): void
     {
         $this->authorize('update', $this->rg);
-        $user = $this->rg->eventler()->find($user_id);
+        $user = $this->rg->navigators()->find($user_id);
         if (empty($user)) {
             $this->showNoty('User nicht gefunden!', 'error');
             return;
         }
-        $this->rg->eventler()->updateExistingPivot($user->id, ['chief' => !$user->pivot->chief]);
+        $this->rg->navigators()->updateExistingPivot($user->id, ['chief' => !$user->pivot->chief]);
         $this->showNoty('Eventler Status geändert!');
     }
 
     public function toggle_deputy(int $user_id): void
     {
         $this->authorize('update', $this->rg);
-        $user = $this->rg->eventler()->find($user_id);
+        $user = $this->rg->navigators()->find($user_id);
         if (empty($user)) {
             $this->showNoty('User nicht gefunden!', 'error');
             return;
         }
-        $this->rg->eventler()->updateExistingPivot($user->id, ['deputy' => !$user->pivot->deputy]);
+        $this->rg->navigators()->updateExistingPivot($user->id, ['deputy' => !$user->pivot->deputy]);
         $this->showNoty('Eventler Status geändert!');
     }
 }

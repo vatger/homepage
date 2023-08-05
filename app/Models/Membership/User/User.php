@@ -117,11 +117,11 @@ class User extends Authenticatable
     }
 
     /**
-    * Set the token value for the "remember me" session.
-    *
-    * @param  string  $value
-    * @return void
-    */
+     * Set the token value for the "remember me" session.
+     *
+     * @param  string  $value
+     * @return void
+     */
     public function setRememberToken($value): void
     {
         $this->passwords()->update(['remember_token' => $value]);
@@ -132,8 +132,8 @@ class User extends Authenticatable
      *
      * @return string|null
      */
-    public function getRememberToken(): string | null
+    public function getRememberToken(): string|null
     {
-        return $this->passwords()?->value("remember_token");
+        return $this->passwords()?->value('remember_token');
     }
 }

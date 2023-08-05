@@ -34,28 +34,11 @@ class ConnectController extends Controller
         $this->_provider = new ConnectProvider();
     }
 
-    /**
-     * Authentication entrypoint
-     * This function will handle the state and request of an authentication attempt
-     *
-     */
     public function login(Request $request): RedirectResponse
     {
-        // TODO: Move the callback to a separate function to remove the redundant "$req->has('code')" check
-        // Use this line only if you want to test the "LOCAL" backup authentication
-        // while developing. NEVER USE IT IN PRODUCTION
-        // if(config('app.env') !== 'production') return redirect()->route('vatsim.authentication.connect.local');
-
-        // Initiation state is without 'code' and 'state'
-        if (!$request->has('code') || !$request->has('state')) {
-            $authenticationUrl = $this->_provider->getAuthorizationUrl();
-            $request->session()->put('vatsim.authentication.connect.state', $this->_provider->getState());
-            return redirect()->away($authenticationUrl);
-        }
-        //($request->input('state') !== session()->pull('vatsim.authentication.connect.state'))
-        // Within this state there is no state. The only option here is to start again.
-        $request->session()->invalidate(); // Invalidate and regenerate the session
-        return redirect()->route('vatsim.authentication.connect.login');
+        $authenticationUrl = $this->_provider->getAuthorizationUrl();
+        $request->session()->put('vatsim.authentication.connect.state', $this->_provider->getState());
+        return redirect()->away($authenticationUrl);
     }
 
     public function callback(Request $request): RedirectResponse
@@ -197,30 +180,5 @@ class ConnectController extends Controller
         return redirect()
             ->route('landing')
             ->with('success', 'Logged out successfully.');
-    }
-
-    /**
-     * Try to attempt a local / standard laravel authentication
-     */
-    public function localLogin(Request $request): RedirectResponse|View
-    {
-        $validated = $request->validate([
-            'cid' => 'required|exists:membership_users,id',
-            'lpwd' => 'required',
-        ]);
-
-        if (Auth::attempt(['id' => $validated['cid'], 'password' => $validated['lpwd']])) {
-            return redirect()->route('/');
-        } else {
-            return view('vatsim.authentication.connect.local')->with('authenticationMessage', 'Credentials do not match our local values.');
-        }
-    }
-
-    /**
-     * Display the local login page
-     */
-    public function local(Request $request): View
-    {
-        return view('vatsim.authentication.connect.local');
     }
 }

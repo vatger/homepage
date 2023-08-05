@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Livewire\Profile;
+namespace App\Livewire\Profile;
 
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class MembershipPage extends Component
 {
-    protected array $queryString = ['tab'];
+    #[Url]
     public string $tab = 'profile';
 
     public function render(): View
