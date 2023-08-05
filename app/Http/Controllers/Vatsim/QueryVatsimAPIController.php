@@ -18,7 +18,7 @@ class QueryVatsimAPIController extends Controller
     /**
      * Queries the myVatsim event API and selects only german events giving back the first 6 results.
      * API Response is in ascending date, so order does not need to be checked.
-     * Parsed response (6 Airports) data cached for 10 minutes (600s)
+     * Parsed response ($count number of Airports) data cached for 10 minutes (600s)
      *
      * API Endpoint: https://my.vatsim.net/api/v1/events/all
      *
@@ -43,13 +43,13 @@ class QueryVatsimAPIController extends Controller
      * API Endpoint: https://my.vatsim.net/api/v1/events/all
      *
      * @param Request $request
-     * @return mixed|never
+     * @return mixed
      */
     public function loadSingleEvent(Request $request): mixed
     {
         // Abort if request not ajax
         if (!$request->ajax()) {
-            return abort(403, 'No Ajax request supplied.');
+            abort(403, 'No Ajax request supplied.');
         }
 
         // Return event date, either cached (10 minutes), or by executing the function
@@ -66,14 +66,14 @@ class QueryVatsimAPIController extends Controller
     {
         // Abort if request not ajax
         if (!$request->ajax()) {
-            return abort(403, 'No Ajax request supplied.');
+            abort(403, 'No Ajax request supplied.');
         }
 
         $icao = $request->get('icao');
         $metar = DataFeedLibrary::Metar($icao);
 
         if (!$metar) {
-            return abort(500, 'Error parsing ICAO');
+            abort(500, 'Error parsing ICAO');
         }
 
         return $metar;
@@ -88,7 +88,7 @@ class QueryVatsimAPIController extends Controller
     public function loadActiveAtc(Request $request): array
     {
         if (!$request->ajax()) {
-            return abort(403, 'No Ajax request supplied.');
+            abort(403, 'No Ajax request supplied.');
         }
 
         $icao = $request->route('icao');
