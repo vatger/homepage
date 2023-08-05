@@ -1,4 +1,4 @@
-<section class="section mt-60">
+<section class="section pt-0" style="margin-top: -55px">
     <div class="container mt-lg-3">
         <div class="card public-profile border-0 rounded shadow mb-3" style="z-index: 1;">
             <div class="card-body">
@@ -18,7 +18,7 @@
                 <!--end row-->
             </div>
         </div>
-        <div class="row">
+        <div class="row mt-5">
             <div class="col-log-auto col-lg-4 col-12 mb-4">
                 <div class="sidebar sticky-bar p-4 rounded shadow">
 
@@ -44,7 +44,8 @@
                                 </a>
                                 <!--end nav link-->
                             </li>
-                            <li class="nav-item mt-2">
+
+                            <li class="nav-item mt-2 pt-2 border-top">
                                 <a href="{{ route('vatsim.authentication.connect.logout') }}" class="nav-link rounded" aria-selected="false">
                                     <div class="text-start py-1 px-2">
                                         <h6 class="mb-0 text-danger">@lang('navigation.user.logout')</h6>

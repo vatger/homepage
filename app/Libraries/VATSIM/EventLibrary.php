@@ -44,7 +44,7 @@ class EventLibrary
             return self::loadEventData($count);
         } else {
             // Return event date, either cached (10 minutes), or by executing the function
-            return Cache::remember('de.vatsim-germany.events.next', 600, function () use ($count) {
+            return Cache::remember('de.vatsim-germany.events.next', 60 * 10, function () use ($count) {
                 return self::loadEventData($count);
             });
         }
@@ -118,34 +118,19 @@ class EventLibrary
         // Init array
         $eventArray = [];
 
-        // Init index variable
-        $index = 0;
-
-        // Get german airports
-        $deAirports = Aerodrome::isDe()->get(['icao']);
-
         // Loop through response array (i.e. through events)
         foreach ($events as $event) {
-            // Since one event can have multiple airports, loop through airports of each event
-            $deAirportFound = false;
-            foreach ($event->airports as $airport) {
-                foreach ($deAirports as $da) {
-                    if ($da->icao == $airport->icao) {
-                        $eventArray[] = $event;
-                        $index++;
-                        $deAirportFound = true; // Break out of loop if german event found, to avoid adding same event multiple times
-                        break;
-                    }
-                }
-                // If a german airport has already been found within this event, skip the others
-                if ($deAirportFound) {
-                    $deAirportFound = false;
+
+            foreach ($event->airports as $event_airport) {
+                $icao = substr($event_airport->icao, 0, 2);
+
+                if (strtolower($icao) == 'ed' || strtolower($icao) == 'et') {
+                    $eventArray[] = $event;
                     break;
                 }
             }
 
-            // If 6 events have been found, break
-            if ($index > $count) {
+            if (count($eventArray) == $count) {
                 break;
             }
         }
