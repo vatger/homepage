@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Staff;
+namespace App\Models\Groups;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -8,12 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class SubTeam extends Model
 {
-    protected $table = 'staff_subteams';
+    use IsGroupTrait;
 
-    public function group(): BelongsTo|Group
-    {
-        return $this->belongsTo(Group::class, 'group_id', 'id');
-    }
+    protected $table = 'staff_subteams';
 
     public function team(): BelongsTo|Team
     {

@@ -22,7 +22,7 @@ return [
          * `Spatie\Permission\Contracts\Role` contract.
          */
 
-        'role' => App\Models\Staff\Group::class,
+        'role' => App\Models\Groups\Group::class,
     ],
 
     'table_names' => [

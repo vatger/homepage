@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Models\Staff;
+namespace App\Models\Groups;
 
 use Spatie\Permission\Exceptions\RoleDoesNotExist;
-use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Role as SpatieRole;
+use Spatie\Permission\Contracts\Role as SpatieRoleInterface;
 
-class Group extends Role
+class Group extends SpatieRole implements SpatieRoleInterface
 {
     protected $table = 'staff_group';
 
-    public static function findByName(string $name, null|string $guardName = null): Group
+    public static function findByName(string $name, $guardName = null): Group
     {
         $role = self::where('name', 'LIKE', $name)->first();
         if (!$role) {
@@ -18,7 +19,7 @@ class Group extends Role
         return $role;
     }
 
-    public static function findById(int $id, null|string $guardName = null): Group
+    public static function findById(int $id, $guardName = null): Group
     {
         $role = self::where('id', $id)->first();
         if (!$role) {
@@ -27,7 +28,7 @@ class Group extends Role
         return $role;
     }
 
-    public static function findOrCreate(string $name, null|string $guardName = null): Group
+    public static function findOrCreate(string $name, $guardName = null): Group
     {
         $role = self::where('name', 'LIKE', $name)->first();
         if (!$role) {
