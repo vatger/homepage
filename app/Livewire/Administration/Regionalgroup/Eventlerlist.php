@@ -5,7 +5,7 @@ namespace App\Livewire\Administration\Regionalgroup;
 use App\Livewire\Helpers\NotyTrait;
 use App\Livewire\Helpers\PaginationTrait;
 use App\Models\Membership\User\User;
-use App\Models\Regionalgroup\Regionalgroup;
+use App\Models\Regionalgroup_remove\Regionalgroup;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\View\View;
 use Livewire\Component;

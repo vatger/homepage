@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Pilot\Aerodrome;
 
 use App\Http\Controllers\Controller;
 use App\Models\Navigation\Aerodrome;
-use App\Models\Regionalgroup\FlightInformationRegion;
-use App\Models\Regionalgroup\Regionalgroup;
+use App\Models\Regionalgroup_remove\FlightInformationRegion;
+use App\Models\Regionalgroup_remove\Regionalgroup;
 use CobaltGrid\VatsimStandStatus\Exceptions\CoordinateOutOfBoundsException;
 use CobaltGrid\VatsimStandStatus\Exceptions\NoStandDataException;
 use Illuminate\Contracts\Foundation\Application;

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Regionalgroup\FlightInformationRegion;
-use App\Models\Regionalgroup\Regionalgroup;
+use App\Models\Regionalgroup_remove\FlightInformationRegion;
+use App\Models\Regionalgroup_remove\Regionalgroup;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;

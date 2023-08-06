@@ -8,7 +8,7 @@ use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SearchTrait;
 use App\Livewire\Helpers\SortableTrait;
 use App\Models\Membership\User\User;
-use App\Models\Regionalgroup\Regionalgroup;
+use App\Models\Regionalgroup_remove\Regionalgroup;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\View\View;
 use Livewire\Component;

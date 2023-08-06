@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Membership\User\User;
-use App\Models\Regionalgroup\Regionalgroup;
+use App\Models\Regionalgroup_remove\Regionalgroup;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
@@ -37,8 +37,8 @@ class RegionalgroupPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\Membership\User\User  $user
-     * @param  \App\Models\Regionalgroup\Regionalgroup  $regionalgroup
+     * @param \App\Models\Membership\User\User $user
+     * @param \App\Models\Regionalgroup_remove\Regionalgroup $regionalgroup
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user, Regionalgroup $regionalgroup)
@@ -51,7 +51,7 @@ class RegionalgroupPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\Membership\User\User  $user
+     * @param \App\Models\Membership\User\User $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function create(User $user)
@@ -62,8 +62,8 @@ class RegionalgroupPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\Membership\User\User  $user
-     * @param  \App\Models\Regionalgroup\Regionalgroup  $regionalgroup
+     * @param \App\Models\Membership\User\User $user
+     * @param \App\Models\Regionalgroup_remove\Regionalgroup $regionalgroup
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, Regionalgroup $regionalgroup)
@@ -76,8 +76,8 @@ class RegionalgroupPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\Membership\User\User  $user
-     * @param  \App\Models\Regionalgroup\Regionalgroup  $regionalgroup
+     * @param \App\Models\Membership\User\User $user
+     * @param \App\Models\Regionalgroup_remove\Regionalgroup $regionalgroup
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user, Regionalgroup $regionalgroup)
@@ -88,8 +88,8 @@ class RegionalgroupPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\Models\Membership\User\User  $user
-     * @param  \App\Models\Regionalgroup\Regionalgroup  $regionalgroup
+     * @param \App\Models\Membership\User\User $user
+     * @param \App\Models\Regionalgroup_remove\Regionalgroup $regionalgroup
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function restore(User $user, Regionalgroup $regionalgroup)
@@ -100,8 +100,8 @@ class RegionalgroupPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\Models\Membership\User\User  $user
-     * @param  \App\Models\Regionalgroup\Regionalgroup  $regionalgroup
+     * @param \App\Models\Membership\User\User $user
+     * @param \App\Models\Regionalgroup_remove\Regionalgroup $regionalgroup
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function forceDelete(User $user, Regionalgroup $regionalgroup)

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\User\Regionalgroup;
 
 use App\Http\Controllers\Controller;
 use App\Libraries\Membership\MembershipLibrary;
-use App\Models\Regionalgroup\Regionalgroup;
-use App\Models\Regionalgroup\RegionalgroupRequest;
+use App\Models\Regionalgroup_remove\Regionalgroup;
+use App\Models\Regionalgroup_remove\RegionalgroupRequest;
 use Illuminate\Http\Request;
 
 class RequestController extends Controller

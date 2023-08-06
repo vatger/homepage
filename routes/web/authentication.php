@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Authentication\ConnectController;
+use App\Http\Controllers\ConnectController;
 use App\Http\Controllers\PagesController;
 use Illuminate\Support\Facades\Route;
 

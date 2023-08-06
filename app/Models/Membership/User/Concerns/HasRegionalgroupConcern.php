@@ -2,9 +2,9 @@
 
 namespace App\Models\Membership\User\Concerns;
 
-use App\Models\Regionalgroup\Regionalgroup;
-use App\Models\Regionalgroup\RegionalgroupAccount;
-use App\Models\Regionalgroup\RegionalgroupRequest;
+use App\Models\Regionalgroup_remove\Regionalgroup;
+use App\Models\Regionalgroup_remove\RegionalgroupAccount;
+use App\Models\Regionalgroup_remove\RegionalgroupRequest;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -58,7 +58,7 @@ trait HasRegionalgroupConcern
     /**
      * Fullmember of regionalgroup?
      *
-     * @param  Regionalgroup $regionalgroup [description]
+     * @param Regionalgroup $regionalgroup [description]
      * @return boolean                      [description]
      */
     public function isMemberOfRegionalgroup(Regionalgroup $regionalgroup): bool
@@ -69,7 +69,7 @@ trait HasRegionalgroupConcern
     /**
      * Assigned as guest?
      *
-     * @param  Regionalgroup $regionalgroup [description]
+     * @param Regionalgroup $regionalgroup [description]
      * @return boolean                      [description]
      */
     public function isGuestOfRegionalgroup(Regionalgroup $regionalgroup): bool
@@ -80,7 +80,7 @@ trait HasRegionalgroupConcern
     /**
      * Is the account assigend as a mentor to the given regionalgroup
      *
-     * @param  Regionalgroup $regionalgroup [description]
+     * @param Regionalgroup $regionalgroup [description]
      * @return boolean                      [description]
      */
     public function isMentorOfRegionalgroup(Regionalgroup $regionalgroup): bool
@@ -90,7 +90,7 @@ trait HasRegionalgroupConcern
 
     /**
      * Is the account assigned as a navigator to the regionalgroup
-     * @param  Regionalgroup $regionalgroup [description]
+     * @param Regionalgroup $regionalgroup [description]
      * @return boolean                      [description]
      */
     public function isNavigatorOfRegionalgroup(Regionalgroup $regionalgroup): bool
@@ -101,7 +101,7 @@ trait HasRegionalgroupConcern
     /**
      * Does the account belong to the event team of a given regionalgroup
      *
-     * @param  Regionalgroup $regionalgroup [description]
+     * @param Regionalgroup $regionalgroup [description]
      * @return boolean                      [description]
      */
     public function isEventlerOfRegionalgroup(Regionalgroup $regionalgroup): bool

@@ -50,15 +50,6 @@ class AtcBooking extends Model
     }
 
     /**
-     * for collective bookings
-     * @return BelongsTo
-     */
-    public function group(): BelongsTo
-    {
-        return $this->belongsTo(BookingGroup::class, 'booking_group_id', 'id');
-    }
-
-    /**
      * The controller that made the booking
      *
      * @return BelongsTo

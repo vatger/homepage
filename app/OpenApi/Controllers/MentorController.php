@@ -2,7 +2,7 @@
 
 namespace App\OpenApi\Controllers;
 
-use App\Models\Regionalgroup\Regionalgroup;
+use App\Models\Regionalgroup_remove\Regionalgroup;
 
 class MentorController extends ApiController
 {

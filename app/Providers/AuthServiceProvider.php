@@ -9,7 +9,7 @@ use App\Models\Navigation\Aerodrome;
 use App\Models\Navigation\Chart;
 use App\Models\Navigation\Navaid;
 use App\Models\Navigation\Station;
-use App\Models\Regionalgroup\Regionalgroup;
+use App\Models\Regionalgroup_remove\Regionalgroup;
 use App\Policies\AerodromePolicy;
 use App\Policies\ChartPolicy;
 use App\Policies\MediaPolicy;

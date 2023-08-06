@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Administration\Regionalgroup;
 
 use App\Models\Membership\User\User;
-use App\Models\Regionalgroup\Regionalgroup;
+use App\Models\Regionalgroup_remove\Regionalgroup;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;

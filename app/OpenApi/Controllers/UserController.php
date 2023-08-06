@@ -3,7 +3,7 @@
 namespace App\OpenApi\Controllers;
 
 use App\Models\Membership\User\User;
-use App\Models\Regionalgroup\Regionalgroup;
+use App\Models\Regionalgroup_remove\Regionalgroup;
 use App\OpenApi\Parameters\ListUserIdPathParameters;
 use App\OpenApi\Responses\ErrorModelNotFoundResponse;
 use App\OpenApi\Responses\ErrorUnauthenticatedResponse;
