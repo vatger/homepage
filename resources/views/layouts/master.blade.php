@@ -15,7 +15,7 @@
     <!-- favicon -->
     <link rel="shortcut icon" href="/favicon.ico">
 
-    @vite('resources/scss/app.scss')
+    @include('layouts.styles')
 
     @stack('styles')
 </head>

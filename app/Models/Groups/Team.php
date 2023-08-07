@@ -2,7 +2,11 @@
 
 namespace App\Models\Groups;
 
+use App\Models\Membership\User\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Team extends Model
 {
@@ -12,11 +16,6 @@ class Team extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (Team $team) {
-            $group = Group::create(['name' => $team->name, 'type' => 'team']);
-            $team->group_id = $group->id;
-            dd($team);
-        });
         static::saving(function (Team $team) {
             if (!$team->group_id) {
                 $group = Group::create(['name' => $team->name, 'type' => 'team']);

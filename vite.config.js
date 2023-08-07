@@ -12,7 +12,14 @@ export default defineConfig({
         },
     },
     plugins: [
-        laravel(['resources/scss/app.scss', 'resources/scss/app-dark.scss', 'resources/ts/app.ts', 'resources/ts/landing/events.ts']),
+        laravel([
+            'resources/scss/app.scss',
+            'resources/scss/app-dark.scss',
+            'resources/scss/app-admin.scss',
+            'resources/scss/app-admin-dark.scss',
+            'resources/ts/app.ts',
+            'resources/ts/landing/events.ts',
+        ]),
         splitVendorChunkPlugin(),
         run([
             {

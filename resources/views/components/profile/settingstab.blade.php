@@ -1,6 +1,6 @@
 <div class="tab-pane fade bg-white p-4 rounded shadow active show" id="profile-tab" role="tabpanel" aria-labelledby="profile">
     <h5 class="text-md-start text-center">@lang('profile.profile.profile.language-appearance'):</h5>
-    <form class="border-bottom">
+    <form class="">
         <div class="row mt-4">
             <div class="col-lg-12">
                 <div class="p-4 pb-0">
