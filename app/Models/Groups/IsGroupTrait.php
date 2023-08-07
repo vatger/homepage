@@ -5,12 +5,13 @@ namespace App\Models\Groups;
 use App\Models\Membership\User\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 trait IsGroupTrait
 {
-    public function group(): BelongsTo|Group
+    public function group(): HasOne|Group
     {
-        return $this->belongsTo(Group::class, 'group_id', 'id');
+        return $this->hasOne(Group::class, 'group_id', 'id');
     }
 
     public function members(): HasMany|User

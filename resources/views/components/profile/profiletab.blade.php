@@ -55,7 +55,7 @@
         </div>
 
         <div class="row">
-            @foreach(\App\Models\Regionalgroup_remove\FlightInformationRegion::all() as $fir)
+            {{--@foreach(\App\Models\Regionalgroup_remove\FlightInformationRegion::all() as $fir)
                 <div class="col-md-6 mt-4 pt-2">
                     <a wire:click="firclick('XXX')">
                         <div class="card rounded shadow bg-light border-0">
@@ -71,7 +71,7 @@
                         </div>
                     </a>
                 </div><!--end col-->
-            @endforeach
+            @endforeach--}}
             <div class="col-md-6 mt-4 pt-2">
                 <a href="javascript:void(0)">
                     <div class="card rounded shadow bg-dark border-0">

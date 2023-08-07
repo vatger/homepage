@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Profile;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ProfileTab extends Component

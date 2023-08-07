@@ -8,7 +8,7 @@ use Spatie\Permission\Contracts\Role as SpatieRoleInterface;
 
 class Group extends SpatieRole implements SpatieRoleInterface
 {
-    protected $table = 'staff_group';
+    protected $table = 'staff_groups';
 
     public static function findByName(string $name, $guardName = null): Group
     {
