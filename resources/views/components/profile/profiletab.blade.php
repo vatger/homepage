@@ -1,5 +1,3 @@
-@props(['user'])
-
 <div class="tab-pane fade bg-white p-4 rounded shadow active show" id="profile-tab" role="tabpanel" aria-labelledby="profile">
     <div class="pb-4 border-bottom">
         <div class="row">

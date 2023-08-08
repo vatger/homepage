@@ -10,7 +10,6 @@
 <body>
 
 @include('layouts.admin-content')
-@include('layouts.footer')
 
 @vite(['resources/ts/app.ts'])
 @livewireScriptConfig
