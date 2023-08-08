@@ -17,7 +17,7 @@ trait ModalTrait
         if (!in_array($dom_id, $this->modal_ids, true)) {
             abort(400, "[ModalTrait] No modal by id: $dom_id");
         }
-        $this->dispatchBrowserEvent('livewire_showModal', ['dom_id' => $dom_id]);
+        $this->dispatch('livewire_showModal', ['dom_id' => $dom_id]);
     }
 
     public function closeModal($dom_id): void
@@ -25,6 +25,6 @@ trait ModalTrait
         if (!in_array($dom_id, $this->modal_ids, true)) {
             abort(400, "[ModalTrait] No modal by id: $dom_id");
         }
-        $this->dispatchBrowserEvent('livewire_hideModal', ['dom_id' => $dom_id]);
+        $this->dispatch('livewire_hideModal', ['dom_id' => $dom_id]);
     }
 }
