@@ -3,10 +3,15 @@
 @else
     @vite('resources/scss/app-dark.scss')
 @endif
-{{--
-@if(auth()->check())
-    @switch(Auth::user()->settings->color)
-
-    @endswitch
+@php
+    $c = Auth::check() ?? 'resources/css/'. Auth::user()->settings->color .'.css';
+    $v = false;
+    try {
+        $v = !! \Illuminate\Support\Facades\Vite::asset($c);
+    } catch (Exception $e){}
+@endphp
+@if($c && $v)
+    @vite($c)
+@else
+    @vite('resources/css/default.css')
 @endif
---}}
