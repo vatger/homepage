@@ -27,7 +27,7 @@
 
 @endif
 @php
-    $c = Auth::check() ?? 'resources/css/'. Auth::user()->settings->color .'.css';
+    $c = Auth::check() ? 'resources/css/'. Auth::user()->settings->color .'.css' : false;
     $v = false;
     try {
         $v = !! \Illuminate\Support\Facades\Vite::asset($c);
