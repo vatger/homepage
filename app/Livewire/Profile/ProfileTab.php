@@ -10,6 +10,7 @@ class ProfileTab extends Component
     public function render()
     {
         $user = Auth::user();
+        dd($user);
         return view('components.profile.profiletab')->with(['user' => $user]);
     }
 }
