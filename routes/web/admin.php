@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Administration\AdministrationPagesController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -11,9 +12,9 @@ use Illuminate\Support\Facades\Route;
  * This permission is check via administration-access gate.
  */
 Route::prefix('administration')
-    ->middleware(['cookie.consent', 'auth', 'standings', 'can:administration-access'])
+    //->middleware(['cookie.consent', 'auth', 'standings', 'can:administration-access'])
     ->group(function () {
-        require_once 'admin/dashboard.php';
+        Route::get('/dashboard', [AdministrationPagesController::class, 'index'])->name('administration.dashboard');
 
         require_once 'admin/content.php';
 

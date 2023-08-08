@@ -14,7 +14,6 @@ export default function initTemplate() {
     loadDDMenu();
     loadTooltips();
     loadSmallMenu();
-
     featherReplace();
 }
 
@@ -22,11 +21,11 @@ function loadPreloader() {
     // Preloader
     const preloader = document.getElementById('preloader');
     if (preloader) {
-        if (preloader.getAttribute('data-nohide') !== null) {
+        if (preloader.getAttribute('data-nohide') == null) {
             setTimeout(() => {
                 preloader.style.visibility = 'hidden';
                 preloader.style.opacity = '0';
-            }, 350);
+            }, 500);
         }
     }
 }

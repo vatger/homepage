@@ -1,15 +1,15 @@
 <!DOCTYPE html>
+@php
+    $_admin = true;
+@endphp
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     @include('layouts.head')
     @stack('styles')
 </head>
 <body>
-@include('layouts.header')
 
-@yield('content')
-{{ $slot ?? '' }}
-
+@include('layouts.admin-content')
 @include('layouts.footer')
 
 @vite(['resources/ts/app.ts'])
