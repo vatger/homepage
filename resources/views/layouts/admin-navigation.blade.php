@@ -25,14 +25,23 @@
                                 </li>
 
                                 <li class="sidebar-dropdown">
-                                    <a href="javascript:void(0)"><i class="mdi mdi-account-cog me-2"></i>Mitgliederverwaltung</a>
+                                    <a href="javascript:void(0)">
+                                        <i data-feather="users" class="ms-2"></i>
+                                        Mitgliederverwaltung
+                                    </a>
                                     <div class="sidebar-submenu">
                                         <ul>
-                                            <li><a href="{{ route('administration.membership.users') }}"><i
-                                                            class="mdi mdi-account me-2"></i>Mitgliederverwaltung</a>
+                                            <li>
+                                                <a href="{{ route('administration.membership.users') }}">
+                                                    <i data-feather="users" class="ms-2"></i>
+                                                    Mitgliederverwaltung
+                                                </a>
                                             </li>
-                                            <li><a href="{{ route('administration.membership.groups') }}"><i
-                                                            class="mdi mdi-account-group me-2"></i>Gruppenverwaltung</a>
+                                            <li>
+                                                <a href="{{ route('administration.membership.groups') }}">
+                                                    <i data-feather="user-plus" class="ms-2"></i>
+                                                    Gruppenverwaltung
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>

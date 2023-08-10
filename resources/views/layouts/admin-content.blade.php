@@ -26,10 +26,39 @@
                             </span>
                     </a>
                     <a id="close-sidebar" class="btn btn-icon btn-soft-light" href="javascript:void(0)">
-                        <i class="fea fea-menu"></i>
+                        <i data-feather="menu" class="fea"></i>
                     </a>
                 </div>
 
+                <ul class="list-unstyled mb-0">
+                    <li class="list-inline-item mb-0 ms-2">
+                        {{ Auth::user()->username }}
+                    </li>
+
+                    <li class="list-inline-item mb-0 ms-2">
+                        <a href="{{ route('member.profile.notifications') }}">
+                            <div class="dropdown dropdown-primary">
+                                <button type="button" class="btn btn-icon btn-soft-light p-0">
+                                    <i data-feather="bell" class="fea"></i>
+                                </button>
+                                @if(Auth::user()->unreadNotifications()->count() > 0)
+                                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                @endif
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="list-inline-item mb-0 ms-2">
+                        <a href="{{ route('landing') }}">
+                            <div class="btn btn-icon btn-danger">
+                                <i data-feather="log-out" class="fea"></i>
+                            </div>
+                        </a>
+                    </li>
+
+                </ul>
+                {{--
                 <ul class="list-group list-group-horizontal">
                     <a href="javascript:void(0)"><span class="mdi mdi-bell">
                                 @if (count(Auth::user()->unreadNotifications) > 0)
@@ -50,7 +79,7 @@
                                                  class="avatar avatar-md-sm rounded-circle border shadow" alt="">
                                             <div class="flex-1 ms-2">
                                                 <span class="d-block">{{ Auth::user()->username }}</span>
-                                                <small class="text-muted">{{ Auth::user()->vatsimDetails->rating_atc }}</small>
+                                                <small class="text-muted">{{ Auth::user()->vatsimDetails->rating_atc_short }}</small>
                                             </div>
                                         </a>
                                         <a class="dropdown-item text-dark" href="{{ route('administration.dashboard') }}"><span
@@ -66,6 +95,7 @@
                         </ul>
                     </li>
                 </ul>
+                --}}
             </div>
         </div>
 
