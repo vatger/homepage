@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::prefix('administration')
     //->middleware(['cookie.consent', 'auth', 'standings', 'can:administration-access'])
+    ->middleware(['cookie.consent', 'auth'])
     ->group(function () {
         Route::get('/dashboard', [AdministrationPagesController::class, 'index'])->name('administration.dashboard');
 

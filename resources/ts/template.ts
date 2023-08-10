@@ -11,6 +11,7 @@ export default function initTemplate() {
         scrollFunction();
     };
     loadSidebar();
+    activateSidebarMenu();
     loadDDMenu();
     loadTooltips();
     loadSmallMenu();
@@ -106,6 +107,37 @@ function loadSidebar() {
         if (item.parentElement && item.getAttribute('href')?.indexOf(current) !== -1) {
             item.parentElement.className += ' active';
         }
+    }
+}
+
+//Admin Menu
+function activateSidebarMenu() {
+    const current = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
+    if (current !== '' && document.getElementById('sidebar')) {
+        const menuItems = document.querySelectorAll('#sidebar a');
+        for (let i = 0, len = menuItems.length; i < len; i++) {
+            //TODO Implement proper fix :)
+            let item = menuItems[i];
+            if (item && item.getAttribute('href') === location.origin + location.pathname) {
+                if (item.parentElement) {
+                    item.parentElement.className += ' active';
+                }
+                let closest_menu = item.closest('.sidebar-submenu');
+                if (closest_menu) {
+                    closest_menu.classList.add('d-block');
+                }
+                let closest_dropdown = item.closest('.sidebar-dropdown');
+                if (closest_dropdown) {
+                    closest_dropdown.classList.add('active');
+                }
+            }
+        }
+    }
+    let closebar = document.getElementById('close-sidebar');
+    if (closebar) {
+        closebar.addEventListener('click', function () {
+            document.getElementsByClassName('page-wrapper')[0].classList.toggle('toggled');
+        });
     }
 }
 

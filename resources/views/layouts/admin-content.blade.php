@@ -26,19 +26,8 @@
                             </span>
                     </a>
                     <a id="close-sidebar" class="btn btn-icon btn-soft-light" href="javascript:void(0)">
-                        <i class="mdi mdi-menu"></i>
+                        <i class="fea fea-menu"></i>
                     </a>
-                    <div class="search-bar p-0 d-none d-md-block ms-2">
-                        <div id="search" class="menu-search mb-0">
-                            <form role="search" method="get" id="searchform" class="searchform">
-                                <div>
-                                    <input type="text" class="form-control border rounded" name="s" id="s"
-                                           placeholder="Search Keywords...">
-                                    <input type="submit" id="searchsubmit" value="Search">
-                                </div>
-                            </form>
-                        </div>
-                    </div>
                 </div>
 
                 <ul class="list-group list-group-horizontal">

@@ -8,10 +8,10 @@ export function registerLibs() {
     try {
         // window.Popper = require('popper.js').default;
         window['_'] = _;
-        window['$'] = window['jQuery'] = jQuery;
-        window['bootstrap'] = bootstrap;
-        window['axios'] = axios;
-        window['DateTime'] = DateTime;
+        //window['$'] = window['jQuery'] = jQuery;
+        //window['bootstrap'] = bootstrap;
+        //window['axios'] = axios;
+        //window['DateTime'] = DateTime;
     } catch (e) {
         console.error(e);
     }
