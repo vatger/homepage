@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ConnectController;
 use App\Http\Controllers\PagesController;
+use App\Models\Groups\Team;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('authentication')
@@ -23,9 +24,14 @@ Route::prefix('authentication')
         Route::get('test', function () {
             $user = Auth::user();
             \App\Libraries\Membership\MembershipLibrary::seen($user);
+
+            $t = Team::first();
+
+            $user->assignRole($t->group);
+
+            dd(json_decode(json_encode($t->members)));
+
             $user->loadMissing(['settings', 'vatgerDetails', 'vatsimDetails']);
             return $user;
-        })
-            ->name('check-terms')
-            ->middleware('auth');
+        })->middleware('auth');
     });

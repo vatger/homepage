@@ -9,11 +9,6 @@ import initTemplate from './template';
 
 initTemplate();
 
-import { registerLibs, setupLibs } from './boot';
-
-registerLibs();
-setupLibs();
-
 import { loadLivewireExtensions } from './livewire';
 
 loadLivewireExtensions();

@@ -1,5 +1,5 @@
 import { showNoty } from './noty';
-import $ from 'jquery';
+import jquery from 'jquery';
 
 //for Livewire3
 import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
@@ -14,10 +14,10 @@ export function loadLivewireExtensions() {
     });
 
     window.addEventListener('livewire_showModal', (event) => {
-        $('#' + event['detail'].dom_id).modal('show');
+        jquery('#' + event['detail'].dom_id).modal('show');
     });
 
     window.addEventListener('livewire_hideModal', (event) => {
-        $('#' + event['detail'].dom_id).modal('hide');
+        jquery('#' + event['detail'].dom_id).modal('hide');
     });
 }
