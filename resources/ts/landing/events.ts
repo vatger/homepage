@@ -16,7 +16,7 @@ type Event = {
     link: string;
     type: string;
     airports: Array<{ icao: string }>;
-    organisers: Array<{ region?: string; division?: string; subdivision?: string; organised_by_vatsi: boolean }>;
+    organisers: Array<{ region?: string; division?: string; subdivision?: string; organised_by_vatsim: boolean }>;
     vso_name?: string;
 };
 
