@@ -86,13 +86,13 @@
                                                 / {{ $member->vatsimDetails->rating_military_short }}</td>
                                             <td>{{ $member->created_at->format('d.m.Y') }}</td>
                                             <td>
-                                                {{--
-                                                <a href="{{ route('administration.membership.user.view', ['user' => $member->id]) }}">
+
+                                                <a href="{{ route('administration.member', ['user' => $member->id]) }}">
                                                     <button class="btn btn-sm btn-soft-primary p-1 px-3" style="font-size: 15px">
-                                                        <i class="mdi mdi-eye-outline"></i>
+                                                        <i data-feather="eye"></i>
                                                     </button>
                                                 </a>
-                                                --}}
+
                                             </td>
                                         </tr>
                                     @endforeach
