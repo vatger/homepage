@@ -32,17 +32,6 @@ return new class extends Migration {
             $table->string('name')->unique();
             $table->timestamps();
         });
-
-        Schema::create('staff_subteams', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('group_id');
-            $table
-                ->foreign('group_id')
-                ->references('id')
-                ->on('staff_groups');
-            $table->string('name')->unique();
-            $table->timestamps();
-        });
     }
 
     /**

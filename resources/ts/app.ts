@@ -1,5 +1,3 @@
-import * as bootstrap from 'bootstrap';
-
 // Import custom Javascripts
 //import { Pagination } from './pagination';
 

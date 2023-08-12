@@ -16,6 +16,7 @@ Route::prefix('administration')
     ->middleware(['cookie.consent', 'auth'])
     ->group(function () {
         Route::get('/dashboard', [AdministrationPagesController::class, 'index'])->name('administration.dashboard');
+        Route::get('/membership/members', \App\Livewire\Administration\Members::class)->name('administration.members');
 
         require_once 'admin/content.php';
 

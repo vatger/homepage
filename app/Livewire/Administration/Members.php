@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Livewire\Administration\Membership\Membership;
+namespace App\Livewire\Administration;
 
 use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SearchTrait;
 use App\Livewire\Helpers\SortableTrait;
 use App\Models\Membership\User\User;
 use Illuminate\View\View;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-class Memberlist extends Component
+class Members extends Component
 {
     use PaginationTrait, SortableTrait, SearchTrait;
 
@@ -18,28 +19,29 @@ class Memberlist extends Component
     public $membersearch;
     public $filter_ger;
 
-    public function boot()
+    public function boot(): void
     {
         $this->setSortable(['id', 'lastname', 'created_at']);
         $this->setSearchable(['id', 'email']);
         $this->setCustomNameFiltering();
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->setInitialSortOrder('id', 'asc');
     }
 
-    public function render(): View
+    #[Layout('layouts.admin-master')]
+    public function render()
     {
         // build sql query
-        $userquery = User::with('userData');
+        $userquery = User::with(['vatsimDetails', 'vatgerDetails']);
         $search_str = strtolower($this->membersearch . '');
 
         $this->searchQueryModifier($userquery, $search_str);
 
         if ($this->filter_ger) {
-            $userquery = $userquery->whereHas('userData', function ($query) {
+            $userquery = $userquery->whereHas('vatsimDetails', function ($query) {
                 $query->where('subdivision_code', 'LIKE', 'GER');
             });
         }
@@ -50,6 +52,6 @@ class Memberlist extends Component
         $filtered_members = collect($userquery->get());
         $this->searchCollectionModifier($filtered_members, $search_str);
 
-        return view('administration.membership.membership.partials.memberlist_lw')->with(['filtered_members' => $filtered_members->paginate(5)]);
+        return view('pages.admin.members')->with(['filtered_members' => $filtered_members->paginate(5)]);
     }
 }

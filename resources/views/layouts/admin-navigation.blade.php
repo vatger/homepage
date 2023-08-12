@@ -32,13 +32,13 @@
                                     <div class="sidebar-submenu">
                                         <ul>
                                             <li>
-                                                <a href="{{ route('administration.membership.users') }}">
+                                                <a href="{{ route('administration.members') }}">
                                                     <i data-feather="users" class="ms-2"></i>
                                                     Mitgliederverwaltung
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="{{ route('administration.membership.groups') }}">
+                                                <a href="{{ route('administration.members') }}">
                                                     <i data-feather="user-plus" class="ms-2"></i>
                                                     Gruppenverwaltung
                                                 </a>
@@ -47,22 +47,6 @@
                                     </div>
                                 </li>
 
-                                <li class="sidebar-dropdown">
-                                    <a href="javascript:void(0)"><i class="mdi mdi-calendar me-2"></i>Event</a>
-                                    <div class="sidebar-submenu">
-                                        <ul>
-                                            <li>
-                                                <a href="{{ route('administration.event.booking') }}">Sammelbuchungen</a>
-                                            </li>
-                                            <li><a href="{{ route('administration.event.cpt') }}">CPT
-                                                    Bannergenerator</a></li>
-                                            <li><a href="{{ route('administration.prevent.route') }}">Touren</a></li>
-                                            <li><a href="{{ route('administration.prevent.routedev') }}">Tour -
-                                                    Editor</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li>
                                 <li class="sidebar-dropdown">
                                     <a href="javascript:void(0)"><i class="mdi mdi-compass me-2"></i>Navigation</a>
                                     <div class="sidebar-submenu">
@@ -79,18 +63,16 @@
                                     </div>
                                 </li>
 
-                                <li><a href="{{ route('administration.regionalgroup.index') }}"><i
-                                                class="mdi mdi-account-group me-2"></i>Regionalgruppen</a></li>
 
                                 <li class="sidebar-dropdown">
                                     <a href="javascript:void(0)"><i class="mdi mdi-folder-multiple-image me-2"></i>Contentverwaltung</a>
                                     <div class="sidebar-submenu">
                                         <ul>
-                                            <li><a href="{{ route('administration.content.media') }}"><i
+                                            <li><a href="{{ route('administration.members') }}"><i
                                                             class="mdi mdi-image me-2"></i>Medienverwaltung</a></li>
-                                            <li><a href="{{ route('administration.content.urls') }}"><i class="mdi mdi-xml me-2"></i>URL-Kürzer</a>
+                                            <li><a href="{{ route('administration.members') }}"><i class="mdi mdi-xml me-2"></i>URL-Kürzer</a>
                                             </li>
-                                            <li><a href="{{ route('administration.content.partners') }}"><i
+                                            <li><a href="{{ route('administration.members') }}"><i
                                                             class="mdi mdi-account-heart-outline me-2"></i>Partnerverwaltung</a>
                                             </li>
                                         </ul>
@@ -112,14 +94,14 @@
                                     <a href="javascript:void(0)"><i class="mdi mdi-database-alert me-2"></i>Systemadministration</a>
                                     <div class="sidebar-submenu">
                                         <ul>
-                                            <li><a href="{{ route('administration.tech.syslog') }}"><i
+                                            <li><a href="{{ route('administration.members') }}"><i
                                                             class="mdi mdi-folder-text me-2"></i>Systemlogs</a></li>
-                                            <li><a href="{{ route('administration.tech.backend') }}"><i
+                                            <li><a href="{{ route('administration.members') }}"><i
                                                             class="mdi mdi-database-alert me-2"></i>Scheduled
                                                     Updated</a></li>
-                                            <li><a href="{{ route('administration.tech.jobs') }}"><i class="mdi mdi-cog me-2"></i>Failed Jobs</a>
+                                            <li><a href="{{ route('administration.members') }}"><i class="mdi mdi-cog me-2"></i>Failed Jobs</a>
                                             </li>
-                                            <li><a href="{{ route('administration.tech.management') }}"><i
+                                            <li><a href="{{ route('administration.members') }}"><i
                                                             class="mdi mdi-cog me-2"></i>Systemadministration</a></li>
                                         </ul>
                                     </div>
