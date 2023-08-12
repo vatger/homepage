@@ -47,6 +47,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Returns the fir associated with this user or null, if the user hasn't joined a FIR yet
+     * @return HasOne
+     */
+    public function fir(): HasOne
+    {
+        return $this->hasOne(UserFir::class, 'user_id', 'id');
+    }
+
+    /**
      * Returns the VATGER Details for this user
      *
      * @return HasOne

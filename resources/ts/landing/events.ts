@@ -61,9 +61,9 @@ getEvents()
                                 }') center; background-size: cover;"></div>
                             </div>
                             <div class="card-body content">
-                                    <span class="badge rounded-pill bg-soft-primary mb-2" id="event-cpt-banner-1" style="display: none">
-                                        Controller Practical Test
-                                    </span>
+                                <span class="badge rounded-pill bg-soft-primary mb-2 ${e.type == 'CPT' ? '' : 'hide'}">
+                                    Controller Practical Test
+                                </span>
                                 <h5>
                                     <span class="card-title title text-dark" id="event-title-1">${e.name}</span>
                                 </h5>
