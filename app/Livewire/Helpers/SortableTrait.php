@@ -21,15 +21,15 @@ trait SortableTrait
         $this->sort_by = $field;
     }
 
-    public function getSortIconClasses($field): array
+    public function getSortIconClasses($field): string
     {
         if ($this->sort_by != $field) {
-            return ['mdi', 'mdi-sort'];
+            return 'chevron-up';
         }
         if ($this->sort_order == 'asc') {
-            return ['mdi', 'mdi-sort-ascending'];
+            return 'chevron-down';
         } else {
-            return ['mdi', 'mdi-sort-descending'];
+            return 'minus';
         }
     }
 

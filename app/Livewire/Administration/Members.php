@@ -16,8 +16,8 @@ class Members extends Component
 
     // query params
     protected array $queryString = ['membersearch', 'filter_ger', 'sort_by', 'sort_order'];
-    public string $membersearch;
-    public bool $filter_ger;
+    public string $membersearch = '';
+    public bool $filter_ger = false;
 
     public function boot(): void
     {

@@ -56,15 +56,18 @@
                                 <table class="table table-center bg-white mb-0">
                                     <thead>
                                     <tr class="text">
-                                        <th class="border-bottom p-3" wire:click="sortBy('id')">CID <i @class($this->getSortIconClasses('id'))></i>
+                                        <th class="border-bottom p-3" wire:click="sortBy('id')">CID
+                                            <i data-feather="{{ $this->getSortIconClasses('id') }}"></i>
                                         </th>
                                         <th class="border-bottom p-3" wire:click="sortBy('lastname')">Name
-                                            <i @class($this->getSortIconClasses('lastname'))></i>
+                                            <i data-feather="{{ $this->getSortIconClasses('lastname') }}"></i>
                                         </th>
                                         <th class="border-bottom p-3">E-Mail</th>
                                         <th class="border-bottom p-3">(Sub)division</th>
                                         <th class="border-bottom p-3">Rating</th>
-                                        <th class="border-bottom p-3" wire:click="sortBy('created_at')">Beitritt <i @class($this->getSortIconClasses('created_at'))></i></th>
+                                        <th class="border-bottom p-3" wire:click="sortBy('created_at')">Beitritt
+                                            <i data-feather="{{ $this->getSortIconClasses('created_at') }}"></i>
+                                        </th>
                                         <th class="border-bottom p-3"></th>
                                     </tr>
 
