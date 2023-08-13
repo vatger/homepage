@@ -2,7 +2,7 @@
 
 namespace App\Models\Navigation;
 
-use App\Models\Booking\AtcBooking;
+use App\Models\AtcBooking;
 use App\Models\Feedback\ControllerFeedback;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

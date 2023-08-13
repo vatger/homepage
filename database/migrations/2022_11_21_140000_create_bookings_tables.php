@@ -12,18 +12,8 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('booking_groups', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
-        });
-
         Schema::create('booking_bookings', function (Blueprint $table) {
             $table->id();
-            $table
-                ->foreignId('booking_group_id')
-                ->nullable()
-                ->constrained('booking_groups');
             $table->unsignedBigInteger('vatsim_booking_id')->nullable();
             $table->foreignId('controller_id')->constrained('user_users');
             $table->foreignId('station_id')->constrained('nav_stations');
@@ -44,7 +34,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('booking_groups');
         Schema::dropIfExists('booking_bookings');
     }
 };

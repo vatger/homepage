@@ -15,9 +15,9 @@ class Members extends Component
     use PaginationTrait, SortableTrait, SearchTrait;
 
     // query params
-    protected $queryString = ['membersearch', 'filter_ger', 'sort_by', 'sort_order'];
-    public $membersearch;
-    public $filter_ger;
+    protected array $queryString = ['membersearch', 'filter_ger', 'sort_by', 'sort_order'];
+    public string $membersearch;
+    public bool $filter_ger;
 
     public function boot(): void
     {

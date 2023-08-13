@@ -2,7 +2,7 @@
 
 namespace App\Libraries\VATSIM;
 
-use App\Models\Booking\AtcBooking;
+use App\Models\AtcBooking;
 use GuzzleHttp\Client;
 use JetBrains\PhpStorm\ArrayShape;
 

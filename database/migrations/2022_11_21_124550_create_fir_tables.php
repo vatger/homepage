@@ -18,8 +18,18 @@ return new class extends Migration {
             $table->string('name');
             $table->text('description');
             $table->string('mail');
-            $table->foreignId('chief1')->constrained('user_users');
+            $table->foreignId('leadershipgroup_id')->constrained('staff_leaderships');
             $table->timestamps();
+        });
+
+        Schema::create('user_firs', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained('user_users');
+            $table->foreignId('fir_id')->constrained('fir_firs');
+            $table->dateTime('joined_at')->useCurrent();
+            $table->softDeletes();
+            $table->timestamps();
+
+            $table->primary(['user_id', 'fir_id']);
         });
     }
 
@@ -30,6 +40,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
+        Schema::dropIfExists('user_firs');
         Schema::dropIfExists('fir_firs');
     }
 };

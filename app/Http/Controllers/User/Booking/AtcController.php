@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\User\Booking;
 
 use App\Http\Controllers\Controller;
-use Barryvdh\Debugbar\Facades\Debugbar;
 use App\Libraries\VatBook\VatBookLibrary;
-use App\Models\Booking\AtcBooking;
+use App\Models\AtcBooking;
 use App\Models\Navigation\Aerodrome;
 use App\Models\Navigation\Station;
 use Carbon\Carbon;
@@ -131,7 +130,7 @@ class AtcController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return Response
      */
     public function show($id)
@@ -142,7 +141,7 @@ class AtcController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  AtcBooking  $booking
+     * @param AtcBooking $booking
      * @return Response
      */
     public function edit(AtcBooking $booking)
@@ -157,7 +156,7 @@ class AtcController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  AtcBooking  $booking
+     * @param AtcBooking $booking
      * @return RedirectResponse|Response
      */
     public function update(Request $request, AtcBooking $booking): Response|RedirectResponse

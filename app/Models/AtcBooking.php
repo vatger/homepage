@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Booking;
+namespace App\Models;
 
 use App\Models\Membership\User\User;
 use App\Models\Navigation\Station;

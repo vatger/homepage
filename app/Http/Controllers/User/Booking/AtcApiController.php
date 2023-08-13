@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User\Booking;
 
 use App\Http\Controllers\Controller;
-use App\Models\Booking\AtcBooking;
+use App\Models\AtcBooking;
 use App\Models\Navigation\Aerodrome;
 use Carbon\Carbon;
 use Illuminate\Http\Request;

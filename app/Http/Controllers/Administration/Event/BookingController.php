@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Administration\Event;
 
 use App\Http\Controllers\Controller;
 use App\Libraries\VatBook\VatBookLibrary;
-use App\Libraries\VATSIM\ATCBookingsApi;
 use App\Libraries\VATSIM\EventLibrary;
-use App\Models\Booking\AtcBooking;
+use App\Models\AtcBooking;
 use App\Models\Booking\CollectiveBooking;
 use App\Models\Navigation\Aerodrome;
 use App\Models\Navigation\Station;

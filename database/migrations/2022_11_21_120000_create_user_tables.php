@@ -24,15 +24,6 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('user_firs', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained('user_users');
-            $table->foreignId('fir_id')->constrained('fir_firs');
-            $table->dateTime('joined_at')->useCurrent();
-            $table->timestamps();
-
-            $table->primary(['user_id', 'fir_id']);
-        });
-
         Schema::create('user_passwords', function (Blueprint $table) {
             $table
                 ->foreignId('user_id')
