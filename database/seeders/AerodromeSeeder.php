@@ -35,38 +35,6 @@ class AerodromeSeeder extends Seeder
         $this->command->getOutput()->progressFinish();
     }
 
-    public function load_all(): void
-    {
-        // all (including german) airports
-        $airports_all = json_decode(Storage::get('navigation/aerodromes.json'), true);
-        $this->command->getOutput()->writeln('Loaded ' . count($airports_all) . ' aerodromes from file.');
-        $this->command->getOutput()->writeln('Starting seeding of new information...');
-        $this->command->getOutput()->progressStart(count($airports_all));
-        foreach ($airports_all as $airport => $data) {
-            $found = Aerodrome::query()
-                ->where('icao', 'LIKE', $data['icao'])
-                ->first();
-            if (!empty($found)) {
-                continue;
-            }
-            Aerodrome::query()->create([
-                'icao' => $data['icao'],
-                'name' => $data['name'],
-                'description' => '',
-                'iata' => $data['iata'],
-                'elevation' => (float) $data['elevation'],
-                'latitude' => (float) $data['lat'],
-                'longitude' => (float) $data['lon'],
-                'city' => $data['city'],
-                'country_long' => $data['country'],
-                'country_short' => $data['country'],
-                'state' => $data['state'],
-            ]);
-            $this->command->getOutput()->progressAdvance();
-        }
-        $this->command->getOutput()->progressFinish();
-    }
-
     public function update_data(): void
     {
         // data update, mainly position and
@@ -85,6 +53,14 @@ class AerodromeSeeder extends Seeder
             if (empty($data) || empty($data[1]) || empty($data[3]) || empty($data[4]) || empty($data[5]) || empty($data[6])) {
                 return;
             }
+
+            // Check if we have a german airport
+            $icao_country = strtolower($data[$map['ident']]);
+            if ($icao_country == 'de' || $icao_country == 'et') {
+                $this->command->getOutput()->progressAdvance();
+                return;
+            }
+
             $found = Aerodrome::query()
                 ->where('icao', $data[$map['ident']])
                 ->first();
@@ -95,7 +71,6 @@ class AerodromeSeeder extends Seeder
             $found->latitude = (float) $data[$map['latitude_deg']];
             $found->longitude = (float) $data[$map['longitude_deg']];
             $found->save();
-            $this->command->getOutput()->progressAdvance();
         };
         $this->readCSV_by_line('https://davidmegginson.github.io/ourairports-data/airports.csv', ',', $fun, true);
         $this->command->getOutput()->progressFinish();
@@ -120,7 +95,6 @@ class AerodromeSeeder extends Seeder
         $this->command->getOutput()->writeln('Truncated aerodromes table.');
 
         $this->load_ger();
-        $this->load_all();
         $this->update_data();
 
         $this->command->getOutput()->writeln('Finished seeding.');

@@ -2,32 +2,28 @@
 
 namespace App\Libraries\VATSIM;
 
-use App\Models\Navigation\Aerodrome;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use mysql_xdevapi\Exception;
 use Stevebauman\Purify\Facades\Purify;
 
 class EventLibrary
 {
     /**
      * Get a single event from the VATSIM API
+     * https://my.vatsim.net/api/v2/events/view/<event_id>
      *
-     * @param int $eventId
+     * @param string|null $eventId
      * @return mixed
      */
-    public static function getEvent(int $eventId = null)
+    public static function getEvent(?string $eventId): mixed
     {
-        if ($eventId != null) {
-            // https://my.vatsim.net/api/v2/events/view/4223
-            return Cache::remember('de.vatsim-germany.events.single.' . $eventId, 600, function () use ($eventId) {
-                $response = Http::get('https://my.vatsim.net/api/v2/events/view/' . $eventId);
-                return json_decode($response)->data;
-            });
+        try {
+            $response = Http::timeout(10)->get('https://my.vatsim.net/api/v2/events/view/' . $eventId);
+            return json_decode($response)?->data;
+        } catch (\Throwable $e) {
+            return null;
         }
-        return false;
     }
 
     /**
@@ -36,9 +32,10 @@ class EventLibrary
      * Parsed response ($count events) data cached for 10 minutes (600s)
      *
      * @param int $count
-     * @return string
+     * @param bool $nocache
+     * @return false|string
      */
-    public static function getEvents(int $count = 6, bool $nocache = false)
+    public static function getEvents(int $count = 6, bool $nocache = false): false|string
     {
         if ($nocache) {
             return self::loadEventData($count);

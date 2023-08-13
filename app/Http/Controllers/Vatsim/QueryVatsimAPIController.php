@@ -28,11 +28,6 @@ class QueryVatsimAPIController extends Controller
      */
     public function loadEvents(Request $request, int $count = 9): string
     {
-        // Abort if request not ajax
-        if (!$request->ajax()) {
-            abort(403, 'No Ajax request supplied.');
-        }
-
         return EventLibrary::getEvents($count);
     }
 
@@ -47,11 +42,6 @@ class QueryVatsimAPIController extends Controller
      */
     public function loadSingleEvent(Request $request): mixed
     {
-        // Abort if request not ajax
-        if (!$request->ajax()) {
-            abort(403, 'No Ajax request supplied.');
-        }
-
         // Return event date, either cached (10 minutes), or by executing the function
         return EventLibrary::getAerodromeEvent($request->icao);
     }
