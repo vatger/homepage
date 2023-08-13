@@ -2,17 +2,17 @@
 
 namespace App\Livewire\Administration;
 
+use App\Models\Groups\Team;
 use App\Models\Membership\User\User;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-class Member extends Component
+class TeamListPage extends Component
 {
-    public User $user;
-
     #[Layout('layouts.admin-master')]
     public function render()
     {
-        return view('pages.admin.member')->with(['user' => $this->user]);
+        $teams = Team::all();
+        return view('pages.admin.teams')->with(['groups' => $teams]);
     }
 }

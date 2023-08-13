@@ -12,24 +12,18 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('staff_teams', function (Blueprint $table) {
+        Schema::create('teams', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('group_id');
+            $table->foreignId('role_id');
             $table
-                ->foreign('group_id')
+                ->foreign('role_id')
                 ->references('id')
-                ->on('staff_groups');
-            $table->string('name')->unique();
-            $table->timestamps();
-        });
-
-        Schema::create('staff_leaderships', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('group_id');
+                ->on('roles');
+            $table->foreignId('super_team_id')->nullable();
             $table
-                ->foreign('group_id')
+                ->foreign('super_team_id')
                 ->references('id')
-                ->on('staff_groups');
+                ->on('teams');
             $table->string('name')->unique();
             $table->timestamps();
         });

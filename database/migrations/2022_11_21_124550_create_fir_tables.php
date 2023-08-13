@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('name');
             $table->text('description');
             $table->string('mail');
-            $table->foreignId('leadershipgroup_id')->constrained('staff_leaderships');
+            $table->foreignId('team_id')->constrained('teams');
             $table->timestamps();
         });
 

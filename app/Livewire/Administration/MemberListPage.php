@@ -10,7 +10,7 @@ use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-class Members extends Component
+class MemberListPage extends Component
 {
     use PaginationTrait, SortableTrait, SearchTrait;
 

@@ -16,8 +16,10 @@ Route::prefix('administration')
     ->middleware(['cookie.consent', 'auth'])
     ->group(function () {
         Route::get('/dashboard', [AdministrationPagesController::class, 'index'])->name('administration.dashboard');
-        Route::get('/membership/members', \App\Livewire\Administration\Members::class)->name('administration.members');
-        Route::get('/membership/members/{user}', \App\Livewire\Administration\Member::class)->name('administration.member');
+        Route::get('/membership/members', \App\Livewire\Administration\MemberListPage::class)->name('administration.members');
+        Route::get('/membership/members/{user}', \App\Livewire\Administration\MemberPage::class)->name('administration.member');
+
+        Route::get('/membership/teams', \App\Livewire\Administration\TeamListPage::class)->name('administration.teams');
 
         require_once 'admin/content.php';
 
