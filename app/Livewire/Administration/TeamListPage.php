@@ -2,17 +2,24 @@
 
 namespace App\Livewire\Administration;
 
+use App\Livewire\Helpers\PaginationTrait;
 use App\Models\Groups\Team;
-use App\Models\Membership\User\User;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class TeamListPage extends Component
 {
+    use PaginationTrait;
+
+    #[Url]
+    public string $search = '';
+
     #[Layout('layouts.admin-master')]
     public function render()
     {
-        $teams = Team::all();
-        return view('pages.admin.teams')->with(['groups' => $teams]);
+        $teams = Team::where('name', 'LIKE', '%' . Str::of($this->search)->trim() . '%')->get();
+        return view('pages.admin.teams')->with(['teams' => $teams->paginate()]);
     }
 }

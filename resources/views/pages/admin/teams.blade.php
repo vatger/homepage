@@ -22,8 +22,8 @@
                                         <i class="mdi mdi-account-group fs-4 mb-0"></i>
                                     </div>
                                     <div class="flex-1 ms-3">
-                                        <h6 class="mb-0 text-muted">Gruppen</h6>
-                                        <p class="fs-5 text-dark fw-bold mb-0" id="element-count">{{ $groups->total() }}</p>
+                                        <h6 class="mb-0 text-muted">Teams</h6>
+                                        <p class="fs-5 text-dark fw-bold mb-0" id="element-count">{{  App\Models\Groups\Team::count() }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -37,8 +37,7 @@
                                         <circle cx="11" cy="11" r="8"></circle>
                                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                     </svg>
-                                    <input name="search_string" id="group-search-input" class="form-control ps-5" type="text"
-                                           placeholder="Gruppenname">
+                                    <input wire:model.live="search" class="form-control ps-5" type="text" placeholder="Teamname">
                                 </div>
                             </li>
                         </div>
@@ -49,19 +48,28 @@
                             <table class="table table-center bg-white mb-0">
                                 <thead>
                                 <tr class="text-center">
-                                    <th class="border-bottom p-3" style="width: 33%">ID</th>
-                                    <th class="border-bottom p-3" style="width: 33%">Name</th>
-                                    <th class="border-bottom p-3" style="width: 33%">Aktion</th>
+                                    <th class="border-bottom p-3">ID</th>
+                                    <th class="border-bottom p-3">Name</th>
+                                    <th class="border-bottom p-3">Aktion</th>
                                 </tr>
-
                                 </thead>
                                 <tbody id="group-list-content">
-                                <td colspan="4" class="text-center text-muted">Lade Daten...</td>
+                                @foreach($teams as $team)
+                                    <tr class="text-center">
+                                        <td>{{ $team->id }}</td>
+                                        <td>{{ $team->name }}</td>
+                                        <td>{{ $team->name }}</td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
 
                             <p class="text-muted mt-2" id="dataset-length"></p>
 
+
+                            {{ $teams->links() }}
+
+                            {{--
                             <ul class="pagination mb-0 mt-4" style="display: none">
                                 <li class="page-item" data-action="prev"><a class="page-link" id="page-item-prev" href="javascript:void(0)">Zurück</a>
                                 </li>
@@ -75,6 +83,7 @@
                                 <li class="page-item" data-action="next"><a class="page-link" id="page-item-next"
                                                                             href="javascript:void(0)">Nächste</a></li>
                             </ul>
+                            --}}
                         </div>
                     </div>
                 </div>

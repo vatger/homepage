@@ -9,30 +9,31 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 trait IsGroupTrait
 {
-    public function group(): HasOne|Group
+    public function group(): HasOne|Role
     {
-        return $this->hasOne(Group::class, 'id', 'group_id');
+        return $this->hasOne(Role::class, 'id', 'role_id');
     }
 
     public function members(): BelongsToMany|User
     {
         $g = $this->group()->first();
-        return $g->belongsToMany(User::class, 'model_has_groups', 'group_id', 'model_id');
+        return $g->belongsToMany(User::class, 'model_has_roles', 'role_id', 'model_id');
     }
 
     protected static function booted(): void
     {
         static::saving(function (self $team) {
-            if (!$team->group_id) {
-                $group = Group::create(['name' => Str::slug($team->name), 'type' => self::class]);
-                $team->group_id = $group->id;
+            if (!$team->role_id) {
+                $role = Role::create(['name' => Str::slug($team->name), 'type' => self::class]);
+                $team->role_id = $role->id;
             }
-            $group = Group::where('id', $team->group_id)->first();
-            $group->name = Str::slug($team->name);
-            $group->save();
+            $role = Role::where('id', $team->role_id)->first();
+            $role->name = Str::slug($team->name);
+            $role->save();
         });
         static::deleted(function (self $team) {
             $group = $team->group;

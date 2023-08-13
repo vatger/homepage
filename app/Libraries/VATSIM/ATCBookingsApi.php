@@ -124,7 +124,6 @@ class ATCBookingsApi
             ],
             'connect_timeout' => 25,
         ]);
-
         $res = $client->request($method, $endpoint, ['form_params' => $form_params, 'http_errors' => false]);
         return ['code' => $res->getStatusCode(), 'data' => json_decode($res->getBody())];
     }

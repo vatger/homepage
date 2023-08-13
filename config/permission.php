@@ -22,7 +22,7 @@ return [
          * `Spatie\Permission\Contracts\Role` contract.
          */
 
-        'role' => App\Models\Groups\Group::class,
+        'role' => Spatie\Permission\Models\Role::class,
     ],
 
     'table_names' => [
@@ -56,7 +56,7 @@ return [
          * basic default value but you may easily change it to any table you like.
          */
 
-        'model_has_roles' => 'model_has_groups',
+        'model_has_roles' => 'model_has_roles',
 
         /*
          * When using the "HasRoles" trait from this package, we need to know which
@@ -64,14 +64,14 @@ return [
          * basic default value but you may easily change it to any table you like.
          */
 
-        'role_has_permissions' => 'group_has_permissions',
+        'role_has_permissions' => 'role_has_permissions',
     ],
 
     'column_names' => [
         /*
          * Change this if you want to name the related pivots other than defaults
          */
-        'role_pivot_key' => 'group_id', //default 'role_id',
+        'role_pivot_key' => 'role_id', //default 'role_id',
         'permission_pivot_key' => null, //default 'permission_id',
 
         /*

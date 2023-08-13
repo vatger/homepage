@@ -2,6 +2,7 @@
 
 namespace App\Libraries\VATSIM;
 
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use mysql_xdevapi\Exception;
@@ -18,12 +19,17 @@ class EventLibrary
      */
     public static function getEvent(?string $eventId): mixed
     {
-        try {
-            $response = Http::timeout(10)->get('https://my.vatsim.net/api/v2/events/view/' . $eventId);
-            return json_decode($response)?->data;
-        } catch (\Throwable $e) {
-            return null;
-        }
+        $client = new Client([
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'X-Requested-With' => 'XMLHttpRequest',
+                'User-Agent' => 'VATSIMGermany / none ...',
+            ],
+            'connect_timeout' => 25,
+        ]);
+        $res = $client->request('GET', 'https://my.vatsim.net/api/v2/events/view/' . $eventId);
+        return json_decode($res->getBody());
     }
 
     /**
