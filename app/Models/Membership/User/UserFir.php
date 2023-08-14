@@ -2,7 +2,7 @@
 
 namespace App\Models\Membership\User;
 
-use App\Models\Groups\FIRCommunity;
+use App\Models\Groups\Fir;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -19,6 +19,6 @@ class UserFir extends Model
 
     public function firInformation(): HasOne
     {
-        return $this->hasOne(FIRCommunity::class, 'fir_id', 'id');
+        return $this->hasOne(Fir::class, 'id', 'fir_id');
     }
 }
