@@ -17,7 +17,7 @@ Route::prefix('authentication')
             Route::get('failed', [ConnectController::class, 'failed'])->name('vatsim.authentication.connect.failed');
         });
 
-        Route::get('check_terms', [PagesController::class, 'terms'])
+        Route::get('check_terms', \App\Livewire\TermsPage::class)
             ->name('check-terms')
             ->middleware('auth');
 

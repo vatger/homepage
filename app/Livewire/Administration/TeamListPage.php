@@ -17,7 +17,7 @@ class TeamListPage extends Component
     public string $search = '';
 
     #[Layout('layouts.admin-master')]
-    public function render()
+    public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         $teams = Team::where('name', 'LIKE', '%' . Str::of($this->search)->trim() . '%')->get();
         return view('pages.admin.teams')->with(['teams' => $teams->paginate()]);

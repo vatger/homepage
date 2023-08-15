@@ -5,6 +5,7 @@ namespace App\Models\Membership\User;
 use App\Models\Feedback\ControllerFeedback;
 use App\Models\Membership\TeamSpeak\Registration;
 use App\Models\Membership\User\Concerns\HasBanConcern;
+use App\Models\Membership\User\Concerns\HasFirConcern;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,7 +15,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles, HasApiTokens, HasBanConcern;
+    use Notifiable, HasRoles, HasApiTokens, HasBanConcern, HasFirConcern;
 
     protected $table = 'user_users';
 
@@ -44,15 +45,6 @@ class User extends Authenticatable
     public function serviceAccounts(): HasOne
     {
         return $this->hasOne(UserServiceAccount::class, 'user_id', 'id');
-    }
-
-    /**
-     * Returns the fir associated with this user or null, if the user hasn't joined a FIR yet
-     * @return HasOne
-     */
-    public function fir(): HasOne
-    {
-        return $this->hasOne(UserFir::class, 'user_id', 'id');
     }
 
     /**
@@ -128,7 +120,7 @@ class User extends Authenticatable
     /**
      * Set the token value for the "remember me" session.
      *
-     * @param  string  $value
+     * @param string $value
      * @return void
      */
     public function setRememberToken($value): void

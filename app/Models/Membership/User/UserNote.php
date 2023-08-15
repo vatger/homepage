@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserNote extends Model
 {
-    use HasFactory;
-
     protected $table = 'user_notes';
 
     public function user(): BelongsTo

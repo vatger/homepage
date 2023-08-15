@@ -3,22 +3,19 @@
 namespace App\Models\Membership\User;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
 class UserSetting extends Model
 {
-    use HasFactory;
-
     protected $primaryKey = 'user_id';
 
     protected $table = 'user_settings';
 
     protected $fillable = ['language'];
 
-    protected $appends = ['gdpr_agreed', 'termsofuse_agreed', 'agreed'];
+    protected $appends = ['gdpr_agreed', 'imprint_agreed', 'termsofuse_agreed', 'satzung_agreed', 'agreed'];
 
     public $timestamps = false;
 
@@ -29,9 +26,12 @@ class UserSetting extends Model
 
     public function getGdprAgreedAttribute(): bool
     {
-        return $this->gdpr_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('policies/gdpr.html')) &&
-            $this->gdpr_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('policies/imprint.html'));
-        /* config('vatger.gdpr_date')*/
+        return $this->gdpr_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('policies/gdpr.html'));
+    }
+
+    public function getImprintAgreedAttribute(): bool
+    {
+        return $this->imprint_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('policies/imprint.html'));
     }
 
     public function getTermsofuseAgreedAttribute(): bool
@@ -40,8 +40,14 @@ class UserSetting extends Model
         /* config('vatger.termsofuse_date') */
     }
 
+    public function getSatzungAgreedAttribute(): bool
+    {
+        return $this->satzung_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('policies/satzung.txt'));
+        /* config('vatger.termsofuse_date') */
+    }
+
     public function getAgreedAttribute(): bool
     {
-        return $this->gdpr_agreed && $this->termsofuse_agreed;
+        return $this->gdpr_agreed && $this->termsofuse_agreed && $this->imprint_agreed && $this->satzung_agreed;
     }
 }

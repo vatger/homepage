@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserVatgerDetail extends Model
 {
-    use HasFactory;
-
     protected $primaryKey = 'user_id';
 
     protected $table = 'user_vatger_details';

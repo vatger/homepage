@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserServiceAccount extends Model
 {
-    use HasFactory;
-
     protected $table = 'user_service_accounts';
 
     public $timestamps = false;

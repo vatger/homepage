@@ -44,26 +44,30 @@
         <div class="d-flex align-items-center justify-content-between">
             <h5 class="mb-0">Flight Information Region (FIR)</h5>
             <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#createLegModal">
-                @if($user->fir) FIR Wechseln @else FIR Beitreten @endif
+                @if($user->fir)
+                    FIR Wechseln
+                @else
+                    FIR Beitreten
+                @endif
             </button>
         </div>
 
         @if($user->fir)
-        <div class="row">
-            <div class="col-md-6 mt-4 pt-2">
-                <div class="card rounded shadow bg-dark border-0">
-                    <div class="card-body">
-                        <div>
-                            <h5 class="text-light">{{$user->fir->firInformation?->name}}</h5>
-                            <div class="d-flex justify-content-between mb-0">
-                                <p class="h6 text-muted mb-0">{{strtoupper($user->fir->firInformation->slug)}}</p>
-                                <h6 class="mb-0 text-muted">{{\Carbon\Carbon::parse($user->fir->joined_at)->format('d.m.Y H:i')}}</h6>
+            <div class="row">
+                <div class="col-md-6 mt-4 pt-2">
+                    <div class="card rounded shadow bg-dark border-0">
+                        <div class="card-body">
+                            <div>
+                                <h5 class="text-light">{{$user->fir->firInformation?->name}}</h5>
+                                <div class="d-flex justify-content-between mb-0">
+                                    <p class="h6 text-muted mb-0">{{strtoupper($user->fir->firInformation->slug)}}</p>
+                                    <h6 class="mb-0 text-muted">{{\Carbon\Carbon::parse($user->fir->joined_at)->format('d.m.Y H:i')}}</h6>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div><!--end col-->
-        </div>
+                </div><!--end col-->
+            </div>
         @endif
     </div>
 
@@ -71,7 +75,11 @@
         <div class="modal-dialog modal-lg ">
             <div class="modal-content rounded shadow border-0">
                 <div class="modal-header border-bottom">
-                    <h5 class="modal-title" id="createLegModalLabel">@if($user->fir) FIR Wechseln @else FIR Beitreten @endif</h5>
+                    <h5 class="modal-title" id="createLegModalLabel">@if($user->fir)
+                            FIR Wechseln
+                        @else
+                            FIR Beitreten
+                        @endif</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -83,7 +91,9 @@
                                     <select class="form-select form-control" id="fir-select">
                                         @foreach(\App\Models\Groups\Fir::all() as $fir)
                                             <option value="{{$fir->id}}" @if($fir->id == $user->fir?->fir_id) disabled @endif>
-                                                {{$fir->name}} @if($fir->id == $user->fir?->fir_id) (Aktuell) @endif
+                                                {{$fir->name}} @if($fir->id == $user->fir?->fir_id)
+                                                    (Aktuell)
+                                                @endif
                                             </option>
                                         @endforeach
                                     </select>
@@ -91,7 +101,7 @@
 
                                 <p class="small">
                                     Du kannst die FIR alle 6 Monate wechseln. Mit diesem Wechsel bestätigst du, dass du dies verstanden hast und damit
-                                    einverstanden bist, bis zum {{\Carbon\Carbon::now()->add('6', 'month')->format('d.m.Y')}} keinen weiteren
+                                    einverstanden bist, bis zum {{\Carbon\Carbon::now()->add('90', 'days')->format('d.m.Y')}} keinen weiteren
                                     Wechsel mehr durchführen zu können. Bestätige bitte, dass du diesen Hinweis gelesen und verstanden hast.
                                 </p>
                                 <input class="form-check-input" type="checkbox" value="true" id="voice-selector" name="voice">
@@ -102,7 +112,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Schließen</button>
-                    <button type="button" class="btn btn-sm btn-primary">@if($user->fir) FIR Wechseln @else FIR Beitreten @endif</button>
+                    <button type="button" class="btn btn-sm btn-primary">
+                        @if($user->fir)
+                            FIR Wechseln
+                        @else
+                            FIR Beitreten
+                        @endif
+                    </button>
                 </div>
             </div>
         </div>

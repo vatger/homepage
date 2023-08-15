@@ -42,7 +42,9 @@ return new class extends Migration {
                 ->primary()
                 ->constrained('user_users');
             $table->timestamp('gdpr_agreed_at')->nullable();
+            $table->timestamp('imprint_agreed_at')->nullable();
             $table->timestamp('termsofuse_agreed_at')->nullable();
+            $table->timestamp('satzung_agreed_at')->nullable();
             $table->enum('language', ['de', 'en']);
             $table->boolean('dark_mode')->default(0);
             $table->enum('color', ['default', 'cyan', 'red', 'green', 'purple', 'slateblue', 'skobleoff', 'yellow'])->default('default');

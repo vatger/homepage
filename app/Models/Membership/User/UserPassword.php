@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserPassword extends Model
 {
-    use HasFactory;
-
     protected $table = 'user_passwords';
 
     public $timestamps = false;
