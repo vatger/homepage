@@ -1,5 +1,6 @@
 import { showNoty } from './noty';
 import jquery from 'jquery';
+import { Modal } from 'bootstrap';
 
 //for Livewire3
 import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
@@ -36,10 +37,20 @@ export function loadLivewireExtensions() {
     });
 
     window.addEventListener('livewire_showModal', (event) => {
-        jquery('#' + event['detail'].dom_id).modal('show');
+        //jquery('#' + event['detail'].dom_id).modal('show');
+        let el = document.getElementById(event['detail'].dom_id);
+        if (el) {
+            let modal = Modal.getOrCreateInstance(el);
+            modal.show();
+        }
     });
 
     window.addEventListener('livewire_hideModal', (event) => {
-        jquery('#' + event['detail'].dom_id).modal('hide');
+        //jquery('#' + event['detail'].dom_id).modal('hide');
+        let el = document.getElementById(event['detail'].dom_id);
+        if (el) {
+            let modal = Modal.getOrCreateInstance(el);
+            modal.hide();
+        }
     });
 }

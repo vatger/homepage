@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Groups\Fir;
 use App\Models\Groups\Team;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class FirSeeder extends Seeder
