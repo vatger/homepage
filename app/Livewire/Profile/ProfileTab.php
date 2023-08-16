@@ -3,6 +3,8 @@
 namespace App\Livewire\Profile;
 
 use App\Livewire\Helpers\ModalTrait;
+use App\Models\Membership\User\Concerns\UserFirPivot;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -26,9 +28,14 @@ class ProfileTab extends Component
 
     public function changeFir(): void
     {
-        Auth::user()
-            ->firs()
-            ->attach($this->fir_selection);
+        UserFirPivot::where('user_id', Auth::user()->id)->delete();
+        if ($this->fir_selection == -1) {
+            return;
+        }
+        $f = new UserFirPivot();
+        $f->user_id = Auth::user()->id;
+        $f->fir_id = $this->fir_selection;
+        $f->save();
         //$this->closeModalNoCheck('change-fir-modal');
     }
 

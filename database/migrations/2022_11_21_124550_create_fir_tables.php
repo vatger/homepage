@@ -23,13 +23,12 @@ return new class extends Migration {
         });
 
         Schema::create('user_firs', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('user_id')->constrained('user_users');
             $table->foreignId('fir_id')->constrained('fir_firs');
             $table->dateTime('joined_at')->useCurrent();
             $table->softDeletes();
             $table->timestamps();
-
-            $table->primary(['user_id', 'fir_id']);
         });
     }
 
