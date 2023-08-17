@@ -27,7 +27,6 @@ class ProfileTab extends Component
     {
         $user = Auth::user();
         $this->user_fir = Auth::user()->fir;
-        dd($this->user_fir);
         return view('components.profile.profiletab')->with(['user' => $user, 'userfir' => $this->user_fir]);
     }
 
