@@ -3,24 +3,22 @@
 namespace App\Models\Groups;
 
 use App\Models\Membership\User\User;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
-trait IsGroupTrait
+trait HasRoleTrait
 {
-    public function group(): HasOne|Role
+    public function role(): HasOne|Role
     {
         return $this->hasOne(Role::class, 'id', 'role_id');
     }
 
     public function members(): BelongsToMany|User
     {
-        $g = $this->group()->first();
+        $g = $this->role()->first();
         return $g->belongsToMany(User::class, 'model_has_roles', 'role_id', 'model_id');
     }
 

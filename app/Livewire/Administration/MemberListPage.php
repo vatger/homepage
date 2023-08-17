@@ -6,6 +6,7 @@ use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SearchTrait;
 use App\Livewire\Helpers\SortableTrait;
 use App\Models\Membership\User\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -34,22 +35,23 @@ class MemberListPage extends Component
     #[Layout('layouts.admin-master')]
     public function render()
     {
+        Auth::user()->can('membership.users.view');
         // build sql query
-        $userquery = User::with(['vatsimDetails', 'vatgerDetails']);
+        $query = User::with(['vatsimDetails', 'vatgerDetails']);
         $search_str = strtolower($this->membersearch . '');
 
-        $this->searchQueryModifier($userquery, $search_str);
+        $this->searchQueryModifier($query, $search_str);
 
         if ($this->filter_ger) {
-            $userquery = $userquery->whereHas('vatsimDetails', function ($query) {
+            $query = $query->whereHas('vatsimDetails', function ($query) {
                 $query->where('subdivision_code', 'LIKE', 'GER');
             });
         }
 
-        $this->sortQueryModifier($userquery);
+        $this->sortQueryModifier($query);
 
         // further filtering
-        $filtered_members = collect($userquery->get());
+        $filtered_members = collect($query->get());
         $this->searchCollectionModifier($filtered_members, $search_str);
 
         return view('pages.admin.members')->with(['filtered_members' => $filtered_members->paginate(5)]);

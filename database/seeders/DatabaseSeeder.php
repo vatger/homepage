@@ -8,14 +8,10 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        //$this->call(PermissionSeeder::class);
-
-        //$this->call(RegionalgroupSeeder::class);
+        $this->call(PermissionSeeder::class);
 
         $this->call(FirSeeder::class);
 

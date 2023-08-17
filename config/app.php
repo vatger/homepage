@@ -167,9 +167,11 @@ return [
         /*
          * Package Service Providers...
          */
+
         Barryvdh\Debugbar\ServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Vyuldashev\LaravelOpenApi\OpenApiServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
         /*
          * Application Service Providers...

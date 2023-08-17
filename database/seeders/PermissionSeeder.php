@@ -2,22 +2,30 @@
 
 namespace Database\Seeders;
 
-use App\Models\Membership\Permission;
-use App\Models\Membership\Role;
+use App\Models\Groups\Team;
 use App\Models\Membership\User\User;
-use App\Models\Membership\User\UserData;
-use App\Models\Membership\User\UserSetting;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Permission;
 
 class PermissionSeeder extends Seeder
 {
-    private $permissions = [
+    private array $permissions = [
         // Administration
-        'administration.access' => 'Grants access to the administration interfaces',
-        'administration.tech.access' => 'Grants access to the tech section of the administration interface',
-        'administration.bypass.maintenance' => 'Grants permissions to bypass maintenance (artisan down)',
+        'administration.access',
+        'administration.bypass.maintenance',
 
+        // Membership
+        'membership.users.view',
+        'membership.users.details.view',
+        'membership.users.details.edit',
+        'membership.roles.view',
+        'membership.roles.edit',
+
+        // Tech
+        'tech.access',
+
+        /*
         // Navigation
         'navigation.aerodromes.viewAny' => 'Grants access to the navigation aerodrome administration',
         'navigation.aerodromes.view' => 'View details of an aerodrome',
@@ -34,19 +42,9 @@ class PermissionSeeder extends Seeder
         'navigation.charts.create' => 'Can create new chart',
         'navigation.charts.update' => 'Can edit chart',
         'navigation.charts.delete' => 'Can remove chart',
+        */
 
-        // Membership
-        'membership.roles.viewAny' => 'Grants access to role administration',
-        'membership.roles.view' => 'View details of a role',
-        'membership.roles.create' => 'Create new membership roles',
-        'membership.roles.update' => 'Update membership roles',
-        'membership.roles.delete' => 'Remove membership roles',
-        'membership.users.viewAny' => 'Grants access to user administration',
-        'membership.users.view' => 'View details of a user',
-        'membership.users.create' => 'Create new user',
-        'membership.users.update' => 'Update user',
-        'membership.users.delete' => 'Remove user',
-
+        /*
         // Regionalgroups
         'regionalgroup.viewAny' => 'Grants access to regionalgroup administration. NOT NEEDED FOR RG STAFF.',
         'regionalgroup.view' => 'Allows to view details of a regionalgroup. NOT NEEDED FOR RG STAFF.',
@@ -63,17 +61,17 @@ class PermissionSeeder extends Seeder
 
         // Tech
         'tech.viewAny' => 'Allow TECH members to view log files',
+        */
     ];
 
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         // Remove all roles and permissions
         $tableNames = config('permission.table_names');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
         DB::statement('DELETE FROM ' . $tableNames['model_has_permissions']);
         DB::statement('DELETE FROM ' . $tableNames['model_has_roles']);
         DB::statement('DELETE FROM ' . $tableNames['role_has_permissions']);
@@ -82,6 +80,9 @@ class PermissionSeeder extends Seeder
         $this->command->getOutput()->writeln('Truncated permissions table.');
         DB::statement('DELETE FROM ' . $tableNames['roles']);
         $this->command->getOutput()->writeln('Truncated roles table.');
+        Team::truncate();
+        $this->command->getOutput()->writeln('Truncated teams table.');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
         $this->command->getOutput()->writeln('Starting seeding of new information...');
         $this->command->getOutput()->progressStart(count($this->permissions));
@@ -96,29 +97,18 @@ class PermissionSeeder extends Seeder
         }
 
         // Create administration role with all permissions
-        $adminRole = new Role();
-        $adminRole->name = 'Administrator';
-        $adminRole->save();
+        $team = Team::where('name', 'LIKE', 'Tech Leitung')->first();
+        if (!$team) {
+            $team = new Team();
+        }
+        $team->name = 'Tech Leitung';
+        $team->save();
 
-        // Grab all generated permissions and assign then to the role
-        $adminRole->givePermissionTo(Permission::all());
+        $team->role->givePermissionTo(Permission::all());
 
         // IF WE ARE IN DEVELOPMENT ASSIGN TESTUSER WEB10 TO THE ADMINROLE
-        if (config('app.env') !== 'production') {
-            $user = User::find(10000010);
-            if (!$user) {
-                User::updateOrCreate([
-                    'id' => 10000010,
-                    'firstname' => 'Test',
-                    'lastname' => '10000010',
-                    'email' => '10000010@mail.com',
-                ]);
-            }
-            $adminUser = User::find(10000010);
-            if ($adminUser !== null) {
-                $adminUser->assignRole($adminRole);
-            }
-        }
+        $user = User::first();
+        $user?->assignRole($team->role);
 
         $this->command->getOutput()->progressFinish();
         $this->command->getOutput()->writeln('Finished seeding.');

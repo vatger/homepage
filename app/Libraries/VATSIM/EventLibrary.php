@@ -5,7 +5,6 @@ namespace App\Libraries\VATSIM;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
-use mysql_xdevapi\Exception;
 use Stevebauman\Purify\Facades\Purify;
 
 class EventLibrary
@@ -21,10 +20,7 @@ class EventLibrary
     {
         $client = new Client([
             'headers' => [
-                'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
-                'X-Requested-With' => 'XMLHttpRequest',
-                'User-Agent' => 'VATSIMGermany / none ...',
             ],
             'connect_timeout' => 25,
         ]);

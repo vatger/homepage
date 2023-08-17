@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Team extends Model
 {
-    use IsGroupTrait;
+    use HasRoleTrait;
 
     protected $table = 'teams';
 

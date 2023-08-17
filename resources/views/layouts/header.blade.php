@@ -129,7 +129,7 @@
                                 <a href="{{ config('app.forcehttps') ? 'https://' : 'http://' . 'training.' . str_ireplace('www.', '', parse_url(url('/'), PHP_URL_HOST)) }}"
                                    class="sub-menu-item">ATC Training</a>
                             </li>
-                            @can('administration-access')
+                            @can('administration.access')
                                 <li><a href="{{ route('administration.dashboard') }}" class="sub-menu-item">@lang('navigation.user.administration')</a></li>
                             @endcan
                             <li><a href="{{ route('vatsim.authentication.connect.logout') }}" class="sub-menu-item"
