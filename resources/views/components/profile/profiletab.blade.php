@@ -76,7 +76,7 @@
             <div class="modal-content rounded shadow border-0">
                 <div class="modal-header border-bottom">
                     <h5 class="modal-title" id="fir-change-label">
-                        @if($user->fir)
+                        @if($userfir)
                             FIR Wechseln
                         @else
                             FIR Beitreten
@@ -90,16 +90,16 @@
                             <div class="mb-3">
                                 <label class="form-label" for="fir-select">FIR Auswählen</label>
                                 <select wire:model="fir_selection" class="form-select form-control" id="fir-select">
-                                    <option value="-1" @if(!$user->fir) disabled @endif>
+                                    <option value="-1" @if(!$userfir) disabled @endif>
                                         keine
-                                        @if(!$user->fir)
+                                        @if(!$userfir)
                                             (Aktuell)
                                         @endif
                                     </option>
                                     @foreach(\App\Models\Groups\Fir::all() as $fir)
-                                        <option value="{{$fir->id}}" @if($fir->id == $user->fir?->id) disabled @endif>
+                                        <option value="{{$fir->id}}" @if($fir->id == $userfir?->id) disabled @endif>
                                             {{$fir->name}}
-                                            @if($fir->id == $user->fir?->fir_id)
+                                            @if($fir->id == $userfir?->id)
                                                 (Aktuell)
                                             @endif
                                         </option>

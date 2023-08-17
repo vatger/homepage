@@ -10,23 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class UserFirPivot extends Pivot
-{
-    use SoftDeletes;
-
-    public $table = 'user_firs';
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function fir(): BelongsTo
-    {
-        return $this->belongsTo(Fir::class);
-    }
-}
-
 trait HasFirConcern
 {
     /**
@@ -34,11 +17,13 @@ trait HasFirConcern
      */
     public function firs(): HasManyThrough|Fir
     {
-        return $this->hasManyThrough(Fir::class, UserFirPivot::class, 'user_id', 'id', 'id', 'fir_id');
+        return $this->hasManyThrough(Fir::class, FirMembership::class, 'user_id', 'id', 'id', 'fir_id')
+            ->withTrashedParents()
+            ->select('*');
     }
 
     public function fir(): HasOneThrough|Fir
     {
-        return $this->hasOneThrough(Fir::class, UserFirPivot::class, 'user_id', 'id', 'id', 'fir_id');
+        return $this->hasOneThrough(Fir::class, FirMembership::class, 'user_id', 'id', 'id', 'fir_id')->select('*');
     }
 }
