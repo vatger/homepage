@@ -7,7 +7,7 @@ import { DateTime } from 'luxon';
 export function registerLibs() {
     try {
         // window.Popper = require('popper.js').default;
-        window['_'] = _;
+        //window['_'] = _;
         //window['$'] = window['jQuery'] = jQuery;
         //window['bootstrap'] = bootstrap;
         //window['axios'] = axios;

@@ -19,7 +19,7 @@
                             <div class="features feature-primary d-flex justify-content-between align-items-center bg-white">
                                 <div class="d-flex align-items-center">
                                     <div class="icon text-center rounded-pill">
-                                        <i class="mdi mdi-account-group fs-4 mb-0"></i>
+                                        <i data-feather="circle"></i>
                                     </div>
                                     <div class="flex-1 ms-3">
                                         <h6 class="mb-0 text-muted">Teams</h6>
@@ -30,15 +30,14 @@
                         </div>
                         <div class="col-md-4 col-sm-12 mb-1">
                             <div class="features feature-primary d-flex justify-content-between align-items-center bg-white">
-                                <div class="d-flex align-items-center">
-                                    <div class="icon text-center rounded-pill">
-                                        <i data-feather="plus"></i>
-                                    </div>
-                                    <div class="flex-1 ms-3">
-                                        <h6 class="mb-0 text-muted">Neues Team anlegen</h6>
-                                        <p class="fs-5 text-dark fw-bold mb-0">{{  App\Models\Groups\Team::count() }}</p>
-                                        <input wire:model.live="search" class="form-control ps-5" type="text" placeholder="Teamname">
-                                    </div>
+                                <div class="subcribe-form">
+                                    <h6 class="mb-2 text-muted">Neues Team anlegen</h6>
+                                    <form>
+                                        <input wire:model="addTeamName" class="form-control rounded-pill shadow" placeholder="Neuer Teamname">
+                                        <button wire:click="addTeam" class="btn btn-pills btn-primary">
+                                            <i data-feather="plus"></i>
+                                        </button>
+                                    </form><!--end form-->
                                 </div>
                             </div>
                         </div>

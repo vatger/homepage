@@ -108,6 +108,8 @@ function loadSidebar() {
             item.parentElement.className += ' active';
         }
     }
+
+    Array.prototype.forEach.call(document.querySelectorAll('#sidebar'), (el) => new SimpleBar(el));
 }
 
 //Admin Menu
@@ -163,6 +165,7 @@ function loadTooltips() {
 }
 
 import { Gumshoe } from 'gumshoejs';
+import SimpleBar from 'simplebar';
 
 //small menu
 function loadSmallMenu() {

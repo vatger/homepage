@@ -19,8 +19,8 @@ class PermissionSeeder extends Seeder
         'membership.users.view',
         'membership.users.details.view',
         'membership.users.details.edit',
-        'membership.roles.view',
-        'membership.roles.edit',
+        'membership.teams.view',
+        'membership.teams.edit',
 
         // Tech
         'tech.access',
@@ -88,10 +88,9 @@ class PermissionSeeder extends Seeder
         $this->command->getOutput()->progressStart(count($this->permissions));
 
         // Create permissions
-        foreach ($this->permissions as $name => $description) {
+        foreach ($this->permissions as $name) {
             $p = new Permission();
             $p->name = $name;
-            //$p->description = $description;
             $p->save();
             $this->command->getOutput()->progressAdvance();
         }

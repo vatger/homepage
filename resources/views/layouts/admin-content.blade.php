@@ -10,7 +10,7 @@
 <!-- Loader -->
 
 <div class="page-wrapper toggled">
-    @include('layouts.admin-navigation')
+    @include('layouts.admin-nav')
 
     <!-- Start Page Content -->
     <main class="page-content bg-light">
