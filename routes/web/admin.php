@@ -20,6 +20,7 @@ Route::prefix('administration')
         Route::get('/membership/members/{user}', \App\Livewire\Administration\MemberPage::class)->name('administration.member');
 
         Route::get('/membership/teams', \App\Livewire\Administration\TeamListPage::class)->name('administration.teams');
+        Route::get('/membership/teams/{team}', \App\Livewire\Administration\TeamPage::class)->name('administration.team');
 
         require_once 'admin/content.php';
 

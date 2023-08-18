@@ -4,6 +4,7 @@ namespace App\Livewire\Administration;
 
 use App\Livewire\Helpers\PaginationTrait;
 use App\Models\Groups\Team;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
@@ -15,6 +16,11 @@ class TeamListPage extends Component
 
     #[Url]
     public string $search = '';
+
+    public function boot(): void
+    {
+        Auth::user()->can('membership.teams.view');
+    }
 
     #[Layout('layouts.admin-master')]
     public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application

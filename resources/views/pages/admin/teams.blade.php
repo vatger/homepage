@@ -72,9 +72,9 @@
                                         <td>{{ $team->name }}</td>
                                         <td>{{ $team->super_team }}</td>
                                         <td>
-                                            <button class="btn btn-sm btn-soft-primary p-1 px-3" style="font-size: 15px">
+                                            <a href="{{ route('administration.team', ['team' => $team]) }}" class="btn btn-sm btn-soft-primary p-1 px-3" style="font-size: 15px">
                                                 <i data-feather="eye"></i>
-                                            </button>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach

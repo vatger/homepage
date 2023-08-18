@@ -13,6 +13,7 @@ class MemberPage extends Component
     #[Layout('layouts.admin-master')]
     public function render()
     {
+        $this->authorize('membership.users.details.view');
         return view('pages.admin.member')->with(['user' => $this->user]);
     }
 }

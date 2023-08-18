@@ -20,22 +20,22 @@ class MemberListPage extends Component
     public string $membersearch = '';
     public bool $filter_ger = false;
 
-    public function boot(): void
-    {
-        $this->setSortable(['id', 'lastname', 'created_at']);
-        $this->setSearchable(['id', 'email']);
-        $this->setCustomNameFiltering();
-    }
-
     public function mount(): void
     {
         $this->setInitialSortOrder('id', 'asc');
     }
 
+    public function boot(): void
+    {
+        $this->authorize('membership.users.view');
+        $this->setSortable(['id', 'lastname', 'created_at']);
+        $this->setSearchable(['id', 'email']);
+        $this->setCustomNameFiltering();
+    }
+
     #[Layout('layouts.admin-master')]
     public function render()
     {
-        Auth::user()->can('membership.users.view');
         // build sql query
         $query = User::with(['vatsimDetails', 'vatgerDetails']);
         $search_str = strtolower($this->membersearch . '');
