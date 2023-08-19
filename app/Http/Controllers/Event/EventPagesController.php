@@ -19,6 +19,6 @@ class EventPagesController extends Controller
     {
         $event = EventLibrary::getEvent($eventId);
 
-        return $this->view('pages.event')->with(['user' => Auth::user(),'event' => $event]);
+        return $this->view('pages.event')->with(['user' => Auth::user(), 'event' => $event]);
     }
 }

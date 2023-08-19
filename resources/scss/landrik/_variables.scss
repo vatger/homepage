@@ -7,28 +7,36 @@
 /*===============================*/
 
 @font-face {
-  font-family: "Nunito";
-  src: url(@/scss/fonts/Nunito-Light.ttf);
+  font-family: "Inter";
+  src: url(@/scss/fonts/Inter-Light.ttf);
   font-weight: 300;
 }
 
 @font-face {
-  font-family: "Nunito";
-  src: url(@/scss/fonts/Nunito-Regular.ttf);
+  font-family: "Inter";
+  src: url(@/scss/fonts/Inter-Regular.ttf);
   font-weight: 400;
 }
 
 @font-face {
-  font-family: "Nunito";
-  src: url(@/scss/fonts/Nunito-SemiBold.ttf);
+  font-family: "Inter";
+  src: url(@/scss/fonts/Inter-SemiBold.ttf);
   font-weight: 600;
 }
 
 @font-face {
-  font-family: "Nunito";
-  src: url(@/scss/fonts/Nunito-Bold.ttf);
+  font-family: "Inter";
+  src: url(@/scss/fonts/Inter-Bold.ttf);
   font-weight: 700;
 }
+
+
+@font-face {
+  font-family: "Sergoe";
+  src: url(@/scss/fonts/Segoe-UI-Bold-Italic.ttf);
+  font-weight: 700;
+}
+
 
 // Color
 $white: #ffffff;
@@ -62,8 +70,8 @@ $footer: lighten($black, 6%);
 // Base font
 $font-size-base: 16px;
 
-$font-family-base: 'Nunito', sans-serif;
-$font-family-secondary: 'Nunito', sans-serif;
+$font-family-base: 'Sergoe', sans-serif;
+$font-family-secondary: 'Inter', sans-serif;
 
 //Color Picker/Switcher
 $default: #2f55d4;

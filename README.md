@@ -11,21 +11,21 @@
 ## Installation
 
 1. Clone this git repo `git clone https://github.com/vatger/homepage.git`
-3. Install `php ^8.2`, `composer ^2`, `node`, `npm`
-4. Setup a mysql database (e.g. `mariadb`)
-5. copy `.env.example` to `.env` and edit its contents (maybe ask someone for the best settings)
-6. in your console run
+2. Install `php ^8.2`, `composer ^2`, `node`, `npm`
+3. Setup a mysql database (e.g. `mariadb`)
+4. copy `.env.example` to `.env` and edit its contents (maybe ask someone for the best settings)
+5. in your console run
     1. `composer update`
     2. `npm update`
     3. `php artisan migrate`
     4. `php artisan db:seed`
     5. `npm run dev` or `npm run build`
-7. to start the website run
+6. to start the website run
     1. `php artisan serve --port=80`
     2. or set up your own php-fpm/cgi webserver according to the laravel documentation
-8. in local development it may be helpful to point some dns domains `*.vatger.test` to your local ip address
-9. the develop branch is auto published to https://dev.vatsim-germany.org/
-10. before committing to git please run `npm run prettier:write:all` to format the code or set up your IDE to auto format using prettier
+7. in local development it may be helpful to point some dns domains `*.vatger.test` to your local ip address
+8. the develop branch is auto published to https://dev.vatsim-germany.org/
+9. before committing to git please run `npm run prettier:write:all` to format the code or set up your IDE to auto format using prettier
 
 ### Other things
 

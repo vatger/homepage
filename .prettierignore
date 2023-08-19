@@ -3,8 +3,13 @@ vendor
 docker
 storage
 public
-resources/js
+resources/js_old
 resources/views_old
+
+
+composer.json
+package.json
+.prettierrc.json
 
 .phpstorm.meta.php
 _ide_helper.php
