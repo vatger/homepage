@@ -70,7 +70,7 @@
                                 </thead>
                                 <tbody id="member-list-content">
                                 @if ($team->role->users->count() == 0)
-                                    <tr class="text-center" id="user-{{ $u->id }}">
+                                    <tr class="text-center">
                                         <td colspan="3" class="text-muted text-center">Keine Benutzer in dieser Gruppe</td>
                                     </tr>
                                 @else
