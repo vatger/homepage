@@ -30,9 +30,21 @@
   font-weight: 700;
 }
 
+@font-face {
+  font-family: "Sergoe";
+  src: url(@/scss/fonts/Segoe-UI.ttf);
+  font-weight: 400;
+}
+
 
 @font-face {
   font-family: "Sergoe";
+  src: url(@/scss/fonts/Segoe-UI-Bold.ttf);
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "SergoeItalic";
   src: url(@/scss/fonts/Segoe-UI-Bold-Italic.ttf);
   font-weight: 700;
 }
@@ -68,9 +80,10 @@ $shadow-lg: 0 10px 25px rgba($dark, 0.15);
 $footer: lighten($black, 6%);
 
 // Base font
-$font-size-base: 16px;
+$font-size-base: 18px;
 
 $font-family-base: 'Sergoe', sans-serif;
+$font-family-base-secondary: 'SergoeItalic', sans-serif;
 $font-family-secondary: 'Inter', sans-serif;
 
 //Color Picker/Switcher
@@ -104,12 +117,12 @@ $colors: (
 );
 
 $heading-font-sizes: (
-        "h1": 42px,
-        "h2": 36px,
-        "h3": 30px,
-        "h4": 24px,
-        "h5": 20px,
-        "h6": 16px,
+        "h1": 44px,
+        "h2": 38px,
+        "h3": 32px,
+        "h4": 26px,
+        "h5": 22px,
+        "h6": 18px,
 );
 
 $display-font-sizes: (
