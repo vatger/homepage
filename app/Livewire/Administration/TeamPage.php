@@ -29,7 +29,7 @@ class TeamPage extends Component
 
     public function changePermission(int $permission_id, bool $add): void
     {
-        $this->authorize('membership.teams.edit');
+        $this->authorize('membership.teams.edit.permissions');
         $permission = Permission::findOrFail($permission_id);
         if ($add) {
             $this->team->role->givePermissionTo($permission);
@@ -40,14 +40,14 @@ class TeamPage extends Component
 
     public function removeUser(int $user_id): void
     {
-        $this->authorize('membership.teams.edit');
+        $this->authorize('membership.teams.edit.members');
         $user = User::findOrFail($user_id);
         $user->removeRole($this->team->role);
     }
 
     public function addUser(): void
     {
-        $this->authorize('membership.teams.edit');
+        $this->authorize('membership.teams.edit.members');
         $user = User::find($this->user_id ?? null);
         if (!$user) {
             $this->showNoty('CID nicht gefunden', 'error');
