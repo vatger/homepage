@@ -28,16 +28,11 @@ export function loadLivewireExtensions() {
     Alpine.plugin(Clipboard);
     Livewire.start();
 
-    Livewire.on('livewire_showNoty', ({ event }) => {
-        console.log(event); // todo test
+    Livewire.on('livewire_showNoty', ({ message, type, timeout }) => {
+        showNoty(message, type, timeout);
     });
 
-    window.addEventListener('livewire_showNoty', (event) => {
-        showNoty(event['detail'].message, event['detail'].type, event['detail'].timeout);
-    });
-
-    window.addEventListener('livewire_showModal', (event) => {
-        //jquery('#' + event['detail'].dom_id).modal('show');
+    Livewire.on('livewire_showModal', ({ event }) => {
         let el = document.getElementById(event['detail'].dom_id);
         if (el) {
             let modal = Modal.getOrCreateInstance(el);
@@ -45,8 +40,7 @@ export function loadLivewireExtensions() {
         }
     });
 
-    window.addEventListener('livewire_hideModal', (event) => {
-        //jquery('#' + event['detail'].dom_id).modal('hide');
+    Livewire.on('livewire_hideModal', ({ event }) => {
         let el = document.getElementById(event['detail'].dom_id);
         if (el) {
             let modal = Modal.getOrCreateInstance(el);

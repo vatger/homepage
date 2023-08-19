@@ -4,7 +4,7 @@ import Toastify from 'toastify-js';
  * Show new noty message with custom (or default) parameters
  */
 export const showNoty = function (
-    message,
+    message: string,
     type = 'success',
     timeout = 2500,
     destination: string | undefined = undefined,
@@ -25,10 +25,6 @@ export const showNoty = function (
         onClick: onclick, // Callback after click
     }).showToast();
 };
-
-export function registerNoty() {
-    window['showNoty'] = showNoty;
-}
 
 export function laravelFireNoty() {
     window.dispatchEvent(new Event('laravel_showNoty'));

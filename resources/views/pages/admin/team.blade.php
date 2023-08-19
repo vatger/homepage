@@ -20,8 +20,7 @@
                         <div class="row">
                             <div class="col-lg-3 col-md-6 col-sm-8">
                                 <div class="text-center bg-white p-4 rounded">
-                                    <img src="{{ asset('/images/profile/avatar_placeholder.png') }}" class="rounded-circle shadow avatar avatar-md-md"
-                                         alt="">
+                                    <img src="{{ asset('/images/profile/avatar_placeholder.png') }}" class="rounded-circle shadow avatar avatar-md-md" alt="">
                                     <h5 class="mt-3 mb-0">{{ $team->name }}</h5>
                                     <small class="text-muted">{{ 'Erstellt am: ' . $team->created_at->format('d.m.Y') }}</small>
                                 </div>
@@ -45,7 +44,7 @@
                                         </div>
                                         <div class="flex-1 ms-3">
                                             <h6 class="mb-0 text-muted">Mitglieder</h6>
-                                            <p class="fs-5 text-dark fw-bold mb-0" id="element-count">{{ $team->role->users->count() }}</p>
+                                            <p class="fs-5 text-dark fw-bold mb-0">{{ $team->role->users->count() }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -53,9 +52,8 @@
                             <div class="col-lg-4 col-md-6 col-sm-12 mt-2" style="text-align: right">
                                 <li class="list-inline-item" style="width: 100%">
                                     <div class="row">
-                                        <input type="text" id="user-add-cid-input" class="form-control-sm form-control float-end mb-1"
-                                               placeholder="CID">
-                                        <button class="btn btn-sm btn-soft-primary float-end user-add-button">Benutzer Hinzufügen</button>
+                                        <input wire:model="user_id" type="number" class="form-control-sm form-control float-end mb-1" placeholder="CID">
+                                        <button wire:click="addUser()" class="btn btn-sm btn-soft-primary float-end">Benutzer Hinzufügen</button>
                                     </div>
                                 </li>
                             </div>
@@ -81,8 +79,7 @@
                                             <td>{{ $u->id }}</td>
                                             <td>{{ $u->username }}</td>
                                             <td>
-                                                <button class="btn btn-sm btn-soft-danger user-remove-button" data-roleid="{{ $team->id }}"
-                                                        data-userid="{{ $u->id }}">Entfernen
+                                                <button wire:click="removeUser({{$u->id}})" class="btn btn-sm btn-soft-danger">Entfernen
                                                 </button>
                                             </td>
                                         </tr>
@@ -164,21 +161,19 @@
                                     <th style="width: 25% !important;">Aktion</th>
                                 </tr>
                                 </thead>
-                                <tbody id="member-list-content">
+                                <tbody>
                                 @foreach ($permissions as $p)
                                     <tr class="text-center">
                                         <td>{{ $p->id }}</td>
                                         <td>{{ $p->name }}</td>
                                         <td>
                                             @if ($team->role->hasPermissionTo($p))
-                                                <button class="btn btn-sm btn-soft-danger permission-toggle-button"
-                                                        id="permission-{{ $p->id }}" data-roleid="{{ $team->id }}"
-                                                        data-permissionid="{{ $p->id }}">Entfernen
+                                                <button wire:click="changePermission({{$p->id}}, false)" class="btn btn-sm btn-soft-danger">
+                                                    Entfernen
                                                 </button>
                                             @else
-                                                <button class="btn btn-sm btn-soft-success permission-toggle-button"
-                                                        id="permission-{{ $p->id }}" data-roleid="{{ $team->id }}"
-                                                        data-permissionid="{{ $p->id }}">Hinzufügen
+                                                <button wire:click="changePermission({{$p->id}}, true)" class="btn btn-sm btn-soft-success">
+                                                    Hinzufügen
                                                 </button>
                                             @endif
                                         </td>
@@ -208,6 +203,7 @@
                         <div class="icon d-flex align-items-center justify-content-center bg-soft-danger rounded-circle mx-auto"
                              style="height: 95px; width:95px;">
                             <h1 class="mb-0">
+                                <i data-feather="alert-triangle"></i>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" style="margin-top: -9px; margin-left: 0"
                                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round" class="feather feather-alert-triangle">
