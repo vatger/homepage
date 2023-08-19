@@ -20,7 +20,7 @@ class DemoSeeder extends Seeder
     public function run()
     {
         if (config('app.env') !== 'production') {
-            for ($i = 20000000; $i < 20000000 + 9999; $i++) {
+            for ($i = 20000000; $i < 20000000 + 20; $i++) {
                 $user = User::updateOrCreate([
                     'id' => $i,
                     'firstname' => 'Test',
