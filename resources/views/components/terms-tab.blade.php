@@ -7,7 +7,7 @@
 
 <div class="accordion-item rounded mt-2">
     <h2 class="accordion-header" id="{{ $ident }}-h">
-        <button class="accordion-button border-0 bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#{{ $ident }}-d" aria-expanded="false"
+        <button class="accordion-button border-0 bg-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ $ident }}-d" aria-expanded="false"
                 aria-controls="{{ $ident }}-d">
             <span class="text">{{ $caption }} </span>
             <span class="text-secondary ms-4"> Last Revised: </span>

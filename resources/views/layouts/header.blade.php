@@ -54,11 +54,9 @@
                     <ul class="submenu">
                         <li><a href="{{ route('getting-started.pilot') }}" class="sub-menu-item">@lang('navigation.piloten.erste-schritte')</a>
                         </li>
-                        <li><a href="javascript:void(0)" class="sub-menu-item">@lang('navigation.piloten.training')</a>
-                        </li>
+                        <li><a href="https://training.vatger.de" class="sub-menu-item">@lang('navigation.piloten.training')</a></li>
                         <li><a href="{{ route('pilots.aerodromes.viewall') }}" class="sub-menu-item">@lang('navigation.piloten.flugplaetze')</a></li>
-                        <li><a href="https://tours.vatger.de" class="sub-menu-item">@lang('navigation.piloten.eventroutes')</a></li>
-                        <li><a href="{{ route('pilots.livemap') }}" class="sub-menu-item">Network Livemap</a></li>
+                        <li><a href="https://tours.vatger.de" class="sub-menu-item">VATGER Touren</a></li>
                     </ul>
                 </li>
 
@@ -74,47 +72,28 @@
                         <li><a href="javascript:void(0)" class="sub-menu-item">@lang('navigation.lotsen.dokumente')</a>
                         </li>
                         <li><a href="javascript:void(0)" class="sub-menu-item">@lang('navigation.lotsen.solos')</a></li>
-                        @auth
-                            @if (Route::has('atciss.home'))
-                                <li><a href="{{ route('atciss.home') }}" class="sub-menu-item">@lang('navigation.lotsen.atciss')</a></li>
-                            @endif
-                            <li><a href="{{ route('euroscope.scenarios.index') }}" class="sub-menu-item">EuroScope
-                                    Scenarios</a></li>
-                            <li><a href="{{ route('euroscope.sectorfile.index') }}" class="sub-menu-item">EuroScope
-                                    Sectorfile</a></li>
-                        @endauth
                     </ul>
                 </li>
 
                 <li class="has-submenu parent-menu-item">
                     <a href="javascript:void(0)">@lang('navigation.community.titel')</a><span class="menu-arrow"></span>
                     <ul class="submenu">
-                        <li><a href="ts3server://ts3.vatsim-germany.org" class="sub-menu-item">@lang('navigation.community.teamspeak')</a>
-                        </li>
+                        <li><a href="ts3server://ts3.vatsim-germany.org" class="sub-menu-item">@lang('navigation.community.teamspeak')</a></li>
                         <li><a href="https://board.vatsim-germany.org" class="sub-menu-item">@lang('navigation.community.forum')</a></li>
                         <li><a href="https://knowledgebase.vatsim-germany.org/" class="sub-menu-item">@lang('navigation.community.wiki')</a></li>
-                        <li><a href="https://vatsim-germany.myspreadshop.de/" target="_blank" class="sub-menu-item">@lang('navigation.community.fan-shop')</a>
-                        </li>
-                        @if (Route::has('stats.landing'))
-                            <li><a href="{{ route('stats.landing') }}" class="sub-menu-item">@lang('navigation.community.stats')</a>
-                            </li>
-                        @endif
+                        <li><a href="https://vatsim-germany.myspreadshop.de/" target="_blank" class="sub-menu-item">@lang('navigation.community.fan-shop')</a></li>
                     </ul>
                 </li>
 
                 <li class="has-submenu parent-menu-item">
                     <a href="javascript:void(0)">@lang('navigation.hilfe.titel')</a><span class="menu-arrow"></span>
                     <ul class="submenu">
-                        <li><a href="https://support.vatsim-germany.org/" class="sub-menu-item">@lang('navigation.hilfe.support')</a>
+                        <li>
+                            <a href="https://support.vatsim-germany.org/" class="sub-menu-item">@lang('navigation.hilfe.support')</a>
                         </li>
-                        @if (Session::has('language') && Session::get('language') == 'de')
-                            <li><a href="https://knowledgebase.vatsim-germany.org/books/contact/page/contact-vatsim-germany"
-                                   class="sub-menu-item">@lang('navigation.hilfe.personal')</a></li>
-                        @else
-                            <li><a href="https://knowledgebase.vatsim-germany.org/books/contact/page/contact-vatsim-germany" class="sub-menu-item">@lang('navigation.hilfe.personal')</a>
-                            </li>
-                        @endif
-
+                        <li>
+                            <a href="https://knowledgebase.vatsim-germany.org/books/contact/page/contact-vatsim-germany" class="sub-menu-item">@lang('navigation.hilfe.personal')</a>
+                        </li>
                         <li><a href="{{ route('help.faq') }}" class="sub-menu-item">FAQ</a></li>
                     </ul>
                 </li>
@@ -124,7 +103,7 @@
                         <a href="javascript:void(0)">{{ Auth::user()->firstname }}</a><span class="menu-arrow"></span>
                         <ul class="submenu">
                             <li><a href="{{ route('member.profile') }}" class="sub-menu-item">@lang('navigation.user.profile')</a></li>
-                            <li><a href="{{ route('controllers.booking.index') }}" class="sub-menu-item">@lang('navigation.user.booking')</a></li>
+                            <li><a href="{{ route('controllers.booking') }}" class="sub-menu-item">@lang('navigation.user.booking')</a></li>
                             <li>
                                 <a href="{{ config('app.forcehttps') ? 'https://' : 'http://' . 'training.' . str_ireplace('www.', '', parse_url(url('/'), PHP_URL_HOST)) }}"
                                    class="sub-menu-item">ATC Training</a>

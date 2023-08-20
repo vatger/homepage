@@ -17,15 +17,6 @@ use function redirect;
 
 class AtcController extends Controller
 {
-    protected VatBookLibrary $_vatBook;
-
-    function __construct()
-    {
-        parent::__construct();
-
-        $this->_vatBook = new VatBookLibrary();
-    }
-
     public function index(Request $request)
     {
         $stations = Station::bookable()->get();
