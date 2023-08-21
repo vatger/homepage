@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div>
+        <div id="navigation">
             <!-- Navigation Menu-->
             <ul class="navigation-menu nav-light nav-right">
                 @if (Session::has('language'))

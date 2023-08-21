@@ -10,6 +10,8 @@ export default function initTemplate() {
     window.onscroll = function () {
         scrollFunction();
     };
+
+    activateMenu();
     loadSidebar();
     activateSidebarMenu();
     loadDDMenu();
@@ -27,6 +29,44 @@ function loadPreloader() {
                 preloader.style.visibility = 'hidden';
                 preloader.style.opacity = '0';
             }, 500);
+        }
+    }
+}
+
+function activateMenu() {
+    let menuItems = document.getElementsByClassName('sub-menu-item');
+    if (menuItems) {
+        var matchingMenuItem: HTMLElement | null = null;
+        for (let idx = 0; idx < menuItems.length; idx++) {
+            let testItem = menuItems[idx];
+            if (testItem['href'] === window.location.href) {
+                matchingMenuItem = testItem as HTMLElement;
+            }
+        }
+        if (matchingMenuItem) {
+            matchingMenuItem.classList.add('active');
+            let immediateParent = getClosest(matchingMenuItem, 'li');
+            if (immediateParent) {
+                immediateParent.classList.add('active');
+            }
+
+            let parent = getClosest(matchingMenuItem, '.parent-menu-item');
+            if (parent) {
+                parent.classList.add('active');
+                let parentMenuitem = parent.querySelector('.menu-item');
+                if (parentMenuitem) {
+                    parentMenuitem.classList.add('active');
+                }
+                let parentOfParent = getClosest(parent, '.parent-parent-menu-item');
+                if (parentOfParent) {
+                    parentOfParent.classList.add('active');
+                }
+            } else {
+                let parentOfParent = getClosest(matchingMenuItem, '.parent-parent-menu-item');
+                if (parentOfParent) {
+                    parentOfParent.classList.add('active');
+                }
+            }
         }
     }
 }
@@ -164,12 +204,12 @@ function loadTooltips() {
     });
 }
 
-import { Gumshoe } from 'gumshoejs';
+//import { Gumshoe } from 'gumshoejs';
 import SimpleBar from 'simplebar';
 
 //small menu
 function loadSmallMenu() {
     try {
-        var spy = new Gumshoe('#navmenu-nav a');
+        //var spy = new Gumshoe('#navmenu-nav a');
     } catch (err) {}
 }
