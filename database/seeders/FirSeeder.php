@@ -15,18 +15,21 @@ class FirSeeder extends Seeder
     {
         $data = ['EDWW', 'EDGG', 'EDMM'];
         foreach ($data as $d) {
-            $f = new Fir();
-            $f->name = $d;
-            $f->slug = $d;
-            $f->description = $d;
-            $f->mail = $d . '@vatger.de';
+            try {
+                $f = new Fir();
+                $f->name = $d;
+                $f->slug = $d;
+                $f->description = $d;
+                $f->mail = $d . '@vatger.de';
 
-            $t = new Team();
-            $t->name = $d . ' Leitung';
-            $t->save();
+                $t = new Team();
+                $t->name = $d . ' Leitung';
+                $t->save();
 
-            $f->team_id = $t->id;
-            $f->save();
+                $f->team_id = $t->id;
+                $f->save();
+            } catch (\Exception $e) {
+            }
         }
     }
 }

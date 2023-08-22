@@ -13,18 +13,18 @@ class ATCBookingsApi
     /**
      * If the booking is added successfully the vatsimbooking_id gets set and $booking is saved to the database.
      */
-    public static function createAndSaveBooking(AtcBooking $booking): bool|string
+    public static function createAndSaveBooking(AtcBooking $booking): array
     {
         $type = 'booking';
         if ($booking->event) {
             $type = 'event';
         }
         if ($booking->training) {
-            $type = 'mentoring';
+            $type = 'training';
         }
-        if ($booking->exam) {
-            $type = 'exam';
-        }
+        //if ($booking->exam) {
+        //    $type = 'exam';
+        //}
 
         $booking->loadMissing('station');
 
@@ -32,28 +32,39 @@ class ATCBookingsApi
             'callsign' => $booking->station->ident,
             'cid' => $booking->controller_id,
             'type' => $type,
-            'start' => $booking->starts_at,
-            'end' => $booking->ends_at,
+            'start' => $booking->starts_at->toDateTimeString(),
+            'end' => $booking->ends_at->toDateTimeString(),
         ]);
 
         if ($res['code'] == 422) {
-            //return 'Station already booked!';
+            return [
+                'ok' => false,
+                'message' => 'Station already booked!',
+            ];
         }
         if ($res['code'] != 201) {
-            //return 'Error in synchronisation!';
+            $booking->vatsim_booking_id = null;
+            $booking->save();
+            return [
+                'ok' => false,
+                'message' => 'Error in synchronisation!',
+            ];
         }
-        $booking->vatsimbooking_id = -1; //$res['data']->id;
+        $booking->vatsim_booking_id = $res['data']->id;
         $booking->save();
-        return true;
+        return [
+            'ok' => true,
+            'message' => 'Booked.',
+        ];
     }
 
     /**
      * This trys to edit the booking in VATSIM API, if booking is found but can't be updated the
      * $booking data will not be saved, so you can reset it from the database.
      */
-    public static function editBooking(AtcBooking $booking): bool|string
+    public static function editBooking(AtcBooking $booking): array
     {
-        if (!$booking->vatsimbooking_id) {
+        if (!$booking->vatsim_booking_id) {
             return self::createAndSaveBooking($booking);
         }
         $type = 'booking';
@@ -63,68 +74,95 @@ class ATCBookingsApi
         if ($booking->training) {
             $type = 'mentoring';
         }
-        if ($booking->exam) {
-            $type = 'exam';
-        }
+        //if ($booking->exam) {
+        //    $type = 'exam';
+        //}
 
         $booking->loadMissing('station');
 
-        $res = self::send('PUT', "booking/{$booking->vatsimbooking_id}", [
+        $res = self::send('PUT', "booking/{$booking->vatsim_booking_id}", [
             'callsign' => $booking->station->ident,
             'cid' => $booking->controller_id,
             'type' => $type,
-            'start' => $booking->starts_at,
-            'end' => $booking->ends_at,
+            'start' => $booking->starts_at->toDateTimeString(),
+            'end' => $booking->ends_at->toDateTimeString(),
         ]);
 
         if ($res['code'] == 404) {
-            //$booking->vatsimbooking_id = null;
-            //$booking->save();
-            //return 'Station already booked!';
+            $booking->vatsim_booking_id = null;
+            $booking->save();
+            return [
+                'ok' => false,
+                'message' => 'Booking updated but VATSIM sync failed.',
+            ];
         }
         if ($res['code'] == 422) {
-            // return 'Station already booked!';
+            $booking->refresh();
+            return [
+                'ok' => false,
+                'message' => 'Station already booked!',
+            ];
         }
         if ($res['code'] != 200) {
-            // return 'Error in synchronisation!';
+            $booking->refresh();
+            return [
+                'ok' => false,
+                'message' => 'Error in synchronisation!',
+            ];
         }
-        return true;
+        $booking->save();
+        return [
+            'ok' => true,
+            'message' => 'Booking updated!',
+        ];
     }
 
-    public static function deleteBooking(AtcBooking $booking): bool|string
+    public static function deleteBooking(AtcBooking $booking): array
     {
-        if (!$booking->vatsimbooking_id) {
-            return true;
+        if (!$booking->vatsim_booking_id) {
+            $booking->delete();
+            return [
+                'ok' => true,
+                'message' => 'Local booking deleted!',
+            ];
         }
 
-        $res = self::send('DELETE', "booking/{$booking->vatsimbooking_id}", []);
+        $res = self::send('DELETE', "booking/{$booking->vatbook_id}", []);
 
         if ($res['code'] == 404) {
-            //$booking->vatsimbooking_id = null;
-            //$booking->save();
-            //return true;
+            $booking->delete();
+            return [
+                'ok' => true,
+                'message' => 'Local booking deleted!',
+            ];
         }
         if ($res['code'] != 204) {
-            //return 'Error in synchronisation!';
+            return [
+                'ok' => false,
+                'message' => 'Error in synchronisation!',
+            ];
         }
-        $booking->vatsimbooking_id = null;
-        $booking->save();
-        return true;
+        $booking->delete();
+        return [
+            'ok' => true,
+            'message' => 'Booking deleted!',
+        ];
     }
 
-    #[ArrayShape(['code' => 'int', 'data' => 'mixed'])]
-    private static function send($method, $endpoint, $form_params): array
+    private static function send(string $method, string $endpoint, array $form_params): array
     {
         $client = new Client([
-            'base_uri' => config('vatsim.booking.base'),
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . config('vatsim.booking.base'),
+                'Authorization' => 'Bearer ' . config('vatsim.booking.token'),
             ],
             'connect_timeout' => 25,
         ]);
-        $res = $client->request($method, $endpoint, ['form_params' => $form_params, 'http_errors' => false]);
+
+        $url = config('vatsim.booking.base') . '/' . $endpoint;
+
+        $res = $client->request($method, $url, ['form_params' => $form_params, 'http_errors' => false]);
         return ['code' => $res->getStatusCode(), 'data' => json_decode($res->getBody())];
     }
 }

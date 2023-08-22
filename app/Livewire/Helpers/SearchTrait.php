@@ -24,8 +24,11 @@ trait SearchTrait
         $this->custom_name_filtering = true;
     }
 
-    protected function searchQueryModifier(QBuilder|EBuilder|DBuilder &$query, string $search_str): void
+    protected function searchQueryModifier(QBuilder|EBuilder|DBuilder|null|array &$query, string $search_str): void
     {
+        if (empty($query)) {
+            return;
+        }
         if (empty($this->searchable_fields) && !$this->custom_name_filtering) {
             return;
         }

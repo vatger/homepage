@@ -30,8 +30,8 @@ return [
             'deleteFailed' => 'Error deleting requested booking. Please try again.',
         ],
         'search' => [
-            'from-text' => 'Search bookings starting at this day.',
-            'till-text' => 'Search bookings ending on this day.',
+            'from-text' => 'Search by start date',
+            'till-text' => 'Search by end date',
             'filter-button-text' => 'Search!',
         ],
         'edit' => [

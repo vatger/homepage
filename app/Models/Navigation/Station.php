@@ -7,7 +7,9 @@ use App\Models\Feedback\ControllerFeedback;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Contracts\Database\Eloquent\Builder as DBuilder;
+use Illuminate\Database\Eloquent\Builder as EBuilder;
+use Illuminate\Database\Query\Builder as QBuilder;
 
 class Station extends Model
 {
@@ -37,12 +39,12 @@ class Station extends Model
         return number_format($this->frequency, 3);
     }
 
-    public function scopeBookable(Builder $query): Builder
+    public function scopeBookable(QBuilder|EBuilder|DBuilder $query): QBuilder|EBuilder|DBuilder
     {
         return $query->where('bookable', true);
     }
 
-    public function scopeAtis(Builder $query): Builder
+    public function scopeAtis(QBuilder|EBuilder|DBuilder $query): QBuilder|EBuilder|DBuilder
     {
         return $query->where('atis', true);
     }

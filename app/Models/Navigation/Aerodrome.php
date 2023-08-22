@@ -35,22 +35,6 @@ class Aerodrome extends Model
     }
 
     /**
-     * All runways this aerodrome has
-     */
-    public function runways(): HasMany
-    {
-        return $this->hasMany(Runway::class, 'aerodrome_id', 'id');
-    }
-
-    /**
-     * All associated navaids
-     */
-    public function navaids(): BelongsToMany
-    {
-        return $this->belongsToMany(Navaid::class, 'nav_aerodrome_navaids', 'aerodrome_id', 'navaid_id');
-    }
-
-    /**
      * The charts associated with this aerodrome
      *
      * @return BelongsToMany [type] [description]

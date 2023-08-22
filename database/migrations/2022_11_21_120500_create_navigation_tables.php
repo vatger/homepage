@@ -43,6 +43,7 @@ return new class extends Migration {
             $table->double('latitude', 12, 8)->nullable();
             $table->double('longitude', 12, 8)->nullable();
             $table->float('elevation')->default(0.0);
+            $table->unsignedBigInteger('selection')->default(0);
             $table->timestamps();
         });
 
@@ -53,6 +54,7 @@ return new class extends Migration {
             $table->double('frequency', 6, 3);
             $table->text('description')->nullable();
             $table->boolean('bookable')->default(true);
+            $table->unsignedBigInteger('selection')->default(0);
             $table->timestamps();
         });
 
