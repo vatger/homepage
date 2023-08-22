@@ -25,7 +25,7 @@ class User extends Authenticatable
 
     protected $casts = [''];
 
-    protected $appends = ['username'];
+    protected $appends = ['username', 'username_short'];
 
     public $incrementing = false;
 
@@ -105,6 +105,16 @@ class User extends Authenticatable
     public function getUsernameAttribute(): string
     {
         return $this->firstname . ' ' . $this->lastname;
+    }
+
+    /**
+     * Returns computed property of first and last name, i.e. the full name of the user
+     *
+     * @return string
+     */
+    public function getUsernameShortAttribute(): string
+    {
+        return $this->firstname . ' ' . \Str::substr($this->lastname, 0, 1) . '.';
     }
 
     /**

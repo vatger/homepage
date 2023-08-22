@@ -91,7 +91,6 @@
                         </th>
                         <th wire:click="sortBy('station_id')" style="width: 33%" scope="col" class="border-bottom text-center">
                             Position
-                            <i data-feather="{{ $this->getSortIconClasses('station_id') }}"></i>
                         </th>
                         <th wire:click="sortBy('starts_at')" style="width: 33%" scope="col" class="border-bottom text-center">
                             Zeitraum
@@ -99,12 +98,30 @@
                         </th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody wire:poll.15s>
                     @foreach($filtered_bookings as $booking)
                         <tr>
-                            <td>{{ $booking->controller_id }}</td>
+                            <td>
+                                {{ $booking->controller->username_short }}
+                                <small>({{ $booking->controller_id }})</small>
+                            </td>
                             <td>{{ $booking->station->ident }}</td>
-                            <td>{{ $booking->starts_at->format('h:i') }} <br> - {{ $booking->ends_at->format('h:i') }}z</td>
+                            <td>
+                                {{ $booking->starts_at->format('d.m.') }}
+                                {{ $booking->starts_at->format('H:i') }}-{{ $booking->ends_at->format('H:i') }}z
+                            </td>
+                            <td>
+                                @if(!$booking->vatsim_booking_id)
+                                    <button class="btn badge bg-warning" data-bs-toggle="tooltip" data-bs-placement="right" title="This booking was not added to the VATSIM-Booking-API.">
+                                        <i data-feather="info" class="fea icon-sm"></i>
+                                    </button>
+                                @endif
+                                @if($booking->controller_id == \Illuminate\Support\Facades\Auth::user()?->id)
+                                    <button wire:click="delete({{$booking->id}})" class="btn badge bg-danger mt-1">
+                                        <i data-feather="trash" class="fea icon-sm"></i>
+                                    </button>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>

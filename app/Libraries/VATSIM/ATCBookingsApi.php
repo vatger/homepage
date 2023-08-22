@@ -127,7 +127,7 @@ class ATCBookingsApi
             ];
         }
 
-        $res = self::send('DELETE', "booking/{$booking->vatbook_id}", []);
+        $res = self::send('DELETE', "booking/{$booking->vatsim_booking_id}", []);
 
         if ($res['code'] == 404) {
             $booking->delete();

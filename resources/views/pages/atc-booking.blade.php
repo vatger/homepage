@@ -31,7 +31,7 @@
         <!-- Hero End -->
 
         <section class="section">
-            <div class="container">
+            <div class="container-md">
                 <div class="row">
                     <!-- BLog Start -->
                     <div class="col-lg-7 col-md-6 mb-4">

@@ -10,7 +10,6 @@ use App\Models\Navigation\Station;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Locked;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class BookPositionTab extends Component
@@ -69,12 +68,12 @@ class BookPositionTab extends Component
         $this->val = 2;
         $validated = $this->validate([
             'selected_station' => 'required',
-            'selected_date' => 'required|date',
-            'selected_start_at' => 'required',
-            'selected_end_at' => 'required',
-            'selected_voice' => 'required',
-            'selected_event' => 'required',
-            'selected_training' => 'required',
+            'selected_date' => 'required|date_format:Y-m-d|after_or_equal:today',
+            'selected_start_at' => 'required|date_format:H:i',
+            'selected_end_at' => 'required:H:i',
+            'selected_voice' => 'required|boolean',
+            'selected_event' => 'required|boolean',
+            'selected_training' => 'required|boolean',
         ]);
         $this->val = 1;
 
@@ -84,9 +83,16 @@ class BookPositionTab extends Component
         $day = Carbon::createFromFormat('Y-m-d', $validated['selected_date']);
         $b->starts_at = $day->copy()->setTimeFromTimeString($validated['selected_start_at']);
         $b->ends_at = $day->copy()->setTimeFromTimeString($validated['selected_end_at']);
-
+        $b->voice = $validated['selected_voice'];
+        $b->event = $validated['selected_event'];
+        $b->training = $validated['selected_training'];
         $res = ATCBookingsApi::createAndSaveBooking($b);
 
         $this->showNoty($res['message'], $res['ok'] ? 'success' : 'warning');
+
+        if ($res['ok']) {
+            $this->selected_station = null;
+            $this->station_search = '';
+        }
     }
 }
