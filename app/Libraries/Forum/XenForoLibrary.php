@@ -15,7 +15,7 @@ class XenForoLibrary
     /**
      * Send an actual call to the XenForo API.
      */
-    private static function send(string $method, string $endpoint, array $data): false|ResponseInterface
+    private static function send(string $method, string $endpoint, array $data, bool $bypass = true): false|ResponseInterface
     {
         $client = new Client([
             'headers' => [
@@ -25,96 +25,16 @@ class XenForoLibrary
             ],
             'connect_timeout' => 25,
         ]);
-        $data['api_bypass_permissions'] = 1;
-        $url = config('forum.url') . '/api/' . $endpoint . '?api_bypass_permissions=1';
+        if ($bypass) {
+            $data['api_bypass_permissions'] = 1;
+            $url = config('forum.url') . '/api/' . $endpoint . '?api_bypass_permissions=1';
+        } else {
+            $url = config('forum.url') . '/api/' . $endpoint;
+        }
 
         try {
             return $client->request($method, $url, ['form_params' => $data]);
         } catch (GuzzleException $e) {
-            Log::debug($e->getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * Send a post request to a XenForo Api.
-     *
-     * @param [type] $endpoint [description]
-     * @param [type] $formData [description]
-     *
-     * @return [type] [description]
-     */
-    private static function _sendAPIPostCommandd($endpoint, $formData)
-    {
-        $data['headers'] = [
-            'Accept' => 'application/json',
-            'XF-Api-Key' => config('forum.apikey'),
-            'XF-Api-User' => 1,
-        ];
-        $data['api_bypass_permissions'] = 1;
-        $data['form_params'] = $formData;
-        $client = new Client();
-        try {
-            $response = $client->post(config('forum.url') . '/api/' . $endpoint, $data);
-
-            return $response;
-        } catch (Exception $e) {
-            Log::debug($e->getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * Send an update request to a XenForo API.
-     *
-     * @param [type] $endpoint [description]
-     * @param [type] $formData [description]
-     *
-     * @return [type] [description]
-     */
-    private static function _sendAPIPatchCommandd($endpoint, $formData)
-    {
-        $data['headers'] = [
-            'Accept' => 'application/json',
-            'XF-Api-Key' => config('forum.apikey'),
-            'XF-Api-User' => 1,
-        ];
-        $data['api_bypass_permissions'] = 1;
-        $data['form_params'] = $formData;
-        $client = new Client();
-        try {
-            $response = $client->put(config('forum.url') . '/api/' . $endpoint, $data);
-
-            return $response;
-        } catch (ClientException $e) {
-            Log::debug($e->getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * Send a delete request to XenForo Api.
-     *
-     * @param [type] $endpoint [description]
-     * @param [type] $formData [description]
-     *
-     * @return [type] [description]
-     */
-    private static function _sendAPIDeleteCommandd($endpoint, $formData)
-    {
-        $data['headers'] = [
-            'Accept' => 'application/json',
-            'XF-Api-Key' => config('forum.apikey'),
-            'XF-Api-User' => 1,
-        ];
-        $data['api_bypass_permissions'] = 1;
-        $data['form_params'] = $formData;
-        $client = new Client();
-        try {
-            $response = $client->delete(config('forum.url') . '/api/' . $endpoint, $data);
-
-            return $response;
-        } catch (ClientException $e) {
             Log::debug($e->getMessage());
             return false;
         }

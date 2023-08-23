@@ -33,6 +33,57 @@
             <!--end row-->
 
             <div class="row">
+                <div class="col-lg-4 col-md-12 mt-4 order-1">
+                    <div class="card border-0 rounded shadow p-4">
+                        <h5 class="mb-0">Übersicht:</h5>
+                        <div>
+                            <div class="d-flex align-items-center mt-4">
+                                <i data-feather="arrow-up" class="fea icon-ex-md text-muted me-3"></i>
+                                <div class="flex-1">
+                                    <h6 class="text-primary mb-2">Übergeordnetes Team:</h6>
+                                    @if($team->super_team)
+                                        <a href="{{ route('administration.team', ['team' => $team->super_team]) }}" class="text-muted">
+                                            {{ $team->super_team->name }}
+                                        </a>
+                                    @else
+                                        <p class="text-muted">kein übergeordnetes Team</p>
+                                    @endif
+                                    @can('membership.teams.edit.permissions')
+                                        <select wire:model.live="selected_superteam" class="form-select form-control mt-2" aria-label="Übergeordnetes Team">
+                                            <option value="-1" @if($selected_superteam == -1) selected @endif>kein übergeordnetes Team</option>
+                                            @foreach(App\Models\Groups\Team::all() as $t)
+                                                <option value="{{$t->id}}" @if($selected_superteam == $t->id) selected @endif>{{ $t->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    @endcan
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mt-4">
+                                <i data-feather="arrow-down" class="fea icon-ex-md text-muted me-3"></i>
+                                <div class="flex-1">
+                                    <h6 class="text-primary mb-2">Untergeordnete Teams:</h6>
+                                    @forelse($subteams as $t)
+                                        <p>
+                                            <a href="{{ route('administration.team', ['team' => $t]) }}" class="text-muted">
+                                                {{ $t->name }}
+                                            </a>
+                                        </p>
+                                    @empty
+                                        <p class="text-muted">keine untergeordnete Teams</p>
+                                    @endforelse
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center pt-3 mt-3 border-top">
+                                <button class="btn btn-sm btn-soft-danger" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">Gruppe
+                                    Löschen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end col-->
+
                 <div class="col-lg-8 col-md-12 mt-4 order-2">
                     <div class="card border-0 shadow rounded px-4 pb-4 pt-2">
                         <div class="row p-4 border-bottom">
@@ -91,74 +142,35 @@
                     </div>
                 </div>
                 <!--end col-->
+            </div>
+            <!--end row-->
 
-                <div class="col-lg-4 col-md-12 mt-4 order-1">
-                    <div class="card border-0 rounded shadow p-4">
-                        <h5 class="mb-0">Übersicht:</h5>
-                        <div class="mt-4">
-                            <div class="d-flex align-items-center">
-                                <i data-feather="users" class="fea icon-ex-md text-muted me-3"></i>
-                                <div class="flex-1">
-                                    <h6 class="text-primary mb-2">Benutzer:</h6>
-                                    <p class="text-muted">{{ $team->role->users->count() }}</p>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center mt-4">
-                                <i data-feather="lock" class="fea icon-ex-md text-muted me-3"></i>
-                                <div class="flex-1">
-                                    <h6 class="text-primary mb-2">Berechtigungen:</h6>
-                                    <p class="text-muted">{{ $team->role->permissions->count() }}</p>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center mt-4">
-                                <i data-feather="arrow-up" class="fea icon-ex-md text-muted me-3"></i>
-                                <div class="flex-1">
-                                    <h6 class="text-primary mb-2">Übergeordnetes Team:</h6>
-                                    @if($team->super_team)
-                                        <a href="{{ route('administration.team', ['team' => $team->super_team]) }}" class="text-muted">
-                                            {{ $team->super_team->name }}
-                                        </a>
-                                    @else
-                                        <p class="text-muted">kein übergeordnetes Team</p>
-                                    @endif
 
-                                    <select wire:model.live="selected_superteam" class="form-select form-control mt-2" aria-label="Übergeordnetes Team">
-                                        <option value="-1" @if($selected_superteam == -1) selected @endif>kein übergeordnetes Team</option>
-                                        @foreach(App\Models\Groups\Team::all() as $t)
-                                            <option value="{{$t->id}}" @if($selected_superteam == $t->id) selected @endif>{{ $t->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center mt-4">
-                                <i data-feather="arrow-down" class="fea icon-ex-md text-muted me-3"></i>
-                                <div class="flex-1">
-                                    <h6 class="text-primary mb-2">Untergeordnete Teams:</h6>
-                                    @forelse($subteams as $t)
-                                        <p>
-                                            <a href="{{ route('administration.team', ['team' => $t]) }}" class="text-muted">
-                                                {{ $t->name }}
-                                            </a>
-                                        </p>
-                                    @empty
-                                        <p class="text-muted">keine untergeordnete Teams</p>
-                                    @endforelse
-                                </div>
-                            </div>
+            @can('membership.teams.edit.permissions')
+                <div class="row">
+                    <div class="col-lg-4 col-md-12 mt-4 order-1">
+                        <div class="card border-0 rounded shadow p-4">
+                            <h5 class="mb-0">Einstellungen:</h5>
+                            <div>
+                                <div class="d-flex align-items-center mt-4">
+                                    <i data-feather="circle" class="fea icon-ex-md text-muted me-3"></i>
+                                    <div class="flex-1">
+                                        <h6 class="text-primary mb-2">Übergeordnetes Team:</h6>
 
-                            <div class="d-flex align-items-center pt-3 mt-3 border-top">
-                                <button class="btn btn-sm btn-soft-danger" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">Gruppe
-                                    Löschen
-                                </button>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mt-4">
+                                    <i data-feather="circle" class="fea icon-ex-md text-muted me-3"></i>
+                                    <div class="flex-1">
+                                        <h6 class="text-primary mb-2">Untergeordnete Teams:</h6>
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!--end col-->
-            </div>
-            <!--end row-->
-            @can('membership.teams.edit.permissions')
-                <div class="row">
+                    <!--end col-->
+
                     <div class="col-lg-8 col-md-12 mt-4 order-2">
                         <div class="card border-0 shadow rounded p-4">
                             <div class="row p-4 border-bottom">
@@ -210,16 +222,13 @@
                         </div>
                     </div>
                     <!--end col-->
-
-                    <div class="col-lg-4 col-md-12 mt-4 order-1">
-
-                    </div>
-                    <!--end col-->
                 </div>
                 <!--end row-->
+            @endcan
         </div>
+        <!--end row-->
     </div>
-    @endcan
+
 
     <div class="modal fade" id="deleteGroupModal" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -241,7 +250,7 @@
                         </div>
                         <div class="mt-4">
                             <h4>"{{ $team->name }}" Löschen?</h4>
-                            <p class="text-muted">Bist Du sicher, dass Du diese Gruppe löschen möchtest. Dieser Schritt kann nicht rückgängig
+                            <p class="text-muted">Bist Du sicher, dass Du diese Gruppe löschen möchtest? Dieser Schritt kann nicht rückgängig
                                 gemacht werden?</p>
                             <div class="mt-4">
                                 <a href="" class="btn btn-soft-danger btn-sm">Gruppe Löschen</a>
