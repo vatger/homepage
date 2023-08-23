@@ -40,7 +40,7 @@
                                 <div class="features feature-primary d-flex justify-content-between align-items-center bg-white">
                                     <div class="d-flex align-items-center">
                                         <div class="icon text-center rounded-pill">
-                                            <i class="mdi mdi-account-group fs-4 mb-0"></i>
+                                            <i data-feather="users" class="fs-4 mb-0"></i>
                                         </div>
                                         <div class="flex-1 ms-3">
                                             <h6 class="mb-0 text-muted">Mitglieder</h6>
@@ -97,27 +97,52 @@
                         <h5 class="mb-0">Übersicht:</h5>
                         <div class="mt-4">
                             <div class="d-flex align-items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                     class="feather feather-mail fea icon-ex-md text-muted me-3">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>
+                                <i data-feather="users" class="fea icon-ex-md text-muted me-3"></i>
                                 <div class="flex-1">
-                                    <h6 class="text-primary mb-0">Benutzer:</h6>
-                                    <a href="javascript:void(0)" class="text-muted">{{ $team->role->users->count() }}</a>
+                                    <h6 class="text-primary mb-2">Benutzer:</h6>
+                                    <p class="text-muted">{{ $team->role->users->count() }}</p>
                                 </div>
                             </div>
                             <div class="d-flex align-items-center mt-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                     class="feather feather-mail fea icon-ex-md text-muted me-3">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>
+                                <i data-feather="lock" class="fea icon-ex-md text-muted me-3"></i>
                                 <div class="flex-1">
-                                    <h6 class="text-primary mb-0">Berechtigungen:</h6>
-                                    <a href="javascript:void(0)" class="text-muted">{{ $team->role->permissions->count() }}</a>
+                                    <h6 class="text-primary mb-2">Berechtigungen:</h6>
+                                    <p class="text-muted">{{ $team->role->permissions->count() }}</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mt-4">
+                                <i data-feather="arrow-up" class="fea icon-ex-md text-muted me-3"></i>
+                                <div class="flex-1">
+                                    <h6 class="text-primary mb-2">Übergeordnetes Team:</h6>
+                                    @if($team->super_team)
+                                        <a href="{{ route('administration.team', ['team' => $team->super_team]) }}" class="text-muted">
+                                            {{ $team->super_team->name }}
+                                        </a>
+                                    @else
+                                        <p class="text-muted">kein übergeordnetes Team</p>
+                                    @endif
+
+                                    <select wire:model.live="selected_superteam" class="form-select form-control mt-2" aria-label="Übergeordnetes Team">
+                                        <option value="-1" @if($selected_superteam == -1) selected @endif>kein übergeordnetes Team</option>
+                                        @foreach(App\Models\Groups\Team::all() as $t)
+                                            <option value="{{$t->id}}" @if($selected_superteam == $t->id) selected @endif>{{ $t->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mt-4">
+                                <i data-feather="arrow-down" class="fea icon-ex-md text-muted me-3"></i>
+                                <div class="flex-1">
+                                    <h6 class="text-primary mb-2">Untergeordnete Teams:</h6>
+                                    @forelse($subteams as $t)
+                                        <p>
+                                            <a href="{{ route('administration.team', ['team' => $t]) }}" class="text-muted">
+                                                {{ $t->name }}
+                                            </a>
+                                        </p>
+                                    @empty
+                                        <p class="text-muted">keine untergeordnete Teams</p>
+                                    @endforelse
                                 </div>
                             </div>
 
@@ -132,68 +157,69 @@
                 <!--end col-->
             </div>
             <!--end row-->
-
-            <div class="row">
-                <div class="col-lg-8 col-md-12 mt-4 order-2">
-                    <div class="card border-0 shadow rounded p-4">
-                        <div class="row p-4 border-bottom">
-                            <div class="col-lg-8 col-md-6 col-sm-12 mb-1">
-                                <div class="features feature-primary d-flex justify-content-between align-items-center bg-white">
-                                    <div class="d-flex align-items-center">
-                                        <div class="icon text-center rounded-pill">
-                                            <i class="mdi mdi-account-group fs-4 mb-0"></i>
-                                        </div>
-                                        <div class="flex-1 ms-3">
-                                            <h6 class="mb-0 text-muted">Berechtigungen</h6>
-                                            <p class="fs-5 text-dark fw-bold mb-0" id="element-count">{{ $team->role->permissions->count() }}</p>
+            @can('membership.teams.edit.permissions')
+                <div class="row">
+                    <div class="col-lg-8 col-md-12 mt-4 order-2">
+                        <div class="card border-0 shadow rounded p-4">
+                            <div class="row p-4 border-bottom">
+                                <div class="col-lg-8 col-md-6 col-sm-12 mb-1">
+                                    <div class="features feature-primary d-flex justify-content-between align-items-center bg-white">
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon text-center rounded-pill">
+                                                <i data-feather="lock" class="fs-4 mb-0"></i>
+                                            </div>
+                                            <div class="flex-1 ms-3">
+                                                <h6 class="mb-0 text-muted">Berechtigungen</h6>
+                                                <p class="fs-5 text-dark fw-bold mb-0" id="element-count">{{ $team->role->permissions->count() }}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row pt-4 ps-4 table-responsive">
-                            <table class="table table-center bg-white mb-0">
-                                <thead>
-                                <tr class="text-center">
-                                    <th>ID</th>
-                                    <th>Berechtigung</th>
-                                    <th style="width: 25% !important;">Aktion</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach ($permissions as $p)
+                            <div class="row pt-4 ps-4 table-responsive">
+                                <table class="table table-center bg-white mb-0">
+                                    <thead>
                                     <tr class="text-center">
-                                        <td>{{ $p->id }}</td>
-                                        <td>{{ $p->name }}</td>
-                                        <td>
-                                            @if ($team->role->hasPermissionTo($p))
-                                                <button wire:click="changePermission({{$p->id}}, false)" class="btn btn-sm btn-soft-danger">
-                                                    Entfernen
-                                                </button>
-                                            @else
-                                                <button wire:click="changePermission({{$p->id}}, true)" class="btn btn-sm btn-soft-success">
-                                                    Hinzufügen
-                                                </button>
-                                            @endif
-                                        </td>
+                                        <th>ID</th>
+                                        <th>Berechtigung</th>
+                                        <th style="width: 25% !important;">Aktion</th>
                                     </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($permissions as $p)
+                                        <tr class="text-center">
+                                            <td>{{ $p->id }}</td>
+                                            <td>{{ $p->name }}</td>
+                                            <td>
+                                                @if ($team->role->hasPermissionTo($p))
+                                                    <button wire:click="changePermission({{$p->id}}, false)" class="btn btn-sm btn-soft-danger">
+                                                        Entfernen
+                                                    </button>
+                                                @else
+                                                    <button wire:click="changePermission({{$p->id}}, true)" class="btn btn-sm btn-soft-success">
+                                                        Hinzufügen
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!--end col-->
+                    <!--end col-->
 
-                <div class="col-lg-4 col-md-12 mt-4 order-1">
+                    <div class="col-lg-4 col-md-12 mt-4 order-1">
 
+                    </div>
+                    <!--end col-->
                 </div>
-                <!--end col-->
-            </div>
-            <!--end row-->
+                <!--end row-->
         </div>
     </div>
+    @endcan
 
     <div class="modal fade" id="deleteGroupModal" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">

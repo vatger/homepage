@@ -45,7 +45,7 @@
                                     <a class="nav-link rounded {{ $tab == 'profile' ? 'active' : '' }}" data-bs-toggle="pill" role="tab"
                                        aria-controls="profile" aria-selected="true">
                                         <div class="text-start py-1 px-2">
-                                            <h6 class="mb-0">@lang('profile.profile.menu.profile-text')</h6>
+                                            <h6 class="mb-0">@lang('profile.profile.menu.profile-text') / FIR</h6>
                                         </div>
                                     </a>
                                     <!--end nav link-->

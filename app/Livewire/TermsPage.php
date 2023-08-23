@@ -52,6 +52,7 @@ class TermsPage extends Component
         switch ($type) {
             case 'gdpr':
                 Auth::user()->settings->update(['gdpr_agreed_at' => Carbon::now()]);
+                break;
             case 'imprint':
                 Auth::user()->settings->update(['imprint_agreed_at' => Carbon::now()]);
                 break;

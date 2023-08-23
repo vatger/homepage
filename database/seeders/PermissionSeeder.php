@@ -22,6 +22,7 @@ class PermissionSeeder extends Seeder
         'membership.teams.view',
         'membership.teams.edit.permissions',
         'membership.teams.edit.members',
+        'membership.teams.edit.members.subteam',
 
         // Tech
         'tech.access',
