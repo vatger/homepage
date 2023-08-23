@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="w-100">
-            <div class="accordion" id="general-section">
+            <div wire:ignore class="accordion" id="general-section">
                 <div class="accordion-item rounded shadow bg-white">
                     <h2 class="accordion-header">
                         <button class="accordion-button border-0 bg-light collapsed" type="button" data-bs-toggle="collapse"

@@ -6,6 +6,7 @@ use App\Http\Middleware\CookieConsentMiddleware;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\LocaleMiddleware;
 use App\Http\Middleware\Membership\CheckHomepageBanned;
+use App\Http\Middleware\Membership\CheckTermsMiddleware;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SysLogMiddleware;
@@ -104,5 +105,6 @@ class Kernel extends HttpKernel
         'verified' => EnsureEmailIsVerified::class,
         'cookie.consent' => CookieConsentMiddleware::class,
         'banned' => CheckHomepageBanned::class,
+        'check-terms' => CheckTermsMiddleware::class,
     ];
 }

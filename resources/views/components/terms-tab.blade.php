@@ -2,8 +2,13 @@
     'ident',
     'caption',
     'date',
+    'agreed_date' => null,
     'text'
 ])
+
+@php
+    $agreed_date = $agreed_date ? \Carbon\Carbon::create($agreed_date) : null;
+@endphp
 
 <div class="accordion-item rounded mt-2">
     <h2 class="accordion-header" id="{{ $ident }}-h">
@@ -24,4 +29,12 @@
 <div class="mb-4">
     <a wire:click="accept('{{ $ident }}')" class="btn btn-primary mt-2 me-2">Accept</a>
     <a wire:click="decline('{{ $ident }}')" class="btn btn-outline-primary mt-2">Decline</a>
+
+    @if($agreed_date && $agreed_date->isAfter($date))
+        <div class="text-success mt-1">Zugestimmt am {{ $agreed_date->format('jS F Y H:i') }}</div>
+    @elseif($agreed_date)
+        <div class="text-warning mt-1">Zugestimmt am {{ $agreed_date->format('jS F Y H:i') }}</div>
+    @else
+        <div class="text-warning mt-1">Noch nicht zugestimmt</div>
+    @endif
 </div>

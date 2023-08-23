@@ -43,6 +43,7 @@ class TermsPage extends Component
             'imprint_date' => $this->imprint_date,
             'termsofuse_date' => $this->termsofuse_date,
             'satzung_date' => $this->satzung_date,
+            'user_settings' => Auth::user()?->settings,
         ]);
     }
 
@@ -69,6 +70,7 @@ class TermsPage extends Component
         switch ($type) {
             case 'gdpr':
                 Auth::user()->settings->update(['gdpr_agreed_at' => null]);
+                break;
             case 'imprint':
                 Auth::user()->settings->update(['imprint_agreed_at' => null]);
                 break;
