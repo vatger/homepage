@@ -1,12 +1,10 @@
 <?php
 
 use App\Http\Controllers\ConnectController;
-
-use App\Models\Groups\Team;
 use Illuminate\Support\Facades\Route;
 
 Route::get('login', function () {
-    return redirect('vatsim.authentication.connect.login');
+    return redirect(route('vatsim.authentication.connect.login'));
 })->name('login');
 
 Route::prefix('authentication')

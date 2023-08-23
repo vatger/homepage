@@ -26,7 +26,7 @@
                     </a>
                 </li>
             @endcan
-            @can('membership.teams.view')
+            @canany(['membership.teams.view', 'membership.teams.edit.members.subteam'])
                 <li>
                     <a href="{{ route('administration.teams') }}">
                         <i data-feather="circle" class="me-2"></i>

@@ -33,6 +33,7 @@ class TeamListPage extends Component
             $teams = $teams->filter(function ($team) {
                 return Gate::allows('membership.teams.edit.members.subteam-check', $team);
             });
+            $limitedselection = true;
         }
         return view('pages.admin.teams')->with([
             'teams' => $teams->paginate(),
