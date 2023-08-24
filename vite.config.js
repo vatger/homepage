@@ -11,6 +11,7 @@ export default defineConfig({
             host: 'vatger.test',
         },
     },
+
     plugins: [
         laravel([
             'resources/scss/app.scss',
@@ -30,7 +31,6 @@ export default defineConfig({
             'resources/ts/special/aerodrome.ts',
             'resources/scss/special/aerodrome-mapbox.scss',
         ]),
-        splitVendorChunkPlugin(),
         run([
             {
                 name: 'build routes',
@@ -39,6 +39,19 @@ export default defineConfig({
             },
         ]),
     ],
+
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        return id.toString().split('node_modules/')[1].split('/')[0].toString();
+                    }
+                },
+            },
+        },
+    },
+
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'resources'),
