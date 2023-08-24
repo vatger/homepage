@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Pilot\Aerodrome;
 
 use App\Http\Controllers\Controller;
+use App\Libraries\StandStatus\StandStatus;
+use App\Libraries\StandStatus\StandStatusLibrary;
 use App\Models\Navigation\Aerodrome;
-use App\Models\Regionalgroup_remove\FlightInformationRegion;
-use App\Models\Regionalgroup_remove\Regionalgroup;
+
 use CobaltGrid\VatsimStandStatus\Exceptions\CoordinateOutOfBoundsException;
 use CobaltGrid\VatsimStandStatus\Exceptions\NoStandDataException;
 use Illuminate\Contracts\Foundation\Application;
@@ -13,7 +14,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Models\Navigation\StandStatus;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
@@ -137,10 +137,6 @@ class AerodromeController extends Controller
         return view('homepage.pilots.aerodromes.charts')->with(['aerodrome' => $aerodrome, 'charts' => $charts]);
     }
 
-    /**
-     * @throws NoStandDataException
-     * @throws CoordinateOutOfBoundsException
-     */
     public function getStandStatus(Request $request)
     {
         if ($request->ajax()) {
@@ -150,31 +146,7 @@ class AerodromeController extends Controller
                 return [];
             }
 
-            $standFilePath = storage_path('app') . '/navigation/stands/' . strtolower($aerodrome->icao) . '.csv';
-
-            if (File::exists($standFilePath)) {
-                $stands = new StandStatus($aerodrome->latitude, $aerodrome->longitude);
-                $stands
-                    ->setMaxStandDistance(0.02)
-                    ->setMaxDistanceFromAirport(5)
-                    ->setMaxAircraftAltitude($aerodrome->elevation + 300);
-                $stands->loadStandDataFromCSV($standFilePath)->parseData();
-
-                if ($stands) {
-                    $result = [];
-                    foreach ($stands->stands() as $stand) {
-                        $result[] = (object) [
-                            'id' => $stand->getName(),
-                            'latitude' => $stand->latitude,
-                            'longitude' => $stand->longitude,
-                            'occupier' => $stand->occupier?->callsign,
-                        ];
-                    }
-                    return $result;
-                }
-            } else {
-                return [];
-            }
+            return StandStatusLibrary::status($aerodrome);
         }
         abort(403);
     }

@@ -15,7 +15,7 @@ Route::middleware('cookie.consent')->group(function () {
     Route::group(['prefix' => 'pilots', 'as' => 'pilots.'], function () {
         Route::group(['prefix' => 'aerodromes', 'as' => 'aerodromes.'], function () {
             Route::get('/{icao}/charts', [AerodromeController::class, 'viewAerodromeCharts'])->name('charts');
-            Route::get('/{icao}', [AerodromeController::class, 'viewAerodrome'])->name('view');
+            Route::get('/{icao}', App\Livewire\AerodromePage::class)->name('view');
             Route::get('/', [AerodromeController::class, 'viewAerodromes'])->name('viewall');
         });
     });

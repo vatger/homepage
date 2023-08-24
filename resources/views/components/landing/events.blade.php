@@ -62,5 +62,5 @@
 <!-- section End -->
 
 @push('scripts')
-    @vite(['resources/ts/landing/events.ts'])
+    @vite(['resources/ts/special/events.ts'])
 @endpush

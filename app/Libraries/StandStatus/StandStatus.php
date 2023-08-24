@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Libraries;
+namespace App\Libraries\StandStatus;
 
-//use CobaltGrid\VatsimStandStatus\StandStatus as BaseStatus;
+use CobaltGrid\VatsimStandStatus\StandStatus as BaseStatus;
 use Illuminate\Support\Str;
 
-class StandStatus // extends BaseStatus
+class StandStatus extends BaseStatus
 {
     private $maxStandDistance = 0.07; // In kilometeres
     private $hideStandSidesWhenOccupied = true;

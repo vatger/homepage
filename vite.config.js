@@ -26,7 +26,9 @@ export default defineConfig({
             'resources/css/skyblue.css',
             'resources/css/yellow.css',
             'resources/ts/app.ts',
-            'resources/ts/landing/events.ts',
+            'resources/ts/special/events.ts',
+            'resources/ts/special/aerodrome.ts',
+            'resources/scss/special/aerodrome-mapbox.scss',
         ]),
         splitVendorChunkPlugin(),
         run([
