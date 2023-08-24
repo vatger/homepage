@@ -1,5 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import $ from 'jquery';
+import { isEmpty } from 'lodash';
 
 $(document).ready(map);
 
@@ -31,10 +32,10 @@ function map() {
         else el.className = 'marker-occupied';
 
         let callsign = '';
-        if (stand['occupier'] != null) {
+        if (!isEmpty(stand['occupier'])) {
             callsign = `<p class="pb-0 mb-0">${stand['occupier']}</p>`;
         }
-        console.log([stand['longitude'], stand['latitude']]);
+        console.log([stand['id'], stand['occupier']]);
         let marker = new mapboxgl.Marker(el)
             .setLngLat([stand['longitude'], stand['latitude']])
             .setPopup(

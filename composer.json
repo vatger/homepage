@@ -14,7 +14,7 @@
     },
     {
       "type": "vcs",
-      "url": "https://github.com/paulhollmann/vatsimphp.git"
+      "url": "https://github.com/paulhollmann/vatsim-datafeed.git"
     }
   ],
   "require": {

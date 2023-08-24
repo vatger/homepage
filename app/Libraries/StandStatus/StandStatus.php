@@ -2,6 +2,7 @@
 
 namespace App\Libraries\StandStatus;
 
+use CobaltGrid\VatsimStandStatus\Exceptions\CoordinateOutOfBoundsException;
 use CobaltGrid\VatsimStandStatus\StandStatus as BaseStatus;
 use Illuminate\Support\Str;
 
@@ -9,7 +10,7 @@ class StandStatus extends BaseStatus
 {
     private $maxStandDistance = 0.07; // In kilometeres
     private $hideStandSidesWhenOccupied = true;
-    private $maxDistanceFromAirport = 2; // In kilometeres
+    private $maxDistanceFromAirport = 4; // In kilometeres
     private $maxAircraftAltitude = 3000; // In feet
     private $maxAircraftGroundspeed = 10; // In knots
 
@@ -17,10 +18,11 @@ class StandStatus extends BaseStatus
      * Initialize the Status class
      * @param [type]  $latitude           [description]
      * @param [type]  $longitude          [description]
+     * @throws CoordinateOutOfBoundsException
      */
     function __construct($latitude, $longitude)
     {
-        //parent::__construct($latitude, $longitude);
+        parent::__construct($latitude, $longitude);
     }
 
     /**
@@ -175,30 +177,5 @@ class StandStatus extends BaseStatus
         } else {
             return $standSides;
         }
-    }
-
-    public function getAircraftWithinParameters()
-    {
-        // $pilots = \App\Models\Network\PilotClient::online()->withinAirport($this->airportICAO)->get();
-
-        // $filteredResults = [];
-        // foreach ($pilots as $pilot) {
-        //     $d = $this->getCoordDistance($pilot->current_latitude, $pilot->current_longitude, $this->airportCoordinates['lat'], $this->airportCoordinates['long']);
-        //     // \Log::info('Flight: '.$pilot->callsign.' has distance '.$d.' to icao '.$this->airportICAO);
-        //     if ($d <= $this->getMaxDistanceFromAirport()) {
-        //         //$pilots[] = array('callsign' => "TEST", "latitude" => 55.949228, "longitude" => -3.364303, "altitude" => 0, "groundspeed" => 0, "planned_destairport" => "TEST", "planned_depairport" => "TEST");
-        //         $filteredResults[] = array(
-        //             'callsign' => $pilot->callsign,
-        //             'latitude' => $pilot->current_latitude,
-        //             'longitude' => $pilot->current_longitude,
-        //             'altitude' => $pilot->current_altitude,
-        //             'groundspeed' => $pilot->current_groundspeed,
-        //             'planned_destairport' => $pilot->arrival_airport,
-        //             'planned_depairport' => $pilot->departure_airport,
-        //         );
-        //     }
-        // }
-        // $this->aircraftSearchResults = $filteredResults;
-        return true;
     }
 }
