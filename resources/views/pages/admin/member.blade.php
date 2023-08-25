@@ -1,37 +1,20 @@
 <div>
     <div class="container-fluid">
         <div class="layout-specing">
-            <div class="d-md-flex justify-content-between align-items-center">
-                <h5 class="mb-0">{{ $user->username }}</h5>
+            <x-layouts.admin.content
+                    :header="$user->username"
+                    :links="[
+                        route('administration.dashboard') => 'Administration',
+                        route('administration.members') => 'Mitgliederverwaltung'
+                    ]"
+            ></x-layouts.admin.content>
 
-                <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
-                    <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
-                        <li class="breadcrumb-item text-capitalize"><a href="{{ route('administration.dashboard') }}">Administration</a></li>
-                        <li class="breadcrumb-item text-capitalize">Mitgliederverwaltung</li>
-                        <li class="breadcrumb-item text-capitalize active" aria-current="page">{{ $user->id }}</li>
-                    </ul>
-                </nav>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col-12">
-                    <div class="bg-primary card border-0 shadow rounded overflow-hidden p-4"
-                         style="background: url('{{ asset('images/profile/profile_1.png') }}'); background-position: center; background-size: cover;">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-6 col-sm-8">
-                                <div class="text-center bg-white p-4 rounded">
-                                    <img src="{{ asset('/images/profile/avatar_placeholder.png') }}" class="rounded-circle shadow avatar avatar-md-md"
-                                         alt="">
-                                    <h5 class="mt-3 mb-0">{{ $user->username }}</h5>
-                                    <small class="text-muted">{{ $user->id }}</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--end col-->
-            </div>
-            <!--end row-->
+            <x-layouts.admin.card-image-bar
+                    :bg_img="asset('images/profile/profile_1.png')"
+                    :m_img="asset('/images/profile/avatar_placeholder.png')"
+                    :title="$user->username"
+                    :subtitle="$user->id"
+            ></x-layouts.admin.card-image-bar>
 
             <div class="row">
                 <div class="col-lg-8 col-md-12 mt-4 order-2">

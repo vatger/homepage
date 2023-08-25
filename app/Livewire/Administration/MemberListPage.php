@@ -33,7 +33,7 @@ class MemberListPage extends Component
         $this->setCustomNameFiltering();
     }
 
-    #[Layout('layouts.admin-master')]
+    #[Layout('layouts.admin.admin-master')]
     public function render()
     {
         // build sql query

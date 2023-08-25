@@ -1,16 +1,13 @@
 <div class="container-fluid">
     <div class="layout-specing">
-        <div class="d-md-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Flugplatzverwaltung</h5>
 
-            <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
-                <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
-                    <li class="breadcrumb-item text-capitalize"><a href="{{ route('administration.dashboard') }}">Administration</a></li>
-                    <li class="breadcrumb-item text-capitalize"><a href="{{ route('administration.navigation') }}">Navigation</a></li>
-                    <li class="breadcrumb-item text-capitalize active" aria-current="page">Flugplatzverwaltung</li>
-                </ul>
-            </nav>
-        </div>
+        <x-layouts.admin.content
+                header="Flugplatzverwaltung"
+                :links="[
+                    route('administration.dashboard') => 'Administration',
+                    route('administration.navigation') => 'Navigation'
+                ]"
+        />
 
         <div class="row">
             <div class="col mt-4">
@@ -33,8 +30,7 @@
                             <li class="list-inline-item" style="width: 100%">
                                 <div class="form-icon position-relative">
                                     <i data-feather="search" class="fea icon-sm icons"></i>
-                                    <input wire:model.live="searchstr" class="form-control ps-5" type="text"
-                                           placeholder="ICAO, IATA, Name">
+                                    <input wire:model.live="searchstr" class="form-control ps-5" type="text" placeholder="ICAO, IATA, Name">
                                 </div>
                             </li>
                         </div>
@@ -79,6 +75,7 @@
                                         <td>{{ $aerodrome->icao }} | {{ $aerodrome->iata }}</td>
                                         <td>{{ $aerodrome->active }}</td>
                                         <td>{{ $aerodrome->fir }}</td>
+                                        <td><a href="{{route('administration.navigation.aerodromes.view', ['aerodrome' => $aerodrome])}}"> clcijck</a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>

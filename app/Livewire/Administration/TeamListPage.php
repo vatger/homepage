@@ -23,7 +23,7 @@ class TeamListPage extends Component
         Auth::user()->can('membership.teams.view');
     }
 
-    #[Layout('layouts.admin-master')]
+    #[Layout('layouts.admin.admin-master')]
     public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
         //todo improve

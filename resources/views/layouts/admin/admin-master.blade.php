@@ -9,7 +9,7 @@
 </head>
 <body>
 
-@include('layouts.admin-content')
+@include('layouts.admin.admin-content')
 
 @vite(['resources/ts/app.ts'])
 @livewireScriptConfig

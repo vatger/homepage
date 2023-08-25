@@ -31,7 +31,7 @@ class TeamPage extends Component
         $this->authorize('membership.teams.edit.members.subteam-check', $this->team);
     }
 
-    #[Layout('layouts.admin-master')]
+    #[Layout('layouts.admin.admin-master')]
     public function render()
     {
         return view('pages.admin.team')->with([

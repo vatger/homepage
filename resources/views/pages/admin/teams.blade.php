@@ -1,15 +1,9 @@
 <div class="container-fluid">
     <div class="layout-specing">
-        <div class="d-md-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Gruppenverwaltung</h5>
-
-            <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
-                <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
-                    <li class="breadcrumb-item text-capitalize"><a href="{{ route('administration.dashboard') }}">Administration</a></li>
-                    <li class="breadcrumb-item text-capitalize active" aria-current="page">Gruppenverwaltung</li>
-                </ul>
-            </nav>
-        </div>
+        <x-layouts.admin.content
+                header="Gruppenverwaltung"
+                :links="[ route('administration.dashboard') => 'Administration' ]"
+        ></x-layouts.admin.content>
 
         <div class="row">
             <div class="col mt-4">

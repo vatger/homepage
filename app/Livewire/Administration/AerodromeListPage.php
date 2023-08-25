@@ -18,7 +18,7 @@ class AerodromeListPage extends Component
 
     public string $searchstr = '';
 
-    #[Layout('layouts.admin-master')]
+    #[Layout('layouts.admin.admin-master')]
     public function render()
     {
         $aerodromes = Aerodrome::query();

@@ -46,7 +46,7 @@ Route::prefix('navigation')->group(function () {
         Route::post('{aerodrome}/charts', [AerodromeController::class, 'assignChart'])->name('administration.navigation.aerodromes.chart.assign');
         Route::patch('{aerodrome}/chartfox', [AerodromeController::class, 'toggleChartfox'])->name('administration.navigation.aerodromes.chartfox');
         Route::post('{aerodrome}', [AerodromeController::class, 'update'])->name('administration.navigation.aerodromes.update');
-        Route::get('{aerodrome}', [AerodromeController::class, 'show'])->name('administration.navigation.aerodromes.view');
+        Route::get('{aerodrome}', App\Livewire\Administration\AerodromePage::class)->name('administration.navigation.aerodromes.view');
         Route::get('', App\Livewire\Administration\AerodromeListPage::class)->name('administration.navigation.aerodromes');
     });
 

@@ -1,36 +1,20 @@
 <div>
     <div class="container-fluid">
         <div class="layout-specing">
-            <div class="d-md-flex justify-content-between align-items-center">
-                <h5 class="mb-0"></h5>
+            <x-layouts.admin.content
+                    :header="$team->name"
+                    :links="[
+                    route('administration.dashboard') => 'Administration',
+                    route('administration.teams') => 'Gruppenverwaltung',
+                ]"
+            ></x-layouts.admin.content>
 
-                <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
-                    <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
-                        <li class="breadcrumb-item text-capitalize"><a href="{{ route('administration.dashboard') }}">Administration</a></li>
-                        <li class="breadcrumb-item text-capitalize">Mitgliederverwaltung</li>
-                        <li class="breadcrumb-item text-capitalize active" aria-current="page">Gruppenverwaltung</li>
-                    </ul>
-                </nav>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col-12">
-                    <div class="bg-primary card border-0 shadow rounded overflow-hidden p-4"
-                         style="background: url('{{ asset('theme/images/profile/profile_1.png') }}') center;">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-6 col-sm-8">
-                                <div class="text-center bg-white p-4 rounded">
-                                    <img src="{{ asset('/images/profile/avatar_placeholder.png') }}" class="rounded-circle shadow avatar avatar-md-md" alt="">
-                                    <h5 class="mt-3 mb-0">{{ $team->name }}</h5>
-                                    <small class="text-muted">{{ 'Erstellt am: ' . $team->created_at->format('d.m.Y') }}</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--end col-->
-            </div>
-            <!--end row-->
+            <x-layouts.admin.card-image-bar
+                    :bg_img="asset('images/profile/profile_1.png')"
+                    :m_img="asset('/images/profile/avatar_placeholder.png')"
+                    :title="$team->name"
+                    :subtitle="'Erstellt am: ' . $team->created_at->format('d.m.Y')"
+            ></x-layouts.admin.card-image-bar>
 
             <div class="row">
                 <div class="col-lg-4 col-md-12 mt-4 order-1">

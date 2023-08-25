@@ -2,20 +2,19 @@
 
 namespace App\Livewire\Administration;
 
-use App\Models\Membership\User\User;
+use App\Models\Navigation\Aerodrome;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
-class MemberPage extends Component
+class AerodromePage extends Component
 {
     #[Locked]
-    public User $user;
+    public Aerodrome $aerodrome;
 
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
-        $this->authorize('membership.users.details.view');
-        return view('pages.admin.member')->with(['user' => $this->user]);
+        return view('pages.admin.aerodrome')->with(['aerodrome' => $this->aerodrome]);
     }
 }
