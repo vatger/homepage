@@ -8,11 +8,11 @@ use Illuminate\Support\Str;
 
 class StandStatus extends BaseStatus
 {
-    private $maxStandDistance = 0.07; // In kilometeres
-    private $hideStandSidesWhenOccupied = true;
-    private $maxDistanceFromAirport = 4; // In kilometeres
-    private $maxAircraftAltitude = 3000; // In feet
-    private $maxAircraftGroundspeed = 10; // In knots
+    private float $maxStandDistance = 0.03; // In kilometeres
+    private bool $hideStandSidesWhenOccupied = true;
+    private int $maxDistanceFromAirport = 5; // In kilometeres
+    private int $maxAircraftAltitude = 3000; // In feet
+    private int $maxAircraftGroundspeed = 10; // In knots
 
     /**
      * Initialize the Status class
@@ -23,53 +23,12 @@ class StandStatus extends BaseStatus
     function __construct($latitude, $longitude)
     {
         parent::__construct($latitude, $longitude);
-    }
-
-    /**
-     * Load stand definitions from standFile
-     *
-     * @return [type] [description]
-     */
-    public function loadStandsData()
-    {
-        $array = $fields = [];
-        $i = 0;
-        $handle = @fopen($this->airportStandsFile, 'r');
-        if ($handle) {
-            while (false !== ($row = fgetcsv($handle, 4096))) {
-                if (empty($fields)) {
-                    $fields = $row;
-                    continue;
-                }
-                $y = 0;
-                foreach ($row as $k => $value) {
-                    if (1 == $y) {
-                        // Convert LAT coordinate
-                        // $array[$row[0]][$fields[$k]] = $this->convertCAALatCoord($value);
-                        $array[$row[0]][$fields[$k]] = $value;
-                    } elseif (2 == $y) {
-                        // Convert LONG coordinate
-                        // $array[$row[0]][$fields[$k]] = $this->convertCAALongCoord($value);
-                        $array[$row[0]][$fields[$k]] = $value;
-                    } else {
-                        $array[$row[0]][$fields[$k]] = $value;
-                    }
-                    ++$y;
-                }
-                ++$i;
-            }
-            if (!feof($handle)) {
-                echo "Error: unexpected fgets() fail\n";
-
-                return false;
-            }
-            fclose($handle);
-        } else {
-            return false;
-        }
-        $this->stands = $array;
-
-        return true;
+        $this->setMaxStandDistance($this->maxStandDistance);
+        $this->setHideStandSidesWhenOccupied($this->hideStandSidesWhenOccupied);
+        $this->setMaxDistanceFromAirport($this->maxDistanceFromAirport);
+        $this->setMaxAircraftAltitude($this->maxAircraftAltitude);
+        $this->setMaxAircraftGroundspeed($this->maxAircraftGroundspeed);
+        $stands = $this->setStandExtensions(['R', 'L', 'A', 'B', 'C']);
     }
 
     /**
@@ -81,7 +40,6 @@ class StandStatus extends BaseStatus
     public function standSides($standID)
     {
         $standSides = [];
-        $stands = $this->stands;
 
         // Consider only those sidestands that are stands with appendix
         // R, L, A, B, C

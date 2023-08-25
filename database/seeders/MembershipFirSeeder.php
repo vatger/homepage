@@ -6,7 +6,7 @@ use App\Models\Groups\Fir;
 use App\Models\Groups\Team;
 use Illuminate\Database\Seeder;
 
-class FirSeeder extends Seeder
+class MembershipFirSeeder extends Seeder
 {
     /**
      * Run the database seeds.

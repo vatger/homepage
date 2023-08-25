@@ -13,9 +13,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(PermissionSeeder::class);
 
-        $this->call(FirSeeder::class);
+        $this->call(MembershipFirSeeder::class);
 
         $this->call(DemoSeeder::class);
+
+        $this->call(NavFirSeeder::class);
 
         $this->call(AerodromeSeeder::class);
 

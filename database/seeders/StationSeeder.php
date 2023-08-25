@@ -40,6 +40,9 @@ class StationSeeder extends Seeder
             $ns->bookable = $s->bookable;
             //$ns->atis = $s->atis;
             $ns->save();
+            try {
+            } catch (\Exception $e) {
+            }
             $this->command->getOutput()->progressAdvance();
         }
 

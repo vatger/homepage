@@ -3,6 +3,7 @@
 namespace App\Models\Navigation;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as DBuilder;
@@ -17,12 +18,12 @@ class Aerodrome extends Model
     protected static array $logAttributes = ['*'];
 
     /**
-     * All regionalgroups this aerodrome is assigned to
+     * The FIR is assigned to
      */
-    //public function regionalgroups(): BelongsToMany
-    //{
-    //    return $this->belongsToMany(Regionalgroup::class, 'navigation_aerodrome_regionalgroup', 'regionalgroup_id', 'aerodrome_id');
-    //}
+    public function fir(): BelongsTo|Fir
+    {
+        return $this->belongsTo(Fir::class);
+    }
 
     /**
      * Get all assigned stations

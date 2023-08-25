@@ -35,9 +35,9 @@
                 </li>
             @endcan
             <li>
-                <a href="{{ route('administration.dashboard') }}">
+                <a href="{{ route('administration.navigation.aerodromes') }}">
                     <i data-feather="circle" class="me-2"></i>
-                    Dashboard
+                    Aerodromes
                 </a>
             </li>
             <li>
