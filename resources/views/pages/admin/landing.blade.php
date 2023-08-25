@@ -1,18 +1,12 @@
-@extends('layouts.admin-master')
+@extends('layouts.admin.admin-master')
 
 @section('content')
     <div class="container-fluid">
         <div class="layout-specing">
-            <div class="d-md-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Dashboard</h5>
 
-                <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
-                    <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
-                        <li class="breadcrumb-item text-capitalize"><a href="{{ route('administration.dashboard') }}">Administration</a></li>
-                        <li class="breadcrumb-item text-capitalize active" aria-current="page">Dashboard</li>
-                    </ul>
-                </nav>
-            </div>
+            <x-layouts.admin.content
+                    header="Dashboard"
+            ></x-layouts.admin.content>
 
             <div class="row row-cols-xl-3 row-cols-md-2 row-cols-1">
 

@@ -1,6 +1,6 @@
 @props([
     'header' => 'PLACE TITLE',
-    'links' => ['href' => 'NAME']
+    'links' => [ route('administration.dashboard') => 'Administration' ]
 ])
 <div class="d-md-flex justify-content-between align-items-center">
     <h5 class="mb-0">{{ $header }}</h5>

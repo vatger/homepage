@@ -2,7 +2,6 @@
     <div class="layout-specing">
         <x-layouts.admin.content
                 header="Gruppenverwaltung"
-                :links="[ route('administration.dashboard') => 'Administration' ]"
         ></x-layouts.admin.content>
 
         <div class="row">
