@@ -17,6 +17,18 @@
             ></x-layouts.admin.card-image-bar>
 
             <div class="row">
+                <x-layouts.admin.sidebar-col
+                        title="Persönliche Daten"
+                        :items="[
+                            ['Email', $user->email ,'mail'],
+                            ['Ausbildung', $user->vatsimDetails->rating_atc_short . ' | ' .$user->vatsimDetails->rating_pilot_short . ' | ' . $user->vatsimDetails->rating_military_short,'book-open'],
+                            ['Regionszuweisung', $user->vatsimDetails->region_name . ' (' . $user->vatsimDetails->region_code . ')','globe'],
+                            ['Divisionszuordnung', $user->vatsimDetails->division_name . ' (' . $user->vatsimDetails->division_code . ')','globe'],
+                            ['vACC Zuordnung', $user->vatsimDetails->subdivision_name . ' (' . $user->vatsimDetails->subdivision_code . ')','globe'],
+
+                        ]"
+                ></x-layouts.admin.sidebar-col>
+
                 <div class="col-lg-8 col-md-12 mt-4 order-2">
                     <div class="card border-0 shadow rounded p-4">
                         <div class="col-lg-12">
@@ -132,103 +144,6 @@
                             <!--end col-->
                         </div>
                         <!--end row-->
-                    </div>
-                </div>
-                <!--end col-->
-
-                <div class="col-lg-4 col-md-12 mt-4 order-1">
-                    <div class="card border-0 rounded shadow p-4">
-                        <h5 class="mb-0">Persönliche Daten:</h5>
-                        <div class="mt-4">
-                            <div class="d-flex align-items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                     class="feather feather-mail fea icon-ex-md text-muted me-3">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>
-                                <div class="flex-1">
-                                    <h6 class="text-primary mb-0">Email:</h6>
-                                    <a href="javascript:void(0)" class="text-muted">{{ $user->email }}</a>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center mt-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                     class="feather feather-book-open fea icon-ex-md text-muted me-3">
-                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                                </svg>
-                                <div class="flex-1">
-                                    <h6 class="text-primary mb-0">Ausbildung:</h6>
-                                    <a href="javascript:void(0)" class="text-muted">{{ $user->vatsimDetails->rating_atc_short }} |
-                                        {{ $user->vatsimDetails->rating_pilot_short }} | {{ $user->vatsimDetails->rating_military_short }}</a>
-                                </div>
-                            </div>
-
-                            <div class="d-flex align-items-center mt-3 pt-3 border-top">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                     class="feather feather-globe fea icon-ex-md text-muted me-3">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                                </svg>
-                                <div class="flex-1">
-                                    <h6 class="text-primary mb-0">Regionszuweisung:</h6>
-                                    <a href="javascript:void(0)"
-                                       class="text-muted">{{ $user->vatsimDetails->region_name . ' (' . $user->vatsimDetails->region_code . ')' }}</a>
-                                </div>
-                            </div>
-
-                            <div class="d-flex align-items-center mt-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                     class="feather feather-globe fea icon-ex-md text-muted me-3">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                                </svg>
-                                <div class="flex-1">
-                                    <h6 class="text-primary mb-0">Divisionszuordnung:</h6>
-                                    <a href="javascript:void(0)"
-                                       class="text-muted">{{ $user->vatsimDetails->division_name . ' (' . $user->vatsimDetails->division_code . ')' }}</a>
-                                </div>
-                            </div>
-
-                            <div class="d-flex align-items-center mt-3">
-                                @if (strtoupper($user->vatsimDetails->subdivision_code) == 'GER')
-                                    <i data-feater="globe"></i>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                         class="feather feather-globe fea icon-ex-md text-muted me-3">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <line x1="2" y1="12" x2="22" y2="12"></line>
-                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                                    </svg>
-                                @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                         class="feather feather-alert-triangle fea icon-ex-md text-muted me-3">
-                                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                                        <line x1="12" y1="9" x2="12" y2="13"></line>
-                                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                                    </svg>
-                                @endif
-                                <div class="flex-1">
-                                    <h6 class="text-primary mb-0">vACC Zuordnung:</h6>
-                                    <a href="javascript:void(0)"
-                                       class="text-muted">{{ $user->vatsimDetails->subdivision_name . ' (' . $user->vatsimDetails->subdivision_code . ')' }}</a>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="card border-0 rounded shadow p-4 mt-4">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <h5 class="mb-0">Übersicht:</h5>
-                        </div>
                     </div>
                 </div>
                 <!--end col-->

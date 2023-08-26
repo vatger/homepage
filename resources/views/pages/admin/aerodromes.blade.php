@@ -21,7 +21,7 @@
                                     </div>
                                     <div class="flex-1 ms-3">
                                         <h6 class="mb-0 text-muted">Flugplätze</h6>
-                                        <p class="fs-5 text-dark fw-bold mb-0" id="element-count">{{ App\Models\Navigation\Aerodrome::count() }}</p>
+                                        <p class="fs-5 text-dark fw-bold mb-0">{{ App\Models\Navigation\Aerodrome::count() }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -36,16 +36,9 @@
                         </div>
                     </div>
 
-                    <div class="p-4 text-center" id="error-container" style="display: none">
-                        <div class="alert alert-danger mt-3" role="alert" id="error-message">Ein Fehler ist beim Laden der Daten
-                            aufgetreten. Wir probieren es in <span id="error-countdown">60</span> Sekunden automatisch erneut. Der Fehler
-                            wurde automatisch an das Web-Department weitergegeben.
-                        </div>
-                    </div>
-
-                    <div id="content-container">
+                    <div>
                         <div class="row p-4 col-lg-4 col-md-4 col-sm-12" style="float: right; max-width: 300px">
-                            <button class="btn btn-sm btn-soft-primary">Flugplatz hinzufügen</button>
+                            <button class="btn btn-sm btn-soft-primary" disabled>Flugplatz hinzufügen</button>
                         </div>
 
                         <div class="row p-4 pt-0 table-responsive">
