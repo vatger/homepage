@@ -12,20 +12,13 @@ class EventLibrary
     /**
      * Get a single event from the VATSIM API
      * https://my.vatsim.net/api/v2/events/view/<event_id>
-     *
-     * @param string|null $eventId
-     * @return mixed
      */
-    public static function getEvent(?string $eventId): mixed
+    public static function getEvent(int $id): mixed
     {
-        $client = new Client([
-            'headers' => [
-                'Accept' => 'application/json',
-            ],
-            'connect_timeout' => 25,
-        ]);
-        $res = $client->request('GET', 'https://my.vatsim.net/api/v2/events/view/' . $eventId);
-        return json_decode($res->getBody());
+        return Cache::remember('de.vatsim-germany.events.view.' . $id, 60 * 10, function () use ($id) {
+            $res = Http::get('https://my.vatsim.net/api/v2/events/view/' . $id);
+            return json_decode($res->body())?->data;
+        });
     }
 
     /**

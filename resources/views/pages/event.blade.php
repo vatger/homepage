@@ -1,4 +1,4 @@
-@extends('homepage.partials.master')
+@extends('layouts.master')
 
 @section('content')
     <!-- Hero Start -->
