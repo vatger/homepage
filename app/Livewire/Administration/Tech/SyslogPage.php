@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Administration;
+namespace App\Livewire\Administration\Tech;
 
 use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SortableTrait;

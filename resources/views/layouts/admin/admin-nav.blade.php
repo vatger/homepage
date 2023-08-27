@@ -52,6 +52,12 @@
                     SYS Log
                 </a>
             </li>
+            <li>
+                <a href="{{ route('administration.tech.jobs') }}">
+                    <i data-feather="circle" class="me-2"></i>
+                    Job Log
+                </a>
+            </li>
         </ul>
         <!-- sidebar-menu  -->
     </div>

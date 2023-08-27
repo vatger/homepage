@@ -1,18 +1,15 @@
 <?php
 
-use App\Http\Controllers\Administration\Tech\ApiLogController;
 use App\Http\Controllers\Administration\Tech\BackendController;
 use App\Http\Controllers\Administration\Tech\FailedJobController;
-use App\Http\Controllers\Administration\Tech\SyslogController;
 use App\Http\Controllers\Administration\Tech\TechController;
-use App\Livewire\Administration\ApilogPage;
-use App\Livewire\Administration\SyslogPage;
+use App\Livewire\Administration\Tech\ApilogPage;
+use App\Livewire\Administration\Tech\JoblogPage;
+use App\Livewire\Administration\Tech\SyslogPage;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('tech')->group(function () {
-    Route::prefix('jobs')->group(function () {
-        Route::get('', [FailedJobController::class, 'index'])->name('administration.tech.jobs');
-    });
+    Route::get('joblog', JoblogPage::class)->name('administration.tech.jobs');
 
     Route::get('syslog', SyslogPage::class)->name('administration.tech.syslog');
 
