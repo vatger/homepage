@@ -18,8 +18,9 @@
     }
   ],
   "require": {
-    "doctrine/dbal": "^3.3",
+    "php": "^8.2",
     "ext-curl": "*",
+    "doctrine/dbal": "^3.3",
     "guzzlehttp/guzzle": "^7.5",
     "laravel/framework": "^10.0",
     "laravel/sanctum": "^3.2",
@@ -30,12 +31,12 @@
     "livewire/livewire": "^v3.0.0-beta",
     "paragonie/paseto": "^1.1",
     "paulhollmann/vatsim-stand-status": "dev-master",
-    "php": "^8.2",
     "spatie/laravel-cookie-consent": "^3.2",
     "spatie/laravel-permission": "^5.7",
     "spatie/laravel-webhook-client": "^3.1",
     "stevebauman/purify": "^6.0",
-    "tightenco/ziggy": "^1.6"
+    "tightenco/ziggy": "^1.6",
+    "vyuldashev/laravel-openapi": "^1.11"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.7",

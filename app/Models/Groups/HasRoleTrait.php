@@ -33,9 +33,11 @@ trait HasRoleTrait
             $role->name = Str::slug($team->name);
             $role->save();
         });
-        static::deleted(function (self $team) {
-            $group = $team->group;
-            $group->delete();
+        static::deleting(function (self $team) {
+            $role = $team->role;
+            Team::where('super_team_id', $team->id)->update(['super_team_id' => null]);
+            $team->update(['group_id' => null]);
+            $role?->delete();
         });
     }
 }

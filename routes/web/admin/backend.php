@@ -5,6 +5,7 @@ use App\Http\Controllers\Administration\Tech\BackendController;
 use App\Http\Controllers\Administration\Tech\FailedJobController;
 use App\Http\Controllers\Administration\Tech\SyslogController;
 use App\Http\Controllers\Administration\Tech\TechController;
+use App\Livewire\Administration\ApilogPage;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('tech')->group(function () {
@@ -12,13 +13,9 @@ Route::prefix('tech')->group(function () {
         Route::get('', [FailedJobController::class, 'index'])->name('administration.tech.jobs');
     });
 
-    Route::prefix('syslog')->group(function () {
-        Route::get('/', [SyslogController::class, 'index'])->name('administration.tech.syslog');
-    });
+    Route::get('syslog', [SyslogController::class, 'index'])->name('administration.tech.syslog');
 
-    Route::prefix('apilog')->group(function () {
-        Route::get('/', [ApiLogController::class, 'index'])->name('administration.tech.apilog');
-    });
+    Route::get('apilog', ApilogPage::class)->name('administration.tech.apilog');
 
     Route::prefix('backend')->group(function () {
         Route::get('/', [BackendController::class, 'index'])->name('administration.tech.backend');

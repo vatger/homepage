@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\Administration\AdministrationPagesController;
+use App\Livewire\Administration\MemberListPage;
+use App\Livewire\Administration\MemberPage;
+use App\Livewire\Administration\TeamListPage;
+use App\Livewire\Administration\TeamPage;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -16,11 +20,11 @@ Route::prefix('administration')
     ->middleware(['cookie.consent', 'auth'])
     ->group(function () {
         Route::get('/dashboard', [AdministrationPagesController::class, 'index'])->name('administration.dashboard');
-        Route::get('/membership/members', \App\Livewire\Administration\MemberListPage::class)->name('administration.members');
-        Route::get('/membership/members/{user}', \App\Livewire\Administration\MemberPage::class)->name('administration.member');
+        Route::get('/membership/members', MemberListPage::class)->name('administration.members');
+        Route::get('/membership/members/{user}', MemberPage::class)->name('administration.member');
 
-        Route::get('/membership/teams', \App\Livewire\Administration\TeamListPage::class)->name('administration.teams');
-        Route::get('/membership/teams/{team}', \App\Livewire\Administration\TeamPage::class)->name('administration.team');
+        Route::get('/membership/teams', TeamListPage::class)->name('administration.teams');
+        Route::get('/membership/teams/{team}', TeamPage::class)->name('administration.team');
 
         require_once 'admin/content.php';
 

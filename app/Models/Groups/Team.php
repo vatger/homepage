@@ -12,6 +12,8 @@ class Team extends Model
 
     protected $table = 'teams';
 
+    protected $fillable = ['super_team_id', 'role_id'];
+
     public function super_team(): HasOne|Team
     {
         return $this->hasOne(Team::class, 'id', 'super_team_id');

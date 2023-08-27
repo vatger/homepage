@@ -13,7 +13,7 @@
             @can('administration.access')
                 <li>
                     <a href="{{ route('administration.dashboard') }}">
-                        <i data-feather="circle" class="me-2"></i>
+                        <i data-feather="circle" class="fea me-2"></i>
                         Dashboard
                     </a>
                 </li>
@@ -41,9 +41,9 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('administration.dashboard') }}">
+                <a href="{{ route('administration.tech.apilog') }}">
                     <i data-feather="circle" class="me-2"></i>
-                    Dashboard
+                    API Log
                 </a>
             </li>
         </ul>

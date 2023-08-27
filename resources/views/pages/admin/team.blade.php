@@ -60,6 +60,15 @@
                         <button class="btn btn-sm btn-soft-danger" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">Gruppe
                             Löschen
                         </button>
+                        <x-layouts.admin.danger-modal
+                                id="deleteGroupModal"
+                                title="{{ $team->name }} Löschen?"
+                                text="Bist Du sicher, dass Du diese Gruppe löschen möchtest? Dieser Schritt kann nicht rückgängig gemacht werden?"
+                        >
+                            <div class="mt-4">
+                                <button wire:click="deleteTeam()" class="btn btn-soft-danger btn-sm">Gruppe Löschen</button>
+                            </div>
+                        </x-layouts.admin.danger-modal>
                     </div>
                 </x-layouts.admin.sidebar-col>
 
@@ -130,7 +139,7 @@
                     <x-layouts.admin.sidebar-col title="Einstellungen">
                         todo
                     </x-layouts.admin.sidebar-col>
-                    
+
                     <div class="col-lg-8 col-md-12 mt-4 order-2">
                         <div class="card border-0 shadow rounded p-4">
                             <div class="row p-4 border-bottom">
@@ -189,39 +198,6 @@
         <!--end row-->
     </div>
 
-
-    <div class="modal fade" id="deleteGroupModal" tabindex="-1" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded shadow border-0">
-                <div class="modal-body py-5">
-                    <div class="text-center">
-                        <div class="icon d-flex align-items-center justify-content-center bg-soft-danger rounded-circle mx-auto"
-                             style="height: 95px; width:95px;">
-                            <h1 class="mb-0">
-                                <i data-feather="alert-triangle"></i>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" style="margin-top: -9px; margin-left: 0"
-                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round" class="feather feather-alert-triangle">
-                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                                    <line x1="12" y1="9" x2="12" y2="13"></line>
-                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                                </svg>
-                            </h1>
-                        </div>
-                        <div class="mt-4">
-                            <h4>"{{ $team->name }}" Löschen?</h4>
-                            <p class="text-muted">Bist Du sicher, dass Du diese Gruppe löschen möchtest? Dieser Schritt kann nicht rückgängig
-                                gemacht werden?</p>
-                            <div class="mt-4">
-                                <a href="" class="btn btn-soft-danger btn-sm">Gruppe Löschen</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
 
     <style>
         .row-custom {

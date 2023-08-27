@@ -5,7 +5,9 @@ namespace App\Livewire\Administration;
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\Groups\Team;
 use App\Models\Membership\User\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -83,5 +85,12 @@ class TeamPage extends Component
             return;
         }
         $user->assignRole($this->team->role);
+    }
+
+    public function deleteTeam(): RedirectResponse
+    {
+        $this->authorize('membership.teams.edit.permissions');
+        $this->team->delete();
+        return Redirect::route('administration.teams')->with('success', 'Team gelöscht');
     }
 }
