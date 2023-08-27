@@ -10,7 +10,7 @@
                 <div class="col-lg-6 col-md-12">
                     <div class="title-heading mt-4 text-center text-lg-start">
                         <h1 class="heading mb-3 title-dark text-white">VATSIM Germany</h1>
-                        <p class="para-desc text-white-50">Controlling The Virtual German Airspace With Passion!</p>
+                        <p class="para-desc text-white-50" id="typewriter">Controlling The Virtual German Airspace With Passion!</p>
                         <div class="mt-4">
                             <a href="{{ route('getting-started') }}" class="btn btn-primary">@lang('landing.join-now-button-content')</a>
                         </div>
@@ -38,3 +38,7 @@
 
     <x-landing.events></x-landing.events>
 @endsection
+
+@push('scripts')
+    @vite(['resources/ts/special/landing-typewriter.ts'])
+@endpush
