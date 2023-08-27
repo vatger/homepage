@@ -32,7 +32,7 @@
                     @foreach($teams as $team)
                         <tr class="text-center">
                             <td>{{ $team->name }}</td>
-                            <td>{{ $team->super_team }}</td>
+                            <td>{{ $team->super_team?->name }}</td>
                             <td>
                                 <a href="{{ route('administration.team', ['team' => $team]) }}" class="btn btn-sm btn-soft-primary p-1 px-3" style="font-size: 15px">
                                     <i data-feather="eye"></i>

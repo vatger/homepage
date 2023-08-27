@@ -7,13 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ApiLog extends Model
 {
-    public $timestamps = false;
-
     protected $table = 'api_logs';
 
     protected $fillable = ['token_id', 'time', 'endpoint', 'ip_address'];
-
-    protected $casts = ['time' => 'datetime'];
 
     public function token(): BelongsTo
     {

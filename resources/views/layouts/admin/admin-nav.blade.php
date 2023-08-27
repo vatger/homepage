@@ -46,6 +46,12 @@
                     API Log
                 </a>
             </li>
+            <li>
+                <a href="{{ route('administration.tech.syslog') }}">
+                    <i data-feather="circle" class="me-2"></i>
+                    SYS Log
+                </a>
+            </li>
         </ul>
         <!-- sidebar-menu  -->
     </div>

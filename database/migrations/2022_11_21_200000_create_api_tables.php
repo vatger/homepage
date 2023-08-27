@@ -30,9 +30,9 @@ return new class extends Migration {
                 ->foreignId('token_id')
                 ->nullable()
                 ->constrained('api_tokens');
-            $table->timestamp('time');
             $table->string('endpoint');
             $table->ipAddress();
+            $table->timestamps();
         });
     }
 

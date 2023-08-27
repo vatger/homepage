@@ -6,6 +6,7 @@ use App\Http\Controllers\Administration\Tech\FailedJobController;
 use App\Http\Controllers\Administration\Tech\SyslogController;
 use App\Http\Controllers\Administration\Tech\TechController;
 use App\Livewire\Administration\ApilogPage;
+use App\Livewire\Administration\SyslogPage;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('tech')->group(function () {
@@ -13,7 +14,7 @@ Route::prefix('tech')->group(function () {
         Route::get('', [FailedJobController::class, 'index'])->name('administration.tech.jobs');
     });
 
-    Route::get('syslog', [SyslogController::class, 'index'])->name('administration.tech.syslog');
+    Route::get('syslog', SyslogPage::class)->name('administration.tech.syslog');
 
     Route::get('apilog', ApilogPage::class)->name('administration.tech.apilog');
 
