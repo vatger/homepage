@@ -2,10 +2,27 @@
 
 namespace App\Libraries\TeamSpeak;
 
+use App\Models\Membership\TeamspeakRegistration;
 use Illuminate\Support\Facades\Cache;
 
 trait BanTrait
 {
+    protected static function getBansFromRegistration(TeamspeakRegistration $registration): array
+    {
+        $allbans = self::_banlist();
+        $registrationbans = [];
+        if (!$allbans) {
+            return $registrationbans;
+        }
+
+        foreach ($allbans as $ban) {
+            if (strcmp($ban->uid, $registration->uid) == 0) {
+                $registrationbans[] = $ban;
+            }
+        }
+        return $registrationbans;
+    }
+
     private static function _banlist(): mixed
     {
         return Cache::remember('teamspeak.banlist', 120, function () {

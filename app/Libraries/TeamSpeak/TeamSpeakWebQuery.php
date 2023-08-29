@@ -2,10 +2,9 @@
 
 namespace App\Libraries\TeamSpeak;
 
-use App\Models\Membership\User\User as Account;
-use App\Models\TeamSpeak\Registration;
+use App\Models\Membership\TeamspeakRegistration;
+use App\Models\Membership\User\User;
 use Carbon\Carbon;
-use stdClass;
 
 class TeamSpeakWebQuery
 {
@@ -15,15 +14,7 @@ class TeamSpeakWebQuery
     //  Registration handling
     // =======================================================================
 
-    /**
-     * registerViaUid
-     *
-     * @param  Account $account
-     * @param  string $registration_ip
-     * @param  string $uid
-     * @return boolean
-     */
-    public static function registerViaUid(Account $account, string $registration_ip, string $uid): bool
+    public static function registerViaUid(User $User, string $registration_ip, string $uid): bool
     {
         $search = self::_clientgetdbidfromuid($uid);
         if ($search === false) {
@@ -32,32 +23,26 @@ class TeamSpeakWebQuery
 
         $clientdbid = $search[0]->cldbid;
 
-        $registration = new Registration();
-        $registration->account_id = $account->id;
+        $registration = new TeamspeakRegistration();
+        $registration->User_id = $User->id;
         $registration->registration_ip = $registration_ip;
         $registration->uid = $uid;
         $registration->dbid = $clientdbid;
 
         $serverGroupId = self::getServergroupId(config('teamspeak.default_group'));
 
-        $description = $account->username . ' (' . $account->id . ')';
-        if (self::_clientdbedit($clientdbid, $description) == false) {
+        $description = $User->username . ' (' . $User->id . ')';
+        if (!self::_clientdbedit($clientdbid, $description)) {
             return false;
         }
-        if (self::_servergroupaddclient($clientdbid, $serverGroupId) == false) {
+        if (!self::_servergroupaddclient($clientdbid, $serverGroupId)) {
             return false;
         }
         $registration->save();
         return true;
     }
 
-    /**
-     * removeTSRegistation
-     *
-     * @param  Registration $registration
-     * @return boolean
-     */
-    public static function removeRegistation(Registration $registration): bool
+    public static function removeRegistation(TeamspeakRegistration $registration): bool
     {
         $servergroupId = self::getServergroupId(config('teamspeak.default_group'));
         $clientDBid = $registration->dbid;
@@ -74,14 +59,11 @@ class TeamSpeakWebQuery
 
     /**
      * Check if a connected client is registered properly
-     *
-     * @param $client
-     * @return void
      */
-    public static function checkClient($client): void
+    public static function checkClient(object $client): void
     {
         $servergroupId = self::getServergroupId(config('teamspeak.default_group'));
-        $registration = Registration::where('uid', $client->client_unique_identifier)
+        $registration = TeamspeakRegistration::where('uid', $client->client_unique_identifier)
             ->where('dbid', $client->cldbid)
             ->first();
         if ($registration == null) {
@@ -92,74 +74,49 @@ class TeamSpeakWebQuery
         self::checkRegistration($registration, $client);
     }
 
-    /**
-     * checkRegistration
-     *
-     * @param  Registration $registration
-     * @param  stdClass $client
-     * @return void
-     */
-    private static function checkRegistration(Registration $registration, $client)
+    private static function checkRegistration(TeamspeakRegistration $registration, object $client): void
     {
         $registration->last_login = Carbon::createFromTimestamp($client->client_lastconnected);
         $registration->last_ip = $client->client_lastip;
         $registration->save();
-        $account = $registration->account;
-        if ($account == null) {
+        $user = $registration->user;
+        if ($user == null) {
             return;
         }
-        $description = $account->username . ' (' . $account->id . ')';
+        $description = $user->username . ' (' . $user->id . ')';
         if (strcmp($client->client_description, $description) != 0) {
             self::_clientdbedit($client->cldbid, $description);
         }
-        self::checkAccount($account);
+        self::checkUser($user);
     }
 
-    /**
-     * checkAccount
-     *
-     * @param  Account $account
-     * @return void
-     */
-    private static function checkAccount(Account $account)
+    public static function checkUser(User $user): void
     {
-        $has_active_ban = $account->isCurrentlyBanned;
+        $registrations = TeamspeakRegistration::where('user_id', $user->id)->get();
 
-        $registrations = Registration::where('account_id', $account->id)->get();
+        // ban handling
+        $has_active_ban = $user->isCurrentlyBanned;
         foreach ($registrations as $registration) {
             $existingTSBans = self::getBansFromRegistration($registration);
-            if ($has_active_ban == true && empty($existingTSBans)) {
-                $ban = $account->currentBan;
-                self::_banadd($registration->uid, Carbon::now()->diffInSeconds($ban->banned_till), '[Account ' . $account->id . ']' . $ban->reason);
+            if ($has_active_ban && empty($existingTSBans)) {
+                $ban = $user->currentBan;
+                self::_banadd($registration->uid, Carbon::now()->diffInSeconds($ban->banned_till), '[User ' . $user->id . ']' . $ban->reason);
             }
 
-            if ($has_active_ban == false && !empty($existingTSBans)) {
+            if (!$has_active_ban && !empty($existingTSBans)) {
                 foreach ($existingTSBans as $ban) {
                     self::_bandel($ban->banid);
                 }
             }
         }
-    }
 
-    /**
-     * getBansFromRegistration
-     *
-     * @param  Registration $registration
-     * @return mixed
-     */
-    private static function getBansFromRegistration(Registration $registration)
-    {
-        $allbans = self::_banlist();
-        $registrationbans = [];
-        if ($allbans == false) {
-            return $registrationbans;
-        }
-
-        foreach ($allbans as $ban) {
-            if (strcmp($ban->uid, $registration->uid) == 0) {
-                $registrationbans[] = $ban;
+        //group assignment
+        $service_roles = $user->service_roles('ts.servergroup');
+        foreach ($registrations as $registration) {
+            foreach ($service_roles as $service_role) {
+                self::addToServergroup($registration, $service_role->service_role);
             }
+            //todo remove old stuff
         }
-        return $registrationbans;
     }
 }

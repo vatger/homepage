@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Models\Membership\TeamSpeak;
+namespace App\Models\Membership;
 
 use App\Models\Membership\User\User;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Registration extends Model
+class TeamspeakRegistration extends Model
 {
     use SoftDeletes;
 

@@ -3,9 +3,10 @@
 namespace App\Models\Membership\User;
 
 use App\Models\Feedback\ControllerFeedback;
-use App\Models\Membership\TeamSpeak\Registration;
+use App\Models\Membership\TeamspeakRegistration;
 use App\Models\Membership\User\Concerns\HasBanConcern;
 use App\Models\Membership\User\Concerns\HasFirConcern;
+use App\Models\Membership\User\Concerns\HasTeamConcern;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,7 +16,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles, HasApiTokens, HasBanConcern, HasFirConcern;
+    use Notifiable, HasRoles, HasApiTokens, HasBanConcern, HasFirConcern, HasTeamConcern;
 
     protected $table = 'user_users';
 
@@ -74,7 +75,7 @@ class User extends Authenticatable
      */
     public function teamspeakRegistrations(): HasMany
     {
-        return $this->hasMany(Registration::class, 'user_id', 'id');
+        return $this->hasMany(TeamspeakRegistration::class, 'user_id', 'id');
     }
 
     /**

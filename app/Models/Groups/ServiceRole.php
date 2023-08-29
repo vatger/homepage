@@ -2,6 +2,7 @@
 
 namespace App\Models\Groups;
 
+use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
@@ -23,7 +24,16 @@ class ServiceRole extends Model
 
     public function getServiceRoleNameAttribute(): ?string
     {
-        return null;
+        switch ($this->service_type) {
+            case 'ts.servergroup':
+                return TeamSpeakWebQuery::getServergroupName(intval($this->role));
+            case 'board.group':
+                return null;
+            case 'kb.group':
+                return null;
+            default:
+                return null;
+        }
     }
 
     protected static function booted(): void

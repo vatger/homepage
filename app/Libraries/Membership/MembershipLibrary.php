@@ -4,6 +4,7 @@ namespace App\Libraries\Membership;
 
 use App\Libraries\Forum\XenForoLibrary;
 use App\Libraries\Gitlab\GitlabLibrary;
+use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Models\Membership\User\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -97,8 +98,12 @@ class MembershipLibrary
         // Call forum library to sync changes to forum
         XenForoLibrary::updateForumAccount($user);
         // 2. Handle git access
-        GitlabLibrary::checkNAVAssignments($user);
+        TeamSpeakWebQuery::checkUser($user);
         // 3. Handle other stuff
         Log::info('[MembershipLibrary::handleMembershipChange]::' . $user->id . '::Membership Update Triggered!');
+    }
+
+    public static function getAllServiceRoles(?string $service_type = null): array
+    {
     }
 }
