@@ -23,4 +23,9 @@ class Team extends Model
     {
         return $this->hasMany(Team::class, 'super_team_id', 'id');
     }
+
+    public function service_roles(): HasMany|ServiceRole
+    {
+        return $this->hasMany(ServiceRole::class, 'team_id', 'id');
+    }
 }

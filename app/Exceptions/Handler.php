@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Models\SysLog;
+use App\Models\Tech\SysLog;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Auth;
 use Throwable;

@@ -20,7 +20,7 @@ class PermissionSeeder extends Seeder
         'membership.users.details.view',
         'membership.users.details.edit',
         'membership.teams.view',
-        'membership.teams.edit.permissions',
+        'membership.teams.edit',
         'membership.teams.edit.members',
         'membership.teams.edit.members.subteam',
 

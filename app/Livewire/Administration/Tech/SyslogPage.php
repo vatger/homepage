@@ -4,7 +4,7 @@ namespace App\Livewire\Administration\Tech;
 
 use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SortableTrait;
-use App\Models\SysLog;
+use App\Models\Tech\SysLog;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;

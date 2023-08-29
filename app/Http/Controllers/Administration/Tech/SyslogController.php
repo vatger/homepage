@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Administration\Tech;
 
 use App\Http\Controllers\Controller;
-use App\Models\SysLog;
+use App\Models\Tech\SysLog;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 

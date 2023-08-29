@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\Administration\Navigation\AerodromeController;
-use App\Http\Controllers\Administration\Navigation\StationController;
+use App\Http\Controllers\Administration\Navigation\ChartController;
 use App\Http\Controllers\Administration\Navigation\NavigationPagesController;
 use App\Http\Controllers\Administration\Navigation\RunwayController;
-use App\Http\Controllers\Administration\Navigation\ChartController;
-use App\Libraries\EuroScope\SectorDataLibrary;
+use App\Http\Controllers\Administration\Navigation\StationController;
+use App\Livewire\Administration\Nav\AerodromeListPage;
+use App\Livewire\Administration\Nav\AerodromePage;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Request;
 
 Route::prefix('navigation')->group(function () {
     Route::prefix('runways')->group(function () {
@@ -46,8 +46,8 @@ Route::prefix('navigation')->group(function () {
         Route::post('{aerodrome}/charts', [AerodromeController::class, 'assignChart'])->name('administration.navigation.aerodromes.chart.assign');
         Route::patch('{aerodrome}/chartfox', [AerodromeController::class, 'toggleChartfox'])->name('administration.navigation.aerodromes.chartfox');
         Route::post('{aerodrome}', [AerodromeController::class, 'update'])->name('administration.navigation.aerodromes.update');
-        Route::get('{aerodrome}', App\Livewire\Administration\AerodromePage::class)->name('administration.navigation.aerodromes.view');
-        Route::get('', App\Livewire\Administration\AerodromeListPage::class)->name('administration.navigation.aerodromes');
+        Route::get('{aerodrome}', AerodromePage::class)->name('administration.navigation.aerodromes.view');
+        Route::get('', AerodromeListPage::class)->name('administration.navigation.aerodromes');
     });
 
     Route::prefix('sectordata')->group(function () {

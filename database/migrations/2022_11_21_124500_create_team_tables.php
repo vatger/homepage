@@ -27,6 +27,18 @@ return new class extends Migration {
             $table->string('name')->unique();
             $table->timestamps();
         });
+
+        Schema::create('team_service_roles', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('team_id');
+            $table
+                ->foreign('team_id')
+                ->references('id')
+                ->on('teams');
+            $table->string('service_type');
+            $table->string('service_role');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -36,6 +48,7 @@ return new class extends Migration {
      */
     public function down()
     {
-        //Schema::dropIfExists('table');
+        Schema::dropIfExists('team_service_roles');
+        Schema::dropIfExists('teams');
     }
 };

@@ -3,6 +3,7 @@
 namespace App\Livewire\Administration;
 
 use App\Livewire\Helpers\NotyTrait;
+use App\Models\Groups\ServiceRole;
 use App\Models\Groups\Team;
 use App\Models\Membership\User\User;
 use Illuminate\Http\RedirectResponse;
@@ -23,6 +24,9 @@ class TeamPage extends Component
     public int $user_id;
     public int $selected_superteam;
 
+    public string $selected_service_role_type = '';
+    public string $selected_service_role = '';
+
     public function mount()
     {
         $this->selected_superteam = $this->team->super_team_id ?? -1;
@@ -39,6 +43,7 @@ class TeamPage extends Component
         return view('pages.admin.team')->with([
             'team' => $this->team,
             'subteams' => $this->team->subteams,
+            'service_roles' => $this->team->service_roles,
             'permissions' => Permission::all(),
         ]);
     }
@@ -46,7 +51,7 @@ class TeamPage extends Component
     public function updated($name, $value): void
     {
         if ($name == 'selected_superteam') {
-            $this->authorize('membership.teams.edit.permissions');
+            $this->authorize('membership.teams.edit');
             $st = Team::find($this->selected_superteam);
             if (empty($st) || $st->super_team_id == $this->team->id || $st->id == $this->team->id) {
                 $st = null;
@@ -60,7 +65,7 @@ class TeamPage extends Component
 
     public function changePermission(int $permission_id, bool $add): void
     {
-        $this->authorize('membership.teams.edit.permissions');
+        $this->authorize('membership.teams.edit');
         $permission = Permission::findOrFail($permission_id);
         if ($add) {
             $this->team->role->givePermissionTo($permission);
@@ -89,8 +94,29 @@ class TeamPage extends Component
 
     public function deleteTeam(): RedirectResponse
     {
-        $this->authorize('membership.teams.edit.permissions');
+        $this->authorize('membership.teams.edit');
         $this->team->delete();
         return Redirect::route('administration.teams')->with('success', 'Team gelöscht');
+    }
+
+    public function removeServiceRole(int $id): void
+    {
+        $this->authorize('membership.teams.edit');
+        ServiceRole::findOrFail($id)->delete();
+    }
+
+    public function addServiceRole(): void
+    {
+        $this->authorize('membership.teams.edit');
+        try {
+            $r = new ServiceRole();
+            $r->team_id = $this->team->id;
+            $r->service_type = $this->selected_service_role_type;
+            $r->service_role = $this->selected_service_role;
+            $r->save();
+            $this->showNoty('Rolle hinzugefügt', 'success');
+        } catch (\Exception $e) {
+            $this->showNoty('Rolle konnte nicht hinzugefügt werden', 'error');
+        }
     }
 }

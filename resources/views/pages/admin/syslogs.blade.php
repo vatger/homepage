@@ -7,7 +7,7 @@
 
         <x-layouts.admin.card>
 
-            <x-layouts.admin.card-header position="left" title="SYS Logs" :subtitle="\App\Models\SysLog::count()" />
+            <x-layouts.admin.card-header position="left" title="SYS Logs" :subtitle="\App\Models\Tech\SysLog::count()" />
 
             <x-layouts.admin.card-header position="right">
                 <li class="list-inline-item" style="width: 100%">

@@ -66,6 +66,7 @@ return new class extends Migration {
             $table->timestamps();
         });
 
+        /*
         Schema::create('nav_runways', function (Blueprint $table) {
             $table->id();
             $table->foreignId('aerodrome_id')->constrained('nav_aerodromes');
@@ -99,6 +100,7 @@ return new class extends Migration {
             $table->foreignId('navaid_id')->constrained('nav_navaids');
             $table->primary(['aerodrome_id', 'navaid_id']);
         });
+        */
     }
 
     /**
