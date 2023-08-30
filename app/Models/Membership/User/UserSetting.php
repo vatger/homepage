@@ -13,7 +13,7 @@ class UserSetting extends Model
 
     protected $table = 'user_settings';
 
-    protected $fillable = ['gdpr_agreed_at', 'imprint_agreed_at', 'termsofuse_agreed_at', 'satzung_agreed_at', 'language'];
+    protected $fillable = ['gdpr_agreed_at', 'imprint_agreed_at', 'termsofuse_agreed_at', 'satzung_agreed_at', 'language', 'forum_id'];
 
     protected $dates = [
         'gdpr_agreed_at' => 'date',

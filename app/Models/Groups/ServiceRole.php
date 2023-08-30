@@ -12,10 +12,11 @@ class ServiceRole extends Model
     protected $table = 'team_service_roles';
 
     protected $fillable = ['team_id', 'service_role'];
-
     protected $appends = ['service_role_name'];
 
-    public static array $allowed_service_types = ['board.group', 'ts.servergroup', 'kb.group'];
+    protected $casts = [
+        'service_type' => ServiceRoleType::class,
+    ];
 
     public function team(): \Illuminate\Database\Eloquent\Relations\BelongsTo|Team
     {
@@ -24,31 +25,23 @@ class ServiceRole extends Model
 
     public function getServiceRoleNameAttribute(): ?string
     {
-        switch ($this->service_type) {
-            case 'ts.servergroup':
-                return TeamSpeakWebQuery::getServergroupName(intval($this->role));
-            case 'board.group':
-                return null;
-            case 'kb.group':
-                return null;
-            default:
-                return null;
-        }
+        return match ($this->service_type) {
+            ServiceRoleType::TeamspeakServergroup => TeamSpeakWebQuery::getServergroupName(intval($this->role)) ?? '?',
+            ServiceRoleType::ForumGroup => '?',
+            default => null,
+        };
     }
 
     protected static function booted(): void
     {
         static::saving(function (self $serviceRole) {
-            if (!in_array($serviceRole->service_type, self::$allowed_service_types)) {
-                throw new \InvalidArgumentException($serviceRole->service_type . ' is not an allowed service_type.');
-            }
             if (
                 ServiceRole::where('team_id', $serviceRole->team_id)
                     ->where('service_type', 'LIKE', $serviceRole->service_type)
                     ->where('service_role', 'LIKE', $serviceRole->service_role)
                     ->exists()
             ) {
-                throw new \InvalidArgumentException($serviceRole->service_type . ' already set.');
+                throw new \InvalidArgumentException($serviceRole->service_type->value . ' already set.');
             }
         });
     }

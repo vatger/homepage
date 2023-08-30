@@ -3,6 +3,7 @@
 namespace App\Models\Membership\User\Concerns;
 
 use App\Models\Groups\ServiceRole;
+use App\Models\Groups\ServiceRoleType;
 use App\Models\Groups\Team;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -14,14 +15,24 @@ trait HasTeamConcern
         return Team::whereIntegerInRaw('id', $this->team_ids())->get();
     }
 
-    public function service_roles(?string $service_type = null): array|Collection|ServiceRole
+    public function service_roles(?ServiceRoleType $service_type = null): array|Collection|ServiceRole
     {
         if (!$service_type) {
             return ServiceRole::whereIntegerInRaw('team_id', $this->team_ids())->get();
         }
         return ServiceRole::whereIntegerInRaw('team_id', $this->team_ids())
-            ->where('service_type', 'LIKE', $service_type)
+            ->where('service_type', 'LIKE', $service_type->value)
             ->get();
+    }
+
+    public function service_role_ids(ServiceRoleType $service_type): array
+    {
+        return $this->service_roles($service_type)
+            ->map(function ($r) {
+                return $r->service_role;
+            })
+            ->unique()
+            ->toArray();
     }
 
     private function team_ids(): array

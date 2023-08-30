@@ -48,13 +48,6 @@ return new class extends Migration {
             $table->enum('language', ['de', 'en']);
             $table->boolean('dark_mode')->default(0);
             $table->enum('color', ['default', 'cyan', 'red', 'green', 'purple', 'slateblue', 'skobleoff', 'yellow'])->default('default');
-        });
-
-        Schema::create('user_service_accounts', function (Blueprint $table) {
-            $table
-                ->foreignId('user_id')
-                ->primary()
-                ->constrained('user_users');
             $table->unsignedInteger('forum_id')->nullable();
         });
 

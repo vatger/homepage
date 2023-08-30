@@ -18,7 +18,7 @@ Route::prefix('authentication')
         });
 
         Route::get('test', function () {
-            dd(Auth::user()->teams());
+            dd(Auth::user()->service_role_ids(\App\Models\Groups\ServiceRoleType::TeamspeakServergroup));
         });
 
         Route::get('check_terms', \App\Livewire\TermsPage::class)

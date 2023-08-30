@@ -111,12 +111,19 @@ class TeamSpeakWebQuery
         }
 
         //group assignment
-        $service_roles = $user->service_roles('ts.servergroup');
+        $service_role_ids = $user->service_role_ids('ts.servergroup');
+
+        $all_server_groups = self::listServerGroupIds(with_standard_groups: false);
+        //so we don't remove the default role
+
+        $del_server_groups = array_diff($all_server_groups, $service_role_ids);
         foreach ($registrations as $registration) {
-            foreach ($service_roles as $service_role) {
-                self::addToServergroup($registration, $service_role->service_role);
+            foreach ($service_role_ids as $service_role_id) {
+                self::addToServergroup($registration, $service_role_id);
             }
-            //todo remove old stuff
+            foreach ($del_server_groups as $service_role_id) {
+                self::delFromServergroup($registration, $service_role_id);
+            }
         }
     }
 }

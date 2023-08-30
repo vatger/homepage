@@ -24,18 +24,18 @@ trait ServergroupTrait
         return false;
     }
 
-    public static function getServergroupName(int $id): string|false
+    public static function getServergroupName(int $id): ?string
     {
         $list = self::_servergrouplist();
         if (!$list) {
-            return false;
+            return null;
         }
         foreach ($list as $group) {
             if ($group->sgid == $id && strcmp($group->type, 1) == 0) {
                 return $group->name;
             }
         }
-        return false;
+        return null;
     }
 
     public static function addToServergroup(Registration $registration, int $id): bool
@@ -50,6 +50,24 @@ trait ServergroupTrait
         $clientdbid = $registration->dbid;
         $serverGroupId = $id;
         return self::_servergroupdelclient($clientdbid, $serverGroupId);
+    }
+
+    public function listServerGroupIds(bool $with_standard_groups = true): array|false
+    {
+        $list = self::_servergrouplist();
+        if (!$list) {
+            return false;
+        }
+        $groups = [];
+        foreach ($list as $group) {
+            if (!$with_standard_groups && $group->sgid == self::getServergroupId(config('teamspeak.default_group'))) {
+                continue;
+            }
+            if (strcmp($group->type, 1) == 0) {
+                $groups[] = $group->sgid;
+            }
+        }
+        return $groups;
     }
 
     private static function _servergroupaddclient(int $clientDBid, int $servergroupId): bool

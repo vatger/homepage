@@ -2,6 +2,7 @@
 
 namespace App\Libraries\Forum;
 
+use App\Models\Groups\ServiceRoleType;
 use App\Models\Membership\User\User;
 use Exception;
 use GuzzleHttp\Client;
@@ -42,13 +43,8 @@ class XenForoLibrary
 
     /**
      * A function to create an Account for the XenForo Application via API call.
-     *
-     * @param User $user [description]
-     * @param string $password [description]
-     *
-     * @return bool
      */
-    public static function createForumAccount(User $user, $password, $try = 0)
+    public static function createForumAccount(User $user, $password, $try = 0): bool
     {
         if (null != $user->settings->forum_id) {
             return false;
@@ -98,10 +94,8 @@ class XenForoLibrary
         if ($result && 200 == $result->getStatusCode()) {
             $body = $result->getBody()->getContents();
             $forumUserObject = json_decode($body);
-            $accSetting = $user->settings;
-            $accSetting->forum_id = $forumUserObject->user->user_id;
-            $accSetting->save();
-
+            $user->settings->forum_id = $forumUserObject->user->user_id;
+            $user->settings->save();
             return true;
         } else {
             ++$try;
@@ -109,41 +103,27 @@ class XenForoLibrary
                 return self::createForumAccount($user, $password, $try);
             }
         }
-
         return false;
     }
 
-    /**
-     * Update an account on the forum.
-     *
-     * @param User $user [description]
-     *
-     * @return boolean
-     */
     public static function updateForumAccount(User $user): bool
     {
-        $user->loadMissing('settings', 'roles', 'regionalgroups');
+        $user->loadMissing('settings');
 
-        if (null == $user->settings) {
-            return false;
-        }
-
-        if (null == $user->settings->forum_id) {
+        if (null == $user->settings?->forum_id) {
             return false;
         }
 
         $dataArray = [];
 
         /**
-         * Issue 133.
          * Update username when cert data was updated.
          *
          * 1. Get current user object from the board
          * 2. Compare the names
-         * 3. If mismatch: set new name
+         * 3. If mismatched: set new name //todo new name already exists
          */
         $result = self::send('GET', 'users/' . $user->settings->forum_id, []);
-
         if (!$result) {
             return false;
         }
@@ -157,87 +137,24 @@ class XenForoLibrary
 
         /**
          * Array to store forum groups that must be assigned to the user.
-         * @var array
          */
         $secondaryGroups = [];
 
-        // Get all forumgroups the user has through assigned groups
-        foreach ($user->roles as $grp) {
-            $grp->loadMissing('forumgroups');
-            foreach ($grp->forumgroups as $fg) {
-                if (!array_key_exists($fg->forum_id, $secondaryGroups)) {
-                    $secondaryGroups[] = $fg->forum_id;
-                }
-            }
-        }
+        // Get all forum groups the user has through assigned groups
+        $secondaryGroups = array_merge($secondaryGroups, $user->service_role_ids(ServiceRoleType::ForumGroup));
 
-        /**
-         * Assign forum groups based upon regionalgroup status
-         *
-         */
-        /* TODO
-        $fgrps = ForumGroup::all();
-        foreach ($user->regionalgroups as $rg) {
-            if ($rg->chief_id == $user->id || $rg->deputy_id == $user->id) {
-                // Account is staff team
-                if ($fgrps->contains($rg->staff_group_id)) {
-                    $secondaryGroups[] = $fgrps->firstWhere('id', $rg->staff_group_id)->forum_id;
-                }
-            }
+        //Assign forum groups based upon vatger status
 
-            if ($user->isMentorOfRegionalgroup($rg)) {
-                // Mentoring group
-                if ($fgrps->contains($rg->mentor_group_id)) {
-                    $secondaryGroups[] = $fgrps->firstWhere('id', $rg->mentor_group_id)->forum_id;
-                }
-            }
+        // TODO FIR mitglied + VATGER mitglied (+ FIR wahlberechtigt + VATGER wahlberechtigt)
 
-            if ($user->isNavigatorOfRegionalgroup($rg)) {
-                // Nav group
-                if ($fgrps->contains($rg->navler_group_id)) {
-                    $secondaryGroups[] = $fgrps->firstWhere('id', $rg->navler_group_id)->forum_id;
-                }
-            }
-
-            if ($user->isEventlerOfRegionalgroup($rg)) {
-                // Eventteam group
-                if ($fgrps->contains($rg->eventler_group_id)) {
-                    $secondaryGroups[] = $fgrps->firstWhere('id', $rg->eventler_group_id)->forum_id;
-                }
-            }
-
-            if ($user->isMemberOfRegionalgroup($rg)) {
-                // Fullmemeber, give acces to membership group
-                if ($fgrps->contains($rg->member_group_id)) {
-                    $secondaryGroups[] = $fgrps->firstWhere('id', $rg->member_group_id)->forum_id;
-                }
-                // Fullmember, give access to the voting group
-                // But only if at least 2 month non stop membership
-                if ($rg->pivot->created_at <= Carbon::now()->subMonth(2) && $fgrps->contains($rg->voting_group_id)) {
-                    $secondaryGroups[] = $fgrps->firstWhere('id', $rg->voting_group_id)->forum_id;
-                }
-                // If you are assigend to a regionalgroup you are eligable to vote as a vacc member
-                // But only if you are a member for at least 2 month
-                if ($rg->pivot->created_at <= Carbon::now()->subMonth(2)) {
-                    $secondaryGroups[] = 44;
-                } // vACC-Forum voting group id => 44;
-            }
-
-            if ($user->isGuestOfRegionalgroup($rg)) {
-                if ($fgrps->contains($rg->guest_group_id)) {
-                    $secondaryGroups[] = $fgrps->firstWhere('id', $rg->guest_group_id)->forum_id;
-                }
-            }
-        }
-        */
-        $dataArray['secondary_group_ids'] = [];
         if (!empty($secondaryGroups)) {
             $dataArray['secondary_group_ids'] = $secondaryGroups;
         } else {
-            $dataArray['secondary_group_ids'][] = config('forum.guestGroup');
+            $dataArray['secondary_group_ids'][] = [config('forum.guestGroup')];
         }
 
-        $result = self::_sendAPIPostCommand('users/' . $user->settings->forum_id, $dataArray);
+        //$result = self::_sendAPIPostCommand('users/' . $user->settings->forum_id, $dataArray);
+        $result = self::send('POST', 'users/' . $user->settings->forum_id, $dataArray);
         if (!$result) {
             return false;
         }

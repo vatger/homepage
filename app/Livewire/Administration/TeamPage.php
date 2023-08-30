@@ -4,6 +4,7 @@ namespace App\Livewire\Administration;
 
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\Groups\ServiceRole;
+use App\Models\Groups\ServiceRoleType;
 use App\Models\Groups\Team;
 use App\Models\Membership\User\User;
 use Illuminate\Http\RedirectResponse;
@@ -24,7 +25,7 @@ class TeamPage extends Component
     public int $user_id;
     public int $selected_superteam;
 
-    public string $selected_service_role_type = '';
+    public string $selected_service_role_type = ServiceRoleType::ForumGroup->value;
     public string $selected_service_role = '';
 
     public function mount()

@@ -149,8 +149,8 @@
                                 <tr>
                                     <td>
                                         <select wire:model="selected_service_role_type" class="form-select form-control-sm form-control" aria-label="">
-                                            @foreach(\App\Models\Groups\ServiceRole::$allowed_service_types as $type)
-                                                <option value="{{ $type }}">{{ $type }}</option>
+                                            @foreach(App\Models\Groups\ServiceRoleType::cases() as $type)
+                                                <option value="{{ $type->value }}">{{ $type->name }}</option>
                                             @endforeach
                                         </select>
                                     </td>

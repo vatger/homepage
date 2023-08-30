@@ -133,9 +133,7 @@ class ConnectController extends Controller
         $user->settings()->update([
             'language' => Session::has('language') ? Session::get('language') : 'de',
         ]);
-
-        $user->serviceAccounts()->updateOrCreate([]);
-
+        
         $user->vatgerDetails()->updateOrCreate([]);
 
         $user->vatsimDetails()->updateOrCreate([]);
