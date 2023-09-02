@@ -37,11 +37,22 @@ class UserVatgerDetail extends Model
         'inactive_at' => 'datetime',
         'warning_delete_at' => 'datetime',
         'delete_at' => 'datetime',
-        //'deleted_at'
     ];
+
+    protected $appends = ['is_inactive', 'is_vatger_member'];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function getIsInactiveAttribute(): bool
+    {
+        return !!$this->inactive_at;
+    }
+
+    public function getIsVatgerMemberAttribute(): bool
+    {
+        return !!$this->vatger_member_at;
     }
 }
