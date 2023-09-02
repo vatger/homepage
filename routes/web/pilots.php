@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Pilot\Aerodrome\AerodromeController;
 use App\Http\Controllers\Pilot\Livemap\LivemapController;
+use App\Livewire\AerodromeListPage;
+use App\Livewire\AerodromePage;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -15,8 +17,8 @@ Route::middleware('cookie.consent')->group(function () {
     Route::group(['prefix' => 'pilots', 'as' => 'pilots.'], function () {
         Route::group(['prefix' => 'aerodromes', 'as' => 'aerodromes.'], function () {
             Route::get('/{icao}/charts', [AerodromeController::class, 'viewAerodromeCharts'])->name('charts');
-            Route::get('/{icao}', App\Livewire\AerodromePage::class)->name('view');
-            Route::get('/', [AerodromeController::class, 'viewAerodromes'])->name('viewall');
+            Route::get('/{icao}', AerodromePage::class)->name('view');
+            Route::get('/', AerodromeListPage::class)->name('viewall');
         });
     });
 

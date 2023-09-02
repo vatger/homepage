@@ -44,7 +44,7 @@ class XenForoLibrary
     /**
      * A function to create an Account for the XenForo Application via API call.
      */
-    public static function createForumAccount(User $user, $password, $try = 0): bool
+    public static function createForumAccount(User $user, string $password, int $try = 0): bool
     {
         if (null != $user->settings->forum_id) {
             return false;
@@ -141,7 +141,7 @@ class XenForoLibrary
         $secondaryGroups = [];
 
         // Get all forum groups the user has through assigned groups
-        $secondaryGroups = array_merge($secondaryGroups, $user->service_role_ids(ServiceRoleType::ForumGroup));
+        $secondaryGroups = array_merge($secondaryGroups, $user->service_role_ids(ServiceRoleType::ForumGroup, true));
 
         //Assign forum groups based upon vatger status
 
@@ -159,11 +159,8 @@ class XenForoLibrary
             return false;
         }
         $response = json_decode($result->getBody()->getContents());
-        if ($response->success) {
-            return true;
-        }
 
-        return false;
+        return (bool) $response->success;
     }
 
     /**

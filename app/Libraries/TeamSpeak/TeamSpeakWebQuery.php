@@ -2,6 +2,7 @@
 
 namespace App\Libraries\TeamSpeak;
 
+use App\Models\Groups\ServiceRoleType;
 use App\Models\Membership\TeamspeakRegistration;
 use App\Models\Membership\User\User;
 use Carbon\Carbon;
@@ -111,7 +112,7 @@ class TeamSpeakWebQuery
         }
 
         //group assignment
-        $service_role_ids = $user->service_role_ids('ts.servergroup');
+        $service_role_ids = $user->service_role_ids(ServiceRoleType::TeamspeakServergroup, true);
 
         $all_server_groups = self::listServerGroupIds(with_standard_groups: false);
         //so we don't remove the default role

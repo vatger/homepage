@@ -25,10 +25,13 @@ trait HasTeamConcern
             ->get();
     }
 
-    public function service_role_ids(ServiceRoleType $service_type): array
+    public function service_role_ids(ServiceRoleType $service_type, bool $cast_to_int = false): array
     {
         return $this->service_roles($service_type)
-            ->map(function ($r) {
+            ->map(function ($r) use ($cast_to_int) {
+                if ($cast_to_int) {
+                    return intval($r->service_role);
+                }
                 return $r->service_role;
             })
             ->unique()
