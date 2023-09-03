@@ -37,7 +37,7 @@ class RegionalgroupController extends Controller
         if ($this->_user->isMemberOfRegionalgroup($rg) || $this->_user->isGuestOfRegionalgroup($rg)) {
             $rg->accounts()->detach($this->_user);
 
-            MembershipLibrary::handleMembershipChange($this->_user);
+            MembershipLibrary::update($this->_user);
         }
 
         return redirect()

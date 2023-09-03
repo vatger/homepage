@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Profile;
 
+use App\Libraries\Membership\MembershipLibrary;
 use App\Livewire\Helpers\ModalTrait;
+use App\Livewire\Helpers\NotyTrait;
 use App\Models\Groups\Fir;
 use App\Models\Membership\User\Concerns\FirMembership;
 use Carbon\Carbon;
@@ -11,7 +13,7 @@ use Livewire\Component;
 
 class ProfileTab extends Component
 {
-    use ModalTrait;
+    use NotyTrait;
 
     public int $fir_selection = -1;
     public bool $fir_selection_checkbox = false;
@@ -32,13 +34,21 @@ class ProfileTab extends Component
 
     public function changeFir(): void
     {
-        FirMembership::where('user_id', Auth::user()->id)->delete();
-        if ($this->fir_selection == -1) {
+        if (!$this->fir_selection_checkbox) {
+            $this->showNoty('Please check the box!', 'error');
             return;
         }
-        $f = new FirMembership();
-        $f->user_id = Auth::user()->id;
-        $f->fir_id = $this->fir_selection;
-        $f->save();
+        FirMembership::where('user_id', Auth::user()->id)->delete();
+        if ($this->fir_selection == -1) {
+            $this->showNoty('FIR verlassen.', 'success');
+        } else {
+            $f = new FirMembership();
+            $f->user_id = Auth::user()->id;
+            $f->fir_id = $this->fir_selection;
+            $f->save();
+            $this->showNoty('FIR beigetreten.', 'success');
+        }
+        MembershipLibrary::update(Auth::user(), true);
+        $this->fir_selection_checkbox = false;
     }
 }

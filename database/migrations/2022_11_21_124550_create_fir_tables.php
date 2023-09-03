@@ -26,7 +26,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained('user_users');
             $table->foreignId('fir_id')->constrained('fir_firs');
-            $table->dateTime('joined_at')->useCurrent();
+            $table->timestamp('joined_at')->useCurrent();
+            $table->timestamp('active_fir_member_at')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

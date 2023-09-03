@@ -110,7 +110,7 @@ class XenForoLibrary
     {
         $user->loadMissing('settings');
 
-        if (null == $user->settings?->forum_id) {
+        if ($user->settings?->forum_id == null) {
             return false;
         }
 
@@ -153,7 +153,8 @@ class XenForoLibrary
             $dataArray['secondary_group_ids'][] = [config('forum.guestGroup')];
         }
 
-        //$result = self::_sendAPIPostCommand('users/' . $user->settings->forum_id, $dataArray);
+        $dataArray['custom_title'] = $user->id;
+
         $result = self::send('POST', 'users/' . $user->settings->forum_id, $dataArray);
         if (!$result) {
             return false;
@@ -182,7 +183,7 @@ class XenForoLibrary
         $dataArray['secondary_group_ids'] = [];
         $dataArray['secondary_group_ids'][] = $suspendedGroup;
 
-        $result = self::_sendAPIPostCommand('users/' . $user->settings->forum_id, $dataArray);
+        $result = self::send('POST', 'users/' . $user->settings->forum_id, $dataArray);
         if (!$result) {
             return false;
         }
@@ -293,7 +294,7 @@ class XenForoLibrary
      */
     public static function getNewsThreads()
     {
-        $result = self::_sendAPICommand('forums/' . config('forum.newsId') . '/threads', []);
+        $result = self::send('GET', 'forums/' . config('forum.newsId') . '/threads', []);
         if ($result && 200 == $result->getStatusCode()) {
             return json_decode($result->getBody()->getContents());
         }
@@ -303,12 +304,10 @@ class XenForoLibrary
 
     /**
      * Grab the posts in the news threads
-     * @param  [type] $postId [description]
-     * @return [type]           [description]
      */
-    public static function getPost($postId)
+    public static function getPost(int|string $postId)
     {
-        $result = self::_sendAPICommand('posts/' . $postId, []);
+        $result = self::send('GET', 'posts/' . $postId, []);
         if ($result && 200 == $result->getStatusCode()) {
             return json_decode($result->getBody()->getContents());
         }

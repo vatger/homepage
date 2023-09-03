@@ -6,6 +6,7 @@ use App\Models\Groups\Fir;
 use App\Models\Membership\User\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -25,5 +26,10 @@ trait HasFirConcern
     public function fir(): HasOneThrough|Fir
     {
         return $this->hasOneThrough(Fir::class, FirMembership::class, 'user_id', 'id', 'id', 'fir_id')->select('*');
+    }
+
+    public function fir_membership(): HasOne|FirMembership
+    {
+        return $this->hasOne(FirMembership::class);
     }
 }

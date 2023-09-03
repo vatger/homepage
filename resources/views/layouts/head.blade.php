@@ -10,7 +10,7 @@
 <meta name="lang" content="{{ app()->getLocale() }}">
 
 <!-- favicon -->
-<link rel="shortcut icon" href="/favicon.ico">
+<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
 
 @if(!auth()->check() || !Auth::user()->settings->dark_mode)
     @if(isset($_admin) && $_admin)

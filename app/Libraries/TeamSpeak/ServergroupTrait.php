@@ -52,7 +52,7 @@ trait ServergroupTrait
         return self::_servergroupdelclient($clientdbid, $serverGroupId);
     }
 
-    public function listServerGroupIds(bool $with_standard_groups = true): array|false
+    public static function listServerGroupIds(bool $with_standard_groups = true): array|false
     {
         $list = self::_servergrouplist();
         if (!$list) {

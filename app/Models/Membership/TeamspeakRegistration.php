@@ -25,6 +25,6 @@ class TeamspeakRegistration extends Model
      */
     public function user(): BelongsTo|User
     {
-        return $this->belongsTo(User::class, 'account_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

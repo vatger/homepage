@@ -5,13 +5,15 @@
                 <h5>VATGER Details:</h5>
                 <div class="mt-1">
                     <x-profile.profiletabitem title="E-Mail" :text="$user->email_backup ?  : $user->email" feaicon="mail"></x-profile.profiletabitem>
-                    <x-profile.profiletabitem title="Vollmitglied" :text="$user->vatgerDetails->vatger_member_at ? 'YES':'NO'"
+                    <x-profile.profiletabitem title="Vollmitglied" :text="$user->vatgerDetails->is_vatger_member ? 'YES':'NO'"
                                               :subtext="$user->vatgerDetails->vatger_member_at?->format('d.m.Y') ? : null"
-                                              :feaicon="$user->vatgerDetails->vatger_member_at ? 'user-check' : 'user-x'"></x-profile.profiletabitem>
-                    <x-profile.profiletabitem title="registered_at" :text="$user->vatgerDetails->registered_at->format('d.m.Y')" feaicon="calendar"></x-profile.profiletabitem>
-                    <x-profile.profiletabitem title="last_seen_at" :text="$user->vatgerDetails->last_seen_at->format('d.m.Y')" feaicon="calendar"></x-profile.profiletabitem>
-                    <x-profile.profiletabitem title="inactive_at" :text="$user->vatgerDetails->inactive_at?->format('d.m.Y')" feaicon="calendar"></x-profile.profiletabitem>
-                    <x-profile.profiletabitem title="active_vatger_member_at" :text="$user->vatgerDetails->active_vatger_member_at->format('d.m.Y')" feaicon="calendar"></x-profile.profiletabitem>
+                                              :feaicon="$user->vatgerDetails->is_vatger_member ? 'user-check' : 'user-x'"></x-profile.profiletabitem>
+                    <x-profile.profiletabitem title="Wahlberechtigt" :text="$user->vatgerDetails->is_vatger_voter ? 'YES':'NO'"
+                                              :subtext="$user->vatgerDetails->active_vatger_member_at?->format('d.m.Y') ? : null"
+                                              :feaicon="$user->vatgerDetails->is_vatger_member ? 'user-check' : 'user-x'"></x-profile.profiletabitem>
+                    <x-profile.profiletabitem title="Vollmitglied" :text="$user->vatgerDetails->is_vatger_member ? 'YES':'NO'"
+                                              :subtext="$user->vatgerDetails->vatger_member_at?->format('d.m.Y') ? : null"
+                                              :feaicon="$user->vatgerDetails->is_vatger_member ? 'user-check' : 'user-x'"></x-profile.profiletabitem>
 
 
                 </div>
@@ -55,7 +57,7 @@
         @if($user->fir)
             <div class="row">
                 <div class="col-md-6 mt-4 pt-2">
-                    <div class="card rounded shadow bg-dark border-0">
+                    <div class="card rounded shadow bg-secondary border-0">
                         <div class="card-body">
                             <div>
                                 <h5 class="text-light">{{$user->fir?->name}}</h5>
@@ -67,8 +69,24 @@
                         </div>
                     </div>
                 </div><!--end col-->
+                @foreach(\App\Models\Groups\Fir::all() as $f)
+                    <div class="col-md-6 mt-4 pt-2">
+                        <div class="card rounded shadow bg-dark border-0">
+                            <div class="card-body">
+                                <div>
+                                    <h5 class="text-light">{{$f->name}}</h5>
+                                    <div class="d-flex justify-content-between mb-0">
+                                        <p class="h6 text-muted mb-0">{{strtoupper($f->slug)}}</p>
+                                        <h6 class="mb-0 text-muted">{{ ''  }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                @endforeach
             </div>
         @endif
+
     </div>
 
     <div class="modal fade" id="change-fir-modal" tabindex="-1" aria-labelledby="fir-change-label" aria-hidden="true">
@@ -97,9 +115,9 @@
                                         @endif
                                     </option>
                                     @foreach(\App\Models\Groups\Fir::all() as $fir)
-                                        <option value="{{$fir->id}}" @if($fir->id == $userfir?->id) disabled @endif>
+                                        <option value="{{$fir->id}}" @if($fir->id == $userfir?->fir_id) disabled @endif>
                                             {{$fir->name}}
-                                            @if($fir->id == $userfir?->id)
+                                            @if($fir->id == $userfir?->fir_id)
                                                 (Aktuell)
                                             @endif
                                         </option>
@@ -108,7 +126,7 @@
                             </div>
 
                             <p class="small">
-                                Du kannst die FIR alle 6 Monate wechseln. Mit diesem Wechsel bestätigst du, dass du dies verstanden hast und damit
+                                Du kannst die FIR alle 90 Tage wechseln. Mit diesem Wechsel bestätigst du, dass du dies verstanden hast und damit
                                 einverstanden bist, bis zum {{\Carbon\Carbon::now()->add('90', 'days')->format('d.m.Y')}} keinen weiteren
                                 Wechsel mehr durchführen zu können. Bestätige bitte, dass du diesen Hinweis gelesen und verstanden hast.
                             </p>

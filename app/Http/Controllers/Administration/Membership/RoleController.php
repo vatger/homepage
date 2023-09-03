@@ -61,7 +61,7 @@ class RoleController extends Controller
         }
 
         $user = $user->assignRole($role);
-        MembershipLibrary::handleMembershipChange($user);
+        MembershipLibrary::update($user);
 
         return [
             'cid' => $user['id'],
@@ -86,7 +86,7 @@ class RoleController extends Controller
 
         $user = $user->removeRole($role);
 
-        MembershipLibrary::handleMembershipChange($user);
+        MembershipLibrary::update($user);
 
         return 'TODO: lang(`administration.role.userRemoved`)';
     }
@@ -117,7 +117,7 @@ class RoleController extends Controller
 
         // Trigger Membership Library Update for group members
         foreach ($role->users as $u) {
-            MembershipLibrary::handleMembershipChange($u);
+            MembershipLibrary::update($u);
         }
 
         return $role->hasPermissionTo($permission) ? 1 : 0;

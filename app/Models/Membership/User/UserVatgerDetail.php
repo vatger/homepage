@@ -39,7 +39,16 @@ class UserVatgerDetail extends Model
         'delete_at' => 'datetime',
     ];
 
-    protected $appends = ['is_inactive', 'is_vatger_member'];
+    protected $appends = [
+        'is_inactive',
+        'is_vatger_member',
+        'is_fir_member',
+        'is_vatger_active_member',
+        'is_fir_active_member',
+        'is_vatger_voter',
+        'is_fir_voter',
+        'can_change_fir',
+    ];
 
     public function user(): BelongsTo
     {
@@ -54,5 +63,39 @@ class UserVatgerDetail extends Model
     public function getIsVatgerMemberAttribute(): bool
     {
         return !!$this->vatger_member_at;
+    }
+
+    public function getIsFirMemberAttribute(): bool
+    {
+        return !!$this->user->fir;
+    }
+
+    public function getIsVatgerActiveMemberAttribute(): bool
+    {
+        return !!$this->active_vatger_member_at;
+    }
+
+    public function getIsFirActiveMemberAttribute(): bool
+    {
+        return !!$this->user->fir?->active_fir_member_at;
+    }
+
+    public function getIsVatgerVoterAttribute(): bool
+    {
+        return Carbon::now()->diffInDays($this->active_vatger_member_at) >= 180;
+    }
+
+    public function getIsFirVoterAttribute(): bool
+    {
+        return $this->getIsFirActiveMemberAttribute() && Carbon::now()->diffInDays($this->user->fir?->active_fir_member_at) >= 180;
+    }
+
+    public function getCanChangeFirAttribute(): bool
+    {
+        $latest_fir = $this->user
+            ->firs()
+            ->orderBy('deleted_at')
+            ->first();
+        return !$latest_fir && $this->getIsVatgerMemberAttribute() ?? Carbon::now()->diffInDays($latest_fir->created_at) >= 90;
     }
 }

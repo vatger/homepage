@@ -82,7 +82,7 @@ class RequestController extends RegionalgroupController
                 $regionalgroup->accounts()->attach($regionalgroupRequest->account, ['guest' => false, 'pilot' => true, 'controller' => true]);
             }
 
-            MembershipLibrary::handleMembershipChange($regionalgroupRequest->account);
+            MembershipLibrary::update($regionalgroupRequest->account);
             // Delete the request, as we do not need it anymore
             $regionalgroupRequest->delete();
 
