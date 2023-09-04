@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User\Regionalgroup;
 
 use App\Http\Controllers\Controller;
-use App\Libraries\Membership\MembershipLibrary;
+use App\Libraries\MembershipLibrary;
 use App\Models\Regionalgroup_remove\Regionalgroup;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

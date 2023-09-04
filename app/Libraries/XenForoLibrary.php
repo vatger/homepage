@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Libraries\Forum;
+namespace App\Libraries;
 
 use App\Models\Groups\ServiceRoleType;
 use App\Models\Membership\User\User;
-use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\ResponseInterface;

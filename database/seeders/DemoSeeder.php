@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Libraries\Membership\MembershipLibrary;
+use App\Libraries\MembershipLibrary;
 use App\Models\Membership\User\User;
 use App\Models\Membership\User\UserData;
-use App\Models\Membership\User\UserSetting;
-use App\Models\Membership\User\UserVatgerDetail;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Session;
 

@@ -2,19 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Libraries\Membership\MembershipLibrary;
+use App\Libraries\MembershipLibrary;
 use App\Models\Membership\User\User;
-use App\Models\Membership\User\UserVatgerDetail;
 use App\Providers\VATSIM\ConnectProvider;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use Illuminate\View\View;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use UnexpectedValueException;
 
@@ -133,7 +128,7 @@ class ConnectController extends Controller
         $user->settings()->update([
             'language' => Session::has('language') ? Session::get('language') : 'de',
         ]);
-        
+
         $user->vatgerDetails()->updateOrCreate([]);
 
         $user->vatsimDetails()->updateOrCreate([]);

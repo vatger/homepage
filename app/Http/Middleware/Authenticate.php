@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Libraries\Membership\MembershipLibrary;
+use App\Libraries\MembershipLibrary;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 

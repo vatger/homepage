@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Libraries\Membership;
+namespace App\Libraries;
 
-use App\Libraries\Forum\XenForoLibrary;
-use App\Libraries\Gitlab\GitlabLibrary;
+use App\Jobs\UpdateAccountJob;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
-use App\Models\Membership\User\Concerns\FirMembership;
 use App\Models\Membership\User\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use function Symfony\Component\String\u;
 
 class MembershipLibrary
 {
@@ -27,13 +24,27 @@ class MembershipLibrary
         self::check_status($user);
     }
 
-    /**
-     * The
-     * @param User $user
-     * @param bool $cache
-     * @return void
-     */
-    public static function check_status(User $user, bool $cache = true): void
+    public static function update(User $user, bool $async = false, bool $cache = true): void
+    {
+        if ($async) {
+            UpdateAccountJob::dispatch($user);
+            return;
+        }
+        $user = $user->refresh();
+        self::check_status($user, $cache);
+        # TODO: Handle all changes that might have triggered this function
+
+        // 1. Handle forum permission / role assignment
+        XenForoLibrary::updateForumAccount($user);
+        // 2. Handle Teamspeak roles
+        TeamSpeakWebQuery::checkUser($user);
+        // 3. kb
+
+        //
+        Log::info('[MembershipLibrary::handleMembershipChange]::' . $user->id . '::Membership Update Triggered!');
+    }
+
+    protected static function check_status(User $user, bool $cache = true): void
     {
         $cache_key = 'membership.checked_status.' . $user->id;
         if ($cache && Cache::has($cache_key)) {
@@ -119,21 +130,5 @@ class MembershipLibrary
         }
 
         Cache::put($cache_key, Carbon::now(), 60);
-    }
-
-    public static function update(User $user, bool $async = false): void
-    {
-        $user = $user->refresh();
-        self::check_status($user, false);
-        # TODO: Handle all changes that might have triggered this function
-
-        // 1. Handle forum permission / role assignment
-        XenForoLibrary::updateForumAccount($user);
-        // 2. Handle Teamspeak roles
-        TeamSpeakWebQuery::checkUser($user);
-        //
-
-        //
-        Log::info('[MembershipLibrary::handleMembershipChange]::' . $user->id . '::Membership Update Triggered!');
     }
 }

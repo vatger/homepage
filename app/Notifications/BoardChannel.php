@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Libraries\Forum\XenForoLibrary;
+use App\Libraries\XenForoLibrary;
 use App\Models\Membership\User\User;
 use Illuminate\Notifications\Notification;
 

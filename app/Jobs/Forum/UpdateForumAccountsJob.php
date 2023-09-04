@@ -2,10 +2,9 @@
 
 namespace App\Jobs\Forum;
 
-use App\Libraries\Forum\XenForoLibrary;
+use App\Libraries\XenForoLibrary;
 use App\Models\Membership\User\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
