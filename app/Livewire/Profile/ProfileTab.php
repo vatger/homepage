@@ -34,6 +34,10 @@ class ProfileTab extends Component
 
     public function changeFir(): void
     {
+        if (!Auth::user()->vatgerDetails->can_change_fir) {
+            $this->showNoty('Can not change FIR.', 'error');
+            return;
+        }
         if (!$this->fir_selection_checkbox) {
             $this->showNoty('Please check the box!', 'error');
             return;

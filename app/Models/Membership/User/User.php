@@ -17,7 +17,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use Notifiable, HasRoles, HasApiTokens, HasBanConcern, HasFirConcern, HasTeamConcern;
-
+    
     protected $table = 'user_users';
 
     protected $fillable = ['id', 'firstname', 'lastname', 'email', 'email_backup'];

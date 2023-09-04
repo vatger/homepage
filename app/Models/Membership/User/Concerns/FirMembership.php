@@ -15,6 +15,13 @@ class FirMembership extends Pivot
     public $table = 'user_firs';
     public $incrementing = true;
 
+    protected $fillable = ['joined_at', 'active_fir_member_at'];
+
+    protected $casts = [
+        'joined_at' => 'date',
+        'active_fir_member_at' => 'date',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class)->piv;

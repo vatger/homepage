@@ -8,12 +8,12 @@
                         <h6 class="mb-0">@lang('profile.profile.profile.language')</h6>
                         <div class="form-check" style="min-width: 30%;">
                             <form id="language-form">
-                                <select wire:model.live="language" class="form-select form-control" id="languageSelector"
+                                <select wire:model.live="language" class="form-select form-control" id="language-selector"
                                         name="language-select">
                                     <option value="de">@lang('profile.profile.languages.german')</option>
                                     <option value="en">@lang('profile.profile.languages.english')</option>
                                 </select>
-                                <label class="form-check-label" for="dark-mode-selector"></label>
+                                <label class="form-check-label" for="language-selector"></label>
                             </form>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                                     <option value="skobleoff">@lang('profile.profile.settings.color.skobleoff')</option>
                                     <option value="yellow">@lang('profile.profile.settings.color.yellow')</option>
                                 </select>
-                                <label class="form-check-label" for="noti2"></label>
+                                <label class="form-check-label" for="color-mode-selector"></label>
                             </div>
                         </div>
                         <div class="d-flex justify-content-between border-top py-4">
@@ -42,8 +42,6 @@
                             </div>
                         </div>
                     </form>
-                    <p class="text-muted small" style="display: none" id="languageChangedMessage">For your language changes to take
-                        effect, please reload the page.</p>
                 </div>
             </div>
         </div>

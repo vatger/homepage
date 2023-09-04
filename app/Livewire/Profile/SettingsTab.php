@@ -40,5 +40,6 @@ class SettingsTab extends Component
                 'color' => $this->color,
             ]);
         Session::put('language', $this->language);
+        $this->js('window.location.reload()');
     }
 }

@@ -41,13 +41,11 @@ class MembershipLibrary
         }
 
         $user->loadMissing('vatgerDetails', 'vatsimDetails');
-        $vatger = $user->vatgerDetails;
-        $vatsim = $user->vatsimDetails;
 
-        $warning_inactive = Carbon::now()->diffInDays($vatger->last_seen_at, true) > 180 - 30;
-        $inactive = Carbon::now()->diffInDays($vatger->last_seen_at, true) > 180;
-        $warning_delete = Carbon::now()->diffInDays($vatger->last_seen_at, true) > 180 * 2 - 30;
-        $delete = Carbon::now()->diffInDays($vatger->last_seen_at, true) > 180 * 2;
+        $warning_inactive = Carbon::now()->diffInDays($user->vatgerDetails->last_seen_at, true) > 180 - 30;
+        $inactive = Carbon::now()->diffInDays($user->vatgerDetails->last_seen_at, true) > 180;
+        $warning_delete = Carbon::now()->diffInDays($user->vatgerDetails->last_seen_at, true) > 180 * 2 - 30;
+        $delete = Carbon::now()->diffInDays($user->vatgerDetails->last_seen_at, true) > 180 * 2;
 
         // user is active clear all flags
         if (!$warning_inactive) {
@@ -59,53 +57,61 @@ class MembershipLibrary
             ]);
         }
 
-        if ($warning_inactive && !$vatger->warning_inactive_at) {
+        if ($warning_inactive && !$user->vatgerDetails->warning_inactive_at) {
             //TODO send email
             $user->vatgerDetails->update(['warning_inactive_at' => Carbon::now()]);
         }
-        if ($inactive && !$vatger->inactive_at) {
+        if ($inactive && !$user->vatgerDetails->inactive_at) {
             //TODO send email
             $user->vatgerDetails->update(['inactive_at' => Carbon::now()]);
         }
-        if ($warning_delete && !$vatger->warning_delete_at) {
+        if ($warning_delete && !$user->vatgerDetails->warning_delete_at) {
             //TODO send email
             $user->vatgerDetails->update(['warning_delete_at' => Carbon::now()]);
         }
-        if ($delete && !$vatger->delete_at) {
+        if ($delete && !$user->vatgerDetails->delete_at) {
             //TODO send email
             $user->vatgerDetails->update(['delete_at' => Carbon::now()]);
         }
 
+        $user = $user->fresh();
+
         // user has become inactive so reset the continuous active times
-        if ($inactive && ($vatger->active_member_at || $vatger->active_vatger_member_at || $user->fir?->active_fir_member_at)) {
+        if (
+            $inactive &&
+            ($user->vatgerDetails->active_member_at || $user->vatgerDetails->active_vatger_member_at || $user->fir_membership?->active_fir_member_at)
+        ) {
             $user->vatgerDetails->update([
                 'active_member_at' => null,
                 'active_vatger_member_at' => null,
             ]);
-            $user->fir?->update(['active_fir_member_at' => null]);
+            $user->fir_membership?->update(['active_fir_member_at' => null]);
             $user = $user->fresh();
         }
 
         // user became vatger full member start time (independent from inactive status)
-        if ($vatger->vatger_member_at == null && $vatsim->subdivision_code == 'GER') {
+        if ($user->vatgerDetails->vatger_member_at == null && $user->vatsimDetails->subdivision_code == 'GER') {
             $user->vatgerDetails->update(['vatger_member_at' => Carbon::now()]);
             $user = $user->fresh();
         }
         // user is guest member start continuous active times
-        if (!$inactive && $vatger->active_member_at == null) {
+        if (!$inactive && $user->vatgerDetails->active_member_at == null) {
             $user->vatgerDetails->update(['active_member_at' => Carbon::now()]);
             $user = $user->fresh();
         }
         // user is vatger full member start continuous active times
-        if (!$inactive && $vatger->active_vatger_member_at == null && $vatsim->subdivision_code == 'GER') {
+        if (!$inactive && $user->vatgerDetails->active_vatger_member_at == null && $user->vatsimDetails->subdivision_code == 'GER') {
             $user->vatgerDetails->update(['active_vatger_member_at' => Carbon::now()]);
             $user = $user->fresh();
         }
-        if (!$inactive && $user->fir?->active_fir_member_at == null && $vatsim->subdivision_code == 'GER') {
+        if (!$inactive && $user->fir?->active_fir_member_at == null && $user->vatsimDetails->subdivision_code == 'GER') {
             $user->fir_membership?->update(['active_fir_member_at' => Carbon::now()]);
         }
         //user has left vatger full member
-        if ($vatsim->subdivision_code != 'GER' && ($vatger->active_member_at || $vatger->active_vatger_member_at)) {
+        if (
+            $user->vatsimDetails->subdivision_code != 'GER' &&
+            ($user->vatgerDetails->active_member_at || $user->vatgerDetails->active_vatger_member_at)
+        ) {
             //TODO kick from FIRs
             $user->fir_membership?->delete();
             $user->vatgerDetails->update(['vatger_member_at' => null, 'active_vatger_member_at' => null]);

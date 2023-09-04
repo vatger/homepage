@@ -3,13 +3,9 @@
 namespace App\Models\Membership\User\Concerns;
 
 use App\Models\Groups\Fir;
-use App\Models\Membership\User\User;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Database\Eloquent\Relations\Pivot;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 trait HasFirConcern
 {

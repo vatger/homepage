@@ -9,11 +9,11 @@
                                               :subtext="$user->vatgerDetails->vatger_member_at?->format('d.m.Y') ? : null"
                                               :feaicon="$user->vatgerDetails->is_vatger_member ? 'user-check' : 'user-x'"></x-profile.profiletabitem>
                     <x-profile.profiletabitem title="Wahlberechtigt" :text="$user->vatgerDetails->is_vatger_voter ? 'YES':'NO'"
-                                              :subtext="$user->vatgerDetails->active_vatger_member_at?->format('d.m.Y') ? : null"
-                                              :feaicon="$user->vatgerDetails->is_vatger_member ? 'user-check' : 'user-x'"></x-profile.profiletabitem>
-                    <x-profile.profiletabitem title="Vollmitglied" :text="$user->vatgerDetails->is_vatger_member ? 'YES':'NO'"
-                                              :subtext="$user->vatgerDetails->vatger_member_at?->format('d.m.Y') ? : null"
-                                              :feaicon="$user->vatgerDetails->is_vatger_member ? 'user-check' : 'user-x'"></x-profile.profiletabitem>
+                                              :subtext="$user->vatgerDetails->active_vatger_member_at?->format('d.m.Y') ? : 'inactive'"
+                                              :feaicon="$user->vatgerDetails->is_vatger_voter ? 'user-check' : 'user-x'"></x-profile.profiletabitem>
+                    <x-profile.profiletabitem title="Wahlberechtigt (FIR)" :text="$user->vatgerDetails->is_fir_voter ? 'YES':'NO'"
+                                              :subtext="$user->fir_membership?->active_fir_member_at?->format('d.m.Y') ? : 'inactive'"
+                                              :feaicon="$user->vatgerDetails->is_fir_voter ? 'user-check' : 'user-x'"></x-profile.profiletabitem>
 
 
                 </div>
@@ -45,7 +45,7 @@
     <div class="p-4">
         <div class="d-flex align-items-center justify-content-between">
             <h5 class="mb-0">Flight Information Region (FIR)</h5>
-            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#change-fir-modal" hhhh="openFirSelection()">
+            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#change-fir-modal" @if(!$user->vatgerDetails->can_change_fir) disabled @endif>
                 @if($user->fir)
                     FIR Wechseln
                 @else
@@ -62,27 +62,29 @@
                             <div>
                                 <h5 class="text-light">{{$user->fir?->name}}</h5>
                                 <div class="d-flex justify-content-between mb-0">
-                                    <p class="h6 text-muted mb-0">{{strtoupper($user->fir?->slug)}}</p>
-                                    <h6 class="mb-0 text-muted">{{\Carbon\Carbon::parse($user->fir?->joined_at)->format('d.m.Y H:i')}}</h6>
+                                    <p class="h6 text-light mb-0">{{strtoupper($user->fir?->slug)}}</p>
+                                    <h6 class="mb-0 text-light"> joined {{ $user->fir_membership?->joined_at->format('d.m.Y') }}</h6>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div><!--end col-->
                 @foreach(\App\Models\Groups\Fir::all() as $f)
-                    <div class="col-md-6 mt-4 pt-2">
-                        <div class="card rounded shadow bg-dark border-0">
-                            <div class="card-body">
-                                <div>
-                                    <h5 class="text-light">{{$f->name}}</h5>
-                                    <div class="d-flex justify-content-between mb-0">
-                                        <p class="h6 text-muted mb-0">{{strtoupper($f->slug)}}</p>
-                                        <h6 class="mb-0 text-muted">{{ ''  }}</h6>
+                    @if($f->id != $user->fir?->fir_id)
+                        <div class="col-md-6 mt-4 pt-2">
+                            <div class="card rounded shadow bg-dark border-0">
+                                <div class="card-body">
+                                    <div>
+                                        <h5 class="text-light">{{$f->name}}</h5>
+                                        <div class="d-flex justify-content-between mb-0">
+                                            <p class="h6 text-muted mb-0">{{strtoupper($f->slug)}}</p>
+                                            <h6 class="mb-0 text-muted">{{ '' }}</h6>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div><!--end col-->
+                        </div><!--end col-->
+                    @endif
                 @endforeach
             </div>
         @endif
