@@ -204,7 +204,7 @@ class XenForoLibrary
      */
     public static function sendForumAlert(User $user, string $message, string $link_url = '', string $link_text = ''): bool
     {
-        $forum_user_id = $user?->serviceAccounts()->get('forum_id');
+        $forum_user_id = $user->settings->get('forum_id');
         if ($forum_user_id == null) {
             return false;
         }

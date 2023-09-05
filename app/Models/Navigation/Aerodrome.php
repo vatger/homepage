@@ -53,35 +53,4 @@ class Aerodrome extends Model
     {
         return $query->where('country_short', 'DE');
     }
-
-    /**
-     * Load the current atc activity at the aerodrome
-     */
-    //public function getControllerActivityAttribute(): mixed
-    //{
-    //    if ($this->stations->count() > 0) {
-    //        return AtcClient::withCallsignIn(
-    //            $this->stations
-    //                ->pluck('ident')
-    //                ->push('%' . $this->icao . '%')
-    //                ->all(),
-    //        )
-    //            ->online()
-    //           ->get();
-    //    }
-    //    return AtcClient::icao('%' . $this->icao . '%')
-    //        ->online()
-    //        ->get();
-    //}
-
-    /**
-     * Is something in the vicinity of the airport?
-     */
-    public function containsCoordinates(float $latitude, float $longitude): bool
-    {
-        return $latitude < $this->latitude + 0.06 &&
-            $latitude > $this->latitude - 0.06 &&
-            $longitude < $this->longitude + 0.06 &&
-            $longitude > $this->longitude - 0.06;
-    }
 }

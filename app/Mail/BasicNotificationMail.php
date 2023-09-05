@@ -25,7 +25,7 @@ class BasicNotificationMail extends Mailable
 
     public function toUser(User $user): Mailable
     {
-        return parent::to($user->email, $user->username);
+        return parent::to(config('app.env' == 'production') ? $user->email : 'paul.hollmann@vatger.de', $user->username);
     }
 
     /**
