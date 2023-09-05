@@ -13,9 +13,7 @@ class Aerodrome extends Model
 {
     protected $table = 'nav_aerodromes';
 
-    protected $fillable = ['useChartfox'];
-
-    protected static array $logAttributes = ['*'];
+    protected $fillable = ['*'];
 
     /**
      * The FIR is assigned to
@@ -35,15 +33,10 @@ class Aerodrome extends Model
             ->orderByPivot('order', 'ASC');
     }
 
-    /**
-     * The charts associated with this aerodrome
-     *
-     * @return BelongsToMany [type] [description]
-     */
-    //public function charts()
-    //{
-    //    return $this->belongsToMany(Chart::class, 'navigation_aerodrome_charts', 'aerodrome_id', 'chart_id');
-    //}
+    public function links(): HasMany
+    {
+        return $this->hasMany(AerodromeLink::class, 'aerodrome_id', 'id');
+    }
 
     /**
      * Get an aerodrome by its icao
@@ -60,15 +53,6 @@ class Aerodrome extends Model
     {
         return $query->where('country_short', 'DE');
     }
-
-    /*
-     * The country the aerodrome is situated at
-     *
-     * public function countryDetail(): BelongsTo
-     * {
-     * return $this->belongsTo(Country::class, 'country', 'alpha_2');
-     * }
-     */
 
     /**
      * Load the current atc activity at the aerodrome

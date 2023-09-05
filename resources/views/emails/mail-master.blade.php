@@ -29,6 +29,7 @@
 
         <tbody>
         {{ $slot ?? '' }}
+        {{--
         <tr>
             <td style="padding: 24px 24px;">
                 <div style="padding: 8px; color: #e43f52; background-color: rgba(228, 63, 82, 0.2); border: 1px solid rgba(228, 63, 82, 0.2); border-radius: 6px; text-align: center; font-size: 16px; font-weight: 600;">
@@ -69,6 +70,8 @@
                 Landrick.
             </td>
         </tr>
+
+        --}}
         </tbody>
     </table>
 </div>

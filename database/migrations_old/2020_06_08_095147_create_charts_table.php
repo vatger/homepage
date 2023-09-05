@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChartsTable extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -13,22 +12,12 @@ class CreateChartsTable extends Migration
      */
     public function up()
     {
-        Schema::create('navigation_charts', function (Blueprint $table) {
+        Schema::create('navigation_links', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('aerodrome_id')->constrained('navigation_aerodromes');
             $table->string('name');
             $table->string('href');
-            $table->integer('airac');
-            $table->enum('type', ['aoi', 'afc', 'agc', 'apc', 'sid', 'star', 'iac'])->default('sid');
-            $table->enum('fri', ['ifr', 'vfr'])->default('ifr');
-            $table->boolean('published')->default(true);
-            $table->boolean('public_available')->default(false);
-            $table->timestamps();
-        });
-
-        Schema::create('navigation_aerodrome_chart', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedInteger('aerodrome_id');
-            $table->unsignedInteger('chart_id');
+            $table->string('type');
             $table->timestamps();
         });
     }
@@ -40,7 +29,6 @@ class CreateChartsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('navigation_aerodrome_chart');
-        Schema::dropIfExists('navigation_charts');
+        Schema::dropIfExists('navigation_links');
     }
-}
+};

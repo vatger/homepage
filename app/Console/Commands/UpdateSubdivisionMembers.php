@@ -1,33 +1,31 @@
 <?php
 
-namespace App\Console\Commands\Forum;
+namespace App\Console\Commands;
 
-use App\Jobs\Forum\UpdateForumAccountsJob;
+use App\Jobs\UpdateSubdivisionMembersJob;
 use Illuminate\Console\Command;
 
-class UpdateForumAccounts extends Command
+class UpdateSubdivisionMembers extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'forum:update';
+    protected $signature = 'vatsim:update-subdivision-members';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Update forum accounts to match current standings.';
+    protected $description = 'Command to update all subdivision members';
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
     public function handle()
     {
-        UpdateForumAccountsJob::dispatch();
+        dispatch(new UpdateSubdivisionMembersJob());
     }
 }

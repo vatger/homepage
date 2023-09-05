@@ -66,6 +66,15 @@ return new class extends Migration {
             $table->timestamps();
         });
 
+        Schema::create('nav_links', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('aerodrome_id')->constrained('nav_aerodromes');
+            $table->string('name');
+            $table->string('href');
+            $table->string('type');
+            $table->timestamps();
+        });
+
         /*
         Schema::create('nav_runways', function (Blueprint $table) {
             $table->id();
@@ -113,6 +122,7 @@ return new class extends Migration {
         Schema::dropIfExists('nav_aerodrome_navaids');
         Schema::dropIfExists('nav_navaids');
         Schema::dropIfExists('nav_runways');
+        Schema::dropIfExists('nav_links');
         Schema::dropIfExists('nav_aerodrome_stations');
         Schema::dropIfExists('nav_stations');
         Schema::dropIfExists('nav_aerodromes');
