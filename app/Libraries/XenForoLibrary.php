@@ -198,11 +198,11 @@ class XenForoLibrary
      *
      * @param User $user
      * @param string $message
-     * @param string $link_url
-     * @param string $link_text
+     * @param string|null $link_url
+     * @param string|null $link_text
      * @return boolean
      */
-    public static function sendForumAlert(User $user, string $message, string $link_url = '', string $link_text = ''): bool
+    public static function sendForumAlert(User $user, string $message, ?string $link_url = null, ?string $link_text = null): bool
     {
         $forum_user_id = $user->settings->get('forum_id');
         if ($forum_user_id == null) {

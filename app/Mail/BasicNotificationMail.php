@@ -25,7 +25,7 @@ class BasicNotificationMail extends Mailable
 
     public function toUser(User $user): Mailable
     {
-        return parent::to(config('app.env' == 'production') ? $user->email : 'paul.hollmann@vatger.de', $user->username);
+        return parent::to($user->email, $user->username);
     }
 
     /**
@@ -33,11 +33,7 @@ class BasicNotificationMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        return new Envelope(
-            from: new Address('hp@vatger.de', 'VATSIM Germany'),
-            replyTo: [new Address('support@vatger.de', 'VATSIM Germany Support')],
-            subject: $this->notification->title,
-        );
+        return new Envelope(replyTo: [new Address('support@vatger.de', 'VATSIM Germany Support')], subject: $this->notification->title);
     }
 
     /**
@@ -45,7 +41,18 @@ class BasicNotificationMail extends Mailable
      */
     public function content(): Content
     {
-        return (new Content())->htmlString($this->notification->message);
+        return new Content(
+            view: 'emails.mail-master',
+            with: [
+                'title' => $this->notification->title,
+                'source_name' => $this->notification->source_name,
+                'message_text' => $this->notification->message,
+                'link_text' => $this->notification->link_text,
+                'link_url' => $this->notification->link_url,
+                'valid_till' => $this->notification->valid_till,
+                'delete_at' => $this->notification->delete_at,
+            ],
+        );
     }
 
     /**

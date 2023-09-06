@@ -6,11 +6,9 @@ use App\Mail\BasicNotificationMail;
 use App\Models\Membership\User\User;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Str;
-use League\CommonMark\CommonMarkConverter;
+use Symfony\Component\Mailer\MailerInterface;
 
 class BasicNotification extends Notification
 {
@@ -25,6 +23,8 @@ class BasicNotification extends Notification
         public string $title,
         public string $message, //supports markdown
         public string $source_name,
+        public ?string $link_text = null,
+        public ?string $link_url = null,
         public ?Carbon $valid_till = null,
         public ?Carbon $delete_at = null,
     ) {
@@ -47,6 +47,8 @@ class BasicNotification extends Notification
             'title' => $this->title,
             'message' => $this->message,
             'source_name' => $this->source_name,
+            'link_text' => $this->link_text,
+            'link_url' => $this->link_url,
             'valid_till' => $this->valid_till?->toDateTimeString(),
             'delete_at' => $this->delete_at?->toDateTimeString(),
         ];
@@ -58,18 +60,17 @@ class BasicNotification extends Notification
     public function toBoard(object $notifiable): array
     {
         return [
-            'message' => strip_tags($this->title) . ': {link}',
-            'link_text' => 'mehr Details',
-            'link_url' => 'vatger.de', //route("") to notifications
+            'message' => strip_tags($this->title) . $this->link_text ? ': {link}' : '',
+            'link_text' => $this->link_text,
+            'link_url' => $this->link_url,
         ];
     }
 
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable)
+    public function toMail(object $notifiable): ?Mailable
     {
-        $url = url('/');
         $mail = new BasicNotificationMail($this);
         if (!$notifiable instanceof User) {
             return null;
