@@ -18,6 +18,7 @@
 
             <div class="row">
                 <x-layouts.admin.sidebar-col
+                        position="left"
                         title="Persönliche Daten"
                         :items="[
                             ['Email', $user->email ,'mail'],

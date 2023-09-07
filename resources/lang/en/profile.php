@@ -7,24 +7,10 @@ return [
 
         'profile' => [
             'personal-details-text' => 'Personal Details',
-            'regional-group-text' => 'Your Regionalgroups',
             'registered-on' => 'Registered On',
             'description' => 'Description',
             'language-appearance' => 'Language & Appearance',
             'language' => 'Language',
-
-            'regionalgroup' => [
-                'no-regionalgroup' => 'You are not assigned to any Regionalgroup',
-                'join-regionalgroup' => 'Join Regionalgroup',
-                'full-member' => 'Full Member',
-                'guest-member' => 'Guest Member',
-                'view-button-content' => 'View Regionalgroup',
-                'text-full-member-change' => [
-                    'You are already assigned as a full member to the ',
-                    '. If you proceed with this change and your request is accepted, you will loose your full member status in this regionalgroup \\
-                    and will be assigned as a guest member.',
-                ],
-            ],
         ],
 
         'notifications' => [

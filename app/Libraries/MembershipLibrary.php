@@ -7,6 +7,7 @@ use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Models\Membership\User\User;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
@@ -52,8 +53,6 @@ class MembershipLibrary
             return;
         }
 
-        $user->loadMissing('vatgerDetails', 'vatsimDetails');
-
         $warning_inactive = Carbon::now()->diffInDays($user->vatgerDetails->last_seen_at, true) > 180 - 30;
         $inactive = Carbon::now()->diffInDays($user->vatgerDetails->last_seen_at, true) > 180;
         $warning_delete = Carbon::now()->diffInDays($user->vatgerDetails->last_seen_at, true) > 180 * 2 - 30;
@@ -69,12 +68,14 @@ class MembershipLibrary
             ]);
         }
 
+        App::setLocale($user->settings->language);
+
         if ($warning_inactive && !$user->vatgerDetails->warning_inactive_at) {
             $user->vatgerDetails->update(['warning_inactive_at' => Carbon::now()]);
             //TODO send email
-            $date = $user->vatgerDetails->last_seen_at->addDays(30);
+            $date = $user->vatgerDetails->last_seen_at->addDays(180);
             $n = new BasicNotification(
-                __('membership_library.inactivity_warning.title', locale: $user->settings->language),
+                __('membership_library.inactivity_warning.title'),
                 __('membership_library.inactivity_warning.message', ['date' => $date->format('d.m.Y')]),
                 'VATGER Membership System',
                 __('membership_library.inactivity_warning.link'),
@@ -85,16 +86,49 @@ class MembershipLibrary
             $user->notify($n);
         }
         if ($inactive && !$user->vatgerDetails->inactive_at) {
-            //TODO send email
             $user->vatgerDetails->update(['inactive_at' => Carbon::now()]);
+            //TODO send email
+            $date = $user->vatgerDetails->last_seen_at->addDays(180);
+            $n = new BasicNotification(
+                __('membership_library.inactivity_notice.title'),
+                __('membership_library.inactivity_notice.message', ['date' => $date->format('d.m.Y')]),
+                'VATGER Membership System',
+                __('membership_library.inactivity_notice.link'),
+                route('vatsim.authentication.connect.login'),
+                valid_till: $date,
+                delete_at: $date->addDay(),
+            );
+            $user->notify($n);
         }
         if ($warning_delete && !$user->vatgerDetails->warning_delete_at) {
-            //TODO send email
             $user->vatgerDetails->update(['warning_delete_at' => Carbon::now()]);
+            //TODO send email
+            $date = $user->vatgerDetails->last_seen_at->addDays(180 * 2);
+            $n = new BasicNotification(
+                __('membership_library.deletion_warning.title'),
+                __('membership_library.deletion_warning.message', ['date' => $date->format('d.m.Y')]),
+                'VATGER Membership System',
+                __('membership_library.deletion_warning.link'),
+                route('vatsim.authentication.connect.login'),
+                valid_till: $date,
+                delete_at: $date->addDay(),
+            );
+            $user->notify($n);
         }
         if ($delete && !$user->vatgerDetails->delete_at) {
-            //TODO send email
             $user->vatgerDetails->update(['delete_at' => Carbon::now()]);
+            //TODO send email
+            $date = $user->vatgerDetails->last_seen_at->addDays(180 * 2);
+            $n = new BasicNotification(
+                __('membership_library.deletion_notice.title'),
+                __('membership_library.deletion_notice.message', ['date' => $date->format('d.m.Y')]),
+                'VATGER Membership System',
+                __('membership_library.deletion_notice.link'),
+                route('vatsim.authentication.connect.login'),
+                valid_till: $date,
+                delete_at: $date->addDay(),
+            );
+            $user->notify($n);
         }
 
         $user = $user->fresh();
