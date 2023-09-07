@@ -33,7 +33,11 @@ class BasicNotificationMail extends Mailable
      */
     public function envelope(): Envelope
     {
-        return new Envelope(replyTo: [new Address('support@vatger.de', 'VATSIM Germany Support')], subject: $this->notification->title);
+        return new Envelope(
+            from: new Address(config('mail.from.address'), $this->notification->source_name . ' via VATSIM Germany'),
+            replyTo: [new Address('support@vatger.de', 'VATSIM Germany Support')],
+            subject: $this->notification->title,
+        );
     }
 
     /**

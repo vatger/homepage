@@ -5,6 +5,7 @@ namespace App\Libraries;
 use App\Jobs\UpdateAccountJob;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Models\Membership\User\User;
+use App\Notifications\BasicNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -69,8 +70,19 @@ class MembershipLibrary
         }
 
         if ($warning_inactive && !$user->vatgerDetails->warning_inactive_at) {
-            //TODO send email
             $user->vatgerDetails->update(['warning_inactive_at' => Carbon::now()]);
+            //TODO send email
+            $date = $user->vatgerDetails->last_seen_at->addDays(30);
+            $n = new BasicNotification(
+                __('membership_library.inactivity_warning.title', locale: $user->settings->language),
+                __('membership_library.inactivity_warning.message', ['date' => $date->format('d.m.Y')]),
+                'VATGER Membership System',
+                __('membership_library.inactivity_warning.link'),
+                route('vatsim.authentication.connect.login'),
+                valid_till: $date,
+                delete_at: $date->addDay(),
+            );
+            $user->notify($n);
         }
         if ($inactive && !$user->vatgerDetails->inactive_at) {
             //TODO send email
