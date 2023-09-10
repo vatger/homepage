@@ -27,7 +27,7 @@
     </div>
 @endif
 @if($position == 'right')
-    <div class="col-lg-8 col-md-12  order-2">
+    <div class="col-lg-8 col-md-12 order-2">
         <div class="px-4 pb-4">
             {{ $slot }}
         </div>

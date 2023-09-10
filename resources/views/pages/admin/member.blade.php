@@ -30,8 +30,9 @@
                         ]"
                 ></x-layouts.admin.sidebar-col>
 
-                <div class="col-lg-8 col-md-12 mt-4 order-2">
-                    <div class="card border-0 shadow rounded p-4">
+                <x-layouts.admin.sidebar-col
+                        position="right">
+                    <x-layouts.admin.card>
                         <div class="col-lg-12">
                             <ul class="nav nav-pills nav-justified flex-column flex-sm-row" id="pills-tab" role="tablist">
                                 <li class="nav-item">
@@ -104,49 +105,57 @@
                         </div>
                         <!--end col-->
 
-                        <div class="row pt-3">
-                            <div class="col-12">
-                                <div class="tab-content" id="pills-tabContent">
-                                    <div class="tab-pane fade show active" id="activity-pill" role="tabpanel" aria-labelledby="activity-pill">
-                                        <p class="text-muted mb-0">You can combine all the Landrick templates into a single one, you can take a
-                                            component from the Application theme and use it in the Website.</p>
-                                    </div>
-                                    <!--end teb pane-->
-
-                                    <div class="tab-pane fade" id="notes-pill" role="tabpanel" aria-labelledby="notes-pill">
-                                        {{--@include('administration.membership.membership.partials.membershipnotes')--}}
-                                    </div>
-                                    <!--end teb pane-->
-
-                                    <div class="tab-pane fade" id="teamspeak-pill" role="tabpanel" aria-labelledby="teamspeak-pill">
-                                        {{--@include('administration.membership.membership.partials.teamspeak')--}}
-                                    </div>
-                                    <!--end teb pane-->
-
-                                    <div class="tab-pane fade" id="forum-pill" role="tabpanel" aria-labelledby="forum-pill">
-                                        <p class="text-muted mb-0">You can combine all the Landrick templates into a single one, you can take a
-                                            component from the Application theme and use it in the Website.</p>
-                                    </div>
-                                    <!--end teb pane-->
-
-                                    <div class="tab-pane fade" id="bans-pill" role="tabpanel" aria-labelledby="bans-pill">
-                                        <p class="text-muted mb-0">You can combine all the Landrick templates into a single one, you can take a
-                                            component from the Application theme and use it in the Website.</p>
-                                    </div>
-                                    <!--end teb pane-->
-
-                                    <div class="tab-pane fade" id="danger-pill" role="tabpanel" aria-labelledby="danger-pill">
-                                        {{--@include('administration.membership.membership.partials.dangerzone')--}}
-                                    </div>
-                                    <!--end teb pane-->
+                        <div class="col-12">
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="activity-pill" role="tabpanel" aria-labelledby="activity-pill">
+                                    <p class="text-muted mb-0">
+                                        @json($user)
+                                    </p>
                                 </div>
-                                <!--end tab content-->
+                                <!--end teb pane-->
+
+                                <div class="tab-pane fade" id="notes-pill" role="tabpanel" aria-labelledby="notes-pill">
+                                    <p class="text-muted mb-0">
+                                        @json($user->notes)
+                                    </p>
+                                </div>
+                                <!--end teb pane-->
+
+                                <div class="tab-pane fade" id="teamspeak-pill" role="tabpanel" aria-labelledby="teamspeak-pill">
+                                    <p class="text-muted mb-0">
+                                        @json($user->teamspeakRegistrations)
+                                    </p>
+                                </div>
+                                <!--end teb pane-->
+
+                                <div class="tab-pane fade" id="forum-pill" role="tabpanel" aria-labelledby="forum-pill">
+                                    <p class="text-muted mb-0">
+                                        @json($user->settings->forum_id)
+                                    </p>
+                                </div>
+                                <!--end teb pane-->
+
+                                <div class="tab-pane fade" id="bans-pill" role="tabpanel" aria-labelledby="bans-pill">
+                                    <p class="text-muted mb-0">
+                                        @json($user->bans)
+                                    </p>
+                                </div>
+                                <!--end teb pane-->
+
+                                <div class="tab-pane fade" id="danger-pill" role="tabpanel" aria-labelledby="danger-pill">
+                                    <p class="text-muted mb-0">
+                                        WIP
+                                    </p>
+                                </div>
+                                <!--end teb pane-->
                             </div>
-                            <!--end col-->
+                            <!--end tab content-->
                         </div>
-                        <!--end row-->
-                    </div>
-                </div>
+                        <!--end col-->
+
+                    </x-layouts.admin.card>
+                </x-layouts.admin.sidebar-col>
+
                 <!--end col-->
             </div>
             <!--end row-->

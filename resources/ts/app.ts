@@ -11,6 +11,8 @@ import { loadLivewireExtensions } from './livewire';
 
 loadLivewireExtensions();
 
-import { laravelFireNoty } from './noty';
+import { laravelFireNoty, showNoty } from './noty';
+
+window['showNoty'] = showNoty;
 
 laravelFireNoty();
