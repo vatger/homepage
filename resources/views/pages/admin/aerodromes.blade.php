@@ -37,18 +37,23 @@
                             Aktiv
                             <i data-feather="{{ $this->getSortIconClasses('active') }}"></i>
                         </th>
-                        <th class="border-bottom p-3 w-25">Aktion</th>
+                        <th class="border-bottom p-3">FIR</th>
+                        <th class="border-bottom p-3">Aktion</th>
                     </tr>
 
                     </thead>
                     <tbody>
                     @foreach($aerodromes as $aerodrome)
-                        <tr>
+                        <tr class="text-center">
                             <td>{{ $aerodrome->name }}</td>
-                            <td>{{ $aerodrome->icao }} | {{ $aerodrome->iata }}</td>
-                            <td>{{ $aerodrome->active }}</td>
+                            <td>{{ $aerodrome->icao }} | {{ $aerodrome->iata}}</td>
+                            <td>{{ $aerodrome->active ? 'YES' : 'NO'}}</td>
                             <td>{{ $aerodrome->fir }}</td>
-                            <td><a href="{{route('administration.navigation.aerodromes.view', ['aerodrome' => $aerodrome])}}"> clcijck</a></td>
+                            <td>
+                                <a href="{{ route('administration.navigation.aerodromes.view', ['aerodrome' => $aerodrome]) }}" class="btn btn-sm btn-soft-primary p-1 px-3" style="font-size: 15px">
+                                    <i data-feather="eye"></i>
+                                </a>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>

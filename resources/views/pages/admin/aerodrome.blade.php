@@ -21,6 +21,7 @@
         <div class="row">
             <x-layouts.admin.sidebar-col
                     title="Übersicht"
+                    position="left"
                     :items="[
                         ['Name', $aerodrome->name],
                         ['ICAO', $aerodrome->icao, 'database'],
@@ -39,7 +40,7 @@
                         data-bs-target="#editAerodromeDataModal">Daten
                     Bearbeiten
                 </button>
-                
+
                 <div class="d-flex align-items-center mt-3 border-top pt-3">
                     <div class="flex-1">
                         <form enctype="multipart/form-data" id="upload-image-form">
@@ -55,6 +56,107 @@
                 </div>
             </x-layouts.admin.sidebar-col>
             <!--end col-->
+
+            <x-layouts.admin.sidebar-col
+                    position="right"
+            >
+                <x-layouts.admin.card>
+                    <x-layouts.admin.card-header
+                            position="left"
+                            title="Zugewiesene Stationen"
+                            :subtitle="$aerodrome->stations()->count()"
+                    ></x-layouts.admin.card-header>
+                    <x-layouts.admin.card-header
+                            position="right"
+                    >
+                        <li class="list-inline-item" style="width: 100%">
+                            <div class="row">
+                                <input wire:model.live="station_search" class="form-control-sm form-control float-end mb-1" placeholder="Station hinzufügen">
+                                @if($station_search_results)
+                                    <table class="table table-hover form-control" wire:loading.class="opacity-5">
+                                        <tbody>
+                                        @foreach($station_search_results as $s)
+                                            <tr wire:click="add_station({{ $s->id }})">
+                                                <td>{{ $s->ident }}</td>
+                                                <td><small>{{ $s->name }}</small></td>
+                                                <td><small>{{ $s->fixed_frequency }}</small></td>
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                @endif
+                            </div>
+                        </li>
+                    </x-layouts.admin.card-header>
+
+                    <div class="p-4 table-responsive">
+                        <table class="table table-center bg-white mb-0">
+                            <thead>
+                            <tr class="text-center">
+                                <th class="border-bottom p-3">Name</th>
+                                <th class="border-bottom p-3">Ident</th>
+                                <th class="border-bottom p-3">Frequency</th>
+                                <th class="border-bottom p-3"></th>
+                            </tr>
+
+                            </thead>
+                            <tbody>
+                            @foreach($aerodrome->stations as $s)
+                                <tr class="text-center">
+                                    <td>{{ $s->name }}</td>
+                                    <td>{{ $s->ident }} </td>
+                                    <td>{{ $s->fixed_frequency }}</td>
+                                    <td wire:click="del_station({{ $s->id }})">
+                                        <i data-feather="trash" class="fea icon-sm icons"></i>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                </x-layouts.admin.card>
+
+                <x-layouts.admin.card>
+                    <x-layouts.admin.card-header
+                            position="left"
+                            title="Links"
+                            :subtitle="$aerodrome->links()->count()"
+                    ></x-layouts.admin.card-header>
+                    <x-layouts.admin.card-header
+                            position="right"
+                    >
+                        Add
+                    </x-layouts.admin.card-header>
+
+
+                    <div class="p-4 table-responsive">
+                        <table class="table table-center bg-white mb-0">
+                            <thead>
+                            <tr class="text-center">
+                                <th class="border-bottom p-3">Type</th>
+                                <th class="border-bottom p-3">Name</th>
+                                <th class="border-bottom p-3">Link</th>
+                                <th class="border-bottom p-3">id</th>
+                            </tr>
+
+                            </thead>
+                            <tbody>
+                            @foreach($aerodrome->links as $l)
+                                <tr class="text-center">
+                                    <td>{{ $l->type }}</td>
+                                    <td>{{ $l->name }} </td>
+                                    <td>{{ $l->href }}</td>
+                                    <td>{{ $l->id }}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                </x-layouts.admin.card>
+
+            </x-layouts.admin.sidebar-col>
 
             <div class="modal fade" id="editAerodromeDataModal" tabindex="-1" aria-labelledby="editAerodromeDataModalLabel"
                  aria-hidden="true">
@@ -268,16 +370,6 @@
                 </div>
             </div>
 
-
-            <div class="col-lg-8 mt-4 order-2">
-                {{--
-                @include('administration.navigation.aerodromes.partials.runway')
-
-                @include('administration.navigation.aerodromes.partials.stations')
-
-                @include('administration.navigation.aerodromes.partials.charts')
-                   --}}
-            </div>
             <!--end col-->
         </div>
         <!--end row-->

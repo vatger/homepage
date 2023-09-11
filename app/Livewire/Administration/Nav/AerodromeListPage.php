@@ -18,6 +18,11 @@ class AerodromeListPage extends Component
 
     public string $searchstr = '';
 
+    public function boot(): void
+    {
+        $this->authorize('navigation.aerodromes.view');
+    }
+
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {

@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Query\Builder as QBuilder;
 use Illuminate\Support\Collection;
 
+/**
+ * @internal array $searchable_fields
+ * @internal bool $custom_name_filtering
+ *
+ */
 trait SearchTrait
 {
     private array $searchable_fields_internal = [];

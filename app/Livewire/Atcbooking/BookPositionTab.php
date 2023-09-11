@@ -26,6 +26,8 @@ class BookPositionTab extends Component
     public bool $selected_event = false;
     public bool $selected_training = false;
 
+    protected array $searchable_fields = ['ident', 'name', 'frequency'];
+
     public function mount(): void
     {
         $this->selected_date = Carbon::now()->format('Y-m-d');
@@ -33,11 +35,6 @@ class BookPositionTab extends Component
         $this->selected_end_at = Carbon::now()
             ->addHours(2)
             ->format('H:00');
-    }
-
-    public function boot(): void
-    {
-        $this->setSearchable(['ident', 'name', 'frequency']);
     }
 
     public function render()
