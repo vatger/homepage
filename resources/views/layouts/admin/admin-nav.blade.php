@@ -34,12 +34,22 @@
                     </a>
                 </li>
             @endcan
-            <li>
-                <a href="{{ route('administration.navigation.aerodromes') }}">
-                    <i data-feather="circle" class="me-2"></i>
-                    Aerodromes
-                </a>
-            </li>
+            @can('navigation.aerodromes.view')
+                <li>
+                    <a href="{{ route('administration.navigation.aerodromes') }}">
+                        <i data-feather="circle" class="me-2"></i>
+                        Aerodromes
+                    </a>
+                </li>
+            @endcan
+            @can('navigation.stations.view')
+                <li>
+                    <a href="{{ route('administration.navigation.stations') }}">
+                        <i data-feather="circle" class="me-2"></i>
+                        Stations
+                    </a>
+                </li>
+            @endcan
             <li>
                 <a href="{{ route('administration.tech.apilog') }}">
                     <i data-feather="circle" class="me-2"></i>

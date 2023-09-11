@@ -10,7 +10,7 @@ use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-class AerodromeListPage extends Component
+class StationListPage extends Component
 {
     use PaginationTrait, SortableTrait, SearchTrait;
 
@@ -21,7 +21,7 @@ class AerodromeListPage extends Component
 
     public function boot(): void
     {
-        $this->authorize('navigation.aerodromes.view');
+        $this->authorize('navigation.');
     }
 
     #[Layout('layouts.admin.admin-master')]
