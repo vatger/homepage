@@ -75,10 +75,10 @@ class DataFeedLibrary
     /**
      * Try to retrieve the metar of a given icao code
      *
-     * @param $icao The 4 letter icao code of an aerodrome
-     * @return bool|string False if the length of $icao is not exactly 4 | String of the metar in other cases
+     * @param $icao string The 4 letter icao code of an aerodrome
+     * @return false|string False if the length of $icao is not exactly 4 | String of the metar in other cases
      */
-    public static function Metar($icao)
+    public static function Metar(string $icao): false|string
     {
         // In any case where the icao option is not exactly 4 characters in length skip
         if (strlen($icao) !== 4) {
@@ -87,7 +87,7 @@ class DataFeedLibrary
 
         return Cache::remember('net.vatsim.metar.' . $icao, 15 * 60, function () use ($icao) {
             $status = json_decode(self::_downloadStatusFile());
-            if ($status == null || $status == false) {
+            if (!$status) {
                 Cache::forget('net.vatsim.status');
                 return false;
             }
@@ -106,17 +106,17 @@ class DataFeedLibrary
         });
     }
 
-    public static function Pilots()
+    public static function Pilots(): array
     {
         $df = self::UpdateDataFeed();
-        if ($df !== false) {
+        if ($df) {
             return json_decode($df)->pilots;
         } else {
             return [];
         }
     }
 
-    public static function PilotsArrivingAerodrome($icao)
+    public static function PilotsArrivingAerodrome(string $icao): array
     {
         $pilots = self::Pilots();
 
@@ -129,17 +129,17 @@ class DataFeedLibrary
         return $results;
     }
 
-    public static function Controllers()
+    public static function Controllers(): array
     {
         $df = self::UpdateDataFeed();
-        if ($df !== false) {
+        if ($df) {
             return json_decode($df)->controllers;
         } else {
             return [];
         }
     }
 
-    public static function ControllersLocal()
+    public static function ControllersLocal(): array
     {
         $resultList = [];
         $atcs = self::Controllers();
@@ -154,10 +154,10 @@ class DataFeedLibrary
         return $resultList;
     }
 
-    public static function Atises()
+    public static function Atises(): array
     {
         $df = self::UpdateDataFeed();
-        if ($df !== false) {
+        if ($df) {
             return json_decode($df)->atis;
         } else {
             return [];

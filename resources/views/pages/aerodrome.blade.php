@@ -104,14 +104,9 @@
                         <div class="card-body content">
                             <h4>Stand Information</h4>
                             @vite('resources/scss/special/aerodrome-mapbox.scss')
-                            <div hidden="hidden" id="mapboxdata-aerodrome">
-                                @json($aerodrome)
-                            </div>
-                            <div hidden="hidden" id="mapboxdata-standstatus">
-                                @json(\App\Libraries\StandStatus\StandStatusLibrary::status($aerodrome))
-                            </div>
                             <div class="w-100" id="map-container">
-                                <div id="map" class="w-100 mt-3 rounded" style="height: 500px">
+                                <div wire:ignore id="map" class="w-100 mt-3 rounded" style="height: 500px">
+                                    <h5 class="mt-3" id="event-title">@lang('pilot.aerodromes.aerodrome.loading-event-text')</h5>
                                 </div>
                             </div>
                         </div>
@@ -120,7 +115,7 @@
                     <div class="card blog blog-detail border-0 shadow rounded mt-4">
                         <div class="card-body content">
                             <h4>@lang('pilot.aerodromes.aerodrome.upcoming-event-title-text')</h4>
-                            <div class="w-100" id="event-container">
+                            <div wire:ignore class="w-100" id="event-container">
                                 <img src="" class="card-img-top loader-show overflow-hidden mt-3 w-100" id="event-banner" style="min-width: 100%">
                                 <h5 class="mt-3" id="event-title">@lang('pilot.aerodromes.aerodrome.loading-event-text')</h5>
                                 <div class="mt-3 text-muted" id="event-text"></div>
@@ -145,7 +140,8 @@
                                 <div class="mt-4">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-1 ms-3" style="margin-right: 1rem !important;">
-                                            <a class="d-block title text-dark" id="metar-container">Loading...</a>
+
+                                            <a wire:ignore class="d-block title text-dark" id="metar-container">Loading...</a>
                                         </div>
                                     </div>
                                 </div>
@@ -209,7 +205,7 @@
                                                     <th class="text-center border-bottom fw-bold">@lang('pilot.aerodromes.aerodrome.station-table-header.1')</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody wire:ignore>
                                                 <tr id="loading-text-atc">
                                                     <td class="text-center" colspan="2">Loading...</td>
                                                 </tr>
