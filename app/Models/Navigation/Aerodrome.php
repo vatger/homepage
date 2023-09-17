@@ -8,12 +8,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as DBuilder;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use mysql_xdevapi\SqlStatementResult;
 
 class Aerodrome extends Model
 {
     protected $table = 'nav_aerodromes';
 
     protected $fillable = ['*'];
+
+    protected $appends = ['background_image_path', 'background_image_url'];
 
     /**
      * The FIR is assigned to
@@ -36,6 +42,18 @@ class Aerodrome extends Model
     public function links(): HasMany
     {
         return $this->hasMany(AerodromeLink::class, 'aerodrome_id', 'id');
+    }
+
+    public function getBackgroundImagePathAttribute(): ?string
+    {
+        $path = 'public/aerodromes/' . Str::upper($this->icao) . '.jpeg';
+        return Storage::exists($path) ? $path : null;
+    }
+
+    public function getBackgroundImageUrlAttribute(): ?string
+    {
+        $path = 'public/aerodromes/' . Str::upper($this->icao) . '.jpeg';
+        return Storage::exists($path) ? Storage::url($path) : null;
     }
 
     /**

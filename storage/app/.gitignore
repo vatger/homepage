@@ -1,6 +1,3 @@
 *
-!euroscope
-!purify/
-!navigation/
-!public/
 !.gitignore
+!public

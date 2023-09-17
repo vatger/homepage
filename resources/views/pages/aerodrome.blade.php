@@ -1,6 +1,8 @@
 <div>
     <!-- Hero Start -->
-    <section class="bg-half-170 bg-light d-table w-100" style='background-image: url(" @yield('hero-img-src', asset('images/getstarted/getstarted_1.png')) ")'>
+    <section class="bg-half-170 bg-light d-table w-100" style='background-image: url("{{
+    $aerodrome->background_image_url ?? asset('images/profile/profile_1.png')
+    }}")'>
         <div class="bg-overlay" style="background-color: rgb(30 41 58 / 85%)"></div>
         <div class="container">
             <div class="row mt-5 justify-content-center">
