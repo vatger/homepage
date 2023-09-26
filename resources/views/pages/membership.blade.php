@@ -71,6 +71,16 @@
                                     <!--end nav link-->
                                 </li>
                                 <!--end nav item-->
+                                <li class="nav-item mt-2 pb-2" wire:click="sel('accounts')">
+                                    <a class="nav-link rounded {{ $tab == 'accounts' ? 'active' : '' }}" data-bs-toggle="pill" role="tab"
+                                       aria-controls="profile" aria-selected="true">
+                                        <div class="text-start py-1 px-2">
+                                            <h6 class="mb-0">Teamspeak/Forum</h6>
+                                        </div>
+                                    </a>
+                                    <!--end nav link-->
+                                </li>
+                                <!--end nav item-->
                                 <li class="nav-item mt-2 pt-2 border-top">
                                     <a href="{{ route('vatsim.authentication.connect.logout') }}" class="nav-link rounded" aria-selected="false">
                                         <div class="text-start py-1 px-2">
@@ -94,7 +104,9 @@
                                 @break
                             @case('settings')
                                 <livewire:profile.settings-tab />
-
+                                @break
+                            @case('accounts')
+                                <livewire:profile.accounts-tab />
                                 @break
                             @default
                                 <livewire:profile.profile-tab />

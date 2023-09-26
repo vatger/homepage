@@ -55,12 +55,7 @@ require_once 'web/events.php';
 ###################
 # GETTING STARTED #
 ###################
-require_once 'web/getting-started.php';
-
-########
-# HELP #
-########
-require_once 'web/help.php';
+//require_once 'web/getting-started.php';
 
 ##################
 # ADMINISTRATION #
@@ -71,7 +66,7 @@ require_once 'web/admin.php';
 # SPECIAL ROUTES #
 ##################
 
-require_once 'web/euroscope.php';
+require_once 'web/static_routes.php';
 
 Route::get('resources/media/{mediaFilePath}', [MediaController::class, 'showPublic']);
 
@@ -93,16 +88,10 @@ Route::get('language/{lang?}', function ($lang = 'de') {
 # LANDING & COVER ALL PAGE #
 ############################
 Route::get('/', function () {
-    $partners = Partner::all();
-
-    return view('pages.landing')->with(['partners' => $partners]);
+    return view('pages.landing')->with(['partners' => Partner::all()]);
 })->name('landing');
 
 ############
 # API DOKU #
 ############
-Route::get('documentation', function () {
-    return view('homepage.general.extra.apidoku');
-});
-
-Route::get('/partners', [PartnerController::class, 'viewAll'])->name('partners');
+//TODO

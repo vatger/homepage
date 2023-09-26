@@ -12,7 +12,7 @@
                         <h1 class="heading mb-3 title-dark text-white">VATSIM Germany</h1>
                         <p class="para-desc text-white-50" id="typewriter">Controlling The Virtual German Airspace With Passion!</p>
                         <div class="mt-4">
-                            <a href="{{ route('getting-started') }}" class="btn btn-primary">@lang('landing.join-now-button-content')</a>
+                            <a href="{{ route('redirect.knowledgebase.start') }}" class="btn btn-primary">@lang('landing.join-now-button-content')</a>
                         </div>
                     </div>
                 </div>

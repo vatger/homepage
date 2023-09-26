@@ -27,74 +27,58 @@
         <div id="navigation">
             <!-- Navigation Menu-->
             <ul class="navigation-menu nav-light nav-right">
-                @if (Session::has('language'))
-                    @switch(Session::get('language'))
-                        @case('de')
-                            <li><a href="{{ route('language.change', ['lang' => 'en']) }}" class="sub-menu-item"><img
-                                            src="{{ asset('images/united-kingdom.svg') }}" height="25px" style="margin-top:-3px"></a></li>
-                            @break
-
-                        @case('en')
-                            <li><a href="{{ route('language.change', ['lang' => 'de']) }}" class="sub-menu-item"><img src="{{ asset('images/germany.svg') }}"
-                                                                                                                      height="25px" style="margin-top:-3px"></a></li>
-                            @break
-
-                        @default
-                            <li><a href="{{ route('language.change', ['lang' => 'en']) }}" class="sub-menu-item"><img
-                                            src="{{ asset('images/united-kingdom.svg') }}" height="25px" style="margin-top:-3px"></a></li>
-                    @endswitch
-                @else
-                    <li><a href="{{ route('language.change', ['lang' => 'de']) }}" class="sub-menu-item"><img
-                                    src="{{ asset('images/germany.svg') }}" height="25px" style="margin-top:-3px"></a>
-                    </li>
-                @endif
+                @switch(Session::get('language', 'en'))
+                    @case('en')
+                        <li>
+                            <a href="{{ route('language.change', ['lang' => 'de']) }}" class="sub-menu-item">
+                                <img src="{{ asset('images/germany.svg') }}" height="25px" style="margin-top:-3px" alt="DE">
+                            </a>
+                        </li>
+                        @break
+                    @case('de')
+                    @default
+                        <li>
+                            <a href="{{ route('language.change', ['lang' => 'en']) }}" class="sub-menu-item">
+                                <img src="{{ asset('images/united-kingdom.svg') }}" height="25px" style="margin-top:-3px" alt="ENG">
+                            </a>
+                        </li>
+                @endswitch
 
                 <li class="has-submenu parent-menu-item">
                     <a href="javascript:void(0)">@lang('navigation.piloten.titel')</a><span class="menu-arrow"></span>
                     <ul class="submenu">
-                        <li><a href="{{ route('getting-started.pilot') }}" class="sub-menu-item">@lang('navigation.piloten.erste-schritte')</a>
-                        </li>
-                        <li><a href="https://training.vatger.de" class="sub-menu-item">@lang('navigation.piloten.training')</a></li>
+                        <li><a href="{{ route('redirect.knowledgebase.start-pilot') }}" class="sub-menu-item">@lang('navigation.piloten.erste-schritte')</a></li>
+                        <li><a href="{{ route('redirect.knowledgebase.training-pilot') }}" class="sub-menu-item">@lang('navigation.piloten.training')</a></li>
                         <li><a href="{{ route('pilots.aerodromes.viewall') }}" class="sub-menu-item">@lang('navigation.piloten.flugplaetze')</a></li>
-                        <li><a href="https://tours.vatger.de" class="sub-menu-item">VATGER Touren</a></li>
+                        <li><a href="{{ route('redirect.vatger-tours') }}" class="sub-menu-item">VATGER Touren</a></li>
                     </ul>
                 </li>
 
                 <li class="has-submenu parent-menu-item">
                     <a href="javascript:void(0)">@lang('navigation.lotsen.titel')</a><span class="menu-arrow"></span>
                     <ul class="submenu">
-                        <li><a href="{{ route('getting-started.atc') }}" class="sub-menu-item">@lang('navigation.lotsen.erste-schritte')</a>
-                        </li>
-                        <li><a href="{{ route('controllers.feedback') }}" class="sub-menu-item">@lang('navigation.lotsen.feedback')</a>
-                        </li>
-                        <li><a href="javascript:void(0)" class="sub-menu-item">@lang('navigation.lotsen.gastlotsen')</a>
-                        </li>
-                        <li><a href="javascript:void(0)" class="sub-menu-item">@lang('navigation.lotsen.dokumente')</a>
-                        </li>
-                        <li><a href="javascript:void(0)" class="sub-menu-item">@lang('navigation.lotsen.solos')</a></li>
+                        <li><a href="{{ route('redirect.knowledgebase.start-atc') }}" class="sub-menu-item">@lang('navigation.lotsen.erste-schritte')</a></li>
+                        <li><a href="{{ route('controllers.booking') }}" class="sub-menu-item">@lang('navigation.user.booking')</a></li>
+                        <li><a href="{{ route('redirect.training-center') }}" class=" sub-menu-item">ATC Training</a></li>
+                        <li><a href="{{ route("redirect.support.feedback") }}" class="sub-menu-item">@lang('navigation.lotsen.feedback')</a></li>
                     </ul>
                 </li>
 
                 <li class="has-submenu parent-menu-item">
                     <a href="javascript:void(0)">@lang('navigation.community.titel')</a><span class="menu-arrow"></span>
                     <ul class="submenu">
-                        <li><a href="ts3server://ts3.vatsim-germany.org" class="sub-menu-item">@lang('navigation.community.teamspeak')</a></li>
-                        <li><a href="https://board.vatsim-germany.org" class="sub-menu-item">@lang('navigation.community.forum')</a></li>
-                        <li><a href="https://knowledgebase.vatsim-germany.org/" class="sub-menu-item">@lang('navigation.community.wiki')</a></li>
-                        <li><a href="https://vatsim-germany.myspreadshop.de/" target="_blank" class="sub-menu-item">@lang('navigation.community.fan-shop')</a></li>
+                        <li><a href="{{ route('redirect.ts3') }}" class="sub-menu-item">@lang('navigation.community.teamspeak')</a></li>
+                        <li><a href="{{ route('redirect.board') }}" class="sub-menu-item">@lang('navigation.community.forum')</a></li>
+                        <li><a href="{{ route('redirect.knowledgebase') }}" class="sub-menu-item">@lang('navigation.community.wiki')</a></li>
+                        <li><a href="{{ route('redirect.spreadshop') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.fan-shop')</a></li>
                     </ul>
                 </li>
 
                 <li class="has-submenu parent-menu-item">
                     <a href="javascript:void(0)">@lang('navigation.hilfe.titel')</a><span class="menu-arrow"></span>
                     <ul class="submenu">
-                        <li>
-                            <a href="https://support.vatsim-germany.org/" class="sub-menu-item">@lang('navigation.hilfe.support')</a>
-                        </li>
-                        <li>
-                            <a href="https://knowledgebase.vatsim-germany.org/books/contact/page/contact-vatsim-germany" class="sub-menu-item">@lang('navigation.hilfe.personal')</a>
-                        </li>
-                        <li><a href="{{ route('help.faq') }}" class="sub-menu-item">FAQ</a></li>
+                        <li><a href="{{ route('redirect.support') }}" class="sub-menu-item">@lang('navigation.hilfe.support')</a></li>
+                        <li><a href="{{ route('redirect.knowledgebase.contact') }}" class="sub-menu-item">@lang('navigation.hilfe.personal')</a></li>
                     </ul>
                 </li>
 
@@ -103,11 +87,6 @@
                         <a href="javascript:void(0)">{{ Auth::user()->firstname }}</a><span class="menu-arrow"></span>
                         <ul class="submenu">
                             <li><a href="{{ route('member.profile') }}" class="sub-menu-item">@lang('navigation.user.profile')</a></li>
-                            <li><a href="{{ route('controllers.booking') }}" class="sub-menu-item">@lang('navigation.user.booking')</a></li>
-                            <li>
-                                <a href="{{ config('app.forcehttps') ? 'https://' : 'http://' . 'training.' . str_ireplace('www.', '', parse_url(url('/'), PHP_URL_HOST)) }}"
-                                   class="sub-menu-item">ATC Training</a>
-                            </li>
                             @can('administration.access')
                                 <li><a href="{{ route('administration.dashboard') }}" class="sub-menu-item">@lang('navigation.user.administration')</a></li>
                             @endcan
@@ -123,7 +102,7 @@
                         <a href="{{ route('member.profile') }}?tab=notifications">
                             <span class="">
                                 @if (count(Auth::user()->unreadNotifications) > 0)
-                                    <i class="" data-feather="bell"></i><span> {{ count(Auth::user()->unreadNotifications) }} </span>
+                                    <i class="fea fea-icon" data-feather="bell"></i><span> {{ count(Auth::user()->unreadNotifications) }} </span>
                                 @endif
                             </span>
                         </a>
