@@ -88,7 +88,7 @@ Route::get('language/{lang?}', function ($lang = 'de') {
 # LANDING & COVER ALL PAGE #
 ############################
 Route::get('/', function () {
-    return view('pages.landing')->with(['partners' => Partner::all()]);
+    return view('pages.landing');
 })->name('landing');
 
 ############

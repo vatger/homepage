@@ -10,6 +10,21 @@ export const showNoty = function (
     destination: string | undefined = undefined,
     onclick: (() => void) | undefined = undefined
 ) {
+    let style = {
+        background: 'linear-gradient(to right, #00b09b, #96c93d)',
+    };
+    switch (type) {
+        case 'error':
+            style = {
+                background: 'linear-gradient(to right, #C93D3D, #Bb1f1f)',
+            };
+            break;
+        case '':
+            style = {
+                background: 'linear-gradient(to right, #C93D3D, #Bb1f1f)',
+            };
+            break;
+    }
     Toastify({
         text: message,
         duration: timeout,
@@ -19,9 +34,7 @@ export const showNoty = function (
         gravity: 'top', // `top` or `bottom`
         position: 'right', // `left`, `center` or `right`
         stopOnFocus: true, // Prevents dismissing of toast on hover
-        style: {
-            background: 'linear-gradient(to right, #00b09b, #96c93d)',
-        },
+        style: style,
         onClick: onclick, // Callback after click
     }).showToast();
 };

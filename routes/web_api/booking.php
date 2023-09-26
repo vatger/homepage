@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\User\Booking\AtcApiController;
+use App\OpenApi\Controllers\AtcApiController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('booking')->group(function () {

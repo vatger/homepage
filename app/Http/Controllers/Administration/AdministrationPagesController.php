@@ -14,8 +14,7 @@ class AdministrationPagesController extends Controller
 
     public function index(Request $request)
     {
-        //$this->authorize('administration-access');
-
+        $this->authorize('administration-access');
         return view('pages.admin.landing');
     }
 }

@@ -10,15 +10,13 @@ use Illuminate\Support\Facades\Storage;
 
 class PagesController extends Controller
 {
-    /**
-     * Returns the vACC Information view
-     *
-     * @return Factory|View|Application
-     */
-    public function getStarted(): Factory|View|Application
+    public function gdpr(): View
     {
-        // MediaWikiLibrary::load();
+        return view('pages.gdpr');
+    }
 
-        return view('homepage.general.firststeps.getstarted');
+    public function imprint(): View
+    {
+        return view('pages.imprint');
     }
 }

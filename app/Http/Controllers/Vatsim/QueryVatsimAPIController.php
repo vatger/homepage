@@ -43,7 +43,7 @@ class QueryVatsimAPIController extends Controller
     public function loadSingleEvent(Request $request): mixed
     {
         // Return event date, either cached (10 minutes), or by executing the function
-        return EventLibrary::getAerodromeEvent($request->icao);
+        return EventLibrary::getAerodromeEvent($request->get('icao'));
     }
 
     /**
