@@ -20,7 +20,7 @@
             <div class="row mt-4">
                 <div class="col-12">
                     <div class="bg-primary card border-0 shadow rounded overflow-hidden p-4"
-                        style="background: url('{{ asset('images/splash/instruments.jpg') }}') center center; background-size: cover;">
+                         style="background: url('{{ asset('images/splash/instruments.jpg') }}') center center; background-size: cover;">
                         <div class="row">
                             <div class="col-lg-3 col-md-6 col-sm-8">
                                 <div class="text-center bg-white p-4 rounded">
@@ -72,8 +72,8 @@
                     @if ($is_dfs)
                         <img id="dfsImage" src="{{ $imgSource }}" />
                     @else
-                        <iframe src="{{ $chart->href }}?token={{ \App\Libraries\Authorization\ChartAuthorization::grantAccessToken($chart) }}"
-                            frameborder="0" style="width: 100%; height: 100%; min-height: 550px;"></iframe>
+                        <iframe src="{{ $chart->href }}?token={{ \App\Libraries\ChartAuthorization::grantAccessToken($chart) }}"
+                                frameborder="0" style="width: 100%; height: 100%; min-height: 550px;"></iframe>
                     @endif
                 </div>
             </div>
@@ -84,8 +84,8 @@
 
 @push('custom-script')
     <script>
-        $('#dfsImage').on("contextmenu", (e) => {
-            e.preventDefault();
-        })
+      $("#dfsImage").on("contextmenu", (e) => {
+        e.preventDefault();
+      });
     </script>
 @endpush

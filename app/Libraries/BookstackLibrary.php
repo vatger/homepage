@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Libraries\Knowledgebase;
+namespace App\Libraries;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use JsonException;
 
-trait BookstackTrait
+class BookstackLibrary
 {
+    # https://demo.bookstackapp.com/api/docs
+
     protected static function _send(string $endpoint, string $method, array $body = []): object|false
     {
         $uri = 'https://' . config('bookstack.host') . '/api';
@@ -33,5 +34,21 @@ trait BookstackTrait
         } catch (GuzzleException | JsonException $e) {
         }
         return false;
+    }
+
+    public static function _users_list(): array|false
+    {
+        $data = self::_send('users', 'GET');
+        return !$data ? false : $data->data;
+    }
+
+    public static function _users_read(int $user_id): object|false
+    {
+        return self::_send('users/' . $user_id, 'GET');
+    }
+
+    public static function _users_update(int $user_id, array $role_ids = []): bool
+    {
+        return !empty(self::_send('users/' . $user_id, 'PUT', ['roles' => $role_ids]));
     }
 }

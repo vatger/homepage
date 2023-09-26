@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Libraries\Authorization;
+namespace App\Libraries;
 
 use App\Models\Navigation\Chart;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use ParagonIE\Paseto\Builder;
 use ParagonIE\Paseto\Keys\AsymmetricSecretKey;
 use ParagonIE\Paseto\Protocol\Version2;
