@@ -15,7 +15,7 @@ class Station extends Model
 {
     protected $table = 'nav_stations';
 
-    protected $fillable = ['name', 'ident', 'frequency', 'atis', 'bookable'];
+    protected $fillable = ['name', 'ident', 'frequency', 'active'];
 
     protected $appends = ['fixedFrequency'];
 
@@ -41,11 +41,6 @@ class Station extends Model
 
     public function scopeBookable(QBuilder|EBuilder|DBuilder $query): QBuilder|EBuilder|DBuilder
     {
-        return $query->where('bookable', true);
-    }
-
-    public function scopeAtis(QBuilder|EBuilder|DBuilder $query): QBuilder|EBuilder|DBuilder
-    {
-        return $query->where('atis', true);
+        return $query->where('active', true)->whereNot('ident', 'LIKE', '%_ATIS');
     }
 }

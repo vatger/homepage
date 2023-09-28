@@ -52,8 +52,8 @@ return new class extends Migration {
             $table->string('ident', 32)->unique();
             $table->string('name');
             $table->double('frequency', 6, 3);
+            $table->boolean('active')->default(true);
             $table->text('description')->nullable();
-            $table->boolean('bookable')->default(true);
             $table->unsignedBigInteger('selection')->default(0);
             $table->timestamps();
         });

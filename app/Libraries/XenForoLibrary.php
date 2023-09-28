@@ -9,20 +9,19 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\ResponseInterface;
 
-class XenForoLibrary
+class XenForoLibrary extends BaseLibrary
 {
     /**
      * Send an actual call to the XenForo API.
      */
     private static function send(string $method, string $endpoint, array $data, bool $bypass = true): false|ResponseInterface
     {
-        $client = new Client([
+        $client = self::constructClient([
             'headers' => [
                 'Accept' => 'application/json',
                 'XF-Api-Key' => config('forum.apikey'),
                 'XP-Api-User' => 1,
             ],
-            'connect_timeout' => 25,
         ]);
         if ($bypass) {
             $data['api_bypass_permissions'] = 1;

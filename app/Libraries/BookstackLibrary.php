@@ -5,7 +5,7 @@ namespace App\Libraries;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
-class BookstackLibrary
+class BookstackLibrary extends BaseLibrary
 {
     # https://demo.bookstackapp.com/api/docs
 
@@ -16,22 +16,18 @@ class BookstackLibrary
         $token_secret = config('bookstack.token_secret');
 
         $headers = ['Authorization' => 'Token ' . $token_id . ':' . $token_secret];
-
-        $client = new Client([
+        $client = self::constructClient([
             'base_uri' => $uri,
-            'connect_timeout' => 15,
-            'read_timeout' => 15,
-            'timeout' => 30,
             'headers' => $headers,
         ]);
 
         try {
             $response = $client->request($method, $endpoint, ['json' => $body]);
-
-            if ($response?->getStatusCode() == 200 || $response?->getStatusCode() == 204) {
+            $response_code = $response?->getStatusCode();
+            if ($response_code == 200 || $response_code == 204) {
                 return json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
             }
-        } catch (GuzzleException | JsonException $e) {
+        } catch (GuzzleException | \JsonException $e) {
         }
         return false;
     }
