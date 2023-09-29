@@ -8,10 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as DBuilder;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use mysql_xdevapi\SqlStatementResult;
 
 class Aerodrome extends Model
 {

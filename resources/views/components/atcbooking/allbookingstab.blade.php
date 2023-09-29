@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="w-100">
-            <div class="accordion" id="general-section">
+            <div wire:ignore class="accordion">
                 <div class="accordion-item rounded shadow bg-white">
                     <h2 class="accordion-header">
                         <button class="accordion-button border-0 bg-light collapsed" type="button" data-bs-toggle="collapse"
@@ -27,8 +27,8 @@
                                             <label class="form-label">@lang('booking.atc.search.from-text')</label>
                                             <div class="form-icon position-relative">
                                                 <i data-feather="calendar" class="fea icon-sm icons"></i>
-                                                <input name="report-start-date" id="date-start-select" type="text" class="form-control ps-5"
-                                                       value="{{ \Carbon\Carbon::now()->format('d.m.Y') }}">
+                                                <input wire:model="selected_start_at" id="date-start-select" type="date" class="form-control ps-5" placeholder="01.01.2023"
+                                                       min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -37,13 +37,14 @@
                                             <label class="form-label">@lang('booking.atc.search.till-text')</label>
                                             <div class="form-icon position-relative">
                                                 <i data-feather="calendar" class="fea icon-sm icons"></i>
-                                                <input name="report-end-date" id="date-end-select" type="text" class="form-control ps-5"
-                                                       value="{{ \Carbon\Carbon::now()->format('d.m.Y') }}">
+                                                <input wire:model.live="selected_end_at" id="date-end-select" type="date" class="form-control ps-5" placeholder="01.01.2023"
+                                                       min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row" id="search-container">
+                                    {{--
                                     <div class="col">
                                         <div class="mb-3">
                                             <label class="form-label">Sort by Regionalgroup</label>
@@ -62,20 +63,18 @@
                                             </div>
                                         </div>
                                     </div>
+                                    --}}
                                     <div class="col">
                                         <div class="mb-3">
-                                            <label class="form-label">Sort by Airport/Center</label>
+                                            <label class="form-label">Search</label>
                                             <div class="form-icon position-relative">
                                                 <i data-feather="map-pin" class="fea icon-sm icons"></i>
-                                                <input name="report-airport" type="text" class="form-control ps-5" placeholder="EDDF"
-                                                       style="text-transform: uppercase" maxlength="4">
+                                                <input wire:model.live="selected_search" type="text" class="form-control ps-5" placeholder="EDDF, Langen Radar, 119.905...">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </form>
-                            <p class="text-muted mt-1 mb-0 pb-0 small" style="text-align: left; display: none" id="filter-count">0 results
-                                matching your filter.</p>
                         </div>
                     </div>
                 </div>

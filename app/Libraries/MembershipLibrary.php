@@ -175,6 +175,6 @@ class MembershipLibrary
             $user = $user->fresh();
         }
 
-        Cache::put($cache_key, Carbon::now(), 60);
+        Cache::put($cache_key, Carbon::now(), 60 * 10);
     }
 }

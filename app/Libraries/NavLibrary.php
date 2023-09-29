@@ -52,9 +52,8 @@ class NavLibrary extends BaseLibrary
                 if (Aerodrome::where('icao', 'LIKE', $test_icao)->exists()) {
                     $aerodromes[] = $test_icao;
                 }
-                $str = 'relevant-airports';
-                if (isset($s->$str)) {
-                    $aerodromes = array_merge($aerodromes, $s->$str);
+                if (isset($s->relevant_airports)) {
+                    $aerodromes = array_merge($aerodromes, $s->relevant_airports);
                 }
                 foreach ($d->aerodromes as $aerodrome) {
                     $d->aerodromes()->detach($aerodrome->id);

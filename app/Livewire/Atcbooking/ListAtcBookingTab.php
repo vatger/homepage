@@ -5,17 +5,28 @@ namespace App\Livewire\Atcbooking;
 use App\Libraries\VATSIM\ATCBookingsApi;
 use App\Livewire\Helpers\NotyTrait;
 use App\Livewire\Helpers\PaginationTrait;
+use App\Livewire\Helpers\SearchTrait;
 use App\Livewire\Helpers\SortableTrait;
 use App\Models\AtcBooking;
+use Carbon\Carbon;
 use Livewire\Component;
 
 class ListAtcBookingTab extends Component
 {
-    use SortableTrait, PaginationTrait, NotyTrait;
+    use SearchTrait, SortableTrait, PaginationTrait, NotyTrait;
+
+    public string $selected_search = '';
+    public string $selected_start_at = '';
+    public string $selected_end_at = '';
+    protected array $searchable_fields = ['station.ident', 'station.name', 'station.frequency'];
 
     public function mount(): void
     {
         $this->setInitialSortOrder('starts_at', 'asc');
+        $this->selected_start_at = Carbon::now()->format('Y-m-d');
+        $this->selected_end_at = Carbon::now()
+            ->addDays(2)
+            ->format('Y-m-d');
     }
 
     public function boot(): void
@@ -23,9 +34,18 @@ class ListAtcBookingTab extends Component
         $this->setSortable(['controller_id', 'starts_at']);
     }
 
-    public function render()
+    public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $bookings_filtered_query = AtcBooking::with('station');
+        $bookings_filtered_query = AtcBooking::with('station')
+            ->where('starts_at', '>=', Carbon::parse($this->selected_start_at)->format('Y-m-d'))
+            ->where(
+                'ends_at',
+                '<=',
+                Carbon::parse($this->selected_end_at)
+                    ->addDay()
+                    ->format('Y-m-d'),
+            );
+        $this->searchQueryModifier($bookings_filtered_query, $this->selected_search);
         $this->sortQueryModifier($bookings_filtered_query);
 
         return view('components.atcbooking.allbookingstab')->with([

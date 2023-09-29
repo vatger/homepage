@@ -6,6 +6,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder as DBuilder;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Query\Builder as QBuilder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * @internal array $searchable_fields
@@ -56,9 +57,19 @@ trait SearchTrait
         $query = $query->where(function ($query) use ($search_str) {
             foreach ($this->getSearchableFields() as $i => $sf) {
                 if ($i == 0) {
-                    $query = $query->where($sf, 'LIKE', '%' . $search_str . '%');
+                    if (str_contains($sf, '.')) {
+                        $sfp = explode('.', $sf);
+                        $query = $query->whereRelation($sfp[0], $sfp[1], 'LIKE', '%');
+                    } else {
+                        $query = $query->where($sf, 'LIKE', '%' . $search_str . '%');
+                    }
                 } else {
-                    $query = $query->orWhere($sf, 'LIKE', '%' . $search_str . '%');
+                    if (str_contains($sf, '.')) {
+                        $sfp = explode('.', $sf);
+                        $query = $query->orWhereRelation($sfp[0], $sfp[1], 'LIKE', '%');
+                    } else {
+                        $query = $query->orWhere($sf, 'LIKE', '%' . $search_str . '%');
+                    }
                 }
             }
             if ($this->getCustomNameFiltering()) {

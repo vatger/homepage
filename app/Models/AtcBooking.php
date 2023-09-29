@@ -5,7 +5,9 @@ namespace App\Models;
 use App\Models\Membership\User\User;
 use App\Models\Navigation\Station;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Query\Builder as DBuilder;
+use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -116,13 +118,16 @@ class AtcBooking extends Model
     }
 
     /**
-     * Only bookings that have a scheduled end date in the furture
-     *
-     * @param Builder $query
-     * @return Builder
+     * Only bookings that have a scheduled end date in the future
      */
-    public function scopeFuture($query)
+    public function scopeFuture(DBuilder|EBuilder $query): DBuilder|EBuilder
     {
-        return $query->where('ends_at', '>=', Carbon::now()->utc());
+        return $query->where(
+            'ends_at',
+            '>=',
+            Carbon::now()
+                ->utc()
+                ->subHours(2),
+        );
     }
 }
