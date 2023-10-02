@@ -4,8 +4,9 @@ import { isEmpty } from 'lodash';
 import { zroute } from '@/ts/myziggy';
 import { findLivewireComponent } from '@/ts/livewire';
 
-$(document).ready(map);
-$(document).ready(metar);
+$(map);
+$(metar);
+$(indicator);
 
 async function map() {
     let lwc = findLivewireComponent('aerodrome-page');
@@ -60,4 +61,29 @@ async function metar() {
     const metar_data: string = await lwc.$wire.load_metar();
     let metar_el = document.getElementById('metar-container');
     if (metar_el) metar_el.innerHTML = metar_data;
+}
+
+async function indicator() {
+    let lwc = findLivewireComponent('aerodrome-page');
+    const data: Array<0> = await lwc.$wire.load_indicators();
+
+    function checkindicator(ending, element_id) {
+        if (
+            data.find((value) => {
+                let ident: string = value['station']['ident'];
+                return ident.endsWith(ending);
+            })
+        ) {
+            document.getElementById(element_id)?.setAttribute('class', 'badge rounded bg-soft-success p-2');
+        }
+    }
+
+    checkindicator('_DEL', 'del_indicator');
+    checkindicator('_GND', 'gnd_indicator');
+    checkindicator('_TWR', 'twr_indicator');
+    checkindicator('_APP', 'app_indicator');
+    checkindicator('_CTR', 'ctr_indicator');
+    let table = document.getElementById('loading-text-atc');
+    if (!table) return;
+    table.innerHTML = '';
 }

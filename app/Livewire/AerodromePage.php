@@ -42,4 +42,9 @@ class AerodromePage extends Component
     {
         return DataFeedLibrary::Metar($this->icao) ?? null;
     }
+
+    public function load_indicators(): array
+    {
+        return DataFeedLibrary::ControllersAerodrome($this->aerodrome);
+    }
 }

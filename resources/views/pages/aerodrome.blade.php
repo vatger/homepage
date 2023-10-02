@@ -10,7 +10,7 @@
                     <div class="pages-heading">
                         <h2 style="color: white">{{ $aerodrome->name }}</h2>
                         <ul class="list-unstyled mt-4 mb-0">
-                            <li class="list-inline-item h4 user me-2 text-light">
+                            <li class="list-inline-item h4 user me-2 text-light" wire:ignore>
                                 <span class="badge rounded bg-soft-danger p-2" id="del_indicator"> DEL </span>
                                 <span class="badge rounded bg-soft-danger p-2" id="gnd_indicator"> GND </span>
                                 <span class="badge rounded bg-soft-danger p-2" id="twr_indicator"> TWR </span>
@@ -171,9 +171,11 @@
                                             </button>
                                         </a>
                                     @else
+                                        {{--
                                         <a href="{{ route('pilots.aerodromes.charts', $aerodrome->icao) }}">
                                             <button type="button" class="btn btn-soft-primary" style="width: 90%; margin-left: 5%">Charts</button>
                                         </a>
+                                        --}}
                                     @endif
                                     <a href="https://wiki.vatsim-germany.org/{{ strtoupper($aerodrome->icao) }}" target="_blank">
                                         <button type="button" class="btn btn-soft-primary mt-3" style="width: 90%; margin-left: 5%">Wiki
@@ -207,8 +209,8 @@
                                                     <th class="text-center border-bottom fw-bold">@lang('pilot.aerodromes.aerodrome.station-table-header.1')</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody wire:ignore>
-                                                <tr id="loading-text-atc">
+                                                <tbody wire:ignore id="loading-text-atc">
+                                                <tr>
                                                     <td class="text-center" colspan="2">Loading...</td>
                                                 </tr>
                                                 </tbody>

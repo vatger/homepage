@@ -2,6 +2,7 @@
 
 namespace App\Libraries\VATSIM;
 
+use App\Models\Navigation\Aerodrome;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
@@ -152,6 +153,27 @@ class DataFeedLibrary
             }
         }
         return $resultList;
+    }
+
+    public static function ControllersAerodrome(Aerodrome $aerodrome): array
+    {
+        $all_controllers = self::ControllersLocal();
+
+        $matched_controllers = [];
+        //dd($all_controllers);
+        //dd($aerodrome_stations->toArray());
+        foreach ($all_controllers as $controller) {
+            $aerodrome_station = $aerodrome
+                ->stations()
+                ->where('ident', 'LIKE', Str::substr($controller?->callsign, 0, 4) . '%')
+                ->where('frequency', '=', floatval($controller?->frequency))
+                ->first();
+            if ($aerodrome_station) {
+                $controller->station = $aerodrome_station;
+                $matched_controllers[] = $controller;
+            }
+        }
+        return $matched_controllers;
     }
 
     public static function Atises(): array
