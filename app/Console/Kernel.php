@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('vatsim:update-subdivision-members')->everyMinute();
+        $schedule->command('vatger:update-subdivision-members')->everyMinute();
+        $schedule->command('vatger:update-nav-stations')->everyOddHour();
     }
 
     /**
