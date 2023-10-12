@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('teamspeak_registration', function (Blueprint $table) {
+        Schema::create('teamspeak_registrations', function (Blueprint $table) {
             $table->id('id');
             $table->foreignId('user_id')->constrained('user_users', 'id');
             $table->string('registration_ip');

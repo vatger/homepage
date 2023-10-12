@@ -17,7 +17,8 @@ class LogRequests
     {
         $log = [
             'token_id' => Auth::guard('api')->check() ? Auth::guard('api')->user()->id : null,
-            'time' => Carbon::now(),
+            'created_at	' => Carbon::now(),
+            'updated_at	' => Carbon::now(),
             'endpoint' => $request->path(),
             'ip_address' => $request->ip(),
         ];

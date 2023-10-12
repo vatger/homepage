@@ -17,7 +17,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use Notifiable, HasRoles, HasApiTokens, HasBanConcern, HasFirConcern, HasTeamConcern;
-    
+
     protected $table = 'user_users';
 
     protected $fillable = ['id', 'firstname', 'lastname', 'email', 'email_backup'];
@@ -29,6 +29,22 @@ class User extends Authenticatable
     protected $appends = ['username', 'username_short'];
 
     public $incrementing = false;
+
+    protected static function booted(): void
+    {
+        static::saved(function (self $user) {
+            $user->passwords()->updateOrCreate([]);
+            $user->settings()->updateOrCreate([]);
+            $user->vatgerDetails()->updateOrCreate([]);
+            $user->vatsimDetails()->updateOrCreate([]);
+        });
+        static::deleting(function (self $user) {
+            $user->passwords()->delete();
+            $user->settings()->delete();
+            $user->vatgerDetails()->delete();
+            $user->vatsimDetails()->delete();
+        });
+    }
 
     public function settings(): HasOne
     {

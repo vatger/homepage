@@ -1,7 +1,7 @@
 <?php
 
 use App\OpenApi\Controllers\ApiController;
-use App\OpenApi\Controllers\MentorController;
+use App\OpenApi\Controllers\TeamspeakApiController;
 use App\OpenApi\Controllers\NavigationController;
 use App\OpenApi\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -17,8 +17,16 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('test', [ApiController::class, 'test']);
 
+Route::get('teamspeak/{cid}', [TeamspeakApiController::class, 'teamspeak_ids']);
+
+Route::get('user/{cid}/membership', []);
+Route::post('user/{cid}/send_notification', [UserController::class, 'send_notification']);
+
+Route::get('atcbooking', []);
+
 Route::get('book', [ApiController::class, 'bookstack']);
 
+/*
 //Route::middleware('api_auth')->group(function () {
 Route::get('user/{id}', [UserController::class, 'userShow']);
 Route::get('user/{id}/regionalgroups', [UserController::class, 'userRegionalgroups']);
@@ -30,3 +38,4 @@ Route::get('mentors', [MentorController::class, 'listMentors']);
 
 Route::get('stations', [NavigationController::class, 'stationList']);
 Route::get('stations/{ident}', [NavigationController::class, 'stationView']);
+*/

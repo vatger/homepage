@@ -11,7 +11,7 @@ class TeamspeakRegistration extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'teamspeak_registration';
+    protected $table = 'teamspeak_registrations';
 
     protected $fillable = ['*'];
 

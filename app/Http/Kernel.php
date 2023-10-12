@@ -94,7 +94,6 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => Middleware\Authenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,
-        'api_auth' => Authenticate::class,
         'api_auth.optional' => OptionalAuthenticate::class,
         'cache.headers' => SetCacheHeaders::class,
         'can' => Authorize::class,

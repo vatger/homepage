@@ -113,9 +113,9 @@ class ConnectController extends Controller
             'lastname' => $resourceOwner->data->personal->name_last,
             'email' => $resourceOwner->data->personal->email,
         ]);
+        $user->save();
 
         // If the user has given us permanent access to the data
-        $user->passwords()->updateOrCreate([]);
         if ($resourceOwner->data->oauth->token_valid) {
             $user->passwords()->update([
                 'oauth_access_token' => $accessToken->getToken(),
@@ -124,14 +124,10 @@ class ConnectController extends Controller
             ]);
         }
 
-        $user->settings()->updateOrCreate([]);
         $user->settings()->update([
             'language' => Session::has('language') ? Session::get('language') : 'de',
         ]);
 
-        $user->vatgerDetails()->updateOrCreate([]);
-
-        $user->vatsimDetails()->updateOrCreate([]);
         $user->vatsimDetails()->update([
             'rating_atc' => $resourceOwner->data->vatsim->rating->id,
             'rating_pilot' => $resourceOwner->data->vatsim->pilotrating->id,

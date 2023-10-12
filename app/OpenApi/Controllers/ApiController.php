@@ -26,15 +26,25 @@ class ApiController extends Controller
         });
     }
 
+    public function authorizeApiRequest(string $endpoint): void
+    {
+        if (!$this->token) {
+            abort(401, 'Unauthenticated or token invalid.');
+        }
+        //if (!$this->token->can($endpoint)) {
+        //    abort(401, 'Token not valid for this endpoint.');
+        //}
+    }
+
     /**
-     * Test title
+     * Test API Connection
      *
-     * test text nedjgfhnjfdhbgijfdbngjikvbdfusiosnbvjikdfgs bvjionfdgijbvijbgfd
+     * Displays information about the connection, like used token etc.
      */
     #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     public function test()
     {
-        //dd(Auth::guard('api')->check());
+        //$this->authorizeApiRequest('nudel');
         return [
             'token' => $this->token,
             'token_user' => $this->token_user,

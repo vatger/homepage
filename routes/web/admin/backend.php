@@ -15,11 +15,11 @@ Route::prefix('tech')->group(function () {
 
     Route::get('apilog', ApilogPage::class)->name('administration.tech.apilog');
 
-    Route::prefix('backend')->group(function () {
-        Route::get('/', [BackendController::class, 'index'])->name('administration.tech.backend');
-    });
+    //Route::prefix('backend')->group(function () {
+    //    Route::get('/', [BackendController::class, 'index'])->name('administration.tech.backend');
+    //});
 
-    Route::prefix('management')->group(function () {
-        Route::get('/', [TechController::class, 'management'])->name('administration.tech.management');
-    });
+    //Route::prefix('management')->group(function () {
+    //    Route::get('/', [TechController::class, 'management'])->name('administration.tech.management');
+    //});
 });
