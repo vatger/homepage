@@ -6,6 +6,7 @@ import { findLivewireComponent } from '@/ts/livewire';
 
 $(map);
 $(metar);
+$(atis);
 $(indicator);
 
 async function map() {
@@ -63,11 +64,26 @@ async function metar() {
     if (metar_el) metar_el.innerHTML = metar_data;
 }
 
+async function atis() {
+    let lwc = findLivewireComponent('aerodrome-page');
+    const atis_data: string = await lwc.$wire.load_atis();
+    if (!atis_data) return;
+    let atis_el = document.getElementById('atis-container');
+    let atis_wid = document.getElementById('atis-widget');
+    if (!atis_el || !atis_wid) return;
+    atis_wid.setAttribute('style', 'visibility=visible');
+    let string = '';
+    atis_data['text_atis'].forEach((line) => {
+        string += line + ' ';
+    });
+    atis_el.innerHTML = string;
+}
+
 async function indicator() {
     let lwc = findLivewireComponent('aerodrome-page');
     const data: Array<0> = await lwc.$wire.load_indicators();
 
-    function checkindicator(ending, element_id) {
+    function checkindicator(ending: string, element_id: string) {
         if (
             data.find((value) => {
                 let ident: string = value['station']['ident'];
@@ -85,5 +101,25 @@ async function indicator() {
     checkindicator('_CTR', 'ctr_indicator');
     let table = document.getElementById('loading-text-atc');
     if (!table) return;
-    table.innerHTML = '';
+
+    let html = '';
+    data.forEach((station) => {
+        html +=
+            '<tr>' +
+            '<td><small>' +
+            station['station']['name'] +
+            '</small></td>' +
+            '<td>' +
+            station['callsign'] +
+            '</td>' +
+            '<td><small>' +
+            station['frequency'] +
+            '</small></td>' +
+            '</tr>';
+    });
+
+    if (isEmpty(data)) {
+        html += '<tr><td>No ATC online.</td></tr>';
+    }
+    table.innerHTML = html;
 }

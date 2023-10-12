@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Libraries\StandStatus\StandStatus;
 use App\Libraries\StandStatusLibrary;
 use App\Libraries\VATSIM\DataFeedLibrary;
 use App\Models\Navigation\Aerodrome;
@@ -46,5 +45,10 @@ class AerodromePage extends Component
     public function load_indicators(): array
     {
         return DataFeedLibrary::ControllersAerodrome($this->aerodrome);
+    }
+
+    public function load_atis(): ?object
+    {
+        return DataFeedLibrary::AtisAerodrome($this->aerodrome);
     }
 }

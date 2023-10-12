@@ -139,19 +139,32 @@
                                     METAR
                                 </span>
 
-                                <div class="mt-4">
+                                <div class="mt-2 mb-2">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-1 ms-3" style="margin-right: 1rem !important;">
-
-                                            <a wire:ignore class="d-block title text-dark" id="metar-container">Loading...</a>
+                                            <code wire:ignore class="d-block title text-dark" id="metar-container">Loading...</code>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- RECENT POST -->
-
                             <!-- RECENT POST -->
-                            <div class="widget mt-4">
+                            <div class="widget" id="atis-widget" style="visibility: hidden" wire:ignore.self>
+                                <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0">
+                                    ATIS
+                                </span>
+
+                                <div class="mt-2 mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-1 ms-3" style="margin-right: 1rem !important;">
+                                            <code wire:ignore class="d-block title text-dark" id="atis-container">Loading...</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- RECENT POST -->
+                            <!-- RECENT POST -->
+                            <div class="widget">
                                 <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0">
                                     Links
                                 </span>
@@ -203,12 +216,14 @@
                                     <div class="d-flex align-items-center">
                                         <div class="flex-1 ms-3 table-responsive" style="margin-right: 1rem !important;" id="table-atc-container">
                                             <table class="table table-center" id="table-active-atc">
+                                                {{--
                                                 <thead>
                                                 <tr>
                                                     <th class="text-center border-bottom fw-bold">@lang('pilot.aerodromes.aerodrome.station-table-header.0')</th>
                                                     <th class="text-center border-bottom fw-bold">@lang('pilot.aerodromes.aerodrome.station-table-header.1')</th>
                                                 </tr>
                                                 </thead>
+                                                --}}
                                                 <tbody wire:ignore id="loading-text-atc">
                                                 <tr>
                                                     <td class="text-center" colspan="2">Loading...</td>

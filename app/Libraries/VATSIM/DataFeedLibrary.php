@@ -185,4 +185,15 @@ class DataFeedLibrary
             return [];
         }
     }
+
+    public static function AtisAerodrome(Aerodrome $aerodrome): ?object
+    {
+        $all_atises = self::Atises();
+        foreach ($all_atises as $atis) {
+            if (Str::substr($atis?->callsign, 0, 4) == $aerodrome->icao) {
+                return $atis;
+            }
+        }
+        return null;
+    }
 }
