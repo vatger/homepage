@@ -36,6 +36,17 @@ class ApiController extends Controller
         //}
     }
 
+    public function canApiRequest(string $endpoint): bool
+    {
+        if (!$this->token) {
+            return false;
+        }
+        //if (!$this->token->can($endpoint)) {
+        //    return false;
+        //}
+        return true;
+    }
+
     /**
      * Test API Connection
      *
@@ -49,11 +60,5 @@ class ApiController extends Controller
             'token' => $this->token,
             'token_user' => $this->token_user,
         ];
-    }
-
-    public function bookstack()
-    {
-        //return BookstackLibrary::_users_read(1234027);
-        //return BookstackLibrary::_users_update(1234027, [1, 4, 8, 9]);
     }
 }

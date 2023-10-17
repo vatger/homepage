@@ -6,6 +6,9 @@ use App\Models\Membership\TeamspeakRegistration;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
+/**
+ *
+ */
 #[OpenApi\PathItem]
 class TeamspeakApiController extends ApiController
 {
@@ -13,6 +16,7 @@ class TeamspeakApiController extends ApiController
      * Teamspeak DBIDs
      *
      * Generate a list of Teamspeak DBIDs for a given CID.
+     * @param int $cid the users VATSIM ID
      */
     #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     public function teamspeak_ids(int $cid): array

@@ -268,21 +268,19 @@ class XenForoLibrary extends BaseLibrary
 
     /**
      * Get the actual username used for this account on the forums
-     *
-     * @param User $account
-     *
-     * @return String The actual username
      */
-    public static function getForumUsername(User $account)
+    public static function getForumUsername(User $user): string|false
     {
-        $result = self::_sendAPICommand('users/' . $account->settings->forum_id, []);
-        if (!$result) {
-            return false;
-        }
+        return \Cache::remember('xenforo.username.' . $user->id, 120, function () use ($user) {
+            $result = self::send('GET', 'users/' . $user->settings->forum_id, []);
+            if (!$result) {
+                return false;
+            }
 
-        $response = json_decode($result->getBody()->getContents());
-        $forumUserObject = $response->user;
-        return $forumUserObject->username;
+            $response = json_decode($result->getBody()->getContents());
+            $forumUserObject = $response->user;
+            return $forumUserObject->username;
+        });
     }
 
     /**

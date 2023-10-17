@@ -1,6 +1,8 @@
 <?php
 
 use App\OpenApi\Controllers\ApiController;
+use App\OpenApi\Controllers\AtcApiController;
+use App\OpenApi\Controllers\BookstackApiController;
 use App\OpenApi\Controllers\TeamspeakApiController;
 use App\OpenApi\Controllers\NavigationController;
 use App\OpenApi\Controllers\UserController;
@@ -19,12 +21,12 @@ Route::get('test', [ApiController::class, 'test']);
 
 Route::get('teamspeak/{cid}', [TeamspeakApiController::class, 'teamspeak_ids']);
 
-Route::get('user/{cid}/membership', []);
+Route::get('user/{cid}/membership', [UserController::class, 'membership']);
 Route::post('user/{cid}/send_notification', [UserController::class, 'send_notification']);
 
-Route::get('atcbooking', []);
+Route::get('atcbooking/{start?}/{end?}', [AtcApiController::class, 'index']);
 
-Route::get('book', [ApiController::class, 'bookstack']);
+Route::get('bookstack', [BookstackApiController::class, 'bookstack']);
 
 /*
 //Route::middleware('api_auth')->group(function () {

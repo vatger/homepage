@@ -10,6 +10,16 @@ use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 class UserController extends ApiController
 {
     /**
+     * User Membership
+     *
+     * Show some basic info about the membership.
+     */
+    #[OpenApi\Operation]
+    public function membership(User $cid)
+    {
+    }
+
+    /**
      * User Notification
      *
      * Send a notification to the user via board,mail,homepage,...
