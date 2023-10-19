@@ -3,6 +3,7 @@
 namespace App\OpenApi\Controllers;
 
 use App\Models\Membership\User\User;
+use App\OpenApi\Responses\ListUsersResponse;
 use Illuminate\Http\Request;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
@@ -15,6 +16,7 @@ class UserController extends ApiController
      * Show some basic info about the membership.
      */
     #[OpenApi\Operation]
+    #[OpenApi\Response(ListUsersResponse::class)]
     public function membership(User $cid)
     {
     }

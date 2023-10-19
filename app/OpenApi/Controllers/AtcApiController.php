@@ -16,17 +16,17 @@ class AtcApiController extends ApiController
      * between a given start and end date
      *
      * @param Request $request
-     * @param ?string $start The start date in format Y-m-d
-     * @param ?string $end The end date in format Y-m-d
+     * @param string $start The start date in format Y-m-d
+     * @param string $end The end date in format Y-m-d
      * @return array
      */
     #[OpenApi\Operation(security: TokenSecurityScheme::class)]
-    public function index(Request $request, ?string $start = null, ?string $end = null): array
+    public function index(Request $request, string $start = '', string $end = ''): array
     {
         // construct the start and end times
-        $s = $end != null ? Carbon::createFromFormat('Y-m-d', $start) : Carbon::now();
+        $s = !empty($start) ? Carbon::createFromFormat('Y-m-d', $start) : Carbon::now();
         $s->setTime(0, 0, 0);
-        $e = $end != null ? Carbon::createFromFormat('Y-m-d', $end) : $s->copy();
+        $e = !empty($end) ? Carbon::createFromFormat('Y-m-d', $end) : $s->copy();
         $e->setTime(23, 59, 59);
         // collect the bookings
         $bookings = AtcBooking::with(['station', 'controller'])
