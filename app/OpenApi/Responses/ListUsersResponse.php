@@ -13,6 +13,7 @@ class ListUsersResponse extends ResponseFactory implements Reusable
     public function build(): Response
     {
         return Response::ok()
+            ->statusCode(200)
             ->description('Successful response')
             ->content(MediaType::json()->schema(UserSchema::ref()));
     }
