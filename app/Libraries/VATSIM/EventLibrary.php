@@ -2,7 +2,6 @@
 
 namespace App\Libraries\VATSIM;
 
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -58,7 +57,7 @@ class EventLibrary
             return [];
         }
 
-        return Cache::remember('de.vatsim-germany.events.aerodrome.' . $icao, 1, function () use ($icao, $count) {
+        return Cache::remember('de.vatsim-germany.events.aerodrome.' . $icao, 60 * 10, function () use ($icao, $count) {
             $events = self::loadEvents();
             $eventArray = [];
 
@@ -87,8 +86,6 @@ class EventLibrary
 
     /**
      * Load and cache all upcoming events from VATSIM API.
-     *
-     * @return array
      */
     private static function loadEvents(): array
     {
