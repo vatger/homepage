@@ -3,11 +3,13 @@ import $ from 'jquery';
 import { isEmpty } from 'lodash';
 import { zroute } from '@/ts/myziggy';
 import { findLivewireComponent } from '@/ts/livewire';
+import dayjs from 'dayjs';
 
 $(map);
 $(metar);
 $(atis);
 $(indicator);
+$(event);
 
 async function map() {
     let lwc = findLivewireComponent('aerodrome-page');
@@ -111,10 +113,10 @@ async function indicator() {
             '</small></td>' +
             '<td>' +
             station['callsign'] +
-            '</td>' +
-            '<td><small>' +
+            ' ' +
+            '<small>' +
             station['frequency'] +
-            '</small></td>' +
+            ' MHz</small></td>' +
             '</tr>';
     });
 
@@ -122,4 +124,66 @@ async function indicator() {
         html += '<tr><td>No ATC online.</td></tr>';
     }
     table.innerHTML = html;
+}
+
+type Event = {
+    id: number;
+    name: string;
+    description: string;
+    short_description: string;
+    start_time: string;
+    end_time: string;
+    banner: string;
+    link: string;
+    type: string;
+    airports: Array<{ icao: string }>;
+    organisers: Array<{ region?: string; division?: string; subdivision?: string; organised_by_vatsim: boolean }>;
+    vso_name?: string;
+};
+
+async function event() {
+    let lwc = findLivewireComponent('aerodrome-page');
+    const data: Array<Event> = await lwc.$wire.load_events();
+
+    const event_container = document.getElementById('event-container');
+    while (event_container?.lastChild) {
+        event_container.removeChild(event_container.lastChild);
+    }
+
+    data.forEach((e: Event, i: number) => {
+        event_container?.insertAdjacentHTML(
+            'beforeend',
+            `
+                <div class="col-12 mb-4 pb-2 ${i > 5 ? 'hide' : ''}" id="event-${i}">
+                    <a href="${window.location.origin}/events/view/${e.id}">
+                        <div class="card blog rounded border-0 shadow overflow-hidden">
+                            <div class="position-relative">
+                                <div class="overlay rounded-top"></div>
+                                <div class="card-img-top loader-show overflow-hidden" id="event-banner-1" style="min-height: 200px; min-width: 356px; background: url('${
+                                    e.banner
+                                }') center; background-size: cover;"></div>
+                            </div>
+                            <div class="card-body content">
+                                <span class="badge rounded-pill bg-soft-primary mb-2 ${e.type == 'CPT' ? '' : 'hide'}">
+                                    Controller Practical Test
+                                </span>
+                                <h5>
+                                    <span class="card-title title text-dark" id="event-title-1">${e.name}</span>
+                                </h5>
+                                <div class="post-meta d-flex justify-content-between mt-3">
+                                    <ul class="list-unstyled mb-0">
+                                        <li class="list-inline-item me-2 mb-0">
+                                            <span href="javascript:void(0)" class="text-muted" id="event-date-1">
+                                                ${dayjs(e.start_time).format('DD.MM.YYYY HH:mm') + 'z'}
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            `
+        );
+    });
 }

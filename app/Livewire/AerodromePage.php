@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Libraries\StandStatusLibrary;
 use App\Libraries\VATSIM\DataFeedLibrary;
+use App\Libraries\VATSIM\EventLibrary;
 use App\Models\Navigation\Aerodrome;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
@@ -50,5 +51,10 @@ class AerodromePage extends Component
     public function load_atis(): ?object
     {
         return DataFeedLibrary::AtisAerodrome($this->aerodrome);
+    }
+
+    public function load_events(): array
+    {
+        return EventLibrary::getAerodromeEvents($this->aerodrome->icao);
     }
 }

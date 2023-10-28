@@ -5,6 +5,7 @@ namespace App\Libraries\VATSIM;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Stevebauman\Purify\Facades\Purify;
 
 class EventLibrary
@@ -42,35 +43,33 @@ class EventLibrary
         }
     }
 
-    public static function getAerodromeEvent(string $icao)
+    public static function getAerodromeEvent(string $icao): ?object
     {
-        if (strlen($icao) != 4) {
-            abort(404, 'Unknown icao code ' . $icao);
+        $data = self::getAerodromeEvents($icao, 1);
+        if (count($data)) {
+            return null;
         }
-
-        return self::getAerodromeEvents($icao, 1);
+        return $data[0];
     }
 
-    public static function getAerodromeEvents(string $icao, int $count = 6)
+    public static function getAerodromeEvents(string $icao, int $count = 6): array
     {
         if (strlen($icao) != 4) {
-            abort(404, 'Unknown icao code ' . $icao);
+            return [];
         }
 
-        return Cache::remember('de.vatsim-germany.events.aerodrome.' . $icao, 600, function () use ($icao, $count) {
+        return Cache::remember('de.vatsim-germany.events.aerodrome.' . $icao, 1, function () use ($icao, $count) {
             $events = self::loadEvents();
-
             $eventArray = [];
 
             $index = 0;
-
             foreach ($events as $e) {
                 if ($index >= $count) {
                     break;
                 }
 
                 foreach ($e->airports as $a) {
-                    if ($a->icao == $icao) {
+                    if (Str::upper($a->icao) == Str::upper($icao)) {
                         $nextEvent = $e;
                         if ($nextEvent != null) {
                             // Prevent xss attack
@@ -82,7 +81,7 @@ class EventLibrary
                 }
             }
 
-            return json_encode($eventArray);
+            return $eventArray;
         });
     }
 
