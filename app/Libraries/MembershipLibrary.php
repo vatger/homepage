@@ -4,6 +4,7 @@ namespace App\Libraries;
 
 use App\Jobs\UpdateAccountJob;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
+use App\Libraries\VATSIM\APILibrary;
 use App\Models\Membership\User\User;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
@@ -32,9 +33,10 @@ class MembershipLibrary
             UpdateAccountJob::dispatch($user);
             return;
         }
+        APILibrary::MemberUpdate($user);
         $user = $user->refresh();
         self::check_status($user, $cache);
-        
+
         # TODO: Handle all changes that might have triggered this function
         // 1. Handle forum permission / role assignment
         XenForoLibrary::updateForumAccount($user);

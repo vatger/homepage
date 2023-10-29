@@ -3,6 +3,7 @@
 namespace App\Libraries\VATSIM;
 
 use App\Models\Membership\User\User;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
@@ -48,11 +49,35 @@ class APILibrary
         return self::FetchData('ratings/' . $user->id, true);
     }
 
-    public static function MemberUpdate(User $user): bool
+    public static function MemberUpdate(User $user, bool $cache = true): bool
     {
+        $cache_key = 'vatsim.api.member_update.' . $user->id;
+        if ($cache && Cache::has($cache_key)) {
+            return true;
+        }
         $data = self::Member($user);
-
-        return false;
+        if (!$data) {
+            return false;
+        }
+        $user->update([
+            'firstname' => $data->name_first,
+            'lastname' => $data->name_last,
+            'email' => $data->email,
+        ]);
+        $user->vatsimDetails->update([
+            'rating_atc' => $data->rating,
+            'rating_pilot' => $data->pilotrating,
+            'rating_military' => $data->militaryrating,
+            'region_code' => $data->region,
+            'region_name' => $user->vatsimDetails->region_code == $data->region ? $user->vatsimDetails->region_name : '',
+            'division_code' => $data->division,
+            'division_name' => $user->vatsimDetails->division_code == $data->division ? $user->vatsimDetails->division_name : '',
+            'subdivision_code' => $data->subdivision,
+            'subdivision_name' => $user->vatsimDetails->subdivision_code == $data->subdivision ? $user->vatsimDetails->subdivision_name : '',
+            'last_rating_change_at' => $data->lastratingchange,
+        ]);
+        Cache::put($cache_key, Carbon::now(), 60 * 10);
+        return true;
     }
 
     /**

@@ -5,12 +5,9 @@ namespace Database\Seeders;
 use App\Models\Membership\User\User;
 use Carbon\Carbon;
 use Illuminate\Database\Connection;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
-use phpDocumentor\Reflection\Types\Collection;
 
 class MigrationSeeder extends Seeder
 {
@@ -74,12 +71,32 @@ class MigrationSeeder extends Seeder
                 'subdivision_code' => '-',
                 'subdivision_name' => '-',
             ]);
-
             // vatger data
             $user->vatgerDetails()->update([
+                'last_seen_at' => Carbon::now(),
                 'registered_at' => $row->created_at ?? Carbon::now(),
+                'active_member_at' => $row->created_at ?? Carbon::now(),
+                'vatger_member_at' => $row->created_at ?? Carbon::now(),
+                'active_vatger_member_at' => $row->created_at ?? Carbon::now(),
+                'warning_inactive_at' => null,
+                'inactive_at' => null,
+                'warning_delete_at' => null,
+                'delete_at' => null,
             ]);
-
+            // fir membership
+            // todo
+            $rgs = [
+                1 => 'EDWW',
+                2 => 'EDBB',
+                3 => 'EDLL',
+                4 => 'EDFF',
+                5 => 'EDMM',
+            ];
+            
+            self::DB_old('regionalgroups_account_regionalgroup')
+                ->where('account_id', $row->id)
+                ->where('guest', 0)
+                ->first();
             sleep(1);
             $this->command->getOutput()->progressAdvance();
         }
