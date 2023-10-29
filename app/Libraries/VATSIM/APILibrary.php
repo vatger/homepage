@@ -33,6 +33,29 @@ class APILibrary
     }
 
     /**
+     * Get the members data
+     *
+     * @param User $user The account to lookup
+     * @return false|object JSON decoded rating times
+     */
+    public static function Member(User $user): false|object
+    {
+        // For testing: override id to an existing one
+        if (env('APP_ENV', 'dev') != 'production') {
+            $cid = 1289607;
+            return self::FetchData('ratings/' . $cid, true);
+        }
+        return self::FetchData('ratings/' . $user->id, true);
+    }
+
+    public static function MemberUpdate(User $user): bool
+    {
+        $data = self::Member($user);
+
+        return false;
+    }
+
+    /**
      * Get the members rating times
      *
      * @param User $user The account to lookup

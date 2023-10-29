@@ -34,8 +34,8 @@ class MembershipLibrary
         }
         $user = $user->refresh();
         self::check_status($user, $cache);
+        
         # TODO: Handle all changes that might have triggered this function
-
         // 1. Handle forum permission / role assignment
         XenForoLibrary::updateForumAccount($user);
         // 2. Handle Teamspeak roles
