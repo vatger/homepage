@@ -2,11 +2,16 @@
 
 namespace Database\Seeders;
 
+use App\Libraries\MembershipLibrary;
+use App\Libraries\VATSIM\APILibrary;
+use App\Models\Groups\Fir;
+use App\Models\Membership\User\Concerns\FirMembership;
 use App\Models\Membership\User\User;
 use Carbon\Carbon;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MigrationSeeder extends Seeder
@@ -42,12 +47,15 @@ class MigrationSeeder extends Seeder
                 ->first();
 
             // user table
-            $user = User::updateOrCreate([
-                'id' => $row->id,
-                'firstname' => $row->firstname,
-                'lastname' => $row->lastname,
-                'email' => $row->email,
-            ]);
+            $user = User::where('id', $row->id)->first();
+            if (!$user) {
+                $user = User::create([
+                    'id' => $row->id,
+                    'firstname' => $row->firstname,
+                    'lastname' => $row->lastname,
+                    'email' => $row->email,
+                ]);
+            }
             // user passwords
             $user->passwords()->update([
                 'oauth_access_token' => null,
@@ -92,12 +100,50 @@ class MigrationSeeder extends Seeder
                 4 => 'EDFF',
                 5 => 'EDMM',
             ];
-            
-            self::DB_old('regionalgroups_account_regionalgroup')
+
+            $row_rg = self::DB_old('regionalgroups_account_regionalgroup')
                 ->where('account_id', $row->id)
                 ->where('guest', 0)
                 ->first();
-            sleep(1);
+
+            $new_fir = null;
+            $old_fir = 'none';
+
+            if ($row_rg) {
+                FirMembership::where('user_id', $row->id)->delete();
+                $f = new FirMembership();
+                $f->user_id = $row->id;
+                $old_fir = $rgs[$row_rg->regionalgroup_id];
+                switch ($row_rg->regionalgroup_id) {
+                    case 1:
+                    case 2:
+                        $new_fir = Fir::where('slug', 'LIKE', 'EDWW')->first();
+                        break;
+                    case 3:
+                    case 4:
+                        $new_fir = Fir::where('slug', 'LIKE', 'EDGG')->first();
+                        break;
+                    case 5:
+                        $new_fir = Fir::where('slug', 'LIKE', 'EDMM')->first();
+                        break;
+                }
+                $f->fir_id = $new_fir->id;
+                $f->joined_at = $row_rg->created_at;
+                $f->active_fir_member_at = $row_rg->created_at;
+                $f->save();
+            }
+
+            $this->command
+                ->getOutput()
+                ->comment($row->id . ', ' . $row->firstname . ', ' . $row->lastname . ', ' . $old_fir . '->' . ($new_fir ? $new_fir->name : 'none'));
+
+            // fetch some data from the API
+            $user = User::where('id', $row->id)->first();
+            if (!APILibrary::MemberUpdate($user, false)) {
+                $this->command->error('VATSIM API Fail: User ' . $user->id);
+            }
+            MembershipLibrary::update($user, cache: false);
+            
             $this->command->getOutput()->progressAdvance();
         }
         $this->command->getOutput()->progressFinish();

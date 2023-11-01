@@ -44,7 +44,9 @@ class APILibrary
         // For testing: override id to an existing one
         if (env('APP_ENV', 'dev') != 'production') {
             $cid = 1289607;
-            return self::FetchData('ratings/' . $cid, true);
+            $data = self::FetchData('ratings/' . $cid, true);
+            $data->email = '' . $user->email;
+            return $data;
         }
         return self::FetchData('ratings/' . $user->id, true);
     }

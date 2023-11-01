@@ -22,9 +22,9 @@ class AerodromeSeeder extends Seeder
                 'name' => $a->name,
                 'description' => $a->description,
                 'iata' => $a->iata,
-                'elevation' => (float) $a->elevation,
-                'latitude' => (float) $a->latitude,
-                'longitude' => (float) $a->longitude,
+                'elevation' => (float)$a->elevation,
+                'latitude' => (float)$a->latitude,
+                'longitude' => (float)$a->longitude,
                 'city' => $a->city,
                 'country_long' => $a->country,
                 'country_short' => $a->country,
@@ -67,9 +67,9 @@ class AerodromeSeeder extends Seeder
             if (empty($found)) {
                 return;
             }
-            $found->elevation = (float) $data[$map['elevation_ft']];
-            $found->latitude = (float) $data[$map['latitude_deg']];
-            $found->longitude = (float) $data[$map['longitude_deg']];
+            $found->elevation = (float)$data[$map['elevation_ft']];
+            $found->latitude = (float)$data[$map['latitude_deg']];
+            $found->longitude = (float)$data[$map['longitude_deg']];
             $found->save();
         };
         $this->readCSV_by_line('https://davidmegginson.github.io/ourairports-data/airports.csv', ',', $fun, true);
@@ -84,9 +84,12 @@ class AerodromeSeeder extends Seeder
     public function run()
     {
         $current_a_count = Aerodrome::all()->count();
-        if ($current_a_count > 28800) {
-            $this->command->getOutput()->writeln('Already found ' . $current_a_count . ' aerodromes in DB. Skipping...');
-            return;
+        if ($current_a_count > 10) {
+            $response = $this->command->getOutput()->ask('Already found ' . $current_a_count . ' aerodromes. Do you want to skip this seeder? (Y/n)');
+            if (str_contains($response, 'y') || str_contains($response, 'Y') || empty($response)) {
+                $this->command->getOutput()->info('Skipping...');
+                return;
+            }
         }
         // Hacky workaround to truncate table with foreign key :)
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
