@@ -3,7 +3,8 @@
     'caption',
     'date',
     'agreed_date' => null,
-    'text'
+    'text',
+    'pdf_type' =>false,
 ])
 
 @php
@@ -21,7 +22,13 @@
     </h2>
     <div id="{{ $ident }}-d" class="accordion-collapse border-0 collapse" aria-labelledby="{{ $ident }}-h" data-bs-parent="#{{ $ident }}-h" style="">
         <div class="accordion-body">
-            {!! $text !!}
+            @if(!$pdf_type)
+                {!! $text !!}
+            @else
+                <object data="{{ $text }}" type="application/pdf" width="100%" height="800px">
+                    <p>Unable to display PDF file. <a href="{{ $text }}">Download</a> instead.</p>
+                </object>
+            @endif
         </div>
     </div>
 </div>

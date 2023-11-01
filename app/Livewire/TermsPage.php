@@ -21,14 +21,14 @@ class TermsPage extends Component
 
     public function boot(): void
     {
-        $this->gdpr = Storage::get('policies/gdpr.html');
-        $this->imprint = Storage::get('policies/imprint.html');
-        $this->termsofuse = Storage::get('policies/termsofuse.txt');
-        $this->satzung = Storage::get('policies/satzung.txt');
-        $this->gdpr_date = Carbon::createFromTimestamp(Storage::lastModified('policies/gdpr.html'));
-        $this->imprint_date = Carbon::createFromTimestamp(Storage::lastModified('policies/imprint.html'));
-        $this->termsofuse_date = Carbon::createFromTimestamp(Storage::lastModified('policies/imprint.html'));
-        $this->satzung_date = Carbon::createFromTimestamp(Storage::lastModified('policies/imprint.html'));
+        $this->gdpr = Storage::get('public/policies/gdpr.html');
+        $this->imprint = Storage::get('public/policies/imprint.html');
+        $this->termsofuse = Storage::get('public/policies/termsofuse.html');
+        $this->satzung = Storage::url('public/policies/satzung.pdf');
+        $this->gdpr_date = Carbon::createFromTimestamp(Storage::lastModified('public/policies/gdpr.html'));
+        $this->imprint_date = Carbon::createFromTimestamp(Storage::lastModified('public/policies/imprint.html'));
+        $this->termsofuse_date = Carbon::createFromTimestamp(Storage::lastModified('public/policies/termsofuse.html'));
+        $this->satzung_date = Carbon::createFromTimestamp(Storage::lastModified('public/policies/satzung.pdf'));
     }
 
     #[Layout('layouts.master')]

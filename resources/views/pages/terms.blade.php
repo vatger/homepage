@@ -23,7 +23,7 @@
                                 <x-terms-tab ident="gdpr" caption="GDPR" :date="$gdpr_date" :text="$gdpr" :agreed_date="$user_settings?->gdpr_agreed_at" />
                                 <x-terms-tab ident="imprint" caption="Imprint" :date="$imprint_date" :text="$imprint" :agreed_date="$user_settings?->imprint_agreed_at" />
                                 <x-terms-tab ident="termsofuse" caption="Nutzungsbedingungen" :date="$termsofuse_date" :text="$termsofuse" :agreed_date="$user_settings?->termsofuse_agreed_at" />
-                                <x-terms-tab ident="satzung" caption="Satzung" :date="$satzung_date" :text="$satzung" :agreed_date="$user_settings?->satzung_agreed_at" />
+                                <x-terms-tab ident="satzung" caption="Satzung" :date="$satzung_date" :text="$satzung" :agreed_date="$user_settings?->satzung_agreed_at" pdf_type="true" />
                             </div>
 
                             @if(Auth::user()?->settings?->agreed)

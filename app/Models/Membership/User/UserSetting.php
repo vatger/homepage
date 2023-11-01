@@ -32,23 +32,23 @@ class UserSetting extends Model
 
     public function getGdprAgreedAttribute(): bool
     {
-        return $this->gdpr_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('policies/gdpr.html'));
+        return $this->gdpr_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('public/policies/gdpr.html'));
     }
 
     public function getImprintAgreedAttribute(): bool
     {
-        return $this->imprint_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('policies/imprint.html'));
+        return $this->imprint_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('public/policies/imprint.html'));
     }
 
     public function getTermsofuseAgreedAttribute(): bool
     {
-        return $this->termsofuse_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('policies/termsofuse.txt'));
+        return $this->termsofuse_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('public/policies/termsofuse.html'));
         /* config('vatger.termsofuse_date') */
     }
 
     public function getSatzungAgreedAttribute(): bool
     {
-        return $this->satzung_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('policies/satzung.txt'));
+        return $this->satzung_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('public/policies/satzung.txt'));
         /* config('vatger.termsofuse_date') */
     }
 
