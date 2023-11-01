@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Libraries\MembershipLibrary;
 use App\Libraries\VATSIM\APILibrary;
 use App\Models\Groups\Fir;
+use App\Models\Membership\TeamspeakRegistration;
 use App\Models\Membership\User\Concerns\FirMembership;
 use App\Models\Membership\User\User;
 use Carbon\Carbon;
@@ -21,7 +22,14 @@ class MigrationSeeder extends Seeder
      */
     public function run(): void
     {
+        try {
+            DB::connection('mysql_old')->getDatabaseName();
+        } catch (\Exception $e) {
+            $this->command->getOutput()->error('Cant connect to the old database.');
+            return;
+        }
         $this->copy_users();
+        $this->copy_teamspeak();
     }
 
     private static function DB_old(string $table = null): Connection|Builder
@@ -34,8 +42,8 @@ class MigrationSeeder extends Seeder
 
     private function copy_users(): void
     {
-        $rows = self::DB_old('membership_accounts')->get();
         $this->command->getOutput()->info('copy_users');
+        $rows = self::DB_old('membership_accounts')->get();
         $this->command->getOutput()->progressStart($rows->count());
 
         foreach ($rows as $row) {
@@ -65,6 +73,7 @@ class MigrationSeeder extends Seeder
             // user settings
             $user->settings()->update([
                 'language' => $row_settings->language,
+                'forum_id' => $row_settings->forum_id,
             ]);
             // vatsim data
             $user->vatsimDetails()->update([
@@ -143,9 +152,33 @@ class MigrationSeeder extends Seeder
                 $this->command->error('VATSIM API Fail: User ' . $user->id);
             }
             MembershipLibrary::update($user, cache: false);
-            
+
             $this->command->getOutput()->progressAdvance();
         }
+        $this->command->getOutput()->progressFinish();
+    }
+
+    private function copy_teamspeak(): void
+    {
+        $this->command->getOutput()->info('copy_teamspeak');
+        $rows = self::DB_old('teamspeak_registration')
+            ->whereNull('deleted_at')
+            ->get();
+        $this->command->getOutput()->progressStart($rows->count());
+        foreach ($rows as $row) {
+            if (!User::where('id', $row->account_id)->exists()) {
+                continue;
+            }
+            $t = new TeamspeakRegistration();
+            $t->user_id = $row->account_id;
+            $t->dbid = $row->dbid;
+            $t->uid = $row->uid;
+            $t->created_at = $row->created_at;
+            $t->updated_at = $row->updated_at;
+            $t->save();
+            $this->command->getOutput()->progressAdvance();
+        }
+
         $this->command->getOutput()->progressFinish();
     }
 }

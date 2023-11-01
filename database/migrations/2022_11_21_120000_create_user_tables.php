@@ -99,7 +99,11 @@ return new class extends Migration {
         Schema::create('user_bans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('user_users');
-            $table->foreignId('author_id')->constrained('user_users');
+            $table->enum('type', ['vatger_ban', 'vatsim_inactivity', 'vatsim_ban'])->default('vatger_ban');
+            $table
+                ->foreignId('author_id')
+                ->nullable()
+                ->constrained('user_users');
             $table->timestamp('starts_at')->useCurrent();
             $table->timestamp('ends_at')->nullable();
             $table->boolean('homepage')->default(true);
