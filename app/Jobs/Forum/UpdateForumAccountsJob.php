@@ -11,6 +11,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * @deprecated
+ */
 class UpdateForumAccountsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -21,8 +24,8 @@ class UpdateForumAccountsJob implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
      * @return void
+     * @deprecated
      */
     public function __construct()
     {

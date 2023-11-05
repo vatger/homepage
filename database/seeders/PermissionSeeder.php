@@ -33,6 +33,10 @@ class PermissionSeeder extends Seeder
         'navigation.stations.view',
         'navigation.stations.edit',
 
+        // ATD
+        'atd.solos.edit',
+        'atd.solos.manage',
+
         // Media
         'media.create',
         'media.admin',

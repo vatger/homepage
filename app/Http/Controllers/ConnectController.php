@@ -107,8 +107,8 @@ class ConnectController extends Controller
      */
     protected function _completeLogin(object $resourceOwner, object $accessToken): User
     {
-        $user = User::updateOrCreate([
-            'id' => $resourceOwner->data->cid,
+        $user = User::where('id', $resourceOwner->data->cid)->firstOrNew();
+        $user->update([
             'firstname' => $resourceOwner->data->personal->name_first,
             'lastname' => $resourceOwner->data->personal->name_last,
             'email' => $resourceOwner->data->personal->email,

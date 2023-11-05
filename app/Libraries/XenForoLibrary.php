@@ -4,7 +4,6 @@ namespace App\Libraries;
 
 use App\Models\Groups\ServiceRoleType;
 use App\Models\Membership\User\User;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\ResponseInterface;
@@ -161,11 +160,11 @@ class XenForoLibrary extends BaseLibrary
         return (bool) $response->success;
     }
 
-    /**
+    /** @param User $user
+     * @return boolean
+     * @deprecated
      * Set a given forum account to the "discouraged" and "suspended" group
      *
-     * @param User $user
-     * @return boolean
      */
     public static function banForumAccount(User $user): bool
     {

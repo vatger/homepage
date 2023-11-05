@@ -8,7 +8,6 @@
     <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
         <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
             @foreach($links as $href=>$name)
-
                 <li class="breadcrumb-item text-capitalize">
                     <a href="{{ $href }}">{{ $name }}</a>
                 </li>

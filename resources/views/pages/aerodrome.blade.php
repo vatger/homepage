@@ -1,53 +1,25 @@
 <div>
-    <!-- Hero Start -->
-    <section class="bg-half-170 bg-light d-table w-100" style='background-image: url("{{
-    $aerodrome->background_image_url ?? asset('images/profile/profile_1.png')
-    }}")'>
-        <div class="bg-overlay" style="background-color: rgb(30 41 58 / 85%)"></div>
-        <div class="container">
-            <div class="row mt-5 justify-content-center">
-                <div class="col-lg-12 text-center">
-                    <div class="pages-heading">
-                        <h2 style="color: white">{{ $aerodrome->name }}</h2>
-                        <ul class="list-unstyled mt-4 mb-0">
-                            <li class="list-inline-item h4 user me-2 text-light" wire:ignore>
-                                <span class="badge rounded bg-soft-danger p-2" id="del_indicator"> DEL </span>
-                                <span class="badge rounded bg-soft-danger p-2" id="gnd_indicator"> GND </span>
-                                <span class="badge rounded bg-soft-danger p-2" id="twr_indicator"> TWR </span>
-                                <span class="badge rounded bg-soft-danger p-2" id="app_indicator"> APP </span>
-                                <span class="badge rounded bg-soft-danger p-2" id="ctr_indicator"> CTR </span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!--end col-->
-            </div>
-            <!--end row-->
-
-            <div class="position-breadcrumb">
-                <nav aria-label="breadcrumb" class="d-inline-block">
-                    <ul class="breadcrumb bg-white rounded shadow mb-0 px-4 py-2">
-                        <li class="breadcrumb-item"><a href="{{ route('landing') }}">{{ config('app.name') }}</a></li>
-                        <li class='breadcrumb-item active'>{{ $aerodrome->icao }}</li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-        <!--end container-->
-    </section>
-    <!--end section-->
-    <!-- Hero End -->
-
-    <!-- Shape Start -->
-    <div class="position-relative">
-        <div class="shape overflow-hidden text-white">
-            <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
-            </svg>
-        </div>
-    </div>
-    <!--Shape End-->
-
+    @component('components.layouts.content',[
+        'header' => $aerodrome->name,
+        'links' => [
+            route('landing') => config('app.name'),
+            'Pilots',
+            route('pilots.aerodromes.viewall') => __('pilot.aerodromes.title'),
+            $aerodrome->icao,
+            ],
+        'backgroundurl' => $aerodrome->background_image_url ?? asset('images/profile/profile_1.png')
+    ])
+        <ul class="list-unstyled mt-4 mb-0">
+            <li class="list-inline-item h4 user me-2 text-light" wire:ignore>
+                <span class="badge rounded bg-soft-danger p-2" id="del_indicator"> DEL </span>
+                <span class="badge rounded bg-soft-danger p-2" id="gnd_indicator"> GND </span>
+                <span class="badge rounded bg-soft-danger p-2" id="twr_indicator"> TWR </span>
+                <span class="badge rounded bg-soft-danger p-2" id="app_indicator"> APP </span>
+                <span class="badge rounded bg-soft-danger p-2" id="ctr_indicator"> CTR </span>
+            </li>
+        </ul>
+    @endcomponent
+    
     <section class="section">
         <div class="container">
             <div class="row">
