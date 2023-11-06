@@ -1,5 +1,6 @@
 @props([
     'header' => 'PLACE TITLE',
+    'subheader' => null,
     'links' => [ route('landing') => config('app.name') ],
     'backgroundurl' => null
 ])
@@ -12,6 +13,7 @@
             <div class="col-lg-12 text-center">
                 <div class="pages-heading">
                     <h2 style="color: white">{{ $header }}</h2>
+                    <h6 style="color: white">{{ $subheader}}</h6>
                     {{ $slot ?? '' }}
                 </div>
             </div>

@@ -70,7 +70,7 @@ require_once 'web/static_routes.php';
 Route::get('resources/media/{mediaFilePath}', [MediaController::class, 'showPublic']);
 
 Route::get('/gdpr', function () {
-    return view('homepage.general.extra.gdpr');
+    return view('pages.gdpr');
 })->name('gdpr');
 
 ###################

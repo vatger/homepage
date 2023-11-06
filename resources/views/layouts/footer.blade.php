@@ -39,6 +39,7 @@
                         <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                             <h5 class="footer-head">@lang('general.footer.helpful-links')</h5>
                             <ul class="list-unstyled footer-list mt-4">
+                                <li><a href="https://vatger-fv.de/" target="_blank" class="text-foot">VATGER Förderverein</a></li>
                                 <li><a href="https://aip.dfs.de/BasicIFR/" target="_blank" class="text-foot">DFS AIP - Basic</a></li>
                             </ul>
                         </div>
@@ -46,9 +47,8 @@
 
                         <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                             <h5 class="footer-head"></h5>
-                            <img class="mb-4" src="{{ asset('images/vatsim/500w/VATSIM_Logo_Official_500px.png') }}" width="80%">
-
-                            <img src="{{ asset('images/vateud.png') }}" width="80%">
+                            <a href="https://vatsim.net"><img class="mb-4" src="{{ asset('images/vatsim/VATSIM_Logo_White_500px.png') }}" width="80%"></a>
+                            <a href="https://vateud.net"><img src="{{ asset('images/vateud.png') }}" width="80%"></a>
                         </div>
                         <!--end col-->
                     </div>

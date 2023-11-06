@@ -67,7 +67,7 @@ class BookPositionTab extends Component
             'selected_station' => 'required',
             'selected_date' => 'required|date_format:Y-m-d|after_or_equal:today',
             'selected_start_at' => 'required|date_format:H:i',
-            'selected_end_at' => 'required:H:i',
+            'selected_end_at' => 'required|date_format:H:i',
             'selected_voice' => 'required|boolean',
             'selected_event' => 'required|boolean',
             'selected_training' => 'required|boolean',
