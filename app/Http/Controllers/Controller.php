@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Membership\User\User;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
@@ -11,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use DispatchesJobs, ValidatesRequests;
 
     protected ?User $current_user;
 
@@ -19,7 +18,7 @@ class Controller extends BaseController
     {
         $this->middleware(function ($request, $next) {
             $this->current_user = null;
-            if (Auth::check() || Auth::guard('web')->check()) {
+            if (Auth::check() && Auth::guard('web')->check()) {
                 $this->current_user = Auth::user();
             }
             return $next($request);
