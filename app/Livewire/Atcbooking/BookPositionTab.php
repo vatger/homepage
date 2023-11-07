@@ -65,7 +65,7 @@ class BookPositionTab extends Component
         $this->val = 2;
         $validated = $this->validate([
             'selected_station' => 'required',
-            'selected_date' => 'required|date_format:Y-m-d|after_or_equal:today',
+            'selected_date' => 'required|date_format:Y-m-d|after_or_equal:today|before:+2 month',
             'selected_start_at' => 'required|date_format:H:i',
             'selected_end_at' => 'required|date_format:H:i',
             'selected_voice' => 'required|boolean',

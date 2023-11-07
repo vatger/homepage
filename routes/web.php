@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Administration\Content\MediaController;
 use App\Http\Controllers\Administration\Content\ShortLinkController;
-use App\Models\Partner;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -56,6 +55,11 @@ require_once 'web/events.php';
 ###################
 //require_once 'web/getting-started.php';
 
+###################
+# LEGAL STUFF     #
+###################
+require_once 'web/legal.php';
+
 ##################
 # ADMINISTRATION #
 ##################
@@ -64,14 +68,9 @@ require_once 'web/admin.php';
 ##################
 # SPECIAL ROUTES #
 ##################
-
 require_once 'web/static_routes.php';
 
 Route::get('resources/media/{mediaFilePath}', [MediaController::class, 'showPublic']);
-
-Route::get('/gdpr', function () {
-    return view('pages.gdpr');
-})->name('gdpr');
 
 ###################
 # CHANGE LANGUAGE #

@@ -6,6 +6,8 @@ use App\Jobs\UpdateAccountJob;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Libraries\VATSIM\APILibrary;
 use App\Models\Membership\User\User;
+use App\Models\Membership\User\UserBan;
+use App\Models\Membership\User\UserBanType;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
@@ -35,6 +37,7 @@ class MembershipLibrary
         }
         APILibrary::MemberUpdate($user);
         $user = $user->refresh();
+        self::check_bans($user);
         self::check_status($user, $cache);
 
         # TODO: Handle all changes that might have triggered this function
@@ -46,6 +49,16 @@ class MembershipLibrary
 
         //
         Log::info('[MembershipLibrary::handleMembershipChange]::' . $user->id . '::Membership Update Triggered!');
+    }
+
+    protected static function check_bans(User $user): void
+    {
+        $vatsim_inactive = $user->vatsimDetails->rating_atc == -1;
+        $vatsim_suspended = $user->vatsimDetails->rating_atc == 0;
+
+        if ($vatsim_inactive) {
+            //$ban = UserBan::where('user_id', $user->id)->where('type', UserBanType::vatsim_inactivity)->
+        }
     }
 
     protected static function check_status(User $user, bool $cache = true): void

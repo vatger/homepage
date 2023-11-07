@@ -116,7 +116,7 @@
                                     </button>
                                 @endif
                                 @if($booking->controller_id == \Illuminate\Support\Facades\Auth::user()?->id)
-                                    <button wire:click="delete({{$booking->id}})" class="btn badge bg-danger mt-1">
+                                    <button wire:click="delete({{$booking->id}})" wire:confirm="Are you sure you want to delete this booking?" class="btn badge bg-danger mt-1">
                                         <i data-feather="trash" class="fea icon-sm"></i>
                                     </button>
                                 @endif

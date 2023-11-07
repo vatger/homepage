@@ -31,7 +31,7 @@
                             <h5 class="footer-head">VATGER</h5>
                             <ul class="list-unstyled footer-list mt-4">
                                 <li><a href="{{ route('gdpr') }}" class="text-foot">@lang('general.footer.data-protection')</a></li>
-                                <li><a href="javascript:void(0)" class="text-foot">@lang('general.footer.imprint')</a></li>
+                                <li><a href="{{ route('imprint') }}" class="text-foot">@lang('general.footer.imprint')</a></li>
                             </ul>
                         </div>
                         <!--end col-->
