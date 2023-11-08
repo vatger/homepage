@@ -26,20 +26,6 @@ class Controller extends BaseController
     }
 
     /**
-     * Build the common application view
-     *
-     * @param String $view The view file
-     *
-     * @return null[]|User[] The prepared view
-     */
-    //public function prepareView($view): View
-    //{
-    //    $view = view($view);
-    //    $view->with('_user', $this->_user->loadMissing(['settings', 'userData']));
-    //    return $view;
-    //}
-
-    /**
      *
      * @param string[] $load_missing
      * @return ?User

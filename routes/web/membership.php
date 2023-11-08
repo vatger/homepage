@@ -12,9 +12,7 @@ Route::prefix('members')
         })->name('member.profile.notifications');
 
         Route::get('banned', function (Request $request) {
-            return view('homepage.static.banned');
-        })
-            ->withoutMiddleware('auth')
-            ->withoutMiddleware('standings')
+            return view('pages.banned');
+        })->withoutMiddleware('banned')
             ->name('member.banned');
     });

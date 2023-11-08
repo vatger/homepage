@@ -2,7 +2,8 @@
     'header' => 'PLACE TITLE',
     'subheader' => null,
     'links' => [ route('landing') => config('app.name') ],
-    'backgroundurl' => null
+    'backgroundurl' => null,
+    'backgroundshape' => 'bend'
 ])
 
 
@@ -21,27 +22,29 @@
         </div>
         <!--end row-->
 
-        <div class="position-breadcrumb">
-            <nav aria-label="breadcrumb" class="d-inline-block">
-                <ul class="breadcrumb bg-white rounded shadow mb-0 px-4 py-2">
-                    @foreach($links as $href=>$name)
-                        @if($loop->last)
-                            <li class="breadcrumb-item active">
-                                {{ $name }}
-                            </li>
-                        @else
-                            <li class="breadcrumb-item">
-                                @if(empty($href))
+        @if(!empty($links))
+            <div class="position-breadcrumb">
+                <nav aria-label="breadcrumb" class="d-inline-block">
+                    <ul class="breadcrumb bg-white rounded shadow mb-0 px-4 py-2">
+                        @foreach($links as $href=>$name)
+                            @if($loop->last)
+                                <li class="breadcrumb-item active">
                                     {{ $name }}
-                                @else
-                                    <a href="{{ $href }}">{{ $name }}</a>
-                                @endif
-                            </li>
-                        @endif
-                    @endforeach
-                </ul>
-            </nav>
-        </div>
+                                </li>
+                            @else
+                                <li class="breadcrumb-item">
+                                    @if(empty($href))
+                                        {{ $name }}
+                                    @else
+                                        <a href="{{ $href }}">{{ $name }}</a>
+                                    @endif
+                                </li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </nav>
+            </div>
+        @endif
     </div>
     <!--end container-->
 </section>

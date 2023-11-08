@@ -2,6 +2,7 @@
 
 namespace App\Models\Membership\User;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -25,6 +26,12 @@ class UserBan extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id', 'id');
+    }
+
+    public function endBanNow(): void
+    {
+        $this->ends_at = Carbon::now();
+        $this->save();
     }
 
     public function getPermanentAttribute(): bool

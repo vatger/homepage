@@ -27,20 +27,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /* Load Languages */
-        //if (file_exists(base_path('modules/atciss/resources/lang/en/atciss.php'))) {
-        //    $this->loadTranslationsFrom(base_path('modules/atciss/resources/lang'), 'atciss');
-        //}
-
-        /* Load Migrations */
-        //if (is_dir(base_path('modules/atciss/database/migrations/')) !== false) {
-        //    $this->loadMigrationsFrom(base_path('modules/atciss/database/migrations'));
-        //}
-
         // Force HTTPS
         if (config('app.forcehttps') == true) {
             URL::forceScheme('https');
         }
+
+        // Set default timezone to UTC
+        date_default_timezone_set(config('app.timezone', 'UTC'));
 
         // Pagination for Collection
         if (!Collection::hasMacro('paginate')) {

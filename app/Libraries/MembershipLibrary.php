@@ -10,6 +10,8 @@ use App\Models\Membership\User\UserBan;
 use App\Models\Membership\User\UserBanType;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder as EBuilder;
+use Illuminate\Database\Query\Builder as QBuilder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -53,11 +55,44 @@ class MembershipLibrary
 
     protected static function check_bans(User $user): void
     {
+        $now = Carbon::now();
         $vatsim_inactive = $user->vatsimDetails->rating_atc == -1;
         $vatsim_suspended = $user->vatsimDetails->rating_atc == 0;
 
-        if ($vatsim_inactive) {
-            //$ban = UserBan::where('user_id', $user->id)->where('type', UserBanType::vatsim_inactivity)->
+        // VATSIM inactivity
+        $vatsim_inactive_ban = UserBan::where('user_id', $user->id)
+            ->where('type', UserBanType::vatsim_inactivity)
+            ->where(function (QBuilder|EBuilder $query) use ($now) {
+                $query->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
+            })
+            ->first();
+
+        if ($vatsim_inactive && !$vatsim_inactive_ban) {
+            $b = new UserBan();
+            $b->user_id = $user->id;
+            $b->type = UserBanType::vatsim_inactivity;
+            $b->save();
+        }
+        if (!$vatsim_inactive && $vatsim_inactive_ban) {
+            $vatsim_inactive_ban->endBanNow();
+        }
+
+        // VATSIM suspension
+        $vatsim_suspened_ban = UserBan::where('user_id', $user->id)
+            ->where('type', UserBanType::vatsim_ban)
+            ->where(function (QBuilder|EBuilder $query) use ($now) {
+                $query->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
+            })
+            ->first();
+
+        if ($vatsim_suspended && !$vatsim_suspened_ban) {
+            $b = new UserBan();
+            $b->user_id = $user->id;
+            $b->type = UserBanType::vatsim_ban;
+            $b->save();
+        }
+        if (!$vatsim_suspended && $vatsim_suspened_ban) {
+            $vatsim_suspened_ban->endBanNow();
         }
     }
 
