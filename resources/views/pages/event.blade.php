@@ -1,25 +1,17 @@
 @extends('layouts.master')
 
 @section('content')
-    <!-- Hero Start -->
-    <section class="bg-half-260 bg-primary d-table w-100" id="hero-section"
-             style="background: url('{{ $event->banner }}') no-repeat center center fixed; background-size: cover; padding-top: 340px !important;">
-        <div class="bg-overlay" style="background-color: rgb(30 41 58 / 85%)"></div>
-        <div class="container">
-            <div class="row align-items-center position-relative" style="z-index: 1;">
-                <div class="col-12 text-center">
-                    <div class="title-heading text-center">
-                        <h1 class="heading title-dark text-white" style="font-size: 52px !important; letter-spacing: 3px !important; margin-top: -50px">
-                            {{ $event->name }}</h1>
-                    </div>
-                </div>
-                <!--end col-->
-            </div>
-            <!--end row-->
-        </div>
-    </section>
-    <!--end section-->
-    <!-- Hero End -->
+
+    @component('components.layouts.content',[
+           'header' => $event->name,
+           'links' => [
+               route('landing') => config('app.name'),
+           'Events',
+          $event->name
+           ],
+           'backgroundurl' => $event->banner
+       ])
+    @endcomponent
 
     <section class="section pt-0">
         <div class="container mt-100">
