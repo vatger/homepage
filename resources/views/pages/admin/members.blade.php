@@ -37,9 +37,7 @@
                         <th class="border-bottom p-3">E-Mail</th>
                         <th class="border-bottom p-3">(Sub)division</th>
                         <th class="border-bottom p-3">Rating</th>
-                        <th class="border-bottom p-3" wire:click="sortBy('created_at')">Beitritt
-                            <i data-feather="{{ $this->getSortIconClasses('created_at') }}"></i>
-                        </th>
+                        <th class="border-bottom p-3">Beitritt</th>
                         <th class="border-bottom p-3"></th>
                     </tr>
 
@@ -57,7 +55,7 @@
                             </td>
                             <td>{{ $member->vatsimDetails->rating_atc_short }} / {{ $member->vatsimDetails->rating_pilot_short }}
                                 / {{ $member->vatsimDetails->rating_military_short }}</td>
-                            <td>{{ $member->created_at->format('d.m.Y') }}</td>
+                            <td>{{ $member->vatgerDetails->registered_at->format('d.m.Y') }}</td>
                             <td>
 
                                 <a href="{{ route('administration.member', ['user' => $member->id]) }}">

@@ -15,7 +15,7 @@
 
         <section class="section">
             <div class="container-md">
-                <div class="row">
+                <div class="row">-
                     <!-- BLog Start -->
                     <div class="col-lg-7 col-md-6 mb-4">
                         <livewire:atcbooking.list-atc-booking-tab />

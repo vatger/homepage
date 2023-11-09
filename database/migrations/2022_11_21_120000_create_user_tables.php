@@ -110,6 +110,7 @@ return new class extends Migration {
             $table->boolean('forum')->default(true);
             $table->boolean('teamspeak')->default(true);
             $table->boolean('other_services')->default(true);
+            $table->text('reason')->nullable();
             $table->timestamps();
         });
 

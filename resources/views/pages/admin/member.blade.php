@@ -108,9 +108,31 @@
                         <div class="col-12">
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="activity-pill" role="tabpanel" aria-labelledby="activity-pill">
-                                    <p class="text-muted mb-0">
-                                        @json($user)
-                                    </p>
+                                    <div class="card shadow border-0 overflow-hidden">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Current and past FIR memberships:</h4>
+                                            <table class="table mb-0 table-center">
+                                                <thead>
+                                                <tr>
+                                                    <th>name</th>
+                                                    <th>joined</th>
+                                                    <th>active_fir_member_at</th>
+                                                    <th>left</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($user->firs as $f)
+                                                    <tr>
+                                                        <td>{{ $f->name }}</td>
+                                                        <td>{{ $f->joined_at }}</td>
+                                                        <td>{{ $f->active_fir_member_at }}</td>
+                                                        <td>{{ $f->deleted_at }}</td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                                 <!--end teb pane-->
 
@@ -122,23 +144,82 @@
                                 <!--end teb pane-->
 
                                 <div class="tab-pane fade" id="teamspeak-pill" role="tabpanel" aria-labelledby="teamspeak-pill">
+
+                                    <div class="card shadow border-0 overflow-hidden">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Current teamspeak registrations:</h4>
+                                            <table class="table mb-0 table-center">
+                                                <thead>
+                                                <tr>
+                                                    <th>uid</th>
+                                                    <th>dbid</th>
+                                                    <th>created_at</th>
+                                                    <th>last_login</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($user->teamspeakRegistrations as $t)
+                                                    <tr>
+                                                        <td>{{ $f->uid }}</td>
+                                                        <td>{{ $f->dbid }}</td>
+                                                        <td>{{ $f->created_at }}</td>
+                                                        <td>{{ $f->last_login }}</td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                     <p class="text-muted mb-0">
-                                        @json($user->teamspeakRegistrations)
+                                        He should have the groups: <code>@json($user->service_roles(\App\Models\Groups\ServiceRoleType::TeamspeakServergroup))</code>.
                                     </p>
                                 </div>
                                 <!--end teb pane-->
 
                                 <div class="tab-pane fade" id="forum-pill" role="tabpanel" aria-labelledby="forum-pill">
                                     <p class="text-muted mb-0">
-                                        @json($user->settings->forum_id)
+                                        @if($user->settings->forum_id)
+                                            The user has an account with the id <code>{{ $user->settings->forum_id }}</code>.
+                                            He should have the groups: <code>@json($user->service_roles(\App\Models\Groups\ServiceRoleType::ForumGroup))</code>.
+                                        @else
+                                            The user does not have an account.
+                                        @endif
+
                                     </p>
                                 </div>
                                 <!--end teb pane-->
 
                                 <div class="tab-pane fade" id="bans-pill" role="tabpanel" aria-labelledby="bans-pill">
-                                    <p class="text-muted mb-0">
-                                        @json($user->bans)
-                                    </p>
+
+                                    <div class="card shadow border-0 overflow-hidden">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Current and past bans:</h4>
+                                            <table class="table mb-0 table-center">
+                                                <thead>
+                                                <tr>
+                                                    <th>type</th>
+                                                    <th>starts_at</th>
+                                                    <th>ends_at</th>
+                                                    <th>author_id & reason</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                @foreach($user->bans as $b)
+                                                    <tr>
+                                                        <td>{{ $b->type }}</td>
+                                                        <td>{{ $b->starts_at }}</td>
+                                                        <td>{{ $b->ends_at }}</td>
+                                                        <td>
+                                                            <b>{{ $b->author_id }}</b>
+                                                            <p>{{ $b->reason }}</p>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <!--end teb pane-->
 

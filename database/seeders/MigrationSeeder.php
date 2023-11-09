@@ -8,6 +8,7 @@ use App\Models\Groups\Fir;
 use App\Models\Membership\TeamspeakRegistration;
 use App\Models\Membership\User\Concerns\FirMembership;
 use App\Models\Membership\User\User;
+use App\Models\Membership\User\UserBan;
 use Carbon\Carbon;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
@@ -30,6 +31,7 @@ class MigrationSeeder extends Seeder
         }
         $this->copy_users();
         $this->copy_teamspeak();
+        $this->copy_bans();
     }
 
     private static function DB_old(string $table = null): Connection|Builder
@@ -179,6 +181,28 @@ class MigrationSeeder extends Seeder
             $this->command->getOutput()->progressAdvance();
         }
 
+        $this->command->getOutput()->progressFinish();
+    }
+
+    private function copy_bans(): void
+    {
+        $this->command->getOutput()->info('copy_bans');
+        $rows = self::DB_old('membership_bans')->get();
+        $this->command->getOutput()->progressStart($rows->count());
+        foreach ($rows as $row) {
+            if (!User::where('id', $row->account_id)->exists()) {
+                continue;
+            }
+
+            $b = new UserBan();
+            $b->user_id = $row->account_id;
+            $b->author_id = $row->author_id;
+            $b->reason = $row->reason;
+            $b->starts_at = $row->created_at;
+            $b->ends_at = $row->banned_till;
+            $b->save();
+            $this->command->getOutput()->progressAdvance();
+        }
         $this->command->getOutput()->progressFinish();
     }
 }

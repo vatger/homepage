@@ -42,7 +42,7 @@ class APILibrary
     public static function Member(User $user): false|object
     {
         // For testing: override id to an existing one
-        if (env('APP_ENV', 'dev') != 'production') {
+        if (env('APP_ENV', 'developent') == 'developent' || env('APP_ENV', 'dev') == 'dev') {
             $cid = 1289607;
             $data = self::FetchData('ratings/' . $cid, true);
             $data->email = '' . $user->email;
