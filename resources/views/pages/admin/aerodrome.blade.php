@@ -70,20 +70,7 @@
                     >
                         <li class="list-inline-item" style="width: 100%">
                             <div class="row">
-                                <input wire:model.live="station_search" class="form-control-sm form-control float-end mb-1" placeholder="Station hinzufügen">
-                                @if($station_search_results)
-                                    <table class="table table-hover form-control" wire:loading.class="opacity-5">
-                                        <tbody>
-                                        @foreach($station_search_results as $s)
-                                            <tr wire:click="add_station({{ $s->id }})">
-                                                <td>{{ $s->ident }}</td>
-                                                <td><small>{{ $s->name }}</small></td>
-                                                <td><small>{{ $s->fixed_frequency }}</small></td>
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
-                                @endif
+                                <a href="https://github.com/VATGER-Nav/datahub">Stationen verwalten</a>
                             </div>
                         </li>
                     </x-layouts.admin.card-header>
@@ -95,7 +82,6 @@
                                 <th class="border-bottom p-3">Name</th>
                                 <th class="border-bottom p-3">Ident</th>
                                 <th class="border-bottom p-3">Frequency</th>
-                                <th class="border-bottom p-3"></th>
                             </tr>
 
                             </thead>
@@ -105,9 +91,6 @@
                                     <td>{{ $s->name }}</td>
                                     <td>{{ $s->ident }} </td>
                                     <td>{{ $s->fixed_frequency }}</td>
-                                    <td wire:click="del_station({{ $s->id }})">
-                                        <i data-feather="trash" class="fea icon-sm icons"></i>
-                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>

@@ -60,19 +60,4 @@ class AerodromePage extends Component
         $this->photo->storePubliclyAs('public/aerodromes', \Str::upper($this->aerodrome->icao) . '.jpeg');
         $this->showNoty('Bild gespeichert', 'success');
     }
-
-    public function add_station(int $id): void
-    {
-        $this->authorize('navigation.aerodromes.edit');
-        $s = Station::findOrFail($id);
-        $s->aerodromes()->attach($this->aerodrome->id);
-        $this->station_search = '';
-    }
-
-    public function del_station(int $id): void
-    {
-        $this->authorize('navigation.aerodromes.edit');
-        $s = Station::findOrFail($id);
-        $s->aerodromes()->detach($this->aerodrome->id);
-    }
 }

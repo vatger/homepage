@@ -31,7 +31,6 @@ class PermissionSeeder extends Seeder
         'navigation.aerodromes.view',
         'navigation.aerodromes.edit',
         'navigation.stations.view',
-        'navigation.stations.edit',
 
         // ATD
         'atd.solos.edit',
