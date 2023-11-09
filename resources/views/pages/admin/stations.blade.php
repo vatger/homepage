@@ -33,7 +33,7 @@
                             <i data-feather="{{ $this->getSortIconClasses('name') }}"></i>
                         </th>
                         <th class="border-bottom p-3" wire:click="sortBy('ident')">
-                            ICAO | IATA
+                            Ident
                             <i data-feather="{{ $this->getSortIconClasses('ident') }}"></i>
                         </th>
                         <th class="border-bottom p-3" wire:click="sortBy('active')">
