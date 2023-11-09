@@ -33,10 +33,10 @@ class User extends Authenticatable
     protected static function booted(): void
     {
         static::saved(function (self $user) {
-            $user->passwords()->updateOrCreate([]);
-            $user->settings()->updateOrCreate([]);
-            $user->vatgerDetails()->updateOrCreate([]);
-            $user->vatsimDetails()->updateOrCreate([]);
+            $user->passwords()->updateOrCreate(['user_id' => $user->id]);
+            $user->settings()->updateOrCreate(['user_id' => $user->id]);
+            $user->vatgerDetails()->updateOrCreate(['user_id' => $user->id]);
+            $user->vatsimDetails()->updateOrCreate(['user_id' => $user->id]);
         });
         static::deleting(function (self $user) {
             $user->passwords()->delete();

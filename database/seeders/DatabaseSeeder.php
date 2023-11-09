@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(MembershipFirSeeder::class);
 
-        $this->call(DemoSeeder::class);
+        //$this->call(DemoSeeder::class);
 
         $this->call(NavFirSeeder::class);
 

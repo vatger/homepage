@@ -114,7 +114,7 @@ class APILibrary
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json; indent=4',
-                //'Authorization' => $with_token ? 'Token ' . config('vatsim.api.token') : null,
+                'Authorization' => $with_token ? 'Token ' . config('vatsim.api.token') : null,
                 'X-API-Key' => $with_token ? config('vatsim.api.token') : null,
             ],
             'connect_timeout' => 25,
