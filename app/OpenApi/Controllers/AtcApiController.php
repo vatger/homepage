@@ -30,72 +30,11 @@ class AtcApiController extends ApiController
         $e->setTime(23, 59, 59);
         // collect the bookings
         $bookings = AtcBooking::with(['station', 'controller'])
-            //->whereBetween('starts_at', [$s, $e])
-            //->orWhereBetween('ends_at', [$s, $e])
+            ->whereBetween('starts_at', [$s, $e])
+            ->orWhereBetween('ends_at', [$s, $e])
             //->orderBy('station.name')
             //->select(['starts_at', 'ends_at', 'voice', 'training', 'exam', 'event', 'station', 'controller'])
             ->get();
-
-        /*
-        $bookings = collect();
-        // Let's grab bookings for GERMAN airports
-        if (Auth::check()) {
-            // Authenticated user. We can show controller names
-            foreach (
-                Aerodrome::isDe()
-                    ->orderBy('icao', 'ASC')
-                    ->orderBy('major')
-                    ->with([
-                        'stations' => function ($query) use ($s, $e) {
-                            return $query->with([
-                                'bookings' => function ($query) use ($s, $e) {
-                                    return $query
-                                        ->whereBetween('starts_at', [$s, $e])
-                                        ->orWhereBetween('ends_at', [$s, $e])
-                                        ->with('controller');
-                                },
-                            ]);
-                        },
-                    ])
-                    ->get()
-                as $aerodrome
-            ) {
-                $bookings->push($aerodrome);
-            }
-        } else {
-            // We must hide ( not load at all ) controller names
-            foreach (
-                Aerodrome::isDe()
-                    ->orderBy('icao', 'ASC')
-                    ->orderBy('major')
-                    ->with([
-                        'stations' => function ($query) use ($s, $e) {
-                            return $query->with([
-                                'bookings' => function ($query) use ($s, $e) {
-                                    return $query->whereBetween('starts_at', [$s, $e])->orWhereBetween('ends_at', [$s, $e]);
-                                },
-                            ]);
-                        },
-                    ])
-                    ->get()
-                as $aerodrome
-            ) {
-                $bookings->push($aerodrome);
-            }
-        }
-
-        $filtered = $bookings->filter(function ($value, $key) {
-            if (count($value->stations) > 0) {
-                foreach ($value->stations as $station) {
-                    if (count($station->bookings) > 0) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        });
-        return $filtered->flatten();
-        */
 
         $bookings = $bookings->map(function ($b) {
             $n = [

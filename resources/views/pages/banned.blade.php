@@ -13,10 +13,13 @@
 
     <section class="section">
         <div class="container">
-            You are banned
-
-
+            Dein VATSIM Germany Account wurde gesperrt. Dies kann verschiedene Gründe haben.<br>
+            Your VATSIM Germany account has been blocked. This can have various reasons.<br>
             <!--end row-->
+            @if($ban)
+                <p><b>Grund:</b> {{ $ban->type }}</p>
+            @endif
+            Bei Fragen wende dich an <code>support@vatger.de</code>.
         </div>
         <!--end container-->
     </section>
