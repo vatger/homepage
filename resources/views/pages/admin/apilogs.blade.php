@@ -23,9 +23,9 @@
                 <table class="table table-center bg-white mb-0">
                     <thead>
                     <tr class="text">
-                        <th class="border-bottom p-3" style="white-space: nowrap" wire:click="sortBy('id')">
+                        <th class="border-bottom p-3" style="white-space: nowrap" wire:click="sortBy('created_at')">
                             time
-                            <i data-feather="{{$this->getSortIconClasses('id')}}"></i>
+                            <i data-feather="{{$this->getSortIconClasses('created_at')}}"></i>
                         </th>
                         <th class="border-bottom p-3" style="white-space: nowrap" wire:click="sortBy('id')">
                             token_id
@@ -34,26 +34,61 @@
                         <th class="border-bottom p-3" style="white-space: nowrap" wire:click="sortBy('id')">
                             ip_address
                             <i data-feather="{{$this->getSortIconClasses('id')}}"></i>
-                        <th class="border-bottom p-3" style="white-space: nowrap">Aktion</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach ($logs as $log)
                         <tr>
-                            <td>{{ $log->time }}</td>
+                            <td>{{ $log->created_at }}</td>
                             <td>{{ $log->token_id }}</td>
                             <td>{{ $log->endpoint }}</td>
                             <td>{{ $log->ip_address }}</td>
-                            <td>
-                                <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-sm btn-soft-info" wire:click="view_log({{ $log->id }})">Info</button>
-                                </div>
-                            </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
                 {{ $logs->links() }}
+            </div>
+
+        </x-layouts.admin.card>
+
+
+        <x-layouts.admin.card>
+
+            <x-layouts.admin.card-header position="left" title="API Keys" :subtitle="\App\OpenApi\Models\ApiToken::count()" />
+
+            <x-layouts.admin.card-header position="right">
+                <li class="list-inline-item" style="width: 100%">
+                    <div class="form-icon position-relative">
+
+                    </div>
+                </li>
+            </x-layouts.admin.card-header>
+
+
+            <div class="p-4 table-responsive">
+                <table class="table table-center bg-white mb-0">
+                    <thead>
+                    <tr class="text">
+                        <th class="border-bottom p-3" style="white-space: nowrap">id</th>
+                        <th class="border-bottom p-3" style="white-space: nowrap">token</th>
+                        <th class="border-bottom p-3" style="white-space: nowrap">description</th>
+                        <th class="border-bottom p-3" style="white-space: nowrap">valid_till</th>
+                        <th class="border-bottom p-3" style="white-space: nowrap">routes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($keys as $key)
+                        <tr>
+                            <td>{{ $key->id }}</td>
+                            <td><code>{{ $key->token }}</code></td>
+                            <td>{{ $key->description }}</td>
+                            <td>{{ $key->valid_till }}</td>
+                            <td><code>@json(collect($key->routes)->map(fn($obj)=>$obj->route_id))</code></td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
 
         </x-layouts.admin.card>

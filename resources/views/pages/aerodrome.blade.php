@@ -19,7 +19,7 @@
             </li>
         </ul>
     @endcomponent
-    
+
     <section class="section">
         <div class="container">
             <div class="row">
@@ -136,6 +136,7 @@
                             </div>
                             <!-- RECENT POST -->
                             <!-- RECENT POST -->
+                            {{--
                             <div class="widget">
                                 <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0">
                                     Links
@@ -156,11 +157,11 @@
                                             </button>
                                         </a>
                                     @else
-                                        {{--
+
                                         <a href="{{ route('pilots.aerodromes.charts', $aerodrome->icao) }}">
                                             <button type="button" class="btn btn-soft-primary" style="width: 90%; margin-left: 5%">Charts</button>
                                         </a>
-                                        --}}
+
                                     @endif
                                     <a href="https://wiki.vatsim-germany.org/{{ strtoupper($aerodrome->icao) }}" target="_blank">
                                         <button type="button" class="btn btn-soft-primary mt-3" style="width: 90%; margin-left: 5%">Wiki
@@ -176,6 +177,7 @@
                                     </a>
                                 </div>
                             </div>
+                            --}}
                             <!-- RECENT POST -->
 
                             <!-- RECENT POST -->

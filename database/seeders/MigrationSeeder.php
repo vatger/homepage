@@ -155,11 +155,14 @@ class MigrationSeeder extends Seeder
 
             // fetch some data from the API
             $user = User::where('id', $row->id)->first();
-            if (!APILibrary::MemberUpdate($user, false)) {
+            if (!APILibrary::MemberUpdate($user, true)) {
                 $this->command->error('VATSIM API Fail: User ' . $user->id);
-                return false;
+            } else {
+                MembershipLibrary::update($user, cache: false, api_refresh: false);
             }
-            MembershipLibrary::update($user, cache: false);
+
+            //
+            //sleep(3);
 
             $this->command->getOutput()->progressAdvance();
         }

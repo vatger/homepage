@@ -17,6 +17,7 @@ class OptionalAuthenticate
     {
         $header = $request->header('Authorization', '');
         $token = str_replace('Token ', '', $header);
+
         if (ApiToken::tokenExists($token)) {
             try {
                 $api_token = ApiToken::tokenFind($token);

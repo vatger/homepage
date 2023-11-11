@@ -1,10 +1,9 @@
 <?php
 
-use App\OpenApi\Controllers\ApiController;
-use App\OpenApi\Controllers\AtcApiController;
+use App\OpenApi\Controllers\BookingController;
 use App\OpenApi\Controllers\BookstackApiController;
 use App\OpenApi\Controllers\TeamspeakApiController;
-use App\OpenApi\Controllers\NavigationController;
+use App\OpenApi\Controllers\TestApiController;
 use App\OpenApi\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,14 +16,15 @@ use Illuminate\Support\Facades\Route;
 | non-web API routes.
 |
 */
-Route::get('test', [ApiController::class, 'test']);
+
+Route::get('booking/{start?}/{end?}', [BookingController::class, 'index']);
+
+Route::get('test', [TestApiController::class, 'test']);
 
 Route::get('teamspeak/{cid}', [TeamspeakApiController::class, 'teamspeak_ids']);
 
 Route::get('user/{cid}/membership', [UserController::class, 'membership']);
 Route::post('user/{cid}/send_notification', [UserController::class, 'send_notification']);
-
-Route::get('atcbooking/{start?}/{end?}', [AtcApiController::class, 'index']);
 
 Route::get('bookstack', [BookstackApiController::class, 'bookstack']);
 

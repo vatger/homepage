@@ -3,13 +3,14 @@
 namespace App\OpenApi\Controllers;
 
 use App\Models\AtcBooking;
+use App\OpenApi\Helpers\ApiPathfinder;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 #[OpenApi\PathItem]
-class AtcApiController extends ApiController
+class BookingController extends ApiController
 {
     /**
      * Retrieve a collection of AtcBooking
@@ -21,8 +22,10 @@ class AtcApiController extends ApiController
      * @return array
      */
     #[OpenApi\Operation(security: TokenSecurityScheme::class)]
+    #[ApiPathfinder('booking.index')]
     public function index(Request $request, string $start = '', string $end = ''): array
     {
+        $this->authorizeApiRequest('booking.index');
         // construct the start and end times
         $s = !empty($start) ? Carbon::createFromFormat('Y-m-d', $start) : Carbon::now();
         $s->setTime(0, 0, 0);

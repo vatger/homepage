@@ -24,6 +24,15 @@ return new class extends Migration {
             $table->timestamp('valid_till')->nullable();
         });
 
+        Schema::create('api_route_token', function (Blueprint $table) {
+            $table->id();
+            $table
+                ->foreignId('token_id')
+                ->nullable()
+                ->constrained('api_tokens');
+            $table->string('route_id');
+        });
+
         Schema::create('api_logs', function (Blueprint $table) {
             $table->id();
             $table
