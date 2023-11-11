@@ -31,14 +31,16 @@ class MembershipLibrary
         self::check_status($user);
     }
 
-    public static function update(User $user, bool $async = false, bool $cache = true): void
+    public static function update(User $user, bool $async = false, bool $cache = true, bool $api_refresh = true): void
     {
         if ($async) {
             UpdateAccountJob::dispatch($user);
             return;
         }
-        APILibrary::MemberUpdate($user);
-        $user = $user->refresh();
+        if ($api_refresh) {
+            APILibrary::MemberUpdate($user);
+            $user = $user->refresh();
+        }
         self::check_bans($user);
         self::check_status($user, $cache);
 

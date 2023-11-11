@@ -2,6 +2,7 @@
 
 namespace App\Libraries\VATSIM;
 
+use App\Libraries\MembershipLibrary;
 use App\Models\Membership\User\User;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -12,25 +13,41 @@ use Illuminate\Support\Facades\Log;
 class APILibrary
 {
     /**
-     * Cache all assigned subdivision members for 20 min
-     *
-     * @return false|array The cached member objects or false if request failed
-     */
-    public static function CachedSubdivisionMembers(): false|array
-    {
-        return Cache::remember('net.vatsim.api.subdivisions.ger', 20 * 60, function () {
-            return self::SubdivisionMembers();
-        });
-    }
-
-    /**
      * This will retrieve all members assigned to the subdivision
      *
      * @return false|array The members or false if request failed
      */
-    public static function SubdivisionMembers(): false|array
+    public static function SubdivisionMembers(bool $cache = true): false|array
     {
+        if ($cache) {
+            return Cache::remember('net.vatsim.api.subdivisions.ger', 20 * 60, function () {
+                return self::SubdivisionMembers(false);
+            });
+        }
         return self::FetchData('subdivisions/GER/members', true);
+    }
+
+    public static function SubdivisionMembersUpdate(bool $update_vatger_membership = false): bool
+    {
+        $users = self::SubdivisionMembers();
+        if (!$users) {
+            return false;
+        }
+        foreach ($users as $data) {
+            $user = User::where('id', $data->id)->first();
+            if (!$user) {
+                continue;
+            }
+            $cache_key = 'vatsim.api.member_update.' . $user->id;
+            if (Cache::has($cache_key)) {
+                continue;
+            }
+            Cache::put($cache_key, Carbon::now(), 60 * 60 * 24);
+            if ($update_vatger_membership) {
+                MembershipLibrary::update($user, api_refresh: false);
+            }
+        }
+        return true;
     }
 
     /**
@@ -51,16 +68,27 @@ class APILibrary
         return self::FetchData('ratings/' . $user->id, true);
     }
 
-    public static function MemberUpdate(User $user, bool $cache = true): bool
+    public static function MemberUpdate(User $user, bool $cache = true, int $cache_time = 60 * 60, bool $update_vatger_membership = false): bool
     {
         $cache_key = 'vatsim.api.member_update.' . $user->id;
-        if ($cache && Cache::has($cache_key)) {
+        $cached_val = Carbon::parse(Cache::get($cache_key));
+        if ($cache && Cache::has($cache_key) && $cached_val->diffInSeconds(Carbon::now()) < $cache_time) {
             return true;
         }
         $data = self::Member($user);
         if (!$data) {
             return false;
         }
+        self::MemberInsertData($user, $data);
+        Cache::put($cache_key, Carbon::now(), 60 * 60 * 24);
+        if ($update_vatger_membership) {
+            MembershipLibrary::update($user, api_refresh: false);
+        }
+        return true;
+    }
+
+    private static function MemberInsertData(User $user, object $data): void
+    {
         $user->update([
             'firstname' => $data->name_first,
             'lastname' => $data->name_last,
@@ -78,8 +106,6 @@ class APILibrary
             'subdivision_name' => $user->vatsimDetails->subdivision_code == $data->subdivision ? $user->vatsimDetails->subdivision_name : '',
             'last_rating_change_at' => $data->lastratingchange,
         ]);
-        Cache::put($cache_key, Carbon::now(), 60 * 10);
-        return true;
     }
 
     /**
