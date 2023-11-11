@@ -18,15 +18,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('booking/{start?}/{end?}', [BookingController::class, 'index']);
+Route::get('teamspeak/{cid}', [TeamspeakApiController::class, 'ids']);
+Route::get('discord/{cid}', [\App\OpenApi\Controllers\DiscordApiController::class, 'find_member']);
 
 Route::get('test', [TestApiController::class, 'test']);
 
-Route::get('teamspeak/{cid}', [TeamspeakApiController::class, 'teamspeak_ids']);
-
-Route::get('user/{cid}/membership', [UserController::class, 'membership']);
 Route::post('user/{cid}/send_notification', [UserController::class, 'send_notification']);
 
-Route::get('bookstack', [BookstackApiController::class, 'bookstack']);
+//Route::get('bookstack', [BookstackApiController::class, 'bookstack']);
 
 /*
 //Route::middleware('api_auth')->group(function () {
