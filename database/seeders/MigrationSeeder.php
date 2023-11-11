@@ -29,7 +29,9 @@ class MigrationSeeder extends Seeder
             $this->command->getOutput()->error('Cant connect to the old database.');
             return;
         }
-        $this->copy_users();
+        if (!$this->copy_users()) {
+            return;
+        }
         $this->copy_teamspeak();
         $this->copy_bans();
     }
@@ -42,7 +44,7 @@ class MigrationSeeder extends Seeder
         return DB::connection('mysql_old');
     }
 
-    private function copy_users(): void
+    private function copy_users(): bool
     {
         $this->command->getOutput()->info('copy_users');
         $rows = self::DB_old('membership_accounts')->get();
@@ -58,14 +60,17 @@ class MigrationSeeder extends Seeder
 
             // user table
             $user = User::where('id', $row->id)->first();
-            if (!$user) {
-                $user = User::create([
-                    'id' => $row->id,
-                    'firstname' => $row->firstname,
-                    'lastname' => $row->lastname,
-                    'email' => $row->email,
-                ]);
+            if ($user) {
+                // we already migrated the user
+                $this->command->getOutput()->progressAdvance();
+                continue;
             }
+            $user = User::create([
+                'id' => $row->id,
+                'firstname' => $row->firstname,
+                'lastname' => $row->lastname,
+                'email' => $row->email,
+            ]);
             // user passwords
             $user->passwords()->update([
                 'oauth_access_token' => null,
@@ -152,12 +157,14 @@ class MigrationSeeder extends Seeder
             $user = User::where('id', $row->id)->first();
             if (!APILibrary::MemberUpdate($user, false)) {
                 $this->command->error('VATSIM API Fail: User ' . $user->id);
+                return false;
             }
             MembershipLibrary::update($user, cache: false);
 
             $this->command->getOutput()->progressAdvance();
         }
         $this->command->getOutput()->progressFinish();
+        return true;
     }
 
     private function copy_teamspeak(): void

@@ -28,7 +28,7 @@ function loadPreloader() {
             setTimeout(() => {
                 preloader.style.visibility = 'hidden';
                 preloader.style.opacity = '0';
-            }, 500);
+            }, 150);
         }
     }
 }
