@@ -19,6 +19,8 @@ class TeamListPage extends Component
     #[Url]
     public string $search = '';
 
+    public string $new_name = '';
+
     public function boot(): void
     {
         Auth::user()->can('membership.teams.view');
@@ -44,12 +46,13 @@ class TeamListPage extends Component
 
     public function create_team(): void
     {
+        $this->authorize('membership.teams.edit');
         try {
             $t = new Team();
             $t->name = $this->new_name;
             $t->save();
         } catch (\Exception $e) {
-            $this->showNoty('Fehler bei der ');
+            $this->showNoty('Fehler bei der Erstellung', 'error');
         }
     }
 }

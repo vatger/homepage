@@ -40,6 +40,22 @@
                             </td>
                         </tr>
                     @endforeach
+                    @can('membership.teams.edit')
+                        <tr></tr>
+                        <tr class="text-center">
+                            <td>
+                                <label>
+                                    <input wire:model="new_name" class="form-control">
+                                </label>
+                            </td>
+                            <td></td>
+                            <td>
+                                <button wire:click="create_team" class="btn btn-soft-success">
+                                    <i data-feather="plus" class="fea icon-sm"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @endcan
                     </tbody>
                 </table>
                 {{ $teams->links() }}

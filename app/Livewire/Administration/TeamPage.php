@@ -7,8 +7,6 @@ use App\Models\Groups\ServiceRole;
 use App\Models\Groups\ServiceRoleType;
 use App\Models\Groups\Team;
 use App\Models\Membership\User\User;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
@@ -93,7 +91,7 @@ class TeamPage extends Component
         $user->assignRole($this->team->role);
     }
 
-    public function deleteTeam(): RedirectResponse
+    public function deleteTeam()
     {
         $this->authorize('membership.teams.edit');
         $this->team->delete();
