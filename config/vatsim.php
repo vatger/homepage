@@ -10,6 +10,7 @@ return [
         ],
     ],
     'api' => [
+        'testing' => env('VATSIM_API_TESTING', false),
         'base' => env('VATSIM_API_BASE', 'https://api.vatsim.net/api'),
         'token' => env('VATSIM_API_TOKEN'),
     ],

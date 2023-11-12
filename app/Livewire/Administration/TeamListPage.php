@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Administration;
 
+use App\Livewire\Helpers\NotyTrait;
 use App\Livewire\Helpers\PaginationTrait;
 use App\Models\Groups\Team;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,7 @@ use Livewire\Component;
 
 class TeamListPage extends Component
 {
-    use PaginationTrait;
+    use PaginationTrait, NotyTrait;
 
     #[Url]
     public string $search = '';
@@ -39,5 +40,16 @@ class TeamListPage extends Component
             'teams' => $teams->paginate(),
             'limited_selection' => $limitedselection,
         ]);
+    }
+
+    public function create_team(): void
+    {
+        try {
+            $t = new Team();
+            $t->name = $this->new_name;
+            $t->save();
+        } catch (\Exception $e) {
+            $this->showNoty('Fehler bei der ');
+        }
     }
 }
