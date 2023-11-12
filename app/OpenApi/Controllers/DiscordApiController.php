@@ -27,7 +27,7 @@ class DiscordApiController extends ApiController
         $data = new \stdClass();
         $data->is_vatger_member = !empty($user);
         $data->is_vatger_fullmember = $user?->vatgerDetails?->is_vatger_member;
-        $user->$data->atc_rating = $user?->vatsimDetails?->rating_atc;
+        $data->atc_rating = $user?->vatsimDetails?->rating_atc;
         return $data;
     }
 }

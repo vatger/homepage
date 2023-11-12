@@ -80,7 +80,6 @@ class Kernel extends HttpKernel
             'throttle:api',
             PreventRequestsDuringMaintenance::class,
             OptionalAuthenticate::class,
-            LogRequests::class,
         ],
     ];
 

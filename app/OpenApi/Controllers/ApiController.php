@@ -4,8 +4,10 @@ namespace App\OpenApi\Controllers;
 
 use App\Models\Membership\User\User;
 use App\OpenApi\Helpers\ApiPathfinder;
+use App\OpenApi\Models\ApiLog;
 use App\OpenApi\Models\ApiToken;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
+use Carbon\Carbon;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use ReflectionClass;
@@ -24,6 +26,16 @@ class ApiController extends Controller
                 $this->token = Auth::guard('api')->user();
                 $this->token_user = $this?->token?->user;
             }
+
+            $log = [
+                'token_id' => $this->token?->id,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'endpoint' => $request->path(),
+                'ip_address' => $request->ip(),
+            ];
+
+            ApiLog::query()->create($log);
 
             return $next($request);
         });
