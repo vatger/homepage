@@ -59,7 +59,7 @@ class APILibrary
     public static function Member(User $user): false|object
     {
         // For testing: override id to an existing one
-        if (config('vatsim.api', false)) {
+        if (config('vatsim.api.testing', false)) {
             $cid = 1289607;
             $data = self::FetchData('ratings/' . $cid, true);
             $data->email = '' . $user->email;
