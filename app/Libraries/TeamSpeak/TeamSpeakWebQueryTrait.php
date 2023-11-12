@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Log;
 
 trait TeamSpeakWebQueryTrait
 {
+    public static function testWebquery()
+    {
+        self::_sendWebQuery('gm', ['msg' => 'test webquery trait']);
+    }
+
     /**
      * _sendWebQuery
      *
