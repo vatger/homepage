@@ -30,10 +30,10 @@ trait BanTrait
         });
     }
 
-    private static function _banadd(string $uid, int $time, string $text = 'Banned!'): mixed
+    private static function _banadd(string $uid, int $time, string $text = 'Banned!'): void
     {
         Cache::forget('teamspeak.banlist');
-        return self::_sendWebQuery('banadd', [
+        self::_sendWebQuery('banadd', [
             'uid' => $uid,
             'time' => $time,
             'text' => $text,

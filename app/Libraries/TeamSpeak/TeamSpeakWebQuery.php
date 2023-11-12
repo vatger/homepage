@@ -102,9 +102,7 @@ class TeamSpeakWebQuery
             $existingTSBans = self::getBansFromRegistration($registration);
             if ($has_active_ban && empty($existingTSBans)) {
                 $ban = $user->currentBan;
-                Log::info(
-                    self::_banadd($registration->uid, Carbon::now()->diffInSeconds($ban->banned_till), '[User ' . $user->id . ']' . $ban->reason),
-                );
+                self::_banadd($registration->uid, Carbon::now()->diffInSeconds($ban->banned_till), '[User ' . $user->id . ']' . $ban->reason);
             }
 
             if (!$has_active_ban && !empty($existingTSBans)) {
