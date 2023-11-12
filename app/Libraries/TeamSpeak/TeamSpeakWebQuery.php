@@ -6,6 +6,7 @@ use App\Models\Groups\ServiceRoleType;
 use App\Models\Membership\TeamspeakRegistration;
 use App\Models\Membership\User\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class TeamSpeakWebQuery
 {
@@ -101,7 +102,9 @@ class TeamSpeakWebQuery
             $existingTSBans = self::getBansFromRegistration($registration);
             if ($has_active_ban && empty($existingTSBans)) {
                 $ban = $user->currentBan;
-                self::_banadd($registration->uid, Carbon::now()->diffInSeconds($ban->banned_till), '[User ' . $user->id . ']' . $ban->reason);
+                Log::info(
+                    self::_banadd($registration->uid, Carbon::now()->diffInSeconds($ban->banned_till), '[User ' . $user->id . ']' . $ban->reason),
+                );
             }
 
             if (!$has_active_ban && !empty($existingTSBans)) {
