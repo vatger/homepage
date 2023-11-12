@@ -24,9 +24,12 @@ trait TeamSpeakWebQueryTrait
             'connect_timeout' => 15,
             'read_tiemout' => 15,
             'timeout' => 30,
+            'header' => [
+                'X-Api-Key' => config('teamspeak.apikey'),
+            ],
         ]);
 
-        $queryparams['api-key'] = config('teamspeak.apikey');
+        //$queryparams['api-key'] = config('teamspeak.apikey');
         $params = [
             'query' => $queryparams,
         ];
