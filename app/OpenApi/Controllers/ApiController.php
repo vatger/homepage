@@ -12,7 +12,7 @@ use ReflectionClass;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 #[OpenApi\PathItem]
-abstract class ApiController extends Controller
+class ApiController extends Controller
 {
     protected ?ApiToken $token = null;
     protected ?User $token_user = null;
@@ -60,10 +60,12 @@ abstract class ApiController extends Controller
 
     public static function collect_paths(): array
     {
-        return \Cache::remember('openapi.collect_paths', 60, function () {
+        $prefix = str_replace('ApiController', '', self::class);
+
+        return \Cache::remember('openapi.collect_paths', 10, function () use ($prefix) {
             $paths = [];
             foreach (self::collect_classes() as $class) {
-                $reflect = new ReflectionClass($class);
+                $reflect = new ReflectionClass($prefix . $class);
                 foreach ($reflect->getMethods() ?? [] as $method) {
                     foreach ($method->getAttributes() ?? [] as $attr) {
                         if ($attr->getName() == 'App\OpenApi\Helpers\ApiPathfinder') {
