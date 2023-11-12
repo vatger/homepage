@@ -45,7 +45,11 @@
                         <td>{{ $t->uid }}</td>
                         <td>{{ $t->created_at }}</td>
                         <td>{{ $t->last_login }}</td>
-                        <td><i data-feather="trash" class="fea"></i>{{ $t->id }}</td>
+                        <td>
+                            <button wire:click="delete_teamspeak_account({{ $t->id }})" class="btn btn-soft-danger">
+                                <i data-feather="trash" class="fea"></i>
+                            </button>
+                        </td>
                     </tr>
                 @endforeach
             </table>

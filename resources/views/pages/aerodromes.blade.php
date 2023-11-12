@@ -24,7 +24,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        {{--
                         <div class="col-12">
                             <div class="">
                                 <ul class="container-filter list-inline mb-0 filter-options text-center">
@@ -39,6 +39,7 @@
                                 </ul>
                             </div>
                         </div>
+                        --}}
                         <!--end col-->
                         <p class="text-muted mb-0" style="display: none" id="search-count-container">Die Suche ergab <span id="search-count"></span>
                             Treffer.</p>

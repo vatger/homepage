@@ -5,6 +5,7 @@ namespace App\Livewire\Profile;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Libraries\XenForoLibrary;
 use App\Livewire\Helpers\NotyTrait;
+use App\Models\Membership\TeamspeakRegistration;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -41,7 +42,21 @@ class AccountsTab extends Component
         $user = Auth::user();
         $result = TeamSpeakWebQuery::registerViaUid($user, '0.0.0.0', $this->teamspeak);
         if (!$result) {
-            $this->showNoty('TeamSpeak ID konnte nicht verknüpft werden', 'warning');
+            $this->showNoty('TeamSpeak ID konnte nicht verknüpft werden', 'error');
+            return;
+        }
+    }
+
+    public function delete_teamspeak_account(int $id): void
+    {
+        $ts = TeamspeakRegistration::find($id);
+        if ($ts->user_id != Auth::user()->id) {
+            $this->showNoty('TeamSpeak ID konnte nicht gelöscht werden', 'error');
+            return;
+        }
+        $result = TeamSpeakWebQuery::removeRegistation($ts);
+        if (!$result) {
+            $this->showNoty('TeamSpeak ID konnte nicht gelöscht werden', 'error');
             return;
         }
     }
