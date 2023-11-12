@@ -20,9 +20,14 @@ class DiscordApiController extends ApiController
      */
     #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('discord.find_member')]
-    public function find_member(int $cid): bool
+    public function find_member(int $cid): object
     {
         $this->authorizeApiRequest('discord.find_member');
-        return !empty(User::find($cid));
+        $user = User::find($cid);
+        $data = new \stdClass();
+        $data->is_vatger_member = !empty($user);
+        $data->is_vatger_fullmember = $user?->vatgerDetails?->is_vatger_member;
+        $user->$data->atc_rating = $user?->vatsimDetails?->rating_atc;
+        return $data;
     }
 }
