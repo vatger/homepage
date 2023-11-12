@@ -29,7 +29,7 @@ trait TeamSpeakWebQueryTrait
             'connect_timeout' => 15,
             'read_tiemout' => 15,
             'timeout' => 30,
-            'header' => [
+            'headers' => [
                 'X-Api-Key' => config('teamspeak.apikey'),
             ],
         ]);
