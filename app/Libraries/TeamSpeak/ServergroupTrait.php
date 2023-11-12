@@ -2,7 +2,7 @@
 
 namespace App\Libraries\TeamSpeak;
 
-use App\Models\Membership\TeamSpeak\Registration;
+use App\Models\Membership\TeamspeakRegistration;
 use Illuminate\Support\Facades\Cache;
 
 trait ServergroupTrait
@@ -38,14 +38,14 @@ trait ServergroupTrait
         return null;
     }
 
-    public static function addToServergroup(Registration $registration, int $id): bool
+    public static function addToServergroup(TeamspeakRegistration $registration, int $id): bool
     {
         $clientdbid = $registration->dbid;
         $serverGroupId = $id;
         return self::_servergroupaddclient($clientdbid, $serverGroupId);
     }
 
-    public static function delFromServergroup(Registration $registration, int $id): bool
+    public static function delFromServergroup(TeamspeakRegistration $registration, int $id): bool
     {
         $clientdbid = $registration->dbid;
         $serverGroupId = $id;
