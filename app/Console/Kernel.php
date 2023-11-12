@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('vatger:update-subdivision-members')->hourlyAt(10);
         $schedule->command('vatger:update-rest-members')->hourlyAt(20);
         $schedule->command('vatger:update-nav-stations')->everyFourHours();
+        $schedule->command('vatger:update-teamspeak')->everyFifteenMinutes();
     }
 
     /**
