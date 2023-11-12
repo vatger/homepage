@@ -32,7 +32,7 @@ Route::prefix('redirect')->group(function () {
 
     Route::get('ts3', redir('ts3server://ts3.vatsim-germany.org'))->name('redirect.ts3');
 
-    Route::get('training-center', redir('https://training'))->name('redirect.training-center');
+    Route::get('training-center', redir('https://knowledgebase.vatsim-germany.org/books/atc'))->name('redirect.training-center');
 
     Route::get('vatger-tours', redir('https://tours.vatsim-germany.org'))->name('redirect.vatger-tours');
 });
