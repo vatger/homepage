@@ -80,7 +80,7 @@ class APILibrary
             return false;
         }
         self::MemberInsertData($user, $data);
-        Cache::put($cache_key, Carbon::now(), 60 * 60 * 24);
+        Cache::put($cache_key, Carbon::now(), 60 * 60 * 24 * 7);
         if ($update_vatger_membership) {
             MembershipLibrary::update($user, api_refresh: false);
         }
