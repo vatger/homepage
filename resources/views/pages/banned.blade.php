@@ -18,6 +18,7 @@
             <!--end row-->
             @if($ban)
                 <p><b>Grund:</b> {{ $ban->type }}</p>
+                <p>{{ $ban->reason }}</p>
             @endif
             Bei Fragen wende dich an <code>support@vatger.de</code>.
         </div>

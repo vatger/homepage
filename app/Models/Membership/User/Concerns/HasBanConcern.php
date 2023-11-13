@@ -63,7 +63,7 @@ trait HasBanConcern
             ->exists();
     }
 
-    public function getCurrentBanAttribute(): UserBan
+    public function getCurrentBanAttribute(): ?UserBan
     {
         $now = Carbon::now()->utc();
         return $this->bans()
