@@ -24,11 +24,11 @@ class SolosApiController extends ApiController
     public function find_member(int $cid): object
     {
         $this->authorizeApiRequest('solos.find_member');
-        $team_a = Team::where('name', 'LIKE', 'ATD Leitung')->firstOrFail()->group;
-        $team_p = Team::where('name', 'LIKE', 'ATD Prüfer')->firstOrFail();
-        $team_w = Team::where('name', 'LIKE', 'EDWW Mentor')->firstOrFail();
-        $team_g = Team::where('name', 'LIKE', 'EDGG Mentor')->firstOrFail();
-        $team_m = Team::where('name', 'LIKE', 'EDMM Mentor')->firstOrFail();
+        $team_a = Team::where('name', 'LIKE', 'ATD Leitung')->firstOrFail()?->group;
+        $team_p = Team::where('name', 'LIKE', 'ATD Prüfer')->firstOrFail()?->group;
+        $team_w = Team::where('name', 'LIKE', 'EDWW Mentor')->firstOrFail()?->group;
+        $team_g = Team::where('name', 'LIKE', 'EDGG Mentor')->firstOrFail()?->group;
+        $team_m = Team::where('name', 'LIKE', 'EDMM Mentor')->firstOrFail()?->group;
 
         $user = User::find($cid);
         $data = new \stdClass();
