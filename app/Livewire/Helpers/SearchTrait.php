@@ -59,14 +59,14 @@ trait SearchTrait
                 if ($i == 0) {
                     if (str_contains($sf, '.')) {
                         $sfp = explode('.', $sf);
-                        $query = $query->whereRelation($sfp[0], $sfp[1], 'LIKE', '%');
+                        $query = $query->whereRelation($sfp[0], $sfp[1], 'LIKE', '%' . $search_str . '%');
                     } else {
                         $query = $query->where($sf, 'LIKE', '%' . $search_str . '%');
                     }
                 } else {
                     if (str_contains($sf, '.')) {
                         $sfp = explode('.', $sf);
-                        $query = $query->orWhereRelation($sfp[0], $sfp[1], 'LIKE', '%');
+                        $query = $query->orWhereRelation($sfp[0], $sfp[1], 'LIKE', '%' . $search_str . '%');
                     } else {
                         $query = $query->orWhere($sf, 'LIKE', '%' . $search_str . '%');
                     }
