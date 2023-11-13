@@ -3,7 +3,6 @@
 namespace App\OpenApi\Controllers;
 
 use App\Models\Groups\Team;
-use App\Models\Membership\TeamspeakRegistration;
 use App\Models\Membership\User\User;
 use App\OpenApi\Helpers\ApiPathfinder;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
@@ -24,11 +23,11 @@ class SolosApiController extends ApiController
     public function find_member(int $cid): object
     {
         $this->authorizeApiRequest('solos.find_member');
-        $team_a = Team::where('name', 'LIKE', 'ATD Leitung')->firstOrFail()?->group;
-        $team_p = Team::where('name', 'LIKE', 'ATD Prüfer')->firstOrFail()?->group;
-        $team_w = Team::where('name', 'LIKE', 'EDWW Mentor')->firstOrFail()?->group;
-        $team_g = Team::where('name', 'LIKE', 'EDGG Mentor')->firstOrFail()?->group;
-        $team_m = Team::where('name', 'LIKE', 'EDMM Mentor')->firstOrFail()?->group;
+        $team_a = Team::where('name', 'LIKE', 'ATD Leitung')->firstOrFail()?->role;
+        $team_p = Team::where('name', 'LIKE', 'ATD Prüfer')->firstOrFail()?->role;
+        $team_w = Team::where('name', 'LIKE', 'EDWW Mentor')->firstOrFail()?->role;
+        $team_g = Team::where('name', 'LIKE', 'EDGG Mentor')->firstOrFail()?->role;
+        $team_m = Team::where('name', 'LIKE', 'EDMM Mentor')->firstOrFail()?->role;
 
         $user = User::find($cid);
         $data = new \stdClass();
