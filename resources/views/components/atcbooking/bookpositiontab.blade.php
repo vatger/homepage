@@ -1,8 +1,8 @@
 <div class="col-lg-5 col-md-6 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
     <div class="card border-0 shadow rounded sidebar sticky-bar ms-lg-4">
-        <div class="card-body p-0 text-center">
+        <div class="card-body p-0 text-center form-control">
             <h4 class="mt-4"><a class="text-primary">Book Position</a></h4>
-            <div class="text-start">
+            <div class="">
                 <div class="row p-3">
                     <div class="col-12 mb-3">
                         <label class="form-label" for="date-select">@lang('booking.atc.create.date-text')</label>

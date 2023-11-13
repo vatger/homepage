@@ -16,7 +16,7 @@
 
     <section class="section pt-0" style="margin-top: -55px">
         <div class="container mt-lg-3">
-            <div class="card public-profile border-0 rounded shadow mb-3" style="z-index: 1;">
+            <div class="card public-profile border-0 rounded shadow mb-3 form-control" style="z-index: 1;">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-lg-10 col-md-9">
