@@ -102,9 +102,11 @@ class UserVatgerDetail extends Model
         if (empty($latest_fir)) {
             return true;
         }
-        if (Carbon::now()->diffInDays($latest_fir->deleted_at) >= 90) {
+
+        if (Carbon::now()->diffInDays($latest_fir->joined_at) >= 90) {
             return true;
         }
+
         return false;
     }
 }
