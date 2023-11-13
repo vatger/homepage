@@ -146,11 +146,16 @@ class XenForoLibrary extends BaseLibrary
         if (!empty($secondaryGroups)) {
             $dataArray['secondary_group_ids'] = $secondaryGroups;
         } else {
-            $dataArray['secondary_group_ids'][] = [config('forum.guestGroup')];
+            $dataArray['secondary_group_ids'][] = config('forum.guestGroup');
+        }
+
+        // CHECK IF USER IS BANNED
+        if ($user->is_currently_forum_banned) {
+            $dataArray['secondary_group_ids'] = [];
+            $dataArray['secondary_group_ids'][] = config('forum.suspendedGroup');
         }
 
         $dataArray['custom_title'] = $user->id;
-
         $result = self::send('POST', 'users/' . $user->settings->forum_id, $dataArray);
         if (!$result) {
             return false;
@@ -166,7 +171,7 @@ class XenForoLibrary extends BaseLibrary
      * Set a given forum account to the "discouraged" and "suspended" group
      *
      */
-    public static function banForumAccount(User $user): bool
+    private static function banForumAccount(User $user): bool
     {
         $suspendedGroup = config('forum.suspendedGroup');
 
