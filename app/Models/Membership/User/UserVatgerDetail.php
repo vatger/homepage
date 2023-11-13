@@ -94,8 +94,17 @@ class UserVatgerDetail extends Model
     {
         $latest_fir = $this->user
             ->firs()
-            ->orderBy('deleted_at')
+            ->orderByDesc('joined_at')
             ->first();
-        return !$latest_fir && $this->getIsVatgerMemberAttribute() ?? Carbon::now()->diffInDays($latest_fir->joined_at) >= 90;
+        if (!$this->getIsVatgerMemberAttribute()) {
+            return false;
+        }
+        if (empty($latest_fir)) {
+            return true;
+        }
+        if (Carbon::now()->diffInDays($latest_fir->deleted_at) >= 90) {
+            return true;
+        }
+        return false;
     }
 }
