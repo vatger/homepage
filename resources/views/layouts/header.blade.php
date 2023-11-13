@@ -69,6 +69,7 @@
                     <ul class="submenu">
                         <li><a href="{{ route('redirect.ts3') }}" class="sub-menu-item">@lang('navigation.community.teamspeak')</a></li>
                         <li><a href="{{ route('redirect.board') }}" class="sub-menu-item">@lang('navigation.community.forum')</a></li>
+                        <li><a href="{{ route('redirect.discord') }}" class="sub-menu-item">@lang('navigation.community.discord')</a></li>
                         <li><a href="{{ route('redirect.knowledgebase') }}" class="sub-menu-item">@lang('navigation.community.wiki')</a></li>
                         <li><a href="{{ route('redirect.spreadshop') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.fan-shop')</a></li>
                     </ul>
