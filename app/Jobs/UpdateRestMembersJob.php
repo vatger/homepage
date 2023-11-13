@@ -51,7 +51,7 @@ class UpdateRestMembersJob implements ShouldQueue
     {
         Log::info('[UpdateRestMembersJob]::Starting');
         $total_to_update = $this->collection->count();
-        $really_updating = min($total_to_update, max($total_to_update / 12, 100));
+        $really_updating = min($total_to_update, $total_to_update / 24, 50);
         $collection_to_update = $this->collection->sortBy('time')->take($really_updating);
         $collection_to_update->lazy()->each(function ($obj) {
             $user = User::find($obj['id']);

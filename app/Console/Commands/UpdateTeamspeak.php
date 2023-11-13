@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\UpdateSubdivisionMembersJob;
 use App\Jobs\UpdateTeamspeakJob;
 use Illuminate\Console\Command;
 

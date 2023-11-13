@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Administration;
 
+use App\Libraries\MembershipLibrary;
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\Groups\ServiceRole;
 use App\Models\Groups\ServiceRoleType;
@@ -78,6 +79,7 @@ class TeamPage extends Component
         $this->authorize('membership.teams.edit.members.subteam-check', $this->team);
         $user = User::findOrFail($user_id);
         $user->removeRole($this->team->role);
+        MembershipLibrary::update($user, async: true);
     }
 
     public function addUser(): void
@@ -89,6 +91,7 @@ class TeamPage extends Component
             return;
         }
         $user->assignRole($this->team->role);
+        MembershipLibrary::update($user, async: true);
     }
 
     public function deleteTeam()

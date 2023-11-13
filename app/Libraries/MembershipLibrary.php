@@ -3,6 +3,7 @@
 namespace App\Libraries;
 
 use App\Jobs\UpdateAccountJob;
+use App\Jobs\UpdateTeamspeakJob;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Libraries\VATSIM\APILibrary;
 use App\Models\Membership\User\User;
@@ -34,7 +35,7 @@ class MembershipLibrary
     public static function update(User $user, bool $async = false, bool $cache = true, bool $api_refresh = true): void
     {
         if ($async) {
-            UpdateAccountJob::dispatch($user);
+            dispatch(new UpdateAccountJob($user));
             return;
         }
         if ($api_refresh) {
