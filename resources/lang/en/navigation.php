@@ -23,6 +23,7 @@ return [
         'titel' => 'Community',
         'teamspeak' => 'Teamspeak',
         'forum' => 'Forum',
+        'discord' => 'Discord',
         'fan-shop' => 'Fan-Shop',
         'wiki' => 'Wiki',
         'stats' => 'Statistics Center',
