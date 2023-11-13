@@ -275,6 +275,9 @@ class XenForoLibrary extends BaseLibrary
      */
     public static function getForumUsername(User $user): string|false
     {
+        if (empty($user->settings->forum_id)) {
+            return false;
+        }
         return \Cache::remember('xenforo.username.' . $user->id, 120, function () use ($user) {
             $result = self::send('GET', 'users/' . $user->settings->forum_id, []);
             if (!$result) {
