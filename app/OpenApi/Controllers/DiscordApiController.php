@@ -28,9 +28,7 @@ class DiscordApiController extends ApiController
         $data->is_vatger_fullmember = $user?->vatgerDetails?->is_vatger_member;
         $data->atc_rating = $user?->vatsimDetails?->rating_atc;
         $data->pilot_rating = $user?->vatsimDetails?->rating_pilot;
-        $data->teams = $user
-            ->teams()
-            ->get()
+        $data->teams = $user->teams
             ->map(fn($team) => $team->name)
             ->values()
             ->toArray();
