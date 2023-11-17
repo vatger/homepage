@@ -61,6 +61,7 @@ trait ServergroupTrait
             ->select('service_role')
             ->get()
             ->map(fn($sr) => intval($sr->service_role))
+            ->unique()
             ->toArray();
     }
 
