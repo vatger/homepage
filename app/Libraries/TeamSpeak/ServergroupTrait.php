@@ -60,12 +60,11 @@ trait ServergroupTrait
             ServiceRole::query()
                 ->where('service_type', 'LIKE', ServiceRoleType::TeamspeakServergroup)
                 ->select('service_role')
-                ->distinct()
                 ->get()
                 ->values()
                 ->toArray(),
         )
-            ->map(fn($s) => intval($s))
+            //->map(fn($s) => intval($s))
             ->toArray();
     }
 
