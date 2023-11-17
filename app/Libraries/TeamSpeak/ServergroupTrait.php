@@ -57,7 +57,7 @@ trait ServergroupTrait
     public static function listAvailServiceRoleId(): array
     {
         return ServiceRole::query()
-            ->where('type', 'LIKE', ServiceRoleType::TeamspeakServergroup)
+            ->where('service_type', 'LIKE', ServiceRoleType::TeamspeakServergroup)
             ->select('service_role')
             ->distinct()
             ->get()
