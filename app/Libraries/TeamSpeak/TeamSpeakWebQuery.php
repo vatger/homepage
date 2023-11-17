@@ -115,7 +115,7 @@ class TeamSpeakWebQuery
         //group assignment
         $service_role_ids = $user->service_role_ids(ServiceRoleType::TeamspeakServergroup, true);
 
-        $all_server_groups = self::listServerGroupIds(with_standard_groups: false) ? self::listServerGroupIds(with_standard_groups: false) : [];
+        $all_server_groups = self::listAvailServiceRoleId();
         //so we don't remove the default role
 
         $del_server_groups = array_diff($all_server_groups, $service_role_ids);

@@ -2,7 +2,6 @@
 
 namespace App\OpenApi\Controllers;
 
-use App\Models\Membership\TeamspeakRegistration;
 use App\Models\Membership\User\User;
 use App\OpenApi\Helpers\ApiPathfinder;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
@@ -29,6 +28,11 @@ class DiscordApiController extends ApiController
         $data->is_vatger_fullmember = $user?->vatgerDetails?->is_vatger_member;
         $data->atc_rating = $user?->vatsimDetails?->rating_atc;
         $data->pilot_rating = $user?->vatsimDetails?->rating_pilot;
+        $data->teams = $user
+            ->teams()
+            ->select('name')
+            ->get()
+            ->values();
         return $data;
     }
 }

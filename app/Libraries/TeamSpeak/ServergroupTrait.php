@@ -2,6 +2,8 @@
 
 namespace App\Libraries\TeamSpeak;
 
+use App\Models\Groups\ServiceRole;
+use App\Models\Groups\ServiceRoleType;
 use App\Models\Membership\TeamspeakRegistration;
 use Illuminate\Support\Facades\Cache;
 
@@ -52,7 +54,19 @@ trait ServergroupTrait
         return self::_servergroupdelclient($clientdbid, $serverGroupId);
     }
 
-    public static function listServerGroupIds(bool $with_standard_groups = true): array|false
+    public static function listAvailServiceRoleId(): array
+    {
+        return ServiceRole::query()
+            ->where('type', 'LIKE', ServiceRoleType::TeamspeakServergroup)
+            ->select('service_role')
+            ->distinct()
+            ->get()
+            ->values()
+            ->map(fn($s) => intval($s))
+            ->toArray();
+    }
+
+    public static function listServerGroupIds(bool $with_standard_groups = true, bool $only_webside_groups = false): array|false
     {
         $list = self::_servergrouplist();
         if (!$list) {
