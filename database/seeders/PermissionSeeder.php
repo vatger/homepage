@@ -24,6 +24,9 @@ class PermissionSeeder extends Seeder
         'membership.teams.edit.members',
         'membership.teams.edit.members.subteam',
 
+        // Survey Keys
+        'survey',
+
         // Tech
         'tech.access',
 
@@ -31,14 +34,6 @@ class PermissionSeeder extends Seeder
         'navigation.aerodromes.view',
         'navigation.aerodromes.edit',
         'navigation.stations.view',
-
-        // ATD
-        'atd.solos.edit',
-        'atd.solos.manage',
-
-        // Media
-        'media.create',
-        'media.admin',
     ];
 
     /**
@@ -47,29 +42,32 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         // Remove all roles and permissions
-        $tableNames = config('permission.table_names');
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        DB::statement('DELETE FROM ' . $tableNames['model_has_permissions']);
-        DB::statement('DELETE FROM ' . $tableNames['model_has_roles']);
-        DB::statement('DELETE FROM ' . $tableNames['role_has_permissions']);
-        $this->command->getOutput()->writeln('Truncated relations tables.');
-        DB::statement('DELETE FROM ' . $tableNames['permissions']);
-        $this->command->getOutput()->writeln('Truncated permissions table.');
-        DB::statement('DELETE FROM ' . $tableNames['roles']);
-        $this->command->getOutput()->writeln('Truncated roles table.');
-        Team::truncate();
-        $this->command->getOutput()->writeln('Truncated teams table.');
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        //$tableNames = config('permission.table_names');
+        //DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        //DB::statement('DELETE FROM ' . $tableNames['model_has_permissions']);
+        //DB::statement('DELETE FROM ' . $tableNames['model_has_roles']);
+        //DB::statement('DELETE FROM ' . $tableNames['role_has_permissions']);
+        //$this->command->getOutput()->writeln('Truncated relations tables.');
+        //DB::statement('DELETE FROM ' . $tableNames['permissions']);
+        //$this->command->getOutput()->writeln('Truncated permissions table.');
+        //DB::statement('DELETE FROM ' . $tableNames['roles']);
+        //$this->command->getOutput()->writeln('Truncated roles table.');
+        //Team::truncate();
+        //$this->command->getOutput()->writeln('Truncated teams table.');
+        //DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
         $this->command->getOutput()->writeln('Starting seeding of new information...');
         $this->command->getOutput()->progressStart(count($this->permissions));
 
         // Create permissions
         foreach ($this->permissions as $name) {
+            $this->command->getOutput()->progressAdvance();
+            if (Permission::where('name', 'LIKE', $name)->exists()) {
+                continue;
+            }
             $p = new Permission();
             $p->name = $name;
             $p->save();
-            $this->command->getOutput()->progressAdvance();
         }
 
         // Create administration role with all permissions
@@ -82,9 +80,11 @@ class PermissionSeeder extends Seeder
 
         $team->role->givePermissionTo(Permission::all());
 
-        // IF WE ARE IN DEVELOPMENT ASSIGN TESTUSER WEB10 TO THE ADMINROLE
-        $user = User::first();
-        $user?->assignRole($team->role);
+        // IF WE ARE IN DEVELOPMENT ASSIGN TESTUSER WEB10 TO THE ADMIN-ROLE
+        if (config('app.env') != 'production') {
+            $user = User::first();
+            $user?->assignRole($team->role);
+        }
 
         $this->command->getOutput()->progressFinish();
         $this->command->getOutput()->writeln('Finished seeding.');

@@ -26,6 +26,8 @@ Route::prefix('administration')
         Route::get('/membership/teams', TeamListPage::class)->name('administration.teams');
         Route::get('/membership/teams/{team}', TeamPage::class)->name('administration.team');
 
+        Route::get('/survey', TeamPage::class)->name('administration.survey');
+
         require_once 'admin/content.php';
 
         require_once 'admin/event.php';

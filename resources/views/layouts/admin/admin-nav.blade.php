@@ -21,7 +21,7 @@
             @can('membership.users.view')
                 <li>
                     <a href="{{ route('administration.members') }}">
-                        <i data-feather="circle" class="me-2"></i>
+                        <i data-feather="user" class="fea me-2"></i>
                         Members
                     </a>
                 </li>
@@ -29,15 +29,23 @@
             @canany(['membership.teams.view', 'membership.teams.edit.members.subteam'])
                 <li>
                     <a href="{{ route('administration.teams') }}">
-                        <i data-feather="circle" class="me-2"></i>
+                        <i data-feather="users" class="fea me-2"></i>
                         Teams
+                    </a>
+                </li>
+            @endcan
+            @can('survey')
+                <li>
+                    <a href="{{ route('administration.survey') }}">
+                        <i data-feather="circle" class="fea me-2"></i>
+                        Survey
                     </a>
                 </li>
             @endcan
             @can('navigation.aerodromes.view')
                 <li>
                     <a href="{{ route('administration.navigation.aerodromes') }}">
-                        <i data-feather="circle" class="me-2"></i>
+                        <i data-feather="map" class="fea me-2"></i>
                         Aerodromes
                     </a>
                 </li>
@@ -45,26 +53,26 @@
             @can('navigation.stations.view')
                 <li>
                     <a href="{{ route('administration.navigation.stations') }}">
-                        <i data-feather="circle" class="me-2"></i>
+                        <i data-feather="map-pin" class="fea me-2"></i>
                         Stations
                     </a>
                 </li>
             @endcan
             <li>
                 <a href="{{ route('administration.tech.apilog') }}">
-                    <i data-feather="circle" class="me-2"></i>
+                    <i data-feather="list" class="fea me-2"></i>
                     API Log
                 </a>
             </li>
             <li>
                 <a href="{{ route('administration.tech.syslog') }}">
-                    <i data-feather="circle" class="me-2"></i>
+                    <i data-feather="alert-triangle" class="fea me-2"></i>
                     SYS Log
                 </a>
             </li>
             <li>
                 <a href="{{ route('administration.tech.jobs') }}">
-                    <i data-feather="circle" class="me-2"></i>
+                    <i data-feather="terminal" class="fea me-2"></i>
                     Job Log
                 </a>
             </li>

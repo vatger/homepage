@@ -12,7 +12,7 @@ class BookstackApiController extends ApiController
      *  Some docs here
      * @return false|object
      */
-    #[OpenApi\Operation]
+
     public function bookstack()
     {
         return false;

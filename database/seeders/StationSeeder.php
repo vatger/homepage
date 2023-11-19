@@ -18,12 +18,11 @@ class StationSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        DB::table('nav_aerodrome_stations')->truncate();
-        DB::table('nav_stations')->truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
-
-        $this->command->getOutput()->writeln('Truncated stations table.');
+        //DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        //DB::table('nav_aerodrome_stations')->truncate();
+        //DB::table('nav_stations')->truncate();
+        //DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        //$this->command->getOutput()->writeln('Truncated stations table.');
 
         $this->command->getOutput()->writeln('Starting seeding...');
         NavLibrary::sync_stations();

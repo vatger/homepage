@@ -81,6 +81,16 @@
                                     <!--end nav link-->
                                 </li>
                                 <!--end nav item-->
+                                <li class="nav-item mt-2 pb-2" wire:click="sel('surveykeys')">
+                                    <a class="nav-link rounded {{ $tab == 'surveykeys' ? 'active' : '' }}" data-bs-toggle="pill" role="tab"
+                                       aria-controls="profile" aria-selected="true">
+                                        <div class="text-start py-1 px-2">
+                                            <h6 class="mb-0">Survey Keys</h6>
+                                        </div>
+                                    </a>
+                                    <!--end nav link-->
+                                </li>
+                                <!--end nav item-->
                                 <li class="nav-item mt-2 pt-2 border-top">
                                     <a href="{{ route('vatsim.authentication.connect.logout') }}" class="nav-link rounded" aria-selected="false">
                                         <div class="text-start py-1 px-2">
@@ -108,24 +118,12 @@
                             @case('accounts')
                                 <livewire:profile.accounts-tab />
                                 @break
+                            @case('surveykeys')
+                                <x-profile.surveykeys></x-profile.surveykeys>
+                                @break
                             @default
                                 <livewire:profile.profile-tab />
                         @endswitch
-
-
-                        {{--
-
-
-                @include('homepage.members.profile.partials.profile')
-
-                @include('homepage.members.profile.partials.notification')
-
-                @include('homepage.members.profile.partials.settings')
-
-                @include('homepage.members.profile.partials.teamspeak')
-
-                @include('homepage.members.profile.partials.feedback')
-                --}}
                     </div>
                 </div>
                 <!--end col-->

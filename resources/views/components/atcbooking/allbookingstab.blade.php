@@ -88,16 +88,19 @@
                             Name
                             <i data-feather="{{ $this->getSortIconClasses('controller_id') }}"></i>
                         </th>
-                        <th wire:click="sortBy('station_id')" style="width: 33%" scope="col" class="border-bottom text-center">
+                        <th {{--wire:click="sortBy('station_id')"--}} style="width: 33%" scope="col" class="border-bottom text-center">
                             Position
                         </th>
                         <th wire:click="sortBy('starts_at')" style="width: 33%" scope="col" class="border-bottom text-center">
                             Zeitraum
                             <i data-feather="{{ $this->getSortIconClasses('starts_at') }}"></i>
                         </th>
+                        <th scope="col" class="border-bottom text-center">
+
+                        </th>
                     </tr>
                     </thead>
-                    <tbody wire:poll.15s>
+                    <tbody wire:poll.5s>
                     @foreach($filtered_bookings as $booking)
                         <tr>
                             <td>

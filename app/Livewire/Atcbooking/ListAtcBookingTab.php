@@ -18,6 +18,7 @@ class ListAtcBookingTab extends Component
     public string $selected_search = '';
     public string $selected_start_at = '';
     public string $selected_end_at = '';
+    public bool $selected_my_bookings = false;
     protected array $searchable_fields = ['station.ident', 'station.name', 'station.frequency'];
 
     public function mount(): void

@@ -4,6 +4,7 @@ namespace App\OpenApi\Controllers;
 
 use App\OpenApi\Controllers\ApiController;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
+use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 class TestApiController extends ApiController
 {
