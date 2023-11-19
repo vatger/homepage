@@ -160,10 +160,10 @@
                                                 <tbody>
                                                 @foreach($user->teamspeakRegistrations as $t)
                                                     <tr>
-                                                        <td>{{ $f->uid }}</td>
-                                                        <td>{{ $f->dbid }}</td>
-                                                        <td>{{ $f->created_at }}</td>
-                                                        <td>{{ $f->last_login }}</td>
+                                                        <td>{{ $t->uid }}</td>
+                                                        <td>{{ $t->dbid }}</td>
+                                                        <td>{{ $t->created_at }}</td>
+                                                        <td>{{ $t->last_login }}</td>
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
