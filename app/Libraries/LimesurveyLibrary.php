@@ -62,7 +62,11 @@ class LimesurveyLibrary
     //]
     public function list_surveys(): array
     {
-        return Cache::remember('LimesurveyLibrary.list_surveys', 10, fn() => $this->lsJSONRPCClient->list_surveys($this->sessionKey, null));
+        return Cache::remember(
+            'LimesurveyLibrary.list_surveys',
+            10,
+            fn() => json_decode(json_encode($this->lsJSONRPCClient->list_surveys($this->sessionKey, null))),
+        );
     }
 
     public function list_survey(int $id): ?object
