@@ -29,7 +29,7 @@ class LimesurveyLibrary
         $this->lsJSONRPCClient->release_session_key($this->sessionKey);
     }
 
-    public function send_req(string $endpoint): object|false
+    public function send_req(string $endpoint): object|array|false
     {
         $response = $this->lsJSONRPCClient->list_surveys($this->sessionKey, null);
 
