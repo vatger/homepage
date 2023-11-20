@@ -11,17 +11,17 @@
 
             <div class="row">
                 <x-layouts.admin.sidebar-col position="left" title="Übersicht">
-                    <div class="d-flex align-items-center mb">
+                    <div class="d-flex align-items-center mb-2">
                         <div class="flex-1">
                             <h6 class="text-primary mb-2">Ausgewählte Umfrage:</h6>
                             <select wire:model="selected_survey" class="form-select form-control mt-2" aria-label="Ausgewählte Umfrage">
                                 @foreach($surveys as $s)
-                                    <option value="{{$s->sid}}" @if($selected_survey == $s->sid) selected @endif>{{ $s->surveyls_title . '#' . $s->sid }}</option>
+                                    <option value="{{$s->sid}}" @if($selected_survey == $s->sid) selected @endif>{{ '#' . $s->sid . ' '. $s->surveyls_title }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
-                    <div class="d-flex align-items-center mb">
+                    <div class="d-flex align-items-center mb-2">
                         <div class="flex-1">
                             <h6 class="text-primary mb-2">Ausgewählte Gruppe:</h6>
                             <select wire:model="selected_selection" class="form-select form-control mt-2" aria-label="Ausgewählte Gruppe">
@@ -31,12 +31,12 @@
                             </select>
                         </div>
                     </div>
-                    <div class="d-flex align-items-center mb">
+                    <div class="d-flex align-items-center mb-2">
                         <div class="flex-1">
                             <h6 class="text-primary mb-2">Keys generieren:</h6>
                             <p>Ausgewählte Umfrage: <code>?</code></p>
                             <p>Ausgewählte Gruppe: <code>?</code></p>
-                            <button class="btn">
+                            <button class="btn btn-soft-success">
                                 <i data-feather="plus" class="fea"></i>
                             </button>
                         </div>
