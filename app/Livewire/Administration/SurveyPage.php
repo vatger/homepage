@@ -19,23 +19,23 @@ class SurveyPage extends Component
     public $selected_selection;
 
     private $selections = [
-        (object) [
+        [
             'id' => 1,
             'name' => 'Wahlberechtigt VATGER',
         ],
-        (object) [
+        [
             'id' => 2,
             'name' => 'Wahlberechtigt EDWW',
         ],
-        (object) [
+        [
             'id' => 3,
             'name' => 'Wahlberechtigt EDFF',
         ],
-        (object) [
+        [
             'id' => 4,
             'name' => 'Wahlberechtigt EDMM',
         ],
-        (object) [
+        [
             'id' => 5,
             'name' => 'Vollmitglied VATGER',
         ],
@@ -45,6 +45,10 @@ class SurveyPage extends Component
     public function render()
     {
         $ls = new LimesurveyLibrary();
-        return view('pages.admin.survey')->with(['surveys' => $ls->list_surveys(), 'keys' => SurveyKey::all(), 'selections' => $this->selections]);
+        return view('pages.admin.survey')->with([
+            'surveys' => $ls->list_surveys(),
+            'keys' => SurveyKey::all(),
+            'selections' => json_decode(json_encode($this->selections)),
+        ]);
     }
 }
