@@ -60,7 +60,7 @@ class LimesurveyLibrary
     }
 
     /**
-     * @param array<User> $users
+     * @param array<User>|Collection<User> $users
      * @return array<SurveyKey>
      */
     public function add_participants(int $survey_id, array|Collection $users): array
@@ -74,6 +74,7 @@ class LimesurveyLibrary
                 ],
             )
             ->toArray();
-        return $this->send_req('add_participants', $survey_id, $data, true);
+        return $this->lsJSONRPCClient->add_participants($this->sessionKey, $survey_id, $data, true);
+        //return $this->send_req('add_participants', $survey_id, $data, true);
     }
 }
