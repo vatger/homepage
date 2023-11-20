@@ -12,18 +12,33 @@
             <div class="row">
                 <x-layouts.admin.sidebar-col position="left" title="Übersicht">
                     <div class="d-flex align-items-center mb">
-                        <i data-feather="arrow-up" class="fea icon-ex-md text-muted me-3"></i>
                         <div class="flex-1">
-                            <h6 class="text-primary mb-2">Übergeordnetes Team:</h6>
-
-                            @can('membership.')
-                                <select wire:model.live="selected_superteam" class="form-select form-control mt-2" aria-label="Übergeordnetes Team">
-                                    <option value="-1" @if($selected_superteam == -1) selected @endif>kein übergeordnetes Team</option>
-                                    @foreach(App\Models\Groups\Team::all() as $t)
-                                        <option value="{{$t->id}}" @if($selected_superteam == $t->id) selected @endif>{{ $t->name }}</option>
-                                    @endforeach
-                                </select>
-                            @endcan
+                            <h6 class="text-primary mb-2">Ausgewählte Umfrage:</h6>
+                            <select wire:model="selected_survey" class="form-select form-control mt-2" aria-label="Ausgewählte Umfrage">
+                                @foreach($surveys as $s)
+                                    <option value="{{$s->sid}}" @if($selected_survey == $s->sid) selected @endif>{{ $s->surveyls_title . '#' . $s->sid }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb">
+                        <div class="flex-1">
+                            <h6 class="text-primary mb-2">Ausgewählte Gruppe:</h6>
+                            <select wire:model="selected_selection" class="form-select form-control mt-2" aria-label="Ausgewählte Gruppe">
+                                @foreach($selections as $s)
+                                    <option value="{{$s->id}}" @if($selected_selection == $s->id) selected @endif>{{ $s->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb">
+                        <div class="flex-1">
+                            <h6 class="text-primary mb-2">Keys generieren:</h6>
+                            <p>Ausgewählte Umfrage: <code>?</code></p>
+                            <p>Ausgewählte Gruppe: <code>?</code></p>
+                            <button class="btn">
+                                <i data-feather="plus" class="fea"></i>
+                            </button>
                         </div>
                     </div>
 
@@ -31,12 +46,11 @@
 
                 <x-layouts.admin.sidebar-col position="right">
                     <x-layouts.admin.card>
-                        <x-layouts.admin.card-header position="left" title="Mitglieder" :subtitle="999" />
+                        <x-layouts.admin.card-header position="left" title="Keys" :subtitle="$keys->count()" />
                         <x-layouts.admin.card-header position="right">
                             <li class="list-inline-item" style="width: 100%">
                                 <div class="row">
-                                    <input wire:model="user_id" type="number" class="form-control-sm form-control float-end mb-1" placeholder="CID">
-                                    <button wire:click="addUser()" class="btn btn-sm btn-soft-primary float-end">Benutzer Hinzufügen</button>
+                                    <input type="text" class="form-control-sm form-control float-end mb-1" placeholder="Search" disabled>
                                 </div>
                             </li>
                         </x-layouts.admin.card-header>
@@ -47,23 +61,22 @@
                                 <thead>
                                 <tr class="text-center">
                                     <th class="border-bottom" style="width: 33%">CID</th>
-                                    <th class="border-bottom" style="width: 33%">Name</th>
+                                    <th class="border-bottom" style="width: 33%">Survey Name</th>
                                     <th class="border-bottom" style="width: 33%">Aktion</th>
                                 </tr>
                                 </thead>
                                 <tbody id="member-list-content">
-                                @if (1)
+                                @if ($keys->count()==0)
                                     <tr class="text-center">
-                                        <td colspan="3" class="text-muted text-center">Keine Benutzer in dieser Gruppe</td>
+                                        <td colspan="3" class="text-muted text-center">Noch keine Keys</td>
                                     </tr>
                                 @else
-                                    @foreach ($team->role->users as $u)
+                                    @foreach ($keys as $k)
                                         <tr class="text-center" id="user-{{ $u->id }}">
-                                            <td>{{ $u->id }}</td>
-                                            <td>{{ $u->username }}</td>
+                                            <td>{{ $k->user_id }}</td>
+                                            <td>{{ $u->name }}</td>
                                             <td>
-                                                <button wire:click="removeUser({{$u->id}})" class="btn btn-sm btn-soft-danger">Entfernen
-                                                </button>
+                                                ?
                                             </td>
                                         </tr>
                                     @endforeach
