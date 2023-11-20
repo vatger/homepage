@@ -17,6 +17,8 @@ class SurveyPage extends Component
     public $selected_survey;
     public $selected_selection;
 
+    public $selections = [];
+
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
