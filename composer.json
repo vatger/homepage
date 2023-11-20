@@ -37,7 +37,8 @@
     "spatie/laravel-webhook-client": "^3.1",
     "stevebauman/purify": "^6.0",
     "tightenco/ziggy": "^1.6",
-    "vyuldashev/laravel-openapi": "^1.11"
+    "vyuldashev/laravel-openapi": "^1.11",
+    "weberhofer/jsonrpcphp": "^2.2"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.7",

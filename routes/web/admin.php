@@ -3,6 +3,7 @@
 use App\Http\Controllers\Administration\AdministrationPagesController;
 use App\Livewire\Administration\MemberListPage;
 use App\Livewire\Administration\MemberPage;
+use App\Livewire\Administration\SurveyPage;
 use App\Livewire\Administration\TeamListPage;
 use App\Livewire\Administration\TeamPage;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,7 @@ Route::prefix('administration')
         Route::get('/membership/teams', TeamListPage::class)->name('administration.teams');
         Route::get('/membership/teams/{team}', TeamPage::class)->name('administration.team');
 
-        Route::get('/survey', TeamPage::class)->name('administration.survey');
+        Route::get('/survey', SurveyPage::class)->name('administration.survey');
 
         require_once 'admin/content.php';
 
