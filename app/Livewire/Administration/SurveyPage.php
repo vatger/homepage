@@ -14,6 +14,9 @@ use Livewire\Component;
 
 class SurveyPage extends Component
 {
+    public $selected_survey;
+    public $selected_selection;
+
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
