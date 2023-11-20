@@ -74,7 +74,7 @@
                                     @foreach ($keys as $k)
                                         <tr class="text-center" id="user-{{ $u->id }}">
                                             <td>{{ $k->user_id }}</td>
-                                            <td>{{ $u->name }}</td>
+                                            <td>{{ $k->name }}</td>
                                             <td>
                                                 ?
                                             </td>
