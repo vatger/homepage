@@ -5,6 +5,7 @@ namespace App\Libraries;
 use App\Models\Membership\User\User;
 use App\Models\SurveyKey;
 use Exception;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use org\jsonrpcphp\JsonRPCClient;
 
@@ -62,7 +63,7 @@ class LimesurveyLibrary
      * @param array<User> $users
      * @return array<SurveyKey>
      */
-    public function add_participants(int $survey_id, array $users): array
+    public function add_participants(int $survey_id, array|Collection $users): array
     {
         $data = collect($users)
             ->map(
