@@ -32,9 +32,9 @@ class LimesurveyLibrary
         $this->lsJSONRPCClient->release_session_key($this->sessionKey);
     }
 
-    private function send_req(string $endpoint, ...$data): object|array|false
+    public function send_req(string $endpoint, ...$data): object|array|false
     {
-        $response = $this->lsJSONRPCClient->$endpoint($this->sessionKey, $data);
+        $response = $this->lsJSONRPCClient->$endpoint($this->sessionKey, ...$data);
 
         if (is_array($response)) {
             $data = json_decode(json_encode($response));
