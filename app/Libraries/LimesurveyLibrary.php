@@ -56,16 +56,43 @@ class LimesurveyLibrary
     //]
     public function list_surveys(): array
     {
-        return $this->send_req('list_surveys', null);
+        return $this->lsJSONRPCClient->list_surveys($this->sessionKey, null);
     }
 
     /**
      * @param array<User>|Collection<User> $users
      * @return array<SurveyKey>
      */
-    public function add_participants(int $survey_id, array|Collection $users): array
+
+    // [
+    //    [
+    //      "sent" => "N",
+    //      "remindersent" => "N",
+    //      "remindercount" => 0,
+    //      "completed" => "N",
+    //      "usesleft" => 1,
+    //      "emailstatus" => "OK",
+    //      "email" => "hollmann.vatsim@gmail.com",
+    //      "lastname" => "Hollmann",
+    //      "firstname" => "Paul",
+    //      "token" => "LnVRoy8PYSPfknd",
+    //      "language" => "",
+    //      "tid" => "1",
+    //      "participant_id" => null,
+    //      "blacklisted" => null,
+    //      "validfrom" => null,
+    //      "validuntil" => null,
+    //      "mpid" => null,
+    //    ],
+    //  ]
+    // oder wenn nicht participants table erstellt
+    //  [
+    //    "status" => "No survey participants table",
+    //  ]
+
+    public function add_participants(int $survey_id, array|Collection $users): array|string
     {
-        $data = collect($users)
+        $users_data = collect($users)
             ->map(
                 fn(User $u) => (object) [
                     'email' => $u->email,
@@ -74,7 +101,24 @@ class LimesurveyLibrary
                 ],
             )
             ->toArray();
-        return $this->lsJSONRPCClient->add_participants($this->sessionKey, $survey_id, $data, true);
-        //return $this->send_req('add_participants', $survey_id, $data, true);
+
+        $response_data = $this->lsJSONRPCClient->add_participants($this->sessionKey, $survey_id, $users_data, true);
+
+        if (!empty($response_data['status'])) {
+            return $response_data['status'];
+        }
+
+        $res = [];
+        foreach ($response_data as $index => $response_data_elem) {
+            $s = new SurveyKey();
+            $s->user_id = $users[$index]->id;
+            $s->name = $survey_id; // TODO get name here
+            $s->token = $response_data_elem['token'];
+            $s->url = 'https://survey.vatsim-germany.org/';
+
+            $s->save();
+            $res[] = $s;
+        }
+        return $res;
     }
 }
