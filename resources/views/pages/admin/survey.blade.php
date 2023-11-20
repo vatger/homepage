@@ -72,7 +72,7 @@
                                     </tr>
                                 @else
                                     @foreach ($keys as $k)
-                                        <tr class="text-center" id="user-{{ $u->id }}">
+                                        <tr class="text-center">
                                             <td>{{ $k->user_id }}</td>
                                             <td>{{ $k->name }}</td>
                                             <td>
