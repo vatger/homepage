@@ -23,7 +23,7 @@ class OSTicketLibrary extends BaseLibrary
         $uri = config('osticket.url') . '/' . $endpoint;
 
         try {
-            return $client->request($method, $uri, ['form_params' => $data]);
+            return $client->request($method, $uri, ['json' => $data]);
         } catch (GuzzleException $e) {
             \Log::info($e->getMessage());
             return false;
