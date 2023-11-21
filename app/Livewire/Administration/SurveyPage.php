@@ -27,7 +27,7 @@ class SurveyPage extends Component
         ],
         [
             'id' => 3,
-            'name' => 'Wahlberechtigt EDFF',
+            'name' => 'Wahlberechtigt EDGG',
         ],
         [
             'id' => 4,
@@ -75,7 +75,7 @@ class SurveyPage extends Component
             case 3:
                 $users = User::with(['vatgerDetails', 'fir'])
                     ->lazy()
-                    ->filter(fn(User $u) => $u->fir?->slug == 'EDFF' && $u->vatgerDetails->is_fir_voter)
+                    ->filter(fn(User $u) => $u->fir?->slug == 'EDGG' && $u->vatgerDetails->is_fir_voter)
                     ->collect();
                 break;
             case 4:
