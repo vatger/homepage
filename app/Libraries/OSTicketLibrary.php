@@ -16,13 +16,14 @@ class OSTicketLibrary extends BaseLibrary
     {
         $client = self::constructClient([
             'header' => [
+                'Accept' => 'application/json',
                 'Authorization' => 'Token ' . config('osticket.token'),
             ],
         ]);
         $uri = config('osticket.url') . '/' . $endpoint;
 
         try {
-            return $client->request($method, $uri, ['body' => $data]);
+            return $client->request($method, $uri, ['form_params' => $data]);
         } catch (GuzzleException $e) {
             \Log::info($e->getMessage());
             return false;
