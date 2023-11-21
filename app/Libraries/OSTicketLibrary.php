@@ -24,6 +24,7 @@ class OSTicketLibrary extends BaseLibrary
         try {
             return $client->request($method, $uri, ['body' => $data]);
         } catch (GuzzleException $e) {
+            \Log::info($e->getMessage());
             return false;
         }
     }
