@@ -14,7 +14,7 @@
                     <div class="d-flex align-items-center mb-2">
                         <div class="flex-1">
                             <h6 class="text-primary mb-2">Ausgewählte Umfrage:</h6>
-                            <select wire:model="selected_survey" class="form-select form-control mt-2" aria-label="Ausgewählte Umfrage">
+                            <select wire:model.live="selected_survey" class="form-select form-control mt-2" aria-label="Ausgewählte Umfrage">
                                 @foreach($surveys as $s)
                                     <option value="{{$s->sid}}" @if($selected_survey == $s->sid) selected @endif>{{ '#' . $s->sid . ' '. $s->surveyls_title }}</option>
                                 @endforeach
@@ -24,9 +24,9 @@
                     <div class="d-flex align-items-center mb-2">
                         <div class="flex-1">
                             <h6 class="text-primary mb-2">Ausgewählte Gruppe:</h6>
-                            <select wire:model="selected_selection" class="form-select form-control mt-2" aria-label="Ausgewählte Gruppe">
+                            <select wire:model.live="selected_selection" class="form-select form-control mt-2" aria-label="Ausgewählte Gruppe">
                                 @foreach($selections as $s)
-                                    <option value="{{$s->id}}" @if($selected_selection == $s->id) selected @endif>{{ $s->name }}</option>
+                                    <option value="{{$s->id}}" @if($selected_selection == $s->id) selected @endif>{{ '#' . $s->id . ' '.$s->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -34,9 +34,9 @@
                     <div class="d-flex align-items-center mb-2">
                         <div class="flex-1">
                             <h6 class="text-primary mb-2">Keys generieren:</h6>
-                            <p>Ausgewählte Umfrage: <code>?</code></p>
-                            <p>Ausgewählte Gruppe: <code>?</code></p>
-                            <button class="btn btn-soft-success">
+                            <p>Ausgewählte Umfrage: <code>{{ $selected_survey }}</code></p>
+                            <p>Ausgewählte Gruppe: <code>{{ $selected_selection }}</code></p>
+                            <button wire:click="create_keys()" wire:loading.attr="disabled" class="btn btn-soft-success">
                                 <i data-feather="plus" class="fea"></i>
                             </button>
                         </div>
