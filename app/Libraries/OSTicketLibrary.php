@@ -17,7 +17,7 @@ class OSTicketLibrary extends BaseLibrary
         $client = self::constructClient([
             'header' => [
                 'Accept' => 'application/json',
-                'Authorization' => 'Token ' . config('osticket.token'),
+                'authorization' => 'Token ' . config('osticket.token'),
             ],
         ]);
         $uri = config('osticket.url') . '/' . $endpoint;
