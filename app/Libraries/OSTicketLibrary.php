@@ -15,9 +15,9 @@ class OSTicketLibrary extends BaseLibrary
     public static function send(string $method, string $endpoint, array $data = []): false|Response
     {
         $client = self::constructClient([
-            'header' => [
+            'headers' => [
                 'Accept' => 'application/json',
-                'authorization' => 'Token ' . config('osticket.token'),
+                'Authorization' => 'Token ' . config('osticket.token'),
             ],
         ]);
         $uri = config('osticket.url') . '/' . $endpoint;
