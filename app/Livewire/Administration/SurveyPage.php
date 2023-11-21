@@ -89,9 +89,13 @@ class SurveyPage extends Component
                 break;
         }
         $count = $users->count();
-        $this->showNoty("Found $count users. Creating tokens.", 'success');
-        $data = $this->ls->add_participants($this->selected_survey, $users);
-        $count = collect($data)->count();
-        $this->showNoty("Created $count tokens.", 'success');
+        $this->showNoty("Found $count users. Creating tokens.", 'success', 20000);
+        try {
+            $data = $this->ls->add_participants($this->selected_survey, $users);
+            $count = collect($data)->count();
+            $this->showNoty("Created $count tokens.", 'success', 20000);
+        } catch (\Exception $e) {
+            $this->showNoty('Failed to create tokens. Forgot to create participant table?', 'error', 20000);
+        }
     }
 }
