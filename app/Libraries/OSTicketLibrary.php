@@ -30,7 +30,7 @@ class OSTicketLibrary extends BaseLibrary
         }
     }
 
-    public static function check_user(User $user): void
+    public static function check_user(User $user): bool
     {
         $result = self::send('POST', 'user/syncUserGroups', [
             'user_id' => strval($user->id),
@@ -39,7 +39,11 @@ class OSTicketLibrary extends BaseLibrary
             'lastname' => $user->lastname,
             'email' => $user->email,
         ]);
+        if (!$result) {
+            return false;
+        }
         $result_data = json_decode($result->getBody()->getContents());
+
         if ($result_data?->usercreated) {
             $user->notify(
                 new BasicNotification(
@@ -53,5 +57,6 @@ class OSTicketLibrary extends BaseLibrary
                 ),
             );
         }
+        return true;
     }
 }
