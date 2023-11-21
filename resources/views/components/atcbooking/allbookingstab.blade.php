@@ -104,7 +104,7 @@
                     @foreach($filtered_bookings as $booking)
                         <tr>
                             <td>
-                                {{ $booking->controller->username_short }}
+                                {{ $booking->controller->username }}
                                 <small>({{ $booking->controller_id }})</small>
                             </td>
                             <td>{{ $booking->station->ident }}</td>
