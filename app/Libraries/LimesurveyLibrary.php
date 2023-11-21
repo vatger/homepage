@@ -136,7 +136,7 @@ class LimesurveyLibrary
             $s->user_id = $users[$index]->id;
             $s->name = $survey->surveyls_title . '#' . $survey_id;
             $s->token = $response_data_elem['token'];
-            $s->url = "https://survey.vatsim-germany.org/index.php?r=survey/index&token=$$s->token&sid=$survey_id&lang=de-informal";
+            $s->url = "https://survey.vatsim-germany.org/index.php?r=survey/index&token=$s->token&sid=$survey_id&lang=de-informal";
 
             $s->save();
             $res[] = $s;
