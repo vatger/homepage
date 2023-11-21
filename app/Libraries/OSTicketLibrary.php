@@ -51,7 +51,7 @@ class OSTicketLibrary extends BaseLibrary
                     "Es wurde ein Account für dich im Ticketsystem angelegt. Dein Loginname lautet: v$user->id mit der Email: $user->email.  Nutze die Funktion 'Passwort vergessen' um dein Passwort zurückzusetzen.",
                     'Tech Leitung',
                     'hier gehts zum Agentenlogin',
-                    'https://support.vatsim-germany.org/scp/',
+                    'https://support.vatsim-germany.org/scp/pwreset.php',
                     Carbon::now()->addDays(14),
                     Carbon::now()->addDays(365),
                 ),
