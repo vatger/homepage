@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import dayjs from 'dayjs';
+import { dayjs } from '@/ts/dayjs';
 import { zroute } from '@/ts/myziggy';
 
 const EVENT_QUERY_COUNT = 9;
@@ -71,7 +71,7 @@ getEvents()
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0">
                                             <span href="javascript:void(0)" class="text-muted" id="event-date-1">
-                                                ${dayjs(e.start_time, 'DD.MM.YYYY HH:mm', 'UTC') + 'z'}
+                                                ${dayjs.utc(e.start_time).format('DD.MM.YYYY HH:mm') + 'z'}
                                             </span>
                                         </li>
                                     </ul>
