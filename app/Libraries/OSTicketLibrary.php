@@ -48,10 +48,16 @@ class OSTicketLibrary extends BaseLibrary
             $user->notify(
                 new BasicNotification(
                     'Dein Account im Ticketsystem',
-                    "Es wurde ein Account für dich im Ticketsystem angelegt. Dein Loginname lautet: v$user->id mit der Email: $user->email.  Nutze die Funktion 'Passwort vergessen' um dein Passwort zurückzusetzen.",
+                    "Es wurde ein Account für dich im Ticketsystem angelegt. Dein Loginname lautet:
+                    <code>v$user->id</code>
+                    mit der Email: 
+                    <code>$user->email</code>
+                    und initialen Passwort:
+                    <code>$result_data->password</code>
+                    Nutze die Funktion 'Passwort vergessen' um dein Passwort zurückzusetzen.",
                     'Tech Leitung',
                     'hier gehts zum Agentenlogin',
-                    'https://support.vatsim-germany.org/scp/pwreset.php',
+                    'https://support.vatsim-germany.org/scp/login.php',
                     Carbon::now()->addDays(14),
                     Carbon::now()->addDays(365),
                 ),
