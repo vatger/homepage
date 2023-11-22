@@ -51,7 +51,11 @@ class MembershipLibrary
         // 2. Handle Teamspeak roles
         TeamSpeakWebQuery::checkUser($user);
         // 3. Handle OS Ticktet
-        OSTicketLibrary::check_user($user);
+        try {
+            OSTicketLibrary::check_user($user);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+        }
         // 4. Handle Bookstack (kb)
 
         // 5. Handle DMS
