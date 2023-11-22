@@ -54,7 +54,7 @@ class OSTicketLibrary extends BaseLibrary
                     <code>$user->email</code>
                     und initialen Passwort:
                     <code>$result_data->password</code>
-                    Nutze die Funktion 'Passwort vergessen' um dein Passwort zurückzusetzen.",
+                    Du wirst nach dem ersten Login aufgefordert dein Passwort zu ändern.",
                     'Tech Leitung',
                     'hier gehts zum Agentenlogin',
                     'https://support.vatsim-germany.org/scp/login.php',

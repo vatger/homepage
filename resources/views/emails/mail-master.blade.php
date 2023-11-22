@@ -32,7 +32,7 @@
         </tr>
         <tr>
             <td style="padding: 24px 24px 15px; color: #000000;">
-                {{ $message_text }}
+                {!! $message_text !!}
             </td>
         </tr>
         @if($link_text && $link_url)
