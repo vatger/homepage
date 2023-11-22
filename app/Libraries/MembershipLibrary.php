@@ -52,7 +52,7 @@ class MembershipLibrary
         TeamSpeakWebQuery::checkUser($user);
         // 3. Handle OS Ticktet
         try {
-            //OSTicketLibrary::check_user($user);
+            OSTicketLibrary::check_user($user);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }

@@ -32,9 +32,11 @@ class OSTicketLibrary extends BaseLibrary
 
     public static function check_user(User $user): bool
     {
+        $roles = $user->service_role_ids(ServiceRoleType::SupportGroup, cast_to_int: true);
+
         $result = self::send('POST', 'user/syncUserGroups', [
             'user_id' => strval($user->id),
-            'dept_ids' => $user->service_role_ids(ServiceRoleType::SupportGroup, cast_to_int: true),
+            'dept_ids' => $roles,
             'firstname' => $user->firstname,
             'lastname' => $user->lastname,
             'email' => $user->email,
