@@ -50,9 +50,12 @@ class MembershipLibrary
         XenForoLibrary::updateForumAccount($user);
         // 2. Handle Teamspeak roles
         TeamSpeakWebQuery::checkUser($user);
-        // 3. kb
+        // 3. Handle OS Ticktet
+        OSTicketLibrary::check_user($user);
+        // 4. Handle Bookstack (kb)
 
-        //
+        // 5. Handle DMS
+
         Log::info('[MembershipLibrary::handleMembershipChange]::' . $user->id . '::Membership Update Triggered!');
     }
 
