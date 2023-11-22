@@ -12,6 +12,7 @@ use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Stevebauman\Purify\Facades\Purify;
 
 class BasicNotificationMail extends Mailable
 {
@@ -51,7 +52,7 @@ class BasicNotificationMail extends Mailable
             with: [
                 'title' => $this->notification->title,
                 'source_name' => $this->notification->source_name,
-                'message_text' => $this->notification->message,
+                'message_text' => Purify::clean($this->notification->message),
                 'link_text' => $this->notification->link_text,
                 'link_url' => $this->notification->link_url,
                 'valid_till' => $this->notification->valid_till,

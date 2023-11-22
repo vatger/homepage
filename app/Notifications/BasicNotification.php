@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notification;
+use Stevebauman\Purify\Facades\Purify;
 use Symfony\Component\Mailer\MailerInterface;
 
 class BasicNotification extends Notification
@@ -45,7 +46,7 @@ class BasicNotification extends Notification
     {
         return [
             'title' => $this->title,
-            'message' => $this->message,
+            'message' => Purify::clean($this->message),
             'source_name' => $this->source_name,
             'link_text' => $this->link_text,
             'link_url' => $this->link_url,

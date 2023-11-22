@@ -80,7 +80,7 @@
                                 </div>
                             </div>
 
-                            <p class="text-muted mb-0">{{ $notification->data['message'] }}</p>
+                            <p class="text-muted mb-0">{!!$notification->data['message'] !!}</p>
 
                         </div>
                     </div>
