@@ -29,7 +29,7 @@ class DiscordApiController extends ApiController
         $data->atc_rating = $user?->vatsimDetails?->rating_atc;
         $data->pilot_rating = $user?->vatsimDetails?->rating_pilot;
         $data->teams = $user
-            ->teams()
+            ?->teams()
             ->map(fn($team) => $team->name)
             ->values()
             ->toArray();
