@@ -71,7 +71,7 @@ getEvents()
                                     <ul class="list-unstyled mb-0">
                                         <li class="list-inline-item me-2 mb-0">
                                             <span href="javascript:void(0)" class="text-muted" id="event-date-1">
-                                                ${dayjs(e.start_time).format('DD.MM.YYYY HH:mm') + 'z'}
+                                                ${dayjs(e.start_time, 'DD.MM.YYYY HH:mm', 'UTC') + 'z'}
                                             </span>
                                         </li>
                                     </ul>
