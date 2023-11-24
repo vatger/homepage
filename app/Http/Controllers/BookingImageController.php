@@ -17,7 +17,7 @@ class BookingImageController extends Controller
     private static array $HEADERS = [
         'Expires' => 0,
         'Pragma' => 'no-cache',
-        'Cache-Control' => 'no-cache, no-store, must-revalidate, max-age=10',
+        'Cache-Control' => 'no-store, max-age=0',
         'Cache-directive' => 'no-cache',
         'Pragma-directive' => 'no-cache',
         'Content-Type' => 'image/png'

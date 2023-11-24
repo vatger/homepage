@@ -1,4 +1,11 @@
 <div>
+    <style>
+        /* This really is quite hacky :) */
+        .nav-item:hover {
+            cursor: pointer;
+        }
+    </style>
+
     <section class="bg-half-170 bg-primary d-table w-100" id="hero-section"
              style="background: url('{{ asset('images/profile/profile_1.png') }}') center center; background-size: cover">
         <div class="bg-overlay" style="background-color: rgb(30 41 58 / 70%);"></div>
