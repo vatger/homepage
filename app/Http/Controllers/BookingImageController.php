@@ -9,19 +9,28 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response as ResponseCodes;
 
 class BookingImageController extends Controller
 {
     private static string $BOOKING_COOKIE_NAME = "vatsim_germany_booking_theme";
+    private static array $HEADERS = [
+        'Expires' => 0,
+        'Pragma' => 'no-cache',
+        'Cache-Control' => 'no-cache, no-store, must-revalidate, max-age=10',
+        'Cache-directive' => 'no-cache',
+        'Pragma-directive' => 'no-cache',
+        'Content-Type' => 'image/png'
+    ];
 
     public function serveBookingImage(Request $request, string $image_id): Response | JsonResponse | BinaryFileResponse
     {
         if (!Auth::check()) {
             if ($this->_getDisplayMode($request) == "dark") {
-                return response()->file(storage_path('app/public/booking_image/error_dark.png'));
+                return response()->file(storage_path('app/public/booking_image/error_dark.png'), self::$HEADERS);
             }
 
-            return response()->file(storage_path("app/public/booking_image/error.png"));
+            return response()->file(storage_path("app/public/booking_image/error.png"), self::$HEADERS);
         }
 
         // http required for internal traffic
@@ -30,9 +39,7 @@ class BookingImageController extends Controller
         $response = Http::get($url);
 
         if ($response->successful()) {
-            $contentType = $response->header("Content-Type");
-
-            return response($response->body())->header('Content-Type', $contentType);
+            return response($response->body(), ResponseCodes::HTTP_OK, self::$HEADERS);
         }
 
         return response()->json(['error' => 'Not found'], 404);
