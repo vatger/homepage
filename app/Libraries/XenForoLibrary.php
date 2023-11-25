@@ -152,7 +152,7 @@ class XenForoLibrary extends BaseLibrary
         // CHECK IF USER IS BANNED
         if ($user->is_currently_forum_banned) {
             $dataArray['secondary_group_ids'] = [];
-            $dataArray['secondary_group_ids'][] = config('forum.suspendedGroup');
+            $dataArray['secondary_group_ids'][] = config('forum.bannedGroup');
         }
 
         $dataArray['custom_title'] = $user->id;
