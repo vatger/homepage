@@ -50,6 +50,11 @@ require_once 'web/membership.php';
 ##############
 require_once 'web/events.php';
 
+##################
+# BOOKING IMAGES #
+##################
+require_once 'web/booking_images.php';
+
 ###################
 # GETTING STARTED #
 ###################
