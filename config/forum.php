@@ -11,4 +11,5 @@ return [
     'guestGroup' => env('FORUM_GUEST_GROUP', 55), // if a user has no secondary group he gets this group
     'bannedGroup' => env('FORUM_BANNED_GROUP', null),
     'inactiveGroup' => env('FORUM_INACTIVE_GROUP', null),
+    'groups' => env('FORUM_GROUPS', ''),
 ];

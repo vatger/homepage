@@ -252,21 +252,14 @@ class XenForoLibrary extends BaseLibrary
         return false;
     }
 
-    /**
-     * Delete an forum account.
-     *
-     * @param [type] $forumId [description]
-     * @param [type] $vid     [description]
-     *
-     * @return [type] [description]
-     */
-    public static function deleteForumAccount($forumId, $vid)
+    public static function deleteForumAccount(User $user)
     {
-        $result = self::_sendAPIDeleteCommand('users/' . $forumId, ['rename_to' => $vid]);
+        $forumId = $user->settings->forum_id;
+        $vid = $user->id;
+        $result = self::send('DELETE', 'users/' . $forumId, ['rename_to' => $vid]);
         if ($result && 200 == $result->getStatusCode()) {
             return true;
         }
-
         return false;
     }
 
@@ -288,6 +281,11 @@ class XenForoLibrary extends BaseLibrary
             $forumUserObject = $response->user;
             return $forumUserObject->username;
         });
+    }
+
+    public static function getGroupName(int $id): ?string
+    {
+        $array = config('forum.groups');
     }
 
     /**

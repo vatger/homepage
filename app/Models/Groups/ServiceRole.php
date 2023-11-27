@@ -2,10 +2,10 @@
 
 namespace App\Models\Groups;
 
+use App\Libraries\OSTicketLibrary;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
-use Spatie\Permission\Models\Role;
 
 class ServiceRole extends Model
 {
@@ -25,11 +25,15 @@ class ServiceRole extends Model
 
     public function getServiceRoleNameAttribute(): ?string
     {
-        return match ($this->service_type) {
-            ServiceRoleType::TeamspeakServergroup => TeamSpeakWebQuery::getServergroupName(intval($this->role)) ?? '?',
-            ServiceRoleType::ForumGroup => '?',
-            default => null,
-        };
+        try {
+            return match ($this->service_type) {
+                ServiceRoleType::TeamspeakServergroup => TeamSpeakWebQuery::getServergroupName(intval($this->service_role)) ?? '?',
+                ServiceRoleType::SupportGroup => OSTicketLibrary::get_group_name(intval($this->service_role)) ?? '?',
+                default => null,
+            };
+        } catch (Exception $e) {
+        }
+        return null;
     }
 
     protected static function booted(): void

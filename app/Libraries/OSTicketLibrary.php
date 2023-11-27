@@ -30,6 +30,21 @@ class OSTicketLibrary extends BaseLibrary
         }
     }
 
+    public static function get_group_name(int $id): ?string
+    {
+        $result = self::send('GET', 'dept/getDepartments');
+        if (!$result) {
+            return null;
+        }
+        $result_data = json_decode($result->getBody()->getContents());
+        foreach ($result_data?->departments as $d) {
+            if ($d?->id == $id) {
+                return $d?->name;
+            }
+        }
+        return null;
+    }
+
     public static function check_user(User $user): bool
     {
         $roles = $user->service_role_ids(ServiceRoleType::SupportGroup, cast_to_int: true);
