@@ -119,13 +119,13 @@ class VikunjaLibrary extends BaseLibrary
         $jwt_save = $this->jwt_token;
         $pwd = Str::random();
 
-        $result = $this->send('POST', 'register', ['email' => $user->email, 'username' => $user->id, 'password' => $pwd]);
+        $result = $this->send('POST', 'register', ['email' => $user->email, 'username' => strval($user->id), 'password' => $pwd]);
 
         $user->notify(
             new BasicNotification(
                 'Dein Account im Ticketsystem',
                 "Es wurde ein Account für dich im Vikunja angelegt. Dein Loginname lautet:
-                    <code>v$user->id</code>
+                    <code>$user->id</code>
                     mit der Email: 
                     <code>$user->email</code>
                     Bitte verwende die Passwort vergessen Funktion um dein Passwort für den erstmaligen Login zu setzen",
