@@ -38,6 +38,8 @@ class VikunjaLibrary extends BaseLibrary
         ]);
 
         $uri = config('vikunja.url') . '/' . $endpoint;
+        var_dump($uri);
+        var_dump($data);
 
         try {
             if (empty($data)) {
@@ -91,7 +93,6 @@ class VikunjaLibrary extends BaseLibrary
             $to_add = $new_teams;
         }
 
-        var_dump($to_delete);
         foreach ($to_delete as $teamdel) {
             var_dump($teamdel);
             $result = $this->send('DELETE', "teams/$teamdel/members/$userid");
