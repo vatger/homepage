@@ -53,7 +53,14 @@
                 @endif
             </button>
         </div>
-
+        @if(!$user->vatgerDetails->can_change_fir)
+            <div class="row mt-4">
+                <div class="alert bg-soft-primary fw-medium" role="alert">
+                    <i data-feather="info" class="fea fs-5 align-middle me-1"></i>
+                    {{ $user->vatgerDetails->can_change_fir_reason }}
+                </div>
+            </div>
+        @endif
         @if($user->fir)
             <div class="row">
                 <div class="col-md-6 mt-4 pt-2">

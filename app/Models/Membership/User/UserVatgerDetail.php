@@ -5,6 +5,8 @@ namespace App\Models\Membership\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
 
 class UserVatgerDetail extends Model
 {
@@ -91,21 +93,41 @@ class UserVatgerDetail extends Model
 
     public function getCanChangeFirAttribute(): bool
     {
+        return empty($this->getCanChangeFirReasonAttribute());
+    }
+
+    public function getCanChangeFirReasonAttribute(): ?string
+    {
+        //dd($this->user->settings->language);
+        if (!$this->getIsVatgerMemberAttribute()) {
+            return __('vatger-details.nomember', locale: $this->user->settings->language);
+        }
+
         $latest_fir = $this->user
             ->firs()
             ->orderByDesc('joined_at')
             ->first();
-        if (!$this->getIsVatgerMemberAttribute()) {
-            return false;
-        }
+
         if (empty($latest_fir)) {
-            return true;
+            return null;
         }
 
-        if (Carbon::now()->diffInDays($latest_fir->joined_at) >= 90) {
-            return true;
+        $joined = Carbon::create($latest_fir->joined_at);
+        $diff = Carbon::now()->diffInDays($joined);
+        if ($diff < 90) {
+            return __(
+                'vatger-details.lastfir',
+                [
+                    'leftdate' => $joined->format('d.m.Y H:i'),
+                    'waitdays' => 90 - $diff,
+                    'waitdate' => Carbon::create($joined)
+                        ->addDays(90)
+                        ->format('d.m.Y H:i'),
+                ],
+                locale: $this->user->settings->language,
+            );
         }
 
-        return false;
+        return null;
     }
 }
