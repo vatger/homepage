@@ -38,9 +38,6 @@ class VikunjaLibrary extends BaseLibrary
         ]);
 
         $uri = config('vikunja.url') . '/' . $endpoint;
-        var_dump($uri);
-        var_dump($data);
-
         try {
             if (empty($data)) {
                 return $client->request($method, $uri);
@@ -48,7 +45,6 @@ class VikunjaLibrary extends BaseLibrary
                 return $client->request($method, $uri, ['json' => $data]);
             }
         } catch (GuzzleException $e) {
-            var_dump($e->getMessage());
             Log::info($e->getMessage());
             return false;
         }
@@ -95,17 +91,13 @@ class VikunjaLibrary extends BaseLibrary
         }
 
         foreach ($to_delete as $teamdel) {
-            var_dump($teamdel);
             $result = $this->send('DELETE', "teams/$teamdel/members/$userid");
-
             if ($result->getStatusCode() != 200) {
                 Log::info("Error member $user->id could not be deleted from team $teamdel");
             }
         }
 
-        var_dump($to_add);
         foreach ($to_add as $teamadd) {
-            var_dump($teamadd);
             $result = $this->send('PUT', "teams/$teamadd/members", ['admin' => false, 'id' => 0, 'username' => strval($user->id)]);
             if ($result->getStatusCode() != 201) {
                 Log::info("Error member $user->id could not be added to team $teamdel");
