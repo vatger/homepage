@@ -38,7 +38,6 @@ class VikunjaLibrary extends BaseLibrary
         ]);
 
         $uri = config('vikunja.url') . '/' . $endpoint;
-        var_dump($uri);
         try {
             if (empty($data)) {
                 return $client->request($method, $uri);
@@ -46,7 +45,6 @@ class VikunjaLibrary extends BaseLibrary
                 return $client->request($method, $uri, ['json' => $data]);
             }
         } catch (GuzzleException $e) {
-            var_dump($e->getMessage());
             Log::info($e->getMessage());
             return false;
         }
@@ -55,10 +53,8 @@ class VikunjaLibrary extends BaseLibrary
     public function check_user(User $user): bool
     {
         $new_teams = $user->service_role_ids(ServiceRoleType::VikunjaGroup, cast_to_int: true);
-        $result = $this->send('GET', "user?s=$user->id");
-        var_dump($result);
+        $result = $this->send('GET', "users?s=$user->id");
         $result_data = json_decode($result->getBody()->getContents());
-        var_dump($result_data);
         if ($result_data == null) {
             // no user exists
             if (!$new_teams) {
