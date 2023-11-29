@@ -87,7 +87,9 @@ class VikunjaLibrary extends BaseLibrary
         $to_delete = array_diff($old_teams, $new_teams);
         $to_add = array_diff($new_teams, $old_teams);
 
+        var_dump($to_delete);
         foreach ($to_delete as $teamdel) {
+            var_dump($teamdel);
             $result = $this->send('DELETE', "teams/$teamdel/members/$userid");
 
             if ($result->getStatusCode() != 200) {
@@ -95,7 +97,9 @@ class VikunjaLibrary extends BaseLibrary
             }
         }
 
+        var_dump($to_add);
         foreach ($to_add as $teamadd) {
+            var_dump($teamadd);
             $result = $this->send('PUT', "teams/$teamadd/members", ['admin' => false, 'created' => '', 'id' => 0, 'username' => $user->id]);
             if ($result->getStatusCode() != 201) {
                 Log::info("Error member $user->id could not be added to team $teamdel");
