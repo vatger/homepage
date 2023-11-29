@@ -48,7 +48,7 @@ class VikunjaLibrary extends BaseLibrary
                 return $client->request($method, $uri, ['json' => $data]);
             }
         } catch (GuzzleException $e) {
-            var_dump($e);
+            var_dump($e->getMessage());
             Log::info($e->getMessage());
             return false;
         }
