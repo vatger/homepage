@@ -22,7 +22,7 @@ class VikunjaLibrary extends BaseLibrary
     public function __construct()
     {
         $this->jwt_token = $this->login(config('vikunja.username'), config('vikunja.password'));
-        if ($this->jwt_token . isEmptyOrNullString()) {
+        if (empty($this->jwt_token)) {
             throw new \Exception('Login to vikunja instance failed');
         }
     }
