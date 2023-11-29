@@ -84,8 +84,8 @@ class VikunjaLibrary extends BaseLibrary
             }
         }
 
-        $to_delete = array_filter($old_teams, $new_teams);
-        $to_add = array_filter($new_teams, $old_teams);
+        $to_delete = array_diff($old_teams, $new_teams);
+        $to_add = array_diff($new_teams, $old_teams);
 
         foreach ($to_delete as $teamdel) {
             $result = $this->send('DELETE', "teams/$teamdel/members/$userid");
