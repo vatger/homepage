@@ -129,7 +129,7 @@ class VikunjaLibrary extends BaseLibrary
         );
 
         $this->jwt_token = $this->login($user->id, $pwd);
-        if ($this->jwt_token . isEmptyOrNullString()) {
+        if (empty($this->jwt_token)) {
             $this->jwt_token = $jwt_save;
             return false;
         }
