@@ -25,6 +25,7 @@ class VikunjaLibrary extends BaseLibrary
         if (empty($this->jwt_token)) {
             throw new \Exception('Login to vikunja instance failed');
         }
+        Log::info('Login successful');
     }
 
     private function send(string $method, string $endpoint, array $data = []): false|Response
