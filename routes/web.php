@@ -82,6 +82,11 @@ Route::get('resources/media/{mediaFilePath}', [MediaController::class, 'showPubl
 ###################
 Route::get('language/{lang?}', function ($lang = 'de') {
     Session::put('language', $lang);
+    if (Auth::check()) {
+        $settings = Auth::user()->settings;
+        $settings->language = $lang;
+        $settings->save();
+    }
     return redirect()
         ->back()
         ->withInput();
