@@ -40,7 +40,11 @@ class VikunjaLibrary extends BaseLibrary
         $uri = config('vikunja.url') . '/' . $endpoint;
 
         try {
-            return $client->request($method, $uri, ['json' => $data]);
+            if (empty($data)) {
+                return $client->request($method, $uri);
+            } else {
+                return $client->request($method, $uri, ['json' => $data]);
+            }
         } catch (GuzzleException $e) {
             Log::info($e->getMessage());
             return false;
