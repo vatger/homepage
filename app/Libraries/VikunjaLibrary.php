@@ -106,7 +106,7 @@ class VikunjaLibrary extends BaseLibrary
         var_dump($to_add);
         foreach ($to_add as $teamadd) {
             var_dump($teamadd);
-            $result = $this->send('PUT', "teams/$teamadd/members", ['admin' => false, 'id' => 0, 'username' => $user->id]);
+            $result = $this->send('PUT', "teams/$teamadd/members", ['admin' => false, 'id' => 0, 'username' => strval($user->id)]);
             if ($result->getStatusCode() != 201) {
                 Log::info("Error member $user->id could not be added to team $teamdel");
             }
