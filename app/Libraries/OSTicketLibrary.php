@@ -12,19 +12,34 @@ use GuzzleHttp\Psr7\Response;
 
 class OSTicketLibrary extends BaseLibrary
 {
-    public static function send(string $method, string $endpoint, array $data = []): false|Response
+    public static function send(string $method, string $endpoint, array $data = [], bool $official = false): false|Response
     {
-        $client = self::constructClient([
-            'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Token ' . config('osticket.token'),
-            ],
-        ]);
-        $uri = config('osticket.url') . '/' . $endpoint;
+        if ($official) {
+            $client = self::constructClient([
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'X-API-Key' => config('osticket.token_official'),
+                ],
+            ]);
+        } else {
+            $client = self::constructClient([
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Token ' . config('osticket.token'),
+                ],
+            ]);
+        }
+
+        if ($official) {
+            $uri = config('osticket.url_official') . '/' . $endpoint;
+        } else {
+            $uri = config('osticket.url') . '/' . $endpoint;
+        }
 
         try {
             return $client->request($method, $uri, ['json' => $data]);
         } catch (GuzzleException $e) {
+            echo $e->getMessage();
             \Log::info($e->getMessage());
             return false;
         }
@@ -81,5 +96,30 @@ class OSTicketLibrary extends BaseLibrary
             );
         }
         return true;
+    }
+    public static function create_ticket(string $name, string $mail, string $subject, string $content, int $supporttype = 0, int $area = 0): bool
+    {
+        $result = self::send(
+            'POST',
+            'tickets.json',
+            [
+                'name' => $name,
+                'email' => $mail,
+                'subject' => $subject,
+                'message' => $content,
+                'topicId' => self::map_topic_id($supporttype, $area),
+            ],
+            true,
+        );
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private static function map_topic_id(int $supporttype, int $area): int
+    {
+        $topicId = 14;
+        return $topicId;
     }
 }

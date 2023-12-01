@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use phpDocumentor\Reflection\Types\Object_;
@@ -38,6 +39,7 @@ class VikunjaLibrary extends BaseLibrary
         ]);
 
         $uri = config('vikunja.url') . '/' . $endpoint;
+
         try {
             if (empty($data)) {
                 return $client->request($method, $uri);
@@ -45,6 +47,7 @@ class VikunjaLibrary extends BaseLibrary
                 return $client->request($method, $uri, ['json' => $data]);
             }
         } catch (GuzzleException $e) {
+            echo $e->getMessage();
             Log::info($e->getMessage());
             return false;
         }
@@ -181,5 +184,47 @@ class VikunjaLibrary extends BaseLibrary
             }
         }
         return null;
+    }
+
+    public function get_date()
+    {
+    }
+    public function create_task(
+        string $subject,
+        string $content,
+        string $sender,
+        string $sender_mail,
+        int $supporttype = 0,
+        int $area = 0,
+        array $attachments = [],
+    ): bool {
+        $map = $this->map_project_and_label($supporttype, $area);
+
+        $content = nl2br("Anfrage von: $sender, $sender_mail: \n \n $content");
+        $due_date = new \DateTime('now', new \DateTimeZone('Europe/Berlin'));
+        $due_date->add(\DateInterval::createFromDateString('2 day'));
+        $due_date->setTimezone(new \DateTimeZone('UTC'));
+        echo $due_date->format('Y-m-d\TH:i:s\z');
+
+        $result = $this->send('PUT', "projects/$map->project_id", [
+            'description' => $content,
+            'done' => false,
+            'due_date' => $due_date->format('Y-m-d\TH:i:s\Z'),
+            'project_id' => $map->project_id,
+            'title' => $subject,
+        ]);
+
+        if ($result) {
+            $result_data = json_decode($result->getBody()->getContents());
+            $result = $this->send('PUT', "tasks/$result_data->id/labels", ['label_id' => $map->label]);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private function map_project_and_label(int $supporttype, int $area): object
+    {
+        $map = (object) ['label' => 2, 'project_id' => 4];
+        return $map;
     }
 }
