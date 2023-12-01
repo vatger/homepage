@@ -47,8 +47,8 @@
                 <li class="has-submenu parent-menu-item">
                     <a href="javascript:void(0)">@lang('navigation.piloten.titel')</a><span class="menu-arrow"></span>
                     <ul class="submenu">
-                        <li><a href="{{ route('redirect.knowledgebase.start-pilot') }}" class="sub-menu-item">@lang('navigation.piloten.erste-schritte')</a></li>
-                        <li><a href="{{ route('redirect.knowledgebase.training-pilot') }}" class="sub-menu-item">@lang('navigation.piloten.training')</a></li>
+                        <li><a href="{{ route('redirect.knowledgebase.start-pilot') }}" class="sub-menu-item" target="_blank">@lang('navigation.piloten.erste-schritte')</a></li>
+                        <li><a href="{{ route('redirect.knowledgebase.training-pilot') }}" class="sub-menu-item" target="_blank">@lang('navigation.piloten.training')</a></li>
                         <li><a href="{{ route('pilots.aerodromes.viewall') }}" class="sub-menu-item">@lang('navigation.piloten.flugplaetze')</a></li>
                         <li><a href="{{ route('redirect.vatger-tours') }}" class="sub-menu-item">VATGER Touren</a></li>
                     </ul>
@@ -57,10 +57,11 @@
                 <li class="has-submenu parent-menu-item">
                     <a href="javascript:void(0)">@lang('navigation.lotsen.titel')</a><span class="menu-arrow"></span>
                     <ul class="submenu">
-                        <li><a href="{{ route('redirect.knowledgebase.start-atc') }}" class="sub-menu-item">@lang('navigation.lotsen.erste-schritte')</a></li>
+                        <li><a href="{{ route('redirect.knowledgebase.start-atc') }}" target="_blank" class="sub-menu-item">@lang('navigation.lotsen.erste-schritte')</a></li>
                         <li><a href="{{ route('controllers.booking') }}" class="sub-menu-item">@lang('navigation.user.booking')</a></li>
-                        <li><a href="{{ route('redirect.training-center') }}" class=" sub-menu-item">ATC Training</a></li>
-                        <li><a href="{{ route("redirect.support.feedback") }}" class="sub-menu-item">@lang('navigation.lotsen.feedback')</a></li>
+                        <li><a href="{{ route('redirect.training-center') }}" target="_blank" class=" sub-menu-item">ATC Training</a></li>
+                        <li><a href="{{ route("redirect.sectorfiles") }}" target="_blank" class="sub-menu-item">Sectorfiles</a></li>
+                        <li><a href="{{ route("redirect.support.feedback") }}" target="_blank" class="sub-menu-item">@lang('navigation.lotsen.feedback')</a></li>
                     </ul>
                 </li>
 
@@ -68,9 +69,9 @@
                     <a href="javascript:void(0)">@lang('navigation.community.titel')</a><span class="menu-arrow"></span>
                     <ul class="submenu">
                         <li><a href="{{ route('redirect.ts3') }}" class="sub-menu-item">@lang('navigation.community.teamspeak')</a></li>
-                        <li><a href="{{ route('redirect.board') }}" class="sub-menu-item">@lang('navigation.community.forum')</a></li>
-                        <li><a href="{{ route('redirect.discord') }}" class="sub-menu-item">@lang('navigation.community.discord')</a></li>
-                        <li><a href="{{ route('redirect.knowledgebase') }}" class="sub-menu-item">@lang('navigation.community.wiki')</a></li>
+                        <li><a href="{{ route('redirect.board') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.forum')</a></li>
+                        <li><a href="{{ route('redirect.discord') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.discord')</a></li>
+                        <li><a href="{{ route('redirect.knowledgebase') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.wiki')</a></li>
                         <li><a href="{{ route('redirect.spreadshop') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.fan-shop')</a></li>
                     </ul>
                 </li>
@@ -78,8 +79,8 @@
                 <li class="has-submenu parent-menu-item">
                     <a href="javascript:void(0)">@lang('navigation.hilfe.titel')</a><span class="menu-arrow"></span>
                     <ul class="submenu">
-                        <li><a href="{{ route('redirect.support') }}" class="sub-menu-item">@lang('navigation.hilfe.support')</a></li>
-                        <li><a href="{{ route('redirect.knowledgebase.contact') }}" class="sub-menu-item">@lang('navigation.hilfe.personal')</a></li>
+                        <li><a href="{{ route('redirect.support') }}" target="_blank" class="sub-menu-item">@lang('navigation.hilfe.support')</a></li>
+                        <li><a href="{{ route('redirect.knowledgebase.contact') }}" target="_blank" class="sub-menu-item">@lang('navigation.hilfe.personal')</a></li>
                     </ul>
                 </li>
 
