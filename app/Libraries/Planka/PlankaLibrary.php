@@ -17,6 +17,9 @@ enum ResponseStatus
     case RESPONSE_ERROR;
 }
 
+/**
+ * @deprecated
+ */
 class PlankaLibrary
 {
     use HasProjectConcern, HasUserConcern;

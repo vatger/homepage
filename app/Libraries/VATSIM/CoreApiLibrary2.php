@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Libraries\VATSIM;
+
+use App\Libraries\BaseLibrary;
+use App\Models\Membership\User\User;
+use Carbon\Carbon;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
+use function Laravel\Prompts\select;
+use function Symfony\Component\String\u;
+
+class CoreApiLibrary2 extends BaseLibrary
+{
+    public static function send(string $type, string $endpoint, array $data = []): array|object|null
+    {
+        $apikey = config('vatsim.api.token2');
+        $uri = config('vatsim.api.base') . '/v2/' . ltrim($endpoint, '/');
+        $type = strtoupper($type);
+        $client = self::constructClient([
+            'headers' => [
+                'Accept' => 'application/json',
+                'X-API-Key' => $apikey,
+            ],
+        ]);
+        $res = null;
+        try {
+            if (empty($data)) {
+                $res = $client->request($type, $uri);
+            } elseif ($type != 'GET') {
+                $res = $client->request($type, $uri, ['json' => $data]);
+            } else {
+                $res = $client->request($type, $uri, ['query' => $data]);
+            }
+        } catch (GuzzleException $e) {
+        }
+        $json = json_decode($res?->getBody()?->getContents());
+        return $json;
+    }
+
+    private static function cache_expired(string $key, int $max_cache_time): bool
+    {
+        if (!Cache::has($key)) {
+            return true;
+        }
+        $saved_timestamp = Cache::get($key);
+        $diff = Carbon::now()->timestamp - $saved_timestamp;
+        return $diff > $max_cache_time;
+    }
+
+    public static function updateMember(User $user, int $max_cache_time = 60 * 60 * 12): void
+    {
+        $cache_key = "CoreApiLibrary2.last_member_refresh.$user->id";
+        if (!self::cache_expired($cache_key, $max_cache_time)) {
+            return;
+        }
+        $result = self::send('GET', "members/$user->id");
+        self::insertMemberData($user, $result);
+        Cache::put($cache_key, Carbon::now()->timestamp);
+    }
+
+    public static function updateSubdivisionMembers(int $offset, int $limit = 100): int
+    {
+        $result = self::send('GET', 'orgs/subdivision/GER', [
+            'include_inactive' => true,
+            'limit' => $limit,
+            'offset' => $offset,
+        ]);
+        $count = $result->count;
+        $new_offset = $offset;
+        foreach ($result->items as $data) {
+            $user = User::find($data->id);
+            if ($user) {
+                $cache_key = "CoreApiLibrary2.last_member_refresh.$user->id";
+                self::insertMemberData($user, $data);
+                Cache::put($cache_key, Carbon::now()->timestamp);
+            }
+
+            $new_offset++;
+        }
+
+        if ($new_offset >= $count) {
+            $new_offset = 0;
+        }
+        return $new_offset;
+    }
+
+    private static function insertMemberData(User $user, object $data): void
+    {
+        $user->update([
+            'firstname' => $data->name_first,
+            'lastname' => $data->name_last,
+            'email' => $data->email,
+        ]);
+        $user->vatsimDetails->update([
+            'rating_atc' => $data->rating,
+            'rating_pilot' => $data->pilotrating,
+            'rating_military' => $data->militaryrating,
+            'region_code' => $data->region_id,
+            'region_name' => $user->vatsimDetails->region_code == $data->region_id ? $user->vatsimDetails->region_name : '',
+            'division_code' => $data->division_id,
+            'division_name' => $user->vatsimDetails->division_code == $data->division_id ? $user->vatsimDetails->division_name : '',
+            'subdivision_code' => $data->subdivision_id,
+            'subdivision_name' => $user->vatsimDetails->subdivision_code == $data->subdivision_id ? $user->vatsimDetails->subdivision_name : '',
+            'last_rating_change_at' => $data->lastratingchange,
+        ]);
+    }
+}
