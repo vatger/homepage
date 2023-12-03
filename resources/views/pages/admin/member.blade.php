@@ -225,7 +225,7 @@
 
                                 <div class="tab-pane fade" id="danger-pill" role="tabpanel" aria-labelledby="danger-pill">
                                     <p class="text-muted mb-0">
-                                        WIP
+                                        <button wire:click="force_member_update()">force member update</button>
                                     </p>
                                 </div>
                                 <!--end teb pane-->
