@@ -2,19 +2,13 @@
 
 namespace App\Livewire;
 
+use App\Libraries\OSTicketLibrary;
 use App\Libraries\VikunjaLibrary;
 use App\Livewire\Helpers\NotyTrait;
-use App\Livewire\Helpers\PaginationTrait;
-use App\Livewire\Helpers\SearchTrait;
-use App\Models\Membership\User\User;
-use App\Models\Navigation\Aerodrome;
+use App\Rules\HcaptchaValidator;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\Locked;
-use Livewire\Attributes\Url;
 use Livewire\Component;
-use Livewire\Features\SupportRedirects\Redirector;
-use phpDocumentor\Reflection\Types\Integer;
 
 class SupportPage extends Component
 {
@@ -45,67 +39,99 @@ class SupportPage extends Component
 
         return view('pages.support')->with([
             'supporttype' => [
-                (object) ['name' => 'Feature Request', 'id' => '1'],
-                (object) ['name' => 'Bug Report', 'id' => '2'],
-                (object) ['name' => 'Zugangsdaten', 'id' => '3'],
-                (object) ['name' => 'Sonstiges', 'id' => '4'],
+                (object) ['name' => 'Feature Request', 'id' => '1', 'areas' => ['1', '2']],
+                (object) ['name' => 'Bug Report', 'id' => '2', 'areas' => ['1', '2']],
+                (object) ['name' => __('support.text-error-kb'), 'id' => '3', 'areas' => ['2', '3', '4', '5', '6', '8']],
+                (object) ['name' => __('support.text-credentials'), 'id' => '4', 'areas' => ['1', '2', '3']],
+                (object) ['name' => __('support.text-others'), 'id' => '5', 'areas' => ['1', '2', '3', '4', '5', '6', '7', '8']],
+                (object) ['name' => 'ATCO / IVAO Rating Transfer', 'id' => '6', 'areas' => ['4']],
             ],
             'areas' => [
-                (object) ['id' => '1', 'name' => 'Forum', 'supporttypes' => ['1', '2']],
-                (object) ['id' => '2', 'name' => 'Homepage', 'supporttypes' => ['2', '3']],
-                (object) ['id' => '3', 'name' => 'Knowledgebase', 'supporttypes' => ['2', '3']],
-                (object) ['id' => '4', 'name' => 'DMS', 'supporttypes' => ['1', '3']],
-                (object) ['id' => '5', 'name' => 'E-Mail', 'supporttypes' => ['1', '3']],
+                (object) ['id' => '1', 'name' => 'Tech'],
+                (object) ['id' => '2', 'name' => 'NAV'],
+                (object) ['id' => '3', 'name' => 'Event'],
+                (object) ['id' => '4', 'name' => 'ATC Training Department'],
+                (object) ['id' => '5', 'name' => 'Pilot Training Department'],
+                (object) ['id' => '6', 'name' => __('support.text-pilot-rep')],
+                (object) ['id' => '7', 'name' => __('support.text-director')],
+                (object) ['id' => '8', 'name' => __('support.text-others')],
             ],
 
             'user' => $user,
         ]);
     }
+    private function choose_system(): string
+    {
+        $ret = 'T';
+        if ($this->chosen_area == '1') {
+            if ($this->chosen_sup_type == '1' || $this->chosen_sup_type == '2') {
+                $ret = 'V';
+            }
+        }
+        if ($this->chosen_sup_type == '3') {
+            $ret = 'V';
+        }
+        return $ret;
+    }
     public function send()
     {
+        $this->validate(['send' => ['required', new HcaptchaValidator()]]);
+
+        $this->showNoty('Send');
+        return;
         if ($this->chosen_sup_type == 0) {
-            $this->showNoty('Bitte Supporttyp auswählen', 'error');
+            $this->showNoty(__('support.text-missing-supporttype'), 'error');
             return;
         }
 
         if ($this->chosen_area == 0) {
-            $this->showNoty('Bitte Bereich auswählen', 'error');
+            $this->showNoty(__('support.text-missing-area'), 'error');
             return;
         }
 
         if (empty($this->mail)) {
-            $this->showNoty('Bitte Mailadresse eingeben', 'error');
+            $this->showNoty(__('support.text-missing-mail'), 'error');
             return;
         } else {
             if (!filter_var($this->mail, FILTER_VALIDATE_EMAIL)) {
-                $this->showNoty('Bitte gültige Mailadresse eingeben', 'error');
+                $this->showNoty(__('support.text-wrong-mail'), 'error');
                 return;
             }
         }
 
         if (empty($this->subject)) {
-            $this->showNoty('Bitte Betreff eingeben', 'error');
+            $this->showNoty(__('support.missing-subject'), 'error');
             return;
         }
 
         if (empty($this->content)) {
-            $this->showNoty('Bitte Nachricht eingeben', 'error');
+            $this->showNoty(__('support.missing-content'), 'error');
             return;
         }
 
         if (empty($this->name)) {
-            $this->showNoty('Bitte Namen eingeben', 'error');
+            $this->showNoty(__('support.text-missing-name'), 'error');
             return;
         }
 
-        $L = new VikunjaLibrary();
-        $result = $L->create_task($this->subject, $this->content, "$this->name $this->cid", $this->mail, $this->chosen_sup_type, $this->chosen_area);
-        /*$this->showNoty('Hat geklappt', 'success');
+        if ($this->choose_system() == 'T') {
+            $result = OSTicketLibrary::create_ticket(
+                $this->name,
+                $this->mail,
+                $this->subject,
+                $this->content,
+                $this->chosen_sup_type,
+                $this->chosen_area,
+            );
+        } else {
+            $L = new VikunjaLibrary();
+            $result = $L->create_task($this->subject, $this->content, $this->cid, $this->chosen_sup_type, $this->chosen_area);
+        }
 
         if ($result) {
-            $this->showNoty('Hat geklappt', 'success');
+            $this->showNoty(__('support.text-success'), 'success');
         } else {
-            $this->showNoty('Hat nicht geklappt', 'error');
-        }*/
+            $this->showNoty(__('support.text-fail'), 'error');
+        }
     }
 }

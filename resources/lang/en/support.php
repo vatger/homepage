@@ -1,6 +1,32 @@
 <?php
 
 return [
-    'text-choose_cat' => 'Please choose a support category',
+    'text-choose-cat' => 'Please choose a support category',
+    'text-choose-area' => 'Please choose a support area',
+    'text-name' => 'Your name',
+    'text-mail' => 'Your  E-Mail adress',
+    'text-cid' => 'Your VATSIM-ID',
+    'text-subject' => 'Subject',
+    'text-content' => 'Your message',
     'text-send' => 'Send request',
+    'text-success' =>
+        'Thank you for reaching out. Your request was sent successfully. A member of our team will get back to you as soon as possible.',
+    'text-fail' => 'Something went wrong. Please try to submit your request via out ticket system',
+    'text-missing-name' => 'Your name is missing',
+    'text-missing-content' => 'Content is missing',
+    'text-missing-subject' => 'Subject is missing',
+    'text-wrong-mail' => 'Please enter a valid E-Mail adress',
+    'text-missing-mail' => 'E-Mail adress is missing',
+    'text-missing-area' => 'Support area is missing',
+    'text-missing-supporttype' => 'Support category is missing',
+    'text-error-kb' => 'Mistake in Knowledgebase article',
+    'text-credentials' => 'Credentials',
+    'text-others' => 'Other',
+    'text-director' => 'Director',
+    'text-pilot-rep' => 'Pilot representation',
+    'text-no-credentials' =>
+        'Please note that your message content is publicly visible to everyone. Therefore, please do not write any credentials or personal data in your message. For such cases, please use the category Credentials or Other',
+    'text-check-board' =>
+        'Please check whether a bug report or feature request already exists for your topic before creating it. You can find existing bug reports and feature requests here',
+    'text-here' => 'here',
 ];

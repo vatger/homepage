@@ -189,22 +189,14 @@ class VikunjaLibrary extends BaseLibrary
     public function get_date()
     {
     }
-    public function create_task(
-        string $subject,
-        string $content,
-        string $sender,
-        string $sender_mail,
-        int $supporttype = 0,
-        int $area = 0,
-        array $attachments = [],
-    ): bool {
+    public function create_task(string $subject, string $content, string $sender, int $supporttype = 0, int $area = 0, array $attachments = []): bool
+    {
         $map = $this->map_project_and_label($supporttype, $area);
 
-        $content = nl2br("Anfrage von: $sender, $sender_mail: \n \n $content");
+        $content = nl2br("Anfrage von: $sender, \n \n $content");
         $due_date = new \DateTime('now', new \DateTimeZone('Europe/Berlin'));
         $due_date->add(\DateInterval::createFromDateString('2 day'));
         $due_date->setTimezone(new \DateTimeZone('UTC'));
-        echo $due_date->format('Y-m-d\TH:i:s\z');
 
         $result = $this->send('PUT', "projects/$map->project_id", [
             'description' => $content,
