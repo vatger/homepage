@@ -60,6 +60,10 @@ class MembershipLibrary
 
         // 5. Handle DMS
 
+        // 6. Vikunja
+        $VL = new VikunjaLibrary();
+        $VL->check_user($user);
+
         Log::info('[MembershipLibrary::handleMembershipChange]::' . $user->id . '::Membership Update Triggered!');
     }
 

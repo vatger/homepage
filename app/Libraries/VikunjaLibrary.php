@@ -186,9 +186,6 @@ class VikunjaLibrary extends BaseLibrary
         return null;
     }
 
-    public function get_date()
-    {
-    }
     public function create_task(string $subject, string $content, string $sender, int $supporttype = 0, int $area = 0, array $attachments = []): bool
     {
         $map = $this->map_project_and_label($supporttype, $area);
