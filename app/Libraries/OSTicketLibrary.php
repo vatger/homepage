@@ -9,6 +9,7 @@ use App\Notifications\BasicNotification;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Facades\Log;
 
 class OSTicketLibrary extends BaseLibrary
 {
@@ -40,7 +41,7 @@ class OSTicketLibrary extends BaseLibrary
             return $client->request($method, $uri, ['json' => $data]);
         } catch (GuzzleException $e) {
             echo $e->getMessage();
-            \Log::info($e->getMessage());
+            Log::info($e->getMessage());
             return false;
         }
     }
@@ -119,7 +120,16 @@ class OSTicketLibrary extends BaseLibrary
     }
     private static function map_topic_id(int $supporttype, int $area): int
     {
-        $topicId = 14;
+        $topicId = match ($area) {
+            1 => 16, // Tech
+            2 => 23, // NAV
+            3 => 22, // Event
+            4 => 21, // ATD
+            5 => 20, // PTD
+            6 => 28, // PV
+            7 => 29, // Dir
+            default => 14,
+        };
         return $topicId;
     }
 }

@@ -29,4 +29,6 @@ return [
     'text-check-board' =>
         'Please check whether a bug report or feature request already exists for your topic before creating it. You can find existing bug reports and feature requests here',
     'text-here' => 'here',
+    'text-missing-captcha' => 'Please solve the captcha',
+    'text-error-captcha' => 'You did not solve the captcha correctly',
 ];

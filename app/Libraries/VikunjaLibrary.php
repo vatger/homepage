@@ -207,8 +207,10 @@ class VikunjaLibrary extends BaseLibrary
         ]);
 
         if ($result) {
-            $result_data = json_decode($result->getBody()->getContents());
-            $result = $this->send('PUT', "tasks/$result_data->id/labels", ['label_id' => $map->label]);
+            if ($map->label != 0) {
+                $result_data = json_decode($result->getBody()->getContents());
+                $result = $this->send('PUT', "tasks/$result_data->id/labels", ['label_id' => $map->label]);
+            }
             return true;
         } else {
             return false;
@@ -216,7 +218,23 @@ class VikunjaLibrary extends BaseLibrary
     }
     private function map_project_and_label(int $supporttype, int $area): object
     {
-        $map = (object) ['label' => 2, 'project_id' => 4];
+        $map = (object) ['label' => 11, 'project_id' => 4];
+        if ($area == 1) {
+            //Tech
+            $map->project_id = 5;
+
+            $map->label = match ($supporttype) {
+                1 => 8, // Feature Request
+                2 => 7, // Bug Report
+                default => 0,
+            };
+        }
+
+        if ($area == 3) {
+            $map->project_id = 20;
+            $map->label = 0;
+        }
+
         return $map;
     }
 }

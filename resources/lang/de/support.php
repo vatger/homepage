@@ -29,4 +29,6 @@ return [
     'text-check-board' =>
         'Bitte prüfe vor dem Erstellen ob bereits ein Bug-Report oder Feature Request zu deinem Thema existiert. Bereits ertellte Bug Reports und Feature Requests findest du',
     'text-here' => 'hier',
+    'text-missing-captcha' => 'Bitte löse das Captcha',
+    'text-error-captcha' => 'Du hast das Captcha nicht korrekt gelöst',
 ];

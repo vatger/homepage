@@ -5,8 +5,8 @@ namespace App\Livewire;
 use App\Libraries\OSTicketLibrary;
 use App\Libraries\VikunjaLibrary;
 use App\Livewire\Helpers\NotyTrait;
-use App\Rules\HcaptchaValidator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -14,6 +14,7 @@ class SupportPage extends Component
 {
     use NotyTrait;
 
+    public string $token = '';
     public int $chosen_sup_type = 0;
     public int $chosen_area = 0;
     public string $name = '';
@@ -75,10 +76,23 @@ class SupportPage extends Component
     }
     public function send()
     {
-        $this->validate(['send' => ['required', new HcaptchaValidator()]]);
+        if (empty($this->token)) {
+            $this->showNoty(__('support.text-missing-captcha'), 'error');
+            return;
+        }
 
-        $this->showNoty('Send');
-        return;
+        $captchaResp = Http::asForm()
+            ->post('https://hcaptcha.com/siteverify', [
+                'response' => $this->token,
+                'secret' => env('HCAPTCHA_SECRET'),
+            ])
+            ->object();
+
+        if (!$captchaResp->success) {
+            $this->showNoty(__('support.text-error-captcha'), 'error');
+            return;
+        }
+
         if ($this->chosen_sup_type == 0) {
             $this->showNoty(__('support.text-missing-supporttype'), 'error');
             return;

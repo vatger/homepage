@@ -7,7 +7,7 @@
     ])
 
     @endcomponent
-    <script src="https://js.hcaptcha.com/1/api.js?hl=en" async defer></script>
+    <script src="https://js.hcaptcha.com/1/api.js?hl=en"></script>
     <section class="section">
         <div class="container">
             <div class="row ">
@@ -87,14 +87,13 @@
                                 </div>
                             </div><!--end row-->
                             <div class="row">
-
+                                <x-captcha fieldName="token" />
                             </div><!--end row-->
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <button name="send" wire:click="send()" wire:loading.attr="disabled" class="btn btn-soft-success">
-                                        <i data-feather="plus" class="fea"></i>
+                                    <button name="send" wire:click="send()" wire:loading.attr="disabled" class="btn btn-soft-success" >
+                                        <i data-feather="plus" class="fea"></i>@lang('support.text-send')
                                     </button>
-                                    <x-captcha fieldName="send" />
                                 </div><!--end col-->
                             </div><!--end row-->
                         </div>
