@@ -29,7 +29,6 @@ Route::prefix('redirect')->group(function () {
 
     Route::get('discord', redir('https://community.vatsim.net/'))->name('redirect.discord');
 
-    Route::get('support', redir('https://support.vatsim-germany.org/'))->name('redirect.support');
     Route::get('support/feedback', redir('https://support.vatsim-germany.org/open.php?topicId=19'))->name('redirect.support.feedback');
 
     Route::get('spreadshop', redir('https://vatsim-germany.myspreadshop.de/'))->name('redirect.spreadshop');
