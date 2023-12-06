@@ -10,14 +10,17 @@ export default function initTemplate() {
     window.onscroll = function () {
         scrollFunction();
     };
-
-    activateMenu();
-    loadSidebar();
-    activateSidebarMenu();
-    loadDDMenu();
-    loadTooltips();
-    loadSmallMenu();
-    featherReplace();
+    try {
+        activateMenu();
+        loadSidebar();
+        activateSidebarMenu();
+        loadDDMenu();
+        loadTooltips();
+        loadSmallMenu();
+        featherReplace();
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 function loadPreloader() {

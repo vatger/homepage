@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Administration\Content\MediaController;
 use App\Http\Controllers\Administration\Content\ShortLinkController;
+use App\Livewire\SupportPage;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -105,3 +106,5 @@ Route::get('/', function () {
 Route::get('documentation', function () {
     return view('pages.admin.apidoku');
 });
+
+Route::get('support', SupportPage::class)->name('redirect.support');

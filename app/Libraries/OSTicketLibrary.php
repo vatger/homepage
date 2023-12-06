@@ -9,23 +9,39 @@ use App\Notifications\BasicNotification;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Facades\Log;
 
 class OSTicketLibrary extends BaseLibrary
 {
-    public static function send(string $method, string $endpoint, array $data = []): false|Response
+    public static function send(string $method, string $endpoint, array $data = [], bool $official = false): false|Response
     {
-        $client = self::constructClient([
-            'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Token ' . config('osticket.token'),
-            ],
-        ]);
-        $uri = config('osticket.url') . '/' . $endpoint;
+        if ($official) {
+            $client = self::constructClient([
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'X-API-Key' => config('osticket.token_official'),
+                ],
+            ]);
+        } else {
+            $client = self::constructClient([
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Token ' . config('osticket.token'),
+                ],
+            ]);
+        }
+
+        if ($official) {
+            $uri = config('osticket.url_official') . '/' . $endpoint;
+        } else {
+            $uri = config('osticket.url') . '/' . $endpoint;
+        }
 
         try {
             return $client->request($method, $uri, ['json' => $data]);
         } catch (GuzzleException $e) {
-            \Log::info($e->getMessage());
+            echo $e->getMessage();
+            Log::info($e->getMessage());
             return false;
         }
     }
@@ -81,5 +97,39 @@ class OSTicketLibrary extends BaseLibrary
             );
         }
         return true;
+    }
+    public static function create_ticket(string $name, string $mail, string $subject, string $content, int $supporttype = 0, int $area = 0): bool
+    {
+        $result = self::send(
+            'POST',
+            'tickets.json',
+            [
+                'name' => $name,
+                'email' => $mail,
+                'subject' => $subject,
+                'message' => $content,
+                'topicId' => self::map_topic_id($supporttype, $area),
+            ],
+            true,
+        );
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    private static function map_topic_id(int $supporttype, int $area): int
+    {
+        $topicId = match ($area) {
+            1 => 16, // Tech
+            2 => 23, // NAV
+            3 => 22, // Event
+            4 => 21, // ATD
+            5 => 20, // PTD
+            6 => 28, // PV
+            7 => 29, // Dir
+            default => 14,
+        };
+        return $topicId;
     }
 }
