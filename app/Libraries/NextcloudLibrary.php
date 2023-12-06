@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class NextcloudLibrary extends BaseLibrary
 {
@@ -26,7 +27,7 @@ class NextcloudLibrary extends BaseLibrary
             if (empty($data)) {
                 return $client->request($method, $uri);
             } else {
-                return $client->request($method, $uri, ['json' => $data]);
+                return $client->request($method, $uri, ['form_params' => $data]);
             }
         } catch (GuzzleException $e) {
             echo $e->getMessage();
@@ -41,10 +42,32 @@ class NextcloudLibrary extends BaseLibrary
         $newgroups = $user->service_role_ids(ServiceRoleType::NextcloudGroup);
 
         //Existiert User?
-        $username = "substr($user->firstname,0,1).$user->lastname";
-        $result = self::send('GET', "users?search=$username");
-        $result_data = json_decode(json_encode(simplexml_load_string($result)));
-        var_dump($result_data);
+        $username = substr($user->firstname, 0, 1) . '.' . $user->lastname;
+        $username = $username . '2';
+        $result = self::send('GET', "users/$username");
+        $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
+
+        if (!$result_data->data->id) {
+            $username = self::create_user($username, $user->email, "$user->firstname $user->lastname");
+            if (empty($newgroups)) {
+                return true;
+            } else {
+                $username = self::create_user($username, $user->email, "$user->firstname $user->lastname");
+            }
+        }
         return true;
+    }
+    private static function create_user(string $username, string $email, string $displayname): string
+    {
+        $userid = '';
+        $result = self::send('POST', 'users', ['userid' => $username, 'password' => 'V' . Str::random() . '!']);
+        $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
+        if ($result_data->data->id) {
+            $userid = $result_data->data->id;
+            $result = self::send('PUT', "users/$userid", ['email' => $email, 'displayname' => $displayname]);
+            $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
+            var_dump($result_data);
+        }
+        return $userid;
     }
 }
