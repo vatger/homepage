@@ -38,7 +38,8 @@
     "stevebauman/purify": "^6.0",
     "tightenco/ziggy": "^1.6",
     "vyuldashev/laravel-openapi": "^1.11",
-    "weberhofer/jsonrpcphp": "^2.2"
+    "weberhofer/jsonrpcphp": "^2.2",
+    "ext-simplexml": "*"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.7",

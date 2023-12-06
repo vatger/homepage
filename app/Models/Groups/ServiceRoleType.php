@@ -8,4 +8,5 @@ enum ServiceRoleType: string
     case ForumGroup = 'board.group';
     case SupportGroup = 'osticket.group';
     case VikunjaGroup = 'vikunja.group';
+    case NextcloudGroup = 'nextcloud.group';
 }
