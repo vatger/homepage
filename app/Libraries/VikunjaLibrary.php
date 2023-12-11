@@ -83,6 +83,7 @@ class VikunjaLibrary extends BaseLibrary
                     $userid = $member->id;
                     var_dump($team);
                     var_dump($member);
+                    $userid = $member->id;
                     $old_teams[] = $team->id;
                 }
             }
