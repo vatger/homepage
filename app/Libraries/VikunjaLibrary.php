@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\Types\Object_;
 
 class VikunjaLibrary extends BaseLibrary
@@ -20,13 +21,13 @@ class VikunjaLibrary extends BaseLibrary
     /**
      * @throws \Exception
      */
-    public function __construct()
+    private function __construct()
     {
         $this->jwt_token = $this->login(config('vikunja.username'), config('vikunja.password'));
         if (empty($this->jwt_token)) {
             throw new \Exception('Login to vikunja instance failed');
         }
-        Log::info("Login successful: $this->jwt_token");
+        Log::info('Vikunja Library Login successful');
     }
 
     private function send(string $method, string $endpoint, array $data = []): false|Response
@@ -183,6 +184,13 @@ class VikunjaLibrary extends BaseLibrary
             }
         }
         return null;
+    }
+
+    public static function get_instance(): VikunjaLibrary
+    {
+        $lib = Cache::remember('VikunjaLibrary.Instance', 1200, fn() => new self());
+        var_dump($lib);
+        return $lib;
     }
 
     public function create_task(string $subject, string $content, string $sender, int $supporttype = 0, int $area = 0, array $attachments = []): bool

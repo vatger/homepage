@@ -67,12 +67,13 @@ class MembershipLibrary
         }
         // 5. Handle DMS
         if (BaseLibrary::is_active(BaseLibrary::SyncDMS)) {
+            NextcloudLibrary::check_user($user);
         }
 
         // 6. Vikunja
         if (BaseLibrary::is_active(BaseLibrary::SyncVikunja)) {
             try {
-                $VL = new VikunjaLibrary();
+                $VL = VikunjaLibrary::get_instance();
                 $VL->check_user($user);
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
