@@ -77,6 +77,7 @@ class VikunjaLibrary extends BaseLibrary
         $result = $this->send('GET', 'teams');
         $result_data = json_decode($result->getBody()->getContents());
 
+        var_dump($result_data);
         foreach ($result_data as $team) {
             foreach ($team->members as $member) {
                 if ($member->username == $user->id) {
@@ -85,7 +86,7 @@ class VikunjaLibrary extends BaseLibrary
                 }
             }
         }
-
+        var_dump($old_teams);
         if (!empty($old_teams)) {
             $to_delete = array_diff($old_teams, $new_teams);
             $to_add = array_diff($new_teams, $old_teams);
