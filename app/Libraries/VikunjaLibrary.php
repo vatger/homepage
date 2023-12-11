@@ -79,10 +79,9 @@ class VikunjaLibrary extends BaseLibrary
 
         foreach ($result_data as $team) {
             foreach ($team->members as $member) {
-                var_dump($team->id);
-                var_dump($team->members);
                 if ($member->username == $user->id) {
                     $userid = $member->id;
+                    var_dump($team->id);
                     $old_teams[] = $team->id;
                 }
             }
