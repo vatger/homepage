@@ -144,6 +144,11 @@ class SupportPage extends Component
 
         if ($result) {
             $this->showNoty(__('support.text-success'), 'success');
+
+            $this->chosen_sup_type = 0;
+            $this->chosen_area = 0;
+            $this->subject = '';
+            $this->content = '';
         } else {
             $this->showNoty(__('support.text-fail'), 'error');
         }

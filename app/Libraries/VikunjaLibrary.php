@@ -177,7 +177,6 @@ class VikunjaLibrary extends BaseLibrary
     public static function get_group_name(int $id): ?string
     {
         $teams = Cache::remember('VikunjaLibrary.Teams', 120, fn() => (new self())->get_groups());
-
         foreach ($teams as $team) {
             if ($team->team == $id) {
                 return $team->name;
