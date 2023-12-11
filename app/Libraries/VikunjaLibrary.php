@@ -21,13 +21,17 @@ class VikunjaLibrary extends BaseLibrary
     /**
      * @throws \Exception
      */
-    private function __construct()
+    private function __construct(string $jwt = '')
     {
-        $this->jwt_token = $this->login(config('vikunja.username'), config('vikunja.password'));
-        if (empty($this->jwt_token)) {
-            throw new \Exception('Login to vikunja instance failed');
+        if (empty($jwt)) {
+            $this->jwt_token = $this->login(config('vikunja.username'), config('vikunja.password'));
+            if (empty($this->jwt_token)) {
+                throw new \Exception('Login to vikunja instance failed');
+            }
+            Log::info('Vikunja Library Login successful');
+        } else {
+            $this->jwt_token = $jwt;
         }
-        Log::info('Vikunja Library Login successful');
     }
 
     private function send(string $method, string $endpoint, array $data = []): false|Response
@@ -190,7 +194,13 @@ class VikunjaLibrary extends BaseLibrary
 
     public static function get_instance(): VikunjaLibrary
     {
-        $lib = Cache::remember('VikunjaLibrary.Instance', 360, fn() => new self());
+        $jwt = Cache::get('VikunjaLibrary.Jwt');
+        if ($jwt) {
+            $lib = new self($jwt);
+        } else {
+            $lib = new self();
+            Cache::put('VikunjaLibrary.Jwt', $lib->jwt_token, 360);
+        }
         return $lib;
     }
 
