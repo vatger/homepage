@@ -43,8 +43,7 @@ class NextcloudLibrary extends BaseLibrary
         $newgroups = $user->service_role_ids(ServiceRoleType::NextcloudGroup);
 
         //Existiert User?
-        $username = substr($user->firstname, 0, 1) . '.' . $user->lastname;
-        $username = strtolower($username . '2');
+        $username = "$user->id";
         $result = self::send('GET', "users/$username");
         $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
 
@@ -57,8 +56,7 @@ class NextcloudLibrary extends BaseLibrary
             }
         }
 
-        if (empty($newgroups))
-        {
+        if (empty($newgroups)) {
             self::delete_user($username);
             return true;
         }
@@ -80,10 +78,10 @@ class NextcloudLibrary extends BaseLibrary
     }
     private static function delete_user(string $username): void
     {
-        $result = self::send('DELETE',"users/$username");
-        if($result){
+        $result = self::send('DELETE', "users/$username");
+        if ($result) {
             Log::info("User deleted: $username");
-        }else{
+        } else {
             Log::info("User deleteion failed: $username");
         }
     }
@@ -114,6 +112,5 @@ class NextcloudLibrary extends BaseLibrary
                 Log::info("Error member $username could not be added to team $groupdel");
             }
         }
-
     }
 }
