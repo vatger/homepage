@@ -190,9 +190,8 @@ class VikunjaLibrary extends BaseLibrary
 
     public static function get_instance(): VikunjaLibrary
     {
-        $lib = Cache::remember('VikunjaLibrary.Instance', 1, fn() => new self());
-        var_dump($lib);
-        return $lib;
+        //$lib = Cache::remember('VikunjaLibrary.Instance', 1, fn() => new self());
+        return new self();
     }
 
     public function create_task(string $subject, string $content, string $sender, int $supporttype = 0, int $area = 0, array $attachments = []): bool
