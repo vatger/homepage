@@ -18,7 +18,7 @@
                         <label class="form-label" for="start-time-select">@lang('booking.atc.create.start-time-text')</label>
                         <div class="form-icon position-relative">
                             <i data-feather="calendar" class="fea icon-sm icons"></i>
-                            <input wire:model="selected_start_at" name="start_at" id="start-time-select" type="" class="form-control ps-5" placeholder="19:00">
+                            <input wire:model="selected_start_at" name="start_at" id="start-time-select" type="number" class="form-control ps-5" placeholder="1900">
                         </div>
                         @error('selected_start_at')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
@@ -28,7 +28,7 @@
                         <label class="form-label" for="end-time-select">@lang('booking.atc.create.end-time-text')</label>
                         <div class="form-icon position-relative">
                             <i data-feather="calendar" class="fea icon-sm icons"></i>
-                            <input wire:model="selected_end_at" id="end-time-select" type="text" class="form-control ps-5" placeholder="21:30">
+                            <input wire:model="selected_end_at" id="end-time-select" type="number" class="form-control ps-5" placeholder="2130">
                         </div>
                         @error('selected_end_at')
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
