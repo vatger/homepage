@@ -9,6 +9,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
 
 class NextcloudLibrary extends BaseLibrary
 {
@@ -43,7 +44,7 @@ class NextcloudLibrary extends BaseLibrary
 
         //Existiert User?
         $username = substr($user->firstname, 0, 1) . '.' . $user->lastname;
-        $username = $username . '2';
+        $username = strtolower($username . '2');
         $result = self::send('GET', "users/$username");
         $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
 
@@ -64,9 +65,8 @@ class NextcloudLibrary extends BaseLibrary
         $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
         if ($result_data->data->id) {
             $userid = $result_data->data->id;
-            $result = self::send('PUT', "users/$userid", ['email' => $email, 'displayname' => $displayname]);
-            $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
-            var_dump($result_data);
+            self::send('PUT', "users/$userid", ['key' => 'email', 'value' => $email]);
+            self::send('PUT', "users/$userid", ['key' => 'displayname', 'value' => $displayname]);
         }
         return $userid;
     }

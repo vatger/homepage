@@ -47,22 +47,37 @@ class MembershipLibrary
 
         # TODO: Handle all changes that might have triggered this function
         // 1. Handle forum permission / role assignment
-        XenForoLibrary::updateForumAccount($user);
+        if (BaseLibrary::is_active(BaseLibrary::SyncForum)) {
+            XenForoLibrary::updateForumAccount($user);
+        }
         // 2. Handle Teamspeak roles
-        TeamSpeakWebQuery::checkUser($user);
+        if (BaseLibrary::is_active(BaseLibrary::SyncTeamspeak)) {
+            TeamSpeakWebQuery::checkUser($user);
+        }
         // 3. Handle OS Ticktet
-        try {
-            OSTicketLibrary::check_user($user);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
+        if (BaseLibrary::is_active(BaseLibrary::SyncOSTicket)) {
+            try {
+                OSTicketLibrary::check_user($user);
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+            }
         }
         // 4. Handle Bookstack (kb)
-
+        if (BaseLibrary::is_active(BaseLibrary::SyncKnowledgebase)) {
+        }
         // 5. Handle DMS
+        if (BaseLibrary::is_active(BaseLibrary::SyncDMS)) {
+        }
 
         // 6. Vikunja
-        //$VL = new VikunjaLibrary();
-        //$VL->check_user($user);
+        if (BaseLibrary::is_active(BaseLibrary::SyncVikunja)) {
+            try {
+                $VL = new VikunjaLibrary();
+                $VL->check_user($user);
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+            }
+        }
 
         Log::info('[MembershipLibrary::handleMembershipChange]::' . $user->id . '::Membership Update Triggered!');
     }
