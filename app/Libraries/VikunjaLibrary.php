@@ -88,7 +88,6 @@ class VikunjaLibrary extends BaseLibrary
                 }
             }
         }
-        var_dump($old_teams);
         if (!empty($old_teams)) {
             $to_delete = array_diff($old_teams, $new_teams);
             $to_add = array_diff($new_teams, $old_teams);
@@ -191,8 +190,8 @@ class VikunjaLibrary extends BaseLibrary
 
     public static function get_instance(): VikunjaLibrary
     {
-        //$lib = Cache::remember('VikunjaLibrary.Instance', 1, fn() => new self());
-        return new self();
+        $lib = Cache::remember('VikunjaLibrary.Instance', 1, fn() => new self());
+        return $lib;
     }
 
     public function create_task(string $subject, string $content, string $sender, int $supporttype = 0, int $area = 0, array $attachments = []): bool
