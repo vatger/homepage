@@ -85,7 +85,7 @@ class VikunjaLibrary extends BaseLibrary
                 }
             }
         }
-
+        var_dump($old_teams);
         if (!empty($old_teams)) {
             $to_delete = array_diff($old_teams, $new_teams);
             $to_add = array_diff($new_teams, $old_teams);
