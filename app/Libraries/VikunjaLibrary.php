@@ -190,7 +190,7 @@ class VikunjaLibrary extends BaseLibrary
 
     public static function get_instance(): VikunjaLibrary
     {
-        $lib = Cache::remember('VikunjaLibrary.Instance', 1, fn() => new self());
+        $lib = Cache::remember('VikunjaLibrary.Instance', 360, fn() => new self());
         return $lib;
     }
 
