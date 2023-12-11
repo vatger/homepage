@@ -77,11 +77,12 @@ class VikunjaLibrary extends BaseLibrary
         $result = $this->send('GET', 'teams');
         $result_data = json_decode($result->getBody()->getContents());
 
-        var_dump($result_data);
         foreach ($result_data as $team) {
             foreach ($team->members as $member) {
                 if ($member->username == $user->id) {
-                    $userid = $user->id;
+                    $userid = $member->id;
+                    var_dump($team);
+                    var_dump($member);
                     $old_teams[] = $team->id;
                 }
             }
