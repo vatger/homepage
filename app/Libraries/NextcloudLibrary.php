@@ -56,6 +56,14 @@ class NextcloudLibrary extends BaseLibrary
                 $username = self::create_user($username, $user->email, "$user->firstname $user->lastname");
             }
         }
+
+        if (empty($newgroups))
+        {
+            self::delete_user($username);
+            return true;
+        }
+
+        self::sync_groups($newgroups, $username);
         return true;
     }
     private static function create_user(string $username, string $email, string $displayname): string
@@ -69,5 +77,43 @@ class NextcloudLibrary extends BaseLibrary
             self::send('PUT', "users/$userid", ['key' => 'displayname', 'value' => $displayname]);
         }
         return $userid;
+    }
+    private static function delete_user(string $username): void
+    {
+        $result = self::send('DELETE',"users/$username");
+        if($result){
+            Log::info("User deleted: $username");
+        }else{
+            Log::info("User deleteion failed: $username");
+        }
+    }
+
+    private static function sync_groups(array $newgroups, string $username): void
+    {
+        $result = self::send('GET', "users/$username/groups");
+        $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
+        $currentgroups = $result_data->groups;
+
+        if (!empty($currentgroups)) {
+            $to_delete = array_diff($currentgroups, $newgroups);
+            $to_add = array_diff($newgroups, $currentgroups);
+        } else {
+            $to_add = $newgroups;
+        }
+
+        foreach ($to_delete as $groupdel) {
+            $result = self::send('DELETE', "users/$username/groups");
+            if ($result->getStatusCode() != 100) {
+                Log::info("Error member $username could not be deleted from team $groupdel");
+            }
+        }
+
+        foreach ($to_add as $groupadd) {
+            $result = self::send('POST', "users/$username/groups");
+            if ($result->getStatusCode() != 100) {
+                Log::info("Error member $username could not be added to team $groupdel");
+            }
+        }
+
     }
 }

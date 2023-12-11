@@ -9,6 +9,7 @@ use App\Livewire\Helpers\SearchTrait;
 use App\Livewire\Helpers\SortableTrait;
 use App\Models\AtcBooking;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ListAtcBookingTab extends Component
@@ -37,18 +38,21 @@ class ListAtcBookingTab extends Component
 
     public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $bookings_filtered_query = AtcBooking::with('station')
-            ->where('starts_at', '>=', Carbon::parse($this->selected_start_at)->format('Y-m-d'))
-            ->where(
-                'ends_at',
-                '<=',
-                Carbon::parse($this->selected_end_at)
-                    ->addDay()
-                    ->format('Y-m-d'),
-            );
-        $this->searchQueryModifier($bookings_filtered_query, $this->selected_search);
-        $this->sortQueryModifier($bookings_filtered_query);
-
+        if ($this->selected_my_bookings) {
+            $bookings_filtered_query = AtcBooking::with('station')->where('starts_at', '>=', Carbon::now()->format('Y-m-d'))->where('controller_id', Auth::id());
+        } else {
+            $bookings_filtered_query = AtcBooking::with('station')
+                ->where('starts_at', '>=', Carbon::parse($this->selected_start_at)->format('Y-m-d'))
+                ->where(
+                    'ends_at',
+                    '<=',
+                    Carbon::parse($this->selected_end_at)
+                        ->addDay()
+                        ->format('Y-m-d'),
+                );
+            $this->searchQueryModifier($bookings_filtered_query, $this->selected_search);
+            $this->sortQueryModifier($bookings_filtered_query);
+        }
         return view('components.atcbooking.allbookingstab')->with([
             'filtered_bookings' => $bookings_filtered_query->get()->paginate(),
         ]);

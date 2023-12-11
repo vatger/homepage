@@ -9,15 +9,15 @@
             </div>
         </div>
         <div class="w-100">
-            <div wire:ignore class="accordion">
+            <div class="accordion">
                 <div class="accordion-item rounded shadow bg-white">
                     <h2 class="accordion-header">
-                        <button class="accordion-button border-0 bg-light collapsed" type="button" data-bs-toggle="collapse"
+                        <button wire:ignore.self class="accordion-button border-0 bg-light collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#accordion-header-1" aria-expanded="false" aria-controls="accordion-header-1">
                             Filter
                         </button>
                     </h2>
-                    <div id="accordion-header-1" class="accordion-collapse border-0 collapse" aria-labelledby="accordion-header-1"
+                    <div wire:ignore.self id="accordion-header-1" class="accordion-collapse border-0 collapse" aria-labelledby="accordion-header-1"
                          data-bs-parent="#general-section" style="">
                         <div class="accordion-body text-muted">
                             <form id="filter-bookings-form">
@@ -27,8 +27,12 @@
                                             <label class="form-label">@lang('booking.atc.search.from-text')</label>
                                             <div class="form-icon position-relative">
                                                 <i data-feather="calendar" class="fea icon-sm icons"></i>
-                                                <input wire:model="selected_start_at" id="date-start-select" type="date" class="form-control ps-5" placeholder="01.01.2023"
-                                                       min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                                                @if(!$selected_my_bookings)
+                                                    <input wire:model.live="selected_start_at" id="date-end-select" class="form-control ps-5" type="date"
+                                                           min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                                                @else
+                                                    <input class="form-control ps-5" type="date" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" disabled>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -37,8 +41,14 @@
                                             <label class="form-label">@lang('booking.atc.search.till-text')</label>
                                             <div class="form-icon position-relative">
                                                 <i data-feather="calendar" class="fea icon-sm icons"></i>
-                                                <input wire:model.live="selected_end_at" id="date-end-select" type="date" class="form-control ps-5" placeholder="01.01.2023"
-                                                       min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                                                @if(!$selected_my_bookings)
+                                                    <input wire:model.live="selected_end_at" id="date-end-select" class="form-control ps-5" type="date"
+                                                           min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                                                @else
+                                                    <input class="form-control ps-5" disabled>
+                                                @endif
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -69,7 +79,23 @@
                                             <label class="form-label">Search</label>
                                             <div class="form-icon position-relative">
                                                 <i data-feather="map-pin" class="fea icon-sm icons"></i>
-                                                <input wire:model.live="selected_search" type="text" class="form-control ps-5" placeholder="EDDF, Langen Radar, 119.905...">
+                                                @if(!$selected_my_bookings)
+                                                    <input wire:model.live="selected_search" type="text" class="form-control ps-5" placeholder="EDDF, Langen Radar, 119.905...">
+                                                @else
+                                                    <input class="form-control ps-5" disabled>
+                                                @endif
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="mb-3">
+                                            <label class="form-check-label">Quick select</label>
+                                            <div class="form-control ps-5">
+                                                <div class="form-check">
+                                                    <input wire:model.live="selected_my_bookings" class="form-check-input" type="checkbox" />
+                                                    <label class="form-check-label">Show only my bookings</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

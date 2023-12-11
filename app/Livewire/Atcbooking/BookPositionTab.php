@@ -31,10 +31,10 @@ class BookPositionTab extends Component
     public function mount(): void
     {
         $this->selected_date = Carbon::now()->format('Y-m-d');
-        $this->selected_start_at = Carbon::now()->format('H:00');
+        $this->selected_start_at = Carbon::now()->format('H00');
         $this->selected_end_at = Carbon::now()
             ->addHours(2)
-            ->format('H:00');
+            ->format('H00');
     }
 
     public function render()
@@ -66,8 +66,8 @@ class BookPositionTab extends Component
         $validated = $this->validate([
             'selected_station' => 'required',
             'selected_date' => 'required|date_format:Y-m-d|after_or_equal:today|before:+2 month',
-            'selected_start_at' => 'required|date_format:H:i',
-            'selected_end_at' => 'required|date_format:H:i',
+            'selected_start_at' => 'required|date_format:Hi',
+            'selected_end_at' => 'required|date_format:Hi',
             'selected_voice' => 'required|boolean',
             'selected_event' => 'required|boolean',
             'selected_training' => 'required|boolean',
@@ -78,8 +78,12 @@ class BookPositionTab extends Component
         $b->station_id = $validated['selected_station']['id'];
         $b->controller_id = Auth::user()->id;
         $day = Carbon::createFromFormat('Y-m-d', $validated['selected_date']);
-        $b->starts_at = $day->copy()->setTimeFromTimeString($validated['selected_start_at']);
-        $b->ends_at = $day->copy()->setTimeFromTimeString($validated['selected_end_at']);
+        $b->starts_at = $day
+            ->copy()
+            ->setTimeFromTimeString(substr($validated['selected_start_at'], 0, 2) . ':' . substr($validated['selected_start_at'], 2, 2));
+        $b->ends_at = $day
+            ->copy()
+            ->setTimeFromTimeString(substr($validated['selected_end_at'], 0, 2) . ':' . substr($validated['selected_end_at'], 2, 2));
         $b->voice = $validated['selected_voice'];
         $b->event = $validated['selected_event'];
         $b->training = $validated['selected_training'];
