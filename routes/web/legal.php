@@ -1,17 +1,11 @@
 <?php
 
-Route::get('/gdpr', function () {
-    return view('pages.gdpr');
-})->name('gdpr');
+use App\Http\Controllers\PagesController;
 
-Route::get('/datenschutz', function () {
-    return view('pages.gdpr');
-});
+Route::get('/gdpr', [PagesController::class, 'gdpr'])->name('gdpr');
 
-Route::get('/imprint', function () {
-    return view('pages.gdpr');
-})->name('imprint');
+Route::get('/datenschutz', [PagesController::class, 'gdpr']);
 
-Route::get('/impressum', function () {
-    return view('pages.gdpr');
-});
+Route::get('/imprint', [PagesController::class, 'imprint'])->name('imprint');
+
+Route::get('/impressum', [PagesController::class, 'imprint']);
