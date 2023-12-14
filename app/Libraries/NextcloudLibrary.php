@@ -93,12 +93,11 @@ class NextcloudLibrary extends BaseLibrary
         $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
         $currentgroups = $result_data?->data?->groups?->element ?? [];
 
-        $to_delete = [];
-
         if (!empty($currentgroups)) {
             $to_delete = array_diff($currentgroups, $newgroups);
             $to_add = array_diff($newgroups, $currentgroups);
         } else {
+            $to_delete = [];
             $to_add = $newgroups;
         }
 
