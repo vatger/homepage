@@ -48,7 +48,6 @@ class NextcloudLibrary extends BaseLibrary
         $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
 
         if (!$result_data->data->id) {
-            $username = self::create_user($username, $user->email, "$user->firstname $user->lastname");
             if (empty($newgroups)) {
                 return true;
             } else {
