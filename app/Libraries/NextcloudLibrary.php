@@ -99,16 +99,16 @@ class NextcloudLibrary extends BaseLibrary
         }
 
         foreach ($to_delete as $groupdel) {
-            $result = self::send('DELETE', "users/$username/groups");
+            $result = self::send('DELETE', "users/$username/groups", ['key' => 'groupid', 'value' => $groupdel]);
             if ($result->getStatusCode() != 100) {
                 Log::info("Error member $username could not be deleted from team $groupdel");
             }
         }
 
         foreach ($to_add as $groupadd) {
-            $result = self::send('POST', "users/$username/groups");
+            $result = self::send('POST', "users/$username/groups", ['key' => 'groupid', 'value' => $groupadd]);
             if ($result->getStatusCode() != 100) {
-                Log::info("Error member $username could not be added to team $groupdel");
+                Log::info("Error member $username could not be added to team $groupadd");
             }
         }
     }
