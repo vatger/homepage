@@ -11,7 +11,7 @@ class BookstackLibrary extends BaseLibrary
 
     protected static function _send(string $endpoint, string $method, array $body = []): object|false
     {
-        $uri = 'https://' . config('bookstack.host') . '/api';
+        $uri = config('bookstack.host') . '/api';
         $token_id = config('bookstack.token_id');
         $token_secret = config('bookstack.token_secret');
 
