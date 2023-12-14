@@ -91,14 +91,13 @@ class NextcloudLibrary extends BaseLibrary
     {
         $result = self::send('GET', "users/$username/groups");
         $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
-        $currentgroups = $result_data?->groups;
-
-        $to_delete = [];
+        $currentgroups = $result_data?->data?->groups?->element ?? [];
 
         if (!empty($currentgroups)) {
             $to_delete = array_diff($currentgroups, $newgroups);
             $to_add = array_diff($newgroups, $currentgroups);
         } else {
+            $to_delete = [];
             $to_add = $newgroups;
         }
 
