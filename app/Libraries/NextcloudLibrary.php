@@ -47,7 +47,7 @@ class NextcloudLibrary extends BaseLibrary
         $result = self::send('GET', "users/$username");
         $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
 
-        if (!$result_data->data->id) {
+        if (!$result_data?->data?->id) {
             if (empty($newgroups)) {
                 return true;
             } else {
@@ -63,6 +63,7 @@ class NextcloudLibrary extends BaseLibrary
         self::sync_groups($newgroups, $username);
         return true;
     }
+
     private static function create_user(string $username, string $email, string $displayname): string
     {
         $userid = '';
@@ -75,6 +76,7 @@ class NextcloudLibrary extends BaseLibrary
         }
         return $userid;
     }
+
     private static function delete_user(string $username): void
     {
         $result = self::send('DELETE', "users/$username");
@@ -89,7 +91,9 @@ class NextcloudLibrary extends BaseLibrary
     {
         $result = self::send('GET', "users/$username/groups");
         $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
-        $currentgroups = $result_data->groups;
+        $currentgroups = $result_data?->groups;
+
+        $to_delete = [];
 
         if (!empty($currentgroups)) {
             $to_delete = array_diff($currentgroups, $newgroups);
