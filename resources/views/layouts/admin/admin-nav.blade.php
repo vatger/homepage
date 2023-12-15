@@ -34,6 +34,14 @@
                     </a>
                 </li>
             @endcan
+                @can('mail.manage')
+                    <li>
+                        <a href="{{ route('administration.email') }}">
+                            <i data-feather="mail" class="fea me-2"></i>
+                            Staff E-Mail
+                        </a>
+                    </li>
+                @endcan
             @can('survey')
                 <li>
                     <a href="{{ route('administration.survey') }}">

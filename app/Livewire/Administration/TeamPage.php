@@ -101,6 +101,7 @@ class TeamPage extends Component
             $sd = new UserStaffDetail();
             $sd->user_id = $user->id;
             $sd->joined_staff_at = now();
+            $sd->staff_email = strtolower(substr($user->firstname,0,1) . "." . $user->lastname . "@vatger.de");
             $sd->save();
         } else {
             if ($user->staffDetails->leaving_staff_at) {

@@ -13,33 +13,37 @@ class EmailPage extends Component
 {
     use NotyTrait;
     private $users = [];
-    public $emails = [];
+    public $emails;
 
+    public string $id = '';
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
-        $this->users = User::all();
-        $this->emails = [];
+        $this->users = User::permission('mail.use')->get();
         foreach ($this->users as $user) {
-            $this->emails[] = (object) [
-                'id' => $user->id,
-                'username' => $user->username,
-                'email' => $user->email,
-                'change' => 1 == 2 ? true : false,
-                'create' => 1 == 1 ? true : false,
-            ];
+            if($user->staffDetails) {
+                $this->emails[] =(object)[
+                    'id' => $user->id,
+                    'username' => $user->username,
+                    'email' => $user->staffDetails->staff_email,
+                    'change' => $user->staffDetails->staff_email_created,
+                    'create' => $user->staffDetails->staff_email_created,
+                ];
+            }
         }
 
-        return view('pages.admin.email')->with([
-            'emails' => $this->emails,
-        ]);
+        return view('pages.admin.email');
     }
-    public function change(string $id)
+    public function change(string $key)
     {
-        $this->showNoty($id);
+        dd($this->emails[$key]);
     }
     public function create(string $id)
     {
         $this->showNoty($id);
+    }
+    public function setData(string $id)
+    {
+        $this->id = $id;
     }
 }
