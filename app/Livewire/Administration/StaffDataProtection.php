@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Administration;
 
+use App\Libraries\MembershipLibrary;
 use App\Libraries\OSTicketLibrary;
 use App\Libraries\VikunjaLibrary;
 use App\Livewire\Helpers\NotyTrait;
@@ -18,5 +19,11 @@ class StaffDataProtection extends Component
     public function render()
     {
         return view('pages.sdp');
+    }
+    public function accept()
+    {
+        $user = Auth::user();
+        $user->staffDetails->accepted_data_protection_at = now();
+        MembershipLibrary::update($user);
     }
 }
