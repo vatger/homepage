@@ -82,6 +82,11 @@ class User extends Authenticatable
         return $this->hasMany(ControllerFeedback::class, 'reporter_id', 'id');
     }
 
+    public function staffDetails(): HasOne
+    {
+        return $this->hasOne(UserStaffDetail::class, 'user_id', 'id');
+    }
+
     public function getUsernameAttribute(): string
     {
         return $this->firstname . ' ' . $this->lastname;

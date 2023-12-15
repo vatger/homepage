@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::prefix('administration')
     //->middleware(['cookie.consent', 'auth', 'standings', 'can:administration-access'])
-    ->middleware(['cookie.consent', 'auth'])
+    ->middleware(['cookie.consent', 'auth', 'staff_data_protection'])
     ->group(function () {
         Route::get('/dashboard', [AdministrationPagesController::class, 'index'])->name('administration.dashboard');
         Route::get('/membership/members', MemberListPage::class)->name('administration.members');

@@ -8,6 +8,7 @@ use App\Models\Groups\ServiceRole;
 use App\Models\Groups\ServiceRoleType;
 use App\Models\Groups\Team;
 use App\Models\Membership\User\User;
+use App\Models\Membership\User\UserStaffDetail;
 use Illuminate\Support\Facades\Redirect;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
@@ -80,6 +81,10 @@ class TeamPage extends Component
         $user = User::findOrFail($user_id);
         $user->removeRole($this->team->role);
         MembershipLibrary::update($user, async: true);
+
+        // TODO!
+        $user->getRoles();
+        $user->staff_details?->delete();
     }
 
     public function addUser(): void
@@ -90,6 +95,14 @@ class TeamPage extends Component
             $this->showNoty('CID nicht gefunden', 'error');
             return;
         }
+
+        if (!$user->staff_details) {
+            $sd = new UserStaffDetail();
+            $sd->user_id = $user->id;
+            $sd->joined_staff_at = now();
+            $sd->save();
+        }
+
         $user->assignRole($this->team->role);
         MembershipLibrary::update($user, async: true);
     }
