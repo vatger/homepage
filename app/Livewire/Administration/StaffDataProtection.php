@@ -17,5 +17,6 @@ class StaffDataProtection extends Component
     #[Layout('layouts.master')]
     public function render()
     {
+        return view('pages.sdp');
     }
 }

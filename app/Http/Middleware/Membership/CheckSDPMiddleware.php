@@ -17,10 +17,8 @@ class CheckSDPMiddleware
     {
         if (Auth::check()) {
             $user = Auth::user();
-            $user->load_missing('staff_details');
-            dd($user);
-            if ($user->staff_details) {
-                if (!$user->staff_details->accepted_data_protection_at) {
+            if (!$user?->staffDetails) {
+                if (!$user?->staffDetails?->accepted_data_protection_at) {
                     return redirect()->route('administration.sdp');
                 }
             }

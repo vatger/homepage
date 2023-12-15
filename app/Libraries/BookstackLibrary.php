@@ -2,6 +2,7 @@
 
 namespace App\Libraries;
 
+use App\Models\Membership\User\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
@@ -30,6 +31,11 @@ class BookstackLibrary extends BaseLibrary
         } catch (GuzzleException | \JsonException $e) {
         }
         return false;
+    }
+
+    public static function check_user(User $user): void
+    {
+        $user_data = self::_users_read($user->id);
     }
 
     public static function _users_list(): array|false
