@@ -47,39 +47,37 @@ class MembershipLibrary
 
         # TODO: Handle all changes that might have triggered this function
 
-        if (!$user->staffDetails || $user->staffDetails?->accepted_data_protection_at) {
-            // 1. Handle forum permission / role assignment
-            if (BaseLibrary::is_active(BaseLibrary::SyncForum)) {
-                XenForoLibrary::updateForumAccount($user);
+        // 1. Handle forum permission / role assignment
+        if (BaseLibrary::is_active(BaseLibrary::SyncForum)) {
+            XenForoLibrary::updateForumAccount($user);
+        }
+        // 2. Handle Teamspeak roles
+        if (BaseLibrary::is_active(BaseLibrary::SyncTeamspeak)) {
+            TeamSpeakWebQuery::checkUser($user);
+        }
+        // 3. Handle OS Ticktet
+        if (BaseLibrary::is_active(BaseLibrary::SyncOSTicket)) {
+            try {
+                OSTicketLibrary::check_user($user);
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
             }
-            // 2. Handle Teamspeak roles
-            if (BaseLibrary::is_active(BaseLibrary::SyncTeamspeak)) {
-                TeamSpeakWebQuery::checkUser($user);
-            }
-            // 3. Handle OS Ticktet
-            if (BaseLibrary::is_active(BaseLibrary::SyncOSTicket)) {
-                try {
-                    OSTicketLibrary::check_user($user);
-                } catch (\Exception $e) {
-                    Log::error($e->getMessage());
-                }
-            }
-            // 4. Handle Bookstack (kb)
-            if (BaseLibrary::is_active(BaseLibrary::SyncKnowledgebase)) {
-            }
-            // 5. Handle DMS
-            if (BaseLibrary::is_active(BaseLibrary::SyncDMS)) {
-                NextcloudLibrary::check_user($user);
-            }
+        }
+        // 4. Handle Bookstack (kb)
+        if (BaseLibrary::is_active(BaseLibrary::SyncKnowledgebase)) {
+        }
+        // 5. Handle DMS
+        if (BaseLibrary::is_active(BaseLibrary::SyncDMS)) {
+            NextcloudLibrary::check_user($user);
+        }
 
-            // 6. Vikunja
-            if (BaseLibrary::is_active(BaseLibrary::SyncVikunja)) {
-                try {
-                    $VL = VikunjaLibrary::get_instance();
-                    $VL->check_user($user);
-                } catch (\Exception $e) {
-                    Log::error($e->getMessage());
-                }
+        // 6. Vikunja
+        if (BaseLibrary::is_active(BaseLibrary::SyncVikunja)) {
+            try {
+                $VL = VikunjaLibrary::get_instance();
+                $VL->check_user($user);
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
             }
         }
 
