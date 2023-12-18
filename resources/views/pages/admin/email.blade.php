@@ -34,7 +34,7 @@
                                         <td>{{ $email->username }}</td>
                                         <td><div class="form-icon position-relative">
                                                 <i data-feather="mail" class="fea icon-sm icons"></i>
-                                                <input wire:model.live="emails.{{$key}}.email" type="text" @if($email->change) disabled @endif class="form-control ps-5">
+                                                <input wire:model.live="email->email" type="text" @if($email->change) disabled @endif class="form-control ps-5">
                                             </div></td>
                                         <td><button name="change" class="btn btn-primary m-1" @if($email->change) disabled @endif wire:click="change({{$key}})">Änderung speichern</button></td>
                                         <td><button name="create" class="btn btn-primary" @if($email->create) disabled @endif wire:click="create({{$key}})">Anlegen</button></td>

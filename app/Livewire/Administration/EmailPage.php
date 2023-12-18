@@ -16,8 +16,8 @@ class EmailPage extends Component
     public $emails;
 
     public string $id = '';
-    #[Layout('layouts.admin.admin-master')]
-    public function render()
+
+    public function boot ()
     {
         $this->users = User::permission('mail.use')->get();
         foreach ($this->users as $user) {
@@ -31,7 +31,10 @@ class EmailPage extends Component
                 ];
             }
         }
-
+    }
+    #[Layout('layouts.admin.admin-master')]
+    public function render()
+    {
         return view('pages.admin.email');
     }
     public function change(string $key)
