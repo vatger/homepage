@@ -66,6 +66,7 @@ class MembershipLibrary
             }
             // 4. Handle Bookstack (kb)
             if (BaseLibrary::is_active(BaseLibrary::SyncKnowledgebase)) {
+                BookstackLibrary::check_user($user);
             }
             // 5. Handle DMS
             if (BaseLibrary::is_active(BaseLibrary::SyncDMS)) {
