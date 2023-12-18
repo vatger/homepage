@@ -13,7 +13,6 @@
 
 
                     <x-layouts.admin.card>
-                        <x-layouts.admin.card-header position="left" title="E-Mail Adressen"  :subtitle="count($emails)" />
 
                         <div class="row pt-4 ps-4 table-responsive">
                             <table class="table table-center bg-white mb-0">
@@ -33,8 +32,7 @@
                                         <td>{{ $email->username }}</td>
                                         <td>{{ $email->email }}</td>
                                         <td><button wire:click='change("{{$email->id}}","{{$email->email}}")' data-bs-toggle="modal" data-bs-target="#LoginForm" name="change" class="btn btn-primary" @if($email->change) disabled @endif>Anpassen</button></td>
-                                        <td><button name="create" class="btn btn-primary" @if(true) disabled @endif wire:click="create({{ $email->id }},{{ $email->email }})">Anlegen</button></td>
-                                        {{--<td><button name="create" class="btn btn-primary" @if($email->create) disabled @endif wire:click="create({{ $email->id }},{{ $email->email }})">Anlegen</button></td>--}}
+                                        <td><button wire:click='create("{{ $email->id }}")' name="create" class="btn btn-primary" @if($email->create) disabled @endif>Anlegen</button></td>
                                     </tr>
                                 @endforeach
                                 </tbody>

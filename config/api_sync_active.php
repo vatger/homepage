@@ -6,4 +6,6 @@ return [
     'nextcloud' => env('ACTIVE_SYNC_NEXTCLOUD', false),
     'vikunja' => env('ACTIVE_SYNC_VIKUNJA', false),
     'osticket' => env('ACTIVE_SYNC_OSTICKET', false),
+    'mailcow' => env('ACTIVE_SYNC_MAILCOW', false),
+    'sdp_enforce' => env('SDP_ENFORCE', false),
 ];

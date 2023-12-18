@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->timestamp('accepted_data_protection_at')->nullable();
             $table->string('staff_email')->nullable();
             $table->boolean('staff_email_created')->default(false);
+            $table->timestamp('delete_staff_email_at')->nullable();
         });
     }
 

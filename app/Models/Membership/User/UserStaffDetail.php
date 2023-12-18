@@ -13,7 +13,13 @@ class UserStaffDetail extends Model
 
     public $timestamps = false;
 
-    protected $casts = ['joined_staff_at' => 'datetime', 'accepted_data_protection_at' => 'datetime', 'leaving_staff_at' => 'datetime', 'staff_email_created' => 'boolean'];
+    protected $casts = [
+        'joined_staff_at' => 'datetime',
+        'accepted_data_protection_at' => 'datetime',
+        'leaving_staff_at' => 'datetime',
+        'staff_email_created' => 'boolean',
+        'delete_email_at' => 'datetime',
+    ];
 
     public function user(): BelongsTo
     {
