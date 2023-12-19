@@ -34,7 +34,7 @@
                                         <td>{{ $email->email }}</td>
                                         <td><button wire:click='change("{{$email->id}}","{{$email->email}}")' data-bs-toggle="modal" data-bs-target="#LoginForm" name="change" class="btn btn-primary" @if($email->change) disabled @endif>Anpassen</button></td>
                                         <td><button wire:click='create("{{ $email->id }}")' name="create" class="btn btn-primary" @if($email->create) disabled @endif>Anlegen</button></td>
-                                        <td>@if($email->deletion_date) {{ $email->deletion_date->format('d.m.Y H:i:s') }} @endif </td>
+                                        <td>@if($email->deletion_date) {{ $email->deletion_date }} @endif </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
