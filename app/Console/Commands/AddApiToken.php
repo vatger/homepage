@@ -2,15 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Groups\Team;
-use App\Models\Membership\User\User;
 use App\OpenApi\Controllers\ApiController;
 use App\OpenApi\Models\ApiRouteToken;
 use App\OpenApi\Models\ApiToken;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
-use function Fp\Util\jsonEncode;
 
 class AddApiToken extends Command
 {
@@ -35,7 +32,7 @@ class AddApiToken extends Command
     {
         $description = $this->ask('description?');
 
-        $this->info(jsonEncode(ApiController::collect_paths()));
+        $this->info(json_encode(ApiController::collect_paths()));
         do {
             $var = $this->ask('allowed route_id [enter one or leave empty]?');
             if (!empty($var)) {
