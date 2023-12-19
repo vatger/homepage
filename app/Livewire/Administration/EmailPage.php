@@ -30,7 +30,7 @@ class EmailPage extends Component
         $usd = UserStaffDetail::query()
             ->where('staff_email_created', true)
             ->whereNotIn(
-                'id',
+                'user_id',
                 collect($this->users)
                     ->map(fn($u) => $u->id)
                     ->flatten()
