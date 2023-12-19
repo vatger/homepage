@@ -21,12 +21,13 @@ class StaffDataProtection extends Component
     {
         return view('pages.sdp');
     }
+
     public function accept()
     {
         $user = Auth::user();
         $user->staffDetails->accepted_data_protection_at = now();
         $user->staffDetails->save();
         MembershipLibrary::update($user);
-        Redirect::intended(route('members.profile'));
+        Redirect::intended(route('member.profile'));
     }
 }

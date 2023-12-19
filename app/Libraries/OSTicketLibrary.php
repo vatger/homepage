@@ -83,7 +83,7 @@ class OSTicketLibrary extends BaseLibrary
                     'Dein Account im Ticketsystem',
                     "Es wurde ein Account für dich im Ticketsystem angelegt. Dein Loginname lautet:
                     <code>v$user->id</code>
-                    mit der Email: 
+                    mit der E-Mail: 
                     <code>$user->email</code>
                     und initialen Passwort:
                     <code>$result_data->password</code>
@@ -98,6 +98,7 @@ class OSTicketLibrary extends BaseLibrary
         }
         return true;
     }
+
     public static function create_ticket(string $name, string $mail, string $subject, string $content, int $supporttype = 0, int $area = 0): bool
     {
         $result = self::send(
@@ -118,6 +119,7 @@ class OSTicketLibrary extends BaseLibrary
             return false;
         }
     }
+
     private static function map_topic_id(int $supporttype, int $area): int
     {
         $topicId = match ($area) {
