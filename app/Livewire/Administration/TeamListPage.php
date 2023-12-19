@@ -39,7 +39,7 @@ class TeamListPage extends Component
             $limitedselection = true;
         }
         return view('pages.admin.teams')->with([
-            'teams' => $teams->paginate(),
+            'teams' => $teams->paginate(100),
             'limited_selection' => $limitedselection,
         ]);
     }
