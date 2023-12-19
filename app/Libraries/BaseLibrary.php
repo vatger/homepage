@@ -13,6 +13,7 @@ class BaseLibrary
     public const SyncDMS = 'nextcloud';
     public const SyncVikunja = 'vikunja';
     public const SyncOSTicket = 'osticket';
+    public const SyncMailcow = 'mailcow';
 
     protected static function constructClient(array $config = []): Client
     {

@@ -16,6 +16,7 @@ use Illuminate\Database\Query\Builder as QBuilder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class MembershipLibrary
 {
@@ -34,50 +35,96 @@ class MembershipLibrary
 
     public static function update(User $user, bool $async = false, bool $cache = true, bool $api_refresh = true): void
     {
-        if ($async) {
-            dispatch(new UpdateAccountJob($user));
-            return;
-        }
-        if ($api_refresh) {
-            APILibrary::MemberUpdate($user);
-            $user = $user->refresh();
-        }
-        self::check_bans($user);
-        self::check_status($user, $cache);
+        if (false) {
+            if ($async) {
+                dispatch(new UpdateAccountJob($user));
+                return;
+            }
+            if ($api_refresh) {
+                APILibrary::MemberUpdate($user);
+                $user = $user->refresh();
+            }
+            self::check_bans($user);
+            self::check_status($user, $cache);
 
-        # TODO: Handle all changes that might have triggered this function
-        // 1. Handle forum permission / role assignment
-        if (BaseLibrary::is_active(BaseLibrary::SyncForum)) {
-            XenForoLibrary::updateForumAccount($user);
-        }
-        // 2. Handle Teamspeak roles
-        if (BaseLibrary::is_active(BaseLibrary::SyncTeamspeak)) {
-            TeamSpeakWebQuery::checkUser($user);
-        }
-        // 3. Handle OS Ticktet
-        if (BaseLibrary::is_active(BaseLibrary::SyncOSTicket)) {
-            try {
-                OSTicketLibrary::check_user($user);
-            } catch (\Exception $e) {
-                Log::error($e->getMessage());
+            # TODO: Handle all changes that might have triggered this function
+
+            // 1. Handle forum permission / role assignment
+            if (BaseLibrary::is_active(BaseLibrary::SyncForum)) {
+                XenForoLibrary::updateForumAccount($user);
+            }
+            // 2. Handle Teamspeak roles
+            if (BaseLibrary::is_active(BaseLibrary::SyncTeamspeak)) {
+                TeamSpeakWebQuery::checkUser($user);
+            }
+            // 3. Handle OS Ticktet
+            if (BaseLibrary::is_active(BaseLibrary::SyncOSTicket)) {
+                try {
+                    OSTicketLibrary::check_user($user);
+                } catch (\Exception $e) {
+                    Log::error($e->getMessage());
+                }
+            }
+            // 4. Handle Bookstack (kb)
+            if (BaseLibrary::is_active(BaseLibrary::SyncKnowledgebase)) {
+                BookstackLibrary::check_user($user);
+            }
+            // 5. Handle DMS
+            if (BaseLibrary::is_active(BaseLibrary::SyncDMS)) {
+                NextcloudLibrary::check_user($user);
+            }
+
+            // 6. Vikunja
+            if (BaseLibrary::is_active(BaseLibrary::SyncVikunja)) {
+                try {
+                    $VL = VikunjaLibrary::get_instance();
+                    $VL->check_user($user);
+                } catch (\Exception $e) {
+                    Log::error($e->getMessage());
+                }
             }
         }
-        // 4. Handle Bookstack (kb)
-        if (BaseLibrary::is_active(BaseLibrary::SyncKnowledgebase)) {
+
+        // 7. Staff Details
+        if ($user->staffDetails?->staff_email_created) {
+            if (!$user->can('mail.use')) {
+                if (!$user->staffDetails->delete_staff_email_at) {
+                    $deldate = $user->staffDetails->delete_staff_email_at = Carbon::now()->addDays(30);
+                    $user->staffDetails->save();
+
+                    $date = $deldate->format('d.m.Y');
+                    $time = $deldate->format('H:i:s');
+
+                    $user->notify(
+                        new BasicNotification(
+                            'Dein VATSIM Germany E-Mail Adresse',
+                            "Du bist nicht mehr im Besitz einer Staffrolle, die zu einer VATSIM Germany E-Mail Adresse berechtigt. Daher werden wir deine VATSIM Germany E-Mail Adresse am $date um $time löschen. Bitte sichere dir bis dahin alle relevanten Daten.",
+                            'Tech Leitung',
+                            Carbon::now()->addDays(14),
+                            Carbon::now()->addDays(365),
+                        ),
+                    );
+                }
+            } else {
+                if ($user->staffDetails->delete_staff_email_at) {
+                    $user->staffDetails->delete_staff_email_at = null;
+                    $user->staffDetails->save();
+                }
+            }
         }
-        // 5. Handle DMS
-        if (BaseLibrary::is_active(BaseLibrary::SyncDMS)) {
-            NextcloudLibrary::check_user($user);
+        if ($user->staffDetails?->delete_mail_at < now() && $user->staffDetails?->delete_staff_email_at != null) {
+            if (BaseLibrary::is_active(BaseLibrary::SyncMailcow)) {
+                if (MailcowLibrary::delete_email($user->staffDetails->staff_email)) {
+                    $user->staffDetails->staff_email_created = false;
+                    $user->staffDetails->staff_email = null;
+                    $user->staffDetails->delete_staff_email_at = null;
+                    $user->staffDetails->save();
+                }
+            }
         }
 
-        // 6. Vikunja
-        if (BaseLibrary::is_active(BaseLibrary::SyncVikunja)) {
-            try {
-                $VL = VikunjaLibrary::get_instance();
-                $VL->check_user($user);
-            } catch (\Exception $e) {
-                Log::error($e->getMessage());
-            }
+        if ($user->staffDetails?->leaving_staff_at < now() && !$user->staffDetails?->staff_email_created) {
+            $user->staff_details?->delete();
         }
 
         Log::info('[MembershipLibrary::handleMembershipChange]::' . $user->id . '::Membership Update Triggered!');

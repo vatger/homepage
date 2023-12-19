@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Administration\AdministrationPagesController;
+use App\Livewire\Administration\EmailPage;
 use App\Livewire\Administration\MemberListPage;
 use App\Livewire\Administration\MemberPage;
 use App\Livewire\Administration\SurveyPage;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Route;
  */
 Route::prefix('administration')
     //->middleware(['cookie.consent', 'auth', 'standings', 'can:administration-access'])
-    ->middleware(['cookie.consent', 'auth'])
+    ->middleware(['cookie.consent', 'auth', 'staff_data_protection'])
     ->group(function () {
         Route::get('/dashboard', [AdministrationPagesController::class, 'index'])->name('administration.dashboard');
         Route::get('/membership/members', MemberListPage::class)->name('administration.members');
@@ -28,6 +29,7 @@ Route::prefix('administration')
         Route::get('/membership/teams/{team}', TeamPage::class)->name('administration.team');
 
         Route::get('/survey', SurveyPage::class)->name('administration.survey');
+        Route::get('/email', EmailPage::class)->name('administration.email');
 
         require_once 'admin/content.php';
 

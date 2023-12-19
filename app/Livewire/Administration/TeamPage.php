@@ -8,6 +8,9 @@ use App\Models\Groups\ServiceRole;
 use App\Models\Groups\ServiceRoleType;
 use App\Models\Groups\Team;
 use App\Models\Membership\User\User;
+use App\Models\Membership\User\UserStaffDetail;
+use App\Notifications\BasicNotification;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
@@ -80,8 +83,11 @@ class TeamPage extends Component
         $user = User::findOrFail($user_id);
         $user->removeRole($this->team->role);
         MembershipLibrary::update($user, async: true);
+        if (count($user->roles) == 0) {
+            $user->staffDetails->leaving_staff_at = Carbon::now()->addDays(30);
+            $user->staffDetails->save();
+        }
     }
-
     public function addUser(): void
     {
         $this->authorize('membership.teams.edit.members.subteam-check', $this->team);
@@ -90,6 +96,20 @@ class TeamPage extends Component
             $this->showNoty('CID nicht gefunden', 'error');
             return;
         }
+
+        if (!$user->staffDetails) {
+            $sd = new UserStaffDetail();
+            $sd->user_id = $user->id;
+            $sd->joined_staff_at = now();
+            $sd->staff_email = strtolower(substr($user->firstname, 0, 1) . '.' . $user->lastname . '@vatger.de');
+            $sd->save();
+        } else {
+            if ($user->staffDetails->leaving_staff_at) {
+                $user->staffDetails->leaving_staff_at = null;
+                $user->staffDetails->save();
+            }
+        }
+
         $user->assignRole($this->team->role);
         MembershipLibrary::update($user, async: true);
     }
