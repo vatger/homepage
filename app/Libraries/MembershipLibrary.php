@@ -40,7 +40,7 @@ class MembershipLibrary
             return;
         }
         if ($api_refresh) {
-            APILibrary::MemberUpdate($user);
+            APILibrary::MemberUpdate($user, $cache);
             $user = $user->refresh();
         }
         self::check_bans($user);
@@ -99,7 +99,7 @@ class MembershipLibrary
                 Log::error($e->getMessage());
             }
         }
-        
+
         Log::info('[MembershipLibrary::handleMembershipChange]::' . $user->id . '::Membership Update Triggered!');
     }
 
