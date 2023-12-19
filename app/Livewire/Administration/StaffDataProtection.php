@@ -27,6 +27,6 @@ class StaffDataProtection extends Component
         $user->staffDetails->accepted_data_protection_at = now();
         $user->staffDetails->save();
         MembershipLibrary::update($user);
-        Redirect::intended('members.profile');
+        Redirect::intended(route('members.profile'));
     }
 }
