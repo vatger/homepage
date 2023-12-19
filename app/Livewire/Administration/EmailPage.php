@@ -29,7 +29,7 @@ class EmailPage extends Component
         $usd = UserStaffDetail::where('staff_email_created', true)->get();
 
         foreach ($usd as $item) {
-            if ($this->users->where('id', $item->user_id)?->id) {
+            if ($this->users->where('id', $item->user_id)?->userId) {
                 $this->users[] = User::find($item->user_id);
             }
         }
