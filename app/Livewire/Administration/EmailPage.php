@@ -43,7 +43,9 @@ class EmailPage extends Component
                     'email' => $user->staffDetails->staff_email_created ? $user->staffDetails->staff_email : $mail,
                     'change' => $user->staffDetails->staff_email_created,
                     'create' => $user->staffDetails->staff_email_created,
-                    'deletion_date' => $user->staffDetails->delete_staff_email_at,
+                    'deletion_date' => $user->staffDetails->delete_staff_email_at
+                        ? date('d.m.Y H:i:s', strtotime($user->staffDetails->delete_staff_email_at))
+                        : '',
                 ];
             }
         }
