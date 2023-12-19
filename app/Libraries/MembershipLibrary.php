@@ -97,7 +97,7 @@ class MembershipLibrary
 
                     $user->notify(
                         new BasicNotification(
-                            'Dein VATSIM Germany E-Mail Adresse',
+                            'Deine VATSIM Germany E-Mail Adresse',
                             "Du bist nicht mehr im Besitz einer Staffrolle, die zu einer VATSIM Germany E-Mail Adresse berechtigt. Daher werden wir deine VATSIM Germany E-Mail Adresse am $date um $time löschen. Bitte sichere dir bis dahin alle relevanten Daten.",
                             'Tech Leitung',
                             Carbon::now()->addDays(14),
