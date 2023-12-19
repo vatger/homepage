@@ -86,7 +86,7 @@ class EmailPage extends Component
 
                     $user->notify(
                         new BasicNotification(
-                            'Dein VATSIM Germany E-Mail Adresse',
+                            'Deine VATSIM Germany E-Mail Adresse',
                             "Es wurde eine VATSIM Germany E-Mail Adresse für dich angelegt. Diese lautet:
                     <code>$email->email</code>.
                     Das Initialpasswort lautet: 
