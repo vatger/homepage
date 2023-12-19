@@ -6,6 +6,7 @@ use App\Libraries\LimesurveyLibrary;
 use App\Libraries\MailcowLibrary;
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\Membership\User\User;
+use App\Models\Membership\User\UserStaffDetail;
 use App\Models\SurveyKey;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
@@ -25,6 +26,14 @@ class EmailPage extends Component
     public function mount()
     {
         $this->users = User::permission('mail.use')->get();
+        $usd = UserStaffDetail::where('staff_email_created', true)->get();
+
+        foreach ($usd as $item) {
+            if (empty($this->users->where('id', $item->user_id)->items)) {
+                $this->users[] = User::find($item->user_id);
+            }
+        }
+
         foreach ($this->users as $user) {
             if ($user->staffDetails) {
                 $mail = strtolower("$user->firstname.$user->lastname@vatger.de");
@@ -34,6 +43,7 @@ class EmailPage extends Component
                     'email' => $user->staffDetails->staff_email_created ? $user->staffDetails->staff_email : $mail,
                     'change' => $user->staffDetails->staff_email_created,
                     'create' => $user->staffDetails->staff_email_created,
+                    'deletion_date' => $user->staffDetails->delete_staff_email_at,
                 ];
             }
         }

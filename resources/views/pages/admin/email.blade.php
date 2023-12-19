@@ -20,9 +20,10 @@
                                 <tr class="text-center">
                                     <th class="border-bottom" style="width: 10%">CID</th>
                                     <th class="border-bottom" style="width: 20%">Username</th>
-                                    <th class="border-bottom" style="width: 30%">E-Mailadresse</th>
-                                    <th class="border-bottom" style="width: 20%">Änderung speichern</th>
-                                    <th class="border-bottom" style="width: 20%">Anlegen</th>
+                                    <th class="border-bottom" style="width: 20%">E-Mailadresse</th>
+                                    <th class="border-bottom" style="width: 15%">Adresse anpassen</th>
+                                    <th class="border-bottom" style="width: 15%">Anlegen</th>
+                                    <th class="border-bottom" style="width: 20%">Löschung geplant</th>
                                 </tr>
                                 </thead>
                                 <tbody id="member-list-content">
@@ -33,6 +34,7 @@
                                         <td>{{ $email->email }}</td>
                                         <td><button wire:click='change("{{$email->id}}","{{$email->email}}")' data-bs-toggle="modal" data-bs-target="#LoginForm" name="change" class="btn btn-primary" @if($email->change) disabled @endif>Anpassen</button></td>
                                         <td><button wire:click='create("{{ $email->id }}")' name="create" class="btn btn-primary" @if($email->create) disabled @endif>Anlegen</button></td>
+                                        <td>@if($email->deletion_date) {{ $email->deletion_date->format('d.m.Y H:i:s') }} @endif </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
