@@ -26,12 +26,20 @@ class EmailPage extends Component
     public function mount()
     {
         $this->users = User::permission('mail.use')->get();
-        $usd = UserStaffDetail::where('staff_email_created', true)->get();
+
+        $usd = UserStaffDetail::query()
+            ->where('staff_email_created', true)
+            ->whereNotIn(
+                'id',
+                collect($this->users)
+                    ->map(fn($u) => $u->id)
+                    ->flatten()
+                    ->toArray(),
+            )
+            ->get();
 
         foreach ($usd as $item) {
-            if (!$this->users->where('id', $item->user_id)[0]) {
-                $this->users[] = User::find($item->user_id);
-            }
+            $this->users[] = User::findOrFail($item->user_id);
         }
 
         foreach ($this->users as $user) {
