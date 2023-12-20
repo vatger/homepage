@@ -3,7 +3,6 @@
 namespace App\Libraries;
 
 use App\Jobs\UpdateAccountJob;
-use App\Jobs\UpdateTeamspeakJob;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Libraries\VATSIM\APILibrary;
 use App\Models\Membership\User\User;
@@ -11,12 +10,12 @@ use App\Models\Membership\User\UserBan;
 use App\Models\Membership\User\UserBanType;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Query\Builder as QBuilder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class MembershipLibrary
 {
@@ -53,7 +52,7 @@ class MembershipLibrary
         if (BaseLibrary::is_active(BaseLibrary::SyncForum)) {
             try {
                 XenForoLibrary::updateForumAccount($user);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error($e->getMessage());
             }
         }
@@ -61,7 +60,7 @@ class MembershipLibrary
         if (BaseLibrary::is_active(BaseLibrary::SyncTeamspeak)) {
             try {
                 TeamSpeakWebQuery::checkUser($user);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error($e->getMessage());
             }
         }
@@ -69,7 +68,7 @@ class MembershipLibrary
         if (BaseLibrary::is_active(BaseLibrary::SyncOSTicket)) {
             try {
                 OSTicketLibrary::check_user($user);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error($e->getMessage());
             }
         }
@@ -77,7 +76,7 @@ class MembershipLibrary
         if (BaseLibrary::is_active(BaseLibrary::SyncKnowledgebase)) {
             try {
                 BookstackLibrary::check_user($user);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error($e->getMessage());
             }
         }
@@ -85,7 +84,7 @@ class MembershipLibrary
         if (BaseLibrary::is_active(BaseLibrary::SyncDMS)) {
             try {
                 NextcloudLibrary::check_user($user);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error($e->getMessage());
             }
         }
@@ -95,7 +94,7 @@ class MembershipLibrary
             try {
                 $VL = VikunjaLibrary::get_instance();
                 $VL->check_user($user);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error($e->getMessage());
             }
         }
