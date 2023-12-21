@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers\VATSIM;
+namespace App\Providers;
 
 use Illuminate\Support\Str;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;

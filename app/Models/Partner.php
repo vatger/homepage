@@ -11,16 +11,9 @@ use Illuminate\Support\Facades\Session;
 
 class Partner extends Model
 {
-    use HasFactory;
-
     protected $table = 'partners';
 
-    protected $fillable = ['created_by', 'name', 'logo_url', 'link_url', 'description_de', 'description_en'];
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'created_by', 'id');
-    }
+    protected $fillable = ['name', 'logo_url', 'link_url', 'description_de', 'description_en'];
 
     public function getDescriptionAttribute()
     {

@@ -14,12 +14,6 @@ return new class extends Migration {
     {
         Schema::create('partners', function (Blueprint $table) {
             $table->id();
-            $table
-                ->foreignId('created_by')
-                ->nullable()
-                ->constrained('user_users')
-                ->onUpdate('NO ACTION')
-                ->onDelete('SET NULL');
             $table->string('name');
             $table->string('logo_url')->nullable();
             $table->string('link_url')->nullable();
