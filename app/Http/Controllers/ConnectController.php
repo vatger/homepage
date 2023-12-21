@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Libraries\MembershipLibrary;
 use App\Models\Membership\User\User;
-use App\Providers\VATSIM\ConnectProvider;
+use App\Providers\ConnectProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
