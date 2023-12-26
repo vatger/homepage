@@ -59,11 +59,11 @@ class UpdateForumAccountsJob implements ShouldQueue
                 continue;
             }
 
-            if ($acc->IsCurrentlyBanned) {
-                XenForoLibrary::banForumAccount($acc);
-            } else {
-                XenForoLibrary::updateForumAccount($acc);
-            }
+            //if ($acc->IsCurrentlyBanned) {
+            //    XenForoLibrary::banForumAccount($acc);
+            //} else {
+            //    XenForoLibrary::updateForumAccount($acc);
+            //}
         }
 
         if ($accountsToUpdate->count() < $chunkSize) {
