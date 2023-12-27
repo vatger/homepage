@@ -109,7 +109,7 @@ class NextcloudLibrary extends BaseLibrary
         $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
         $result_data_data = $result_data?->data?->groups?->element ?? [];
         $currentgroups = is_array($result_data_data) ? $result_data_data : [$result_data_data];
-        dd($result_data);
+
         if (!empty($currentgroups)) {
             $to_delete = array_diff($currentgroups, $newgroups);
             $to_add = array_diff($newgroups, $currentgroups);
@@ -117,7 +117,7 @@ class NextcloudLibrary extends BaseLibrary
             $to_delete = [];
             $to_add = $newgroups;
         }
-
+        dd($result_data, $currentgroups, $to_add, $to_delete);
         foreach ($to_delete as $groupdel) {
             $result = self::send('DELETE', "users/$username/groups", ['groupid' => $groupdel]);
             if ($result->getStatusCode() != 100) {
