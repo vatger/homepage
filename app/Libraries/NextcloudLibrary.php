@@ -42,6 +42,9 @@ class NextcloudLibrary extends BaseLibrary
     //
     private static function mergeElementAboveLevel($data)
     {
+        if (is_object($data) && empty(get_object_vars($data))) {
+            return null;
+        }
         if (!is_object($data)) {
             return $data;
         } else {
