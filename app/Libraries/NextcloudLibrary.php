@@ -117,7 +117,7 @@ class NextcloudLibrary extends BaseLibrary
             $to_delete = [];
             $to_add = $newgroups;
         }
-        dd($result_data, $currentgroups, $to_add, $to_delete);
+        //dd($result_data, $currentgroups, $to_add, $to_delete);
         foreach ($to_delete as $groupdel) {
             $result = self::send('DELETE', "users/$username/groups", ['groupid' => $groupdel]);
             if ($result->getStatusCode() != 100) {
