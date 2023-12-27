@@ -54,6 +54,7 @@ class NextcloudLibrary extends BaseLibrary
             } else {
                 $username = self::create_user($username, $user->email, "$user->firstname $user->lastname");
                 $notification = new BasicNotification(
+                    'Dein Account im DMS',
                     "Es wurde ein Account für dich im DMS angelegt. Dein Loginname lautet:
                     <code>$username</code>
                     mit der E-Mail: 
