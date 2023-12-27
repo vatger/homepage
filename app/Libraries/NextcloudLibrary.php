@@ -84,8 +84,8 @@ class NextcloudLibrary extends BaseLibrary
         $username = "$user->id";
         $result = self::send('GET', "users/$username");
         dd(self::sendAndDecode('GET', "users/$username"));
-        $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
-        if (empty($result_data?->data) || empty($result_data?->data->id)) {
+        $result_data = sendAndDecode('GET', "users/$username");
+        if ($result_data->data) {
             if (empty($newgroups)) {
                 return true;
             } else {
@@ -120,10 +120,9 @@ class NextcloudLibrary extends BaseLibrary
     private static function create_user(string $username, string $email, string $displayname): string
     {
         $userid = '';
-        $result = self::send('POST', 'users', ['userid' => $username, 'password' => 'V' . Str::random() . '!']);
-        $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
-        if ($result_data->data->id) {
-            $userid = $result_data->data->id;
+        $result = self::sendAndDecode('POST', 'users', ['userid' => $username, 'password' => 'V' . Str::random() . '!']);
+        if ($result->data->id) {
+            $userid = $result->data->id;
             self::send('PUT', "users/$userid", ['key' => 'email', 'value' => $email]);
             self::send('PUT', "users/$userid", ['key' => 'displayname', 'value' => $displayname]);
         }
@@ -142,10 +141,8 @@ class NextcloudLibrary extends BaseLibrary
 
     private static function sync_groups(array $newgroups, string $username): void
     {
-        $result = self::send('GET', "users/$username/groups");
-        $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
-        $result_data_data = $result_data?->data?->groups?->element ?? [];
-        $currentgroups = is_array($result_data_data) ? $result_data_data : [$result_data_data];
+        $result = self::sendAndDecode('GET', "users/$username/groups");
+        $currentgroups = $result?->data?->groups ?? [];
 
         if (!empty($currentgroups)) {
             $to_delete = array_diff($currentgroups, $newgroups);
@@ -154,21 +151,19 @@ class NextcloudLibrary extends BaseLibrary
             $to_delete = [];
             $to_add = $newgroups;
         }
-        //dd($result_data, $currentgroups, $to_add, $to_delete);
+
         foreach ($to_delete as $groupdel) {
-            $result = self::send('DELETE', "users/$username/groups", ['groupid' => $groupdel]);
-            // the statuscode is somewhere else
-            //if ($result->getStatusCode() != 100) {
-            //    Log::info("Error member $username could not be deleted from team $groupdel");
-            //}
+            $result = self::sendAndDecode('DELETE', "users/$username/groups", ['groupid' => $groupdel]);
+            if ($result->meta->statuscode != 100) {
+                Log::info("Error member $username could not be deleted from team $groupdel");
+            }
         }
 
         foreach ($to_add as $groupadd) {
             $result = self::sendAndDecode('POST', "users/$username/groups", ['groupid' => $groupadd]);
-            // the statuscode is somewhere else
-            //if ($result->getStatusCode() != 100) {
-            //    Log::info("Error member $username could not be added to team $groupadd");
-            //}
+            if ($result->meta->statuscode != 100) {
+                Log::info("Error member $username could not be added to team $groupadd");
+            }
         }
     }
 }
