@@ -4,6 +4,8 @@ namespace App\Libraries;
 
 use App\Models\Groups\ServiceRoleType;
 use App\Models\Membership\User\User;
+use App\Notifications\BasicNotification;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
@@ -51,6 +53,20 @@ class NextcloudLibrary extends BaseLibrary
                 return true;
             } else {
                 $username = self::create_user($username, $user->email, "$user->firstname $user->lastname");
+                $notification = new BasicNotification(
+                    "Es wurde ein Account für dich im DMS angelegt. Dein Loginname lautet:
+                    <code>$username</code>
+                    mit der E-Mail: 
+                    <code>$user->email</code>
+                    .
+                    Nutze die Funktion <i>Passwort vergessen</i> um dein Passwort zu ändern.",
+                    'Tech Leitung',
+                    'hier gehts zum Login',
+                    'https://dms.vatsim-germany.org/login?clear=1',
+                    Carbon::now()->addDays(14),
+                    Carbon::now()->addDays(365),
+                );
+                $user->notify($notification);
             }
         }
 
@@ -82,7 +98,7 @@ class NextcloudLibrary extends BaseLibrary
         if ($result) {
             Log::info("User deleted: $username");
         } else {
-            Log::info("User deleteion failed: $username");
+            Log::info("User deletion failed: $username");
         }
     }
 
