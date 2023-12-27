@@ -48,7 +48,7 @@ class NextcloudLibrary extends BaseLibrary
             foreach ($data as $key => $value) {
                 if ($key == 'element' && is_array($data->$key)) {
                     return $value;
-                } elseif ($key == 'element' && is_object($data->$key)) {
+                } elseif ($key == 'element') {
                     return [$value];
                 } else {
                     $data->$key = self::mergeElementAboveLevel($value);
