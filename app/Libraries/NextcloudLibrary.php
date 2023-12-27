@@ -83,7 +83,7 @@ class NextcloudLibrary extends BaseLibrary
         //Existiert User?
         $username = "$user->id";
         $result_data = self::sendAndDecode('GET', "users/$username");
-        if ($result_data->data) {
+        if (!$result_data->data) {
             if (empty($newgroups)) {
                 return true;
             } else {
