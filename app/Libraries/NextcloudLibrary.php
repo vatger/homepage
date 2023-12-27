@@ -39,6 +39,19 @@ class NextcloudLibrary extends BaseLibrary
         }
     }
 
+    private static function sendAndDecode(string $method, string $endpoint, array $data = []): ?object
+    {
+        $response = self::send($method, $endpoint, $data);
+        if (!$response) {
+            return null;
+        }
+        $response_content = json_decode(json_encode(simplexml_load_string($response->getBody()->getContents())));
+        dd($response_content);
+        $obj = (object) [];
+
+        return $obj;
+    }
+
     public static function check_user(User $user): bool
     {
         // Neue Benutzergruppen ermitteln
@@ -120,17 +133,18 @@ class NextcloudLibrary extends BaseLibrary
         //dd($result_data, $currentgroups, $to_add, $to_delete);
         foreach ($to_delete as $groupdel) {
             $result = self::send('DELETE', "users/$username/groups", ['groupid' => $groupdel]);
-            if ($result->getStatusCode() != 100) {
-                Log::info("Error member $username could not be deleted from team $groupdel");
-            }
+            // the statuscode is somewhere else
+            //if ($result->getStatusCode() != 100) {
+            //    Log::info("Error member $username could not be deleted from team $groupdel");
+            //}
         }
 
         foreach ($to_add as $groupadd) {
-            $result = self::send('POST', "users/$username/groups", ['groupid' => $groupadd]);
-            dd(json_decode(json_encode(simplexml_load_string($result->getBody()->getContents()))));
-            if ($result->getStatusCode() != 100) {
-                Log::info("Error member $username could not be added to team $groupadd");
-            }
+            $result = self::sendAndDecode('POST', "users/$username/groups", ['groupid' => $groupadd]);
+            // the statuscode is somewhere else
+            //if ($result->getStatusCode() != 100) {
+            //    Log::info("Error member $username could not be added to team $groupadd");
+            //}
         }
         dd($result_data, $currentgroups, $newgroups, $to_add, $to_delete);
     }
