@@ -3,6 +3,7 @@
 namespace App\Models\Groups;
 
 use App\Libraries\BookstackLibrary;
+use App\Libraries\NextcloudLibrary;
 use App\Libraries\OSTicketLibrary;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Libraries\VikunjaLibrary;
@@ -32,6 +33,7 @@ class ServiceRole extends Model
                 ServiceRoleType::TeamspeakServergroup => TeamSpeakWebQuery::getServergroupName(intval($this->service_role)) ?? '?',
                 ServiceRoleType::SupportGroup => OSTicketLibrary::get_group_name(intval($this->service_role)) ?? '?',
                 ServiceRoleType::BookstackGroup => BookstackLibrary::get_group_name(intval($this->service_role)) ?? '?',
+                ServiceRoleType::NextcloudGroup => NextcloudLibrary::get_group_name($this->service_role) ?? '?',
                 ServiceRoleType::VikunjaGroup => VikunjaLibrary::get_group_name(intval($this->service_role)) ?? '?',
                 default => null,
             };

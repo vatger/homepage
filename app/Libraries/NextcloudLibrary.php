@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
@@ -73,6 +74,21 @@ class NextcloudLibrary extends BaseLibrary
             'data' => self::mergeElementAboveLevel($response_content->data),
         ];
         return $obj;
+    }
+
+    public static function get_all_groups(): array
+    {
+        $result = Cache::remember('NextcloudLibrary.get_all_groups', 60, fn() => self::sendAndDecode('GET', 'groups'));
+        return $result?->data?->groups ?? [];
+    }
+
+    public static function get_group_name(string $id): ?string
+    {
+        $groups = self::get_all_groups();
+        if (in_array($id, $groups)) {
+            return 'ok';
+        }
+        return null;
     }
 
     public static function check_user(User $user): bool
