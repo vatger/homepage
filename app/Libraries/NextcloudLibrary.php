@@ -39,6 +39,22 @@ class NextcloudLibrary extends BaseLibrary
         }
     }
 
+    private static function mergeElementAboveLevel($data)
+    {
+        if (!is_object($data)) {
+            return $data;
+        } else {
+            foreach ($data as $key => $value) {
+                if ($key == 'element' && is_array($data->$key)) {
+                    return $value;
+                } else {
+                    $data->$key = self::mergeElementAboveLevel($value);
+                }
+            }
+        }
+        return $data;
+    }
+
     private static function sendAndDecode(string $method, string $endpoint, array $data = []): ?object
     {
         $response = self::send($method, $endpoint, $data);
@@ -46,9 +62,10 @@ class NextcloudLibrary extends BaseLibrary
             return null;
         }
         $response_content = json_decode(json_encode(simplexml_load_string($response->getBody()->getContents())));
-        dd($response_content);
-        $obj = (object) [];
-
+        $obj = (object) [
+            'meta' => $response_content->meta,
+            'data' => self::mergeElementAboveLevel($response_content->data),
+        ];
         return $obj;
     }
 
@@ -141,11 +158,11 @@ class NextcloudLibrary extends BaseLibrary
 
         foreach ($to_add as $groupadd) {
             $result = self::sendAndDecode('POST', "users/$username/groups", ['groupid' => $groupadd]);
+            dd($result);
             // the statuscode is somewhere else
             //if ($result->getStatusCode() != 100) {
             //    Log::info("Error member $username could not be added to team $groupadd");
             //}
         }
-        dd($result_data, $currentgroups, $newgroups, $to_add, $to_delete);
     }
 }
