@@ -77,6 +77,7 @@ class NextcloudLibrary extends BaseLibrary
         //Existiert User?
         $username = "$user->id";
         $result = self::send('GET', "users/$username");
+        dd(self::sendAndDecode('GET', "users/$username"));
         $result_data = json_decode(json_encode(simplexml_load_string($result->getBody()->getContents())));
         if (empty($result_data?->data) || empty($result_data?->data->id)) {
             if (empty($newgroups)) {
@@ -158,7 +159,6 @@ class NextcloudLibrary extends BaseLibrary
 
         foreach ($to_add as $groupadd) {
             $result = self::sendAndDecode('POST', "users/$username/groups", ['groupid' => $groupadd]);
-            dd($result->data);
             // the statuscode is somewhere else
             //if ($result->getStatusCode() != 100) {
             //    Log::info("Error member $username could not be added to team $groupadd");
