@@ -39,6 +39,7 @@ class NextcloudLibrary extends BaseLibrary
         }
     }
 
+    //
     private static function mergeElementAboveLevel($data)
     {
         if (!is_object($data)) {
@@ -47,6 +48,8 @@ class NextcloudLibrary extends BaseLibrary
             foreach ($data as $key => $value) {
                 if ($key == 'element' && is_array($data->$key)) {
                     return $value;
+                } elseif ($key == 'element' && is_object($data->$key)) {
+                    return [$value];
                 } else {
                     $data->$key = self::mergeElementAboveLevel($value);
                 }
