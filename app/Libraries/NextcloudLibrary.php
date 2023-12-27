@@ -131,5 +131,6 @@ class NextcloudLibrary extends BaseLibrary
                 Log::info("Error member $username could not be added to team $groupadd");
             }
         }
+        dd($result_data, $currentgroups, $newgroups, $to_add, $to_delete);
     }
 }
