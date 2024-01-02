@@ -11,21 +11,7 @@ class UserVatsimDetail extends Model
 
     protected $table = 'user_vatsim_details';
 
-    protected $fillable = [
-        'user_id',
-        'rating_atc',
-        'rating_pilot',
-        'rating_military',
-        'country_code',
-        'country_name',
-        'region_code',
-        'region_name',
-        'division_code',
-        'division_name',
-        'subdivision_code',
-        'subdivision_name',
-    ];
-
+    protected $guarded = [];
     protected $appends = [
         'rating_atc_short',
         'rating_pilot_short',

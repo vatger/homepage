@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Libraries\VATSIM\APILibrary;
+use App\Libraries\VATSIM\CoreApiLibrary2;
 use App\Models\Membership\User\User;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -20,6 +21,9 @@ class UpdateRestMembersJob implements ShouldQueue
 
     public Collection $collection;
 
+    public int $total_to_update = 0;
+    public int $really_updating = 0;
+
     public static int $refresh_time = 60 * 60 * 12;
 
     /**
@@ -33,13 +37,16 @@ class UpdateRestMembersJob implements ShouldQueue
         User::select('id')
             ->lazy()
             ->each(function (object $user) {
-                $cache_key = 'vatsim.api.member_update.' . $user->id;
+                $cache_key = CoreApiLibrary2::$cache_key_user . $user->id;
                 $cache_exists = Cache::has($cache_key);
-                $cached_val = $cache_exists ? Carbon::parse(Cache::get($cache_key)) : Carbon::now()->subDay();
+                $cached_val = $cache_exists ? Carbon::createFromTimestamp(intval(Cache::get($cache_key))) : Carbon::now()->subDay();
                 if (!$cache_exists || $cached_val->diffInSeconds(Carbon::now()) > self::$refresh_time) {
                     $this->collection->add(['id' => $user->id, 'time' => $cached_val->timestamp]);
                 }
             });
+        $this->total_to_update = $this->collection->count();
+        $this->really_updating = min($this->total_to_update, $this->total_to_update / 24, 50);
+        $this->collection = $this->collection->sortBy('time')->take($this->really_updating);
     }
 
     /**
@@ -50,16 +57,13 @@ class UpdateRestMembersJob implements ShouldQueue
     public function handle()
     {
         Log::info('[UpdateRestMembersJob]::Starting');
-        $total_to_update = $this->collection->count();
-        $really_updating = min($total_to_update, $total_to_update / 24, 50);
-        $collection_to_update = $this->collection->sortBy('time')->take($really_updating);
-        $collection_to_update->lazy()->each(function ($obj) {
+        $this->collection->lazy()->each(function ($obj) {
             $user = User::find($obj['id']);
             if (!$user) {
                 return;
             }
-            APILibrary::MemberUpdate($user, update_vatger_membership: true);
+            CoreApiLibrary2::updateMember($user, update_vatger_membership: true);
         });
-        Log::info("[UpdateRestMembersJob]::Completed $really_updating of $total_to_update updated");
+        Log::info("[UpdateRestMembersJob]::Completed  $this->really_updating of $this->total_to_update updated");
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Libraries;
+
 use App\Models\Groups\ServiceRoleType;
 use App\Models\Membership\User\User;
 use App\Notifications\BasicNotification;
@@ -11,8 +12,6 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use phpDocumentor\Reflection\DocBlock\Tags\Return_;
-use phpDocumentor\Reflection\Types\Object_;
 
 class VikunjaLibrary extends BaseLibrary
 {
@@ -52,7 +51,6 @@ class VikunjaLibrary extends BaseLibrary
                 return $client->request($method, $uri, ['json' => $data]);
             }
         } catch (GuzzleException $e) {
-            echo $e->getMessage();
             Log::info($e->getMessage());
             return false;
         }
@@ -62,7 +60,7 @@ class VikunjaLibrary extends BaseLibrary
     {
         $new_teams = $user->service_role_ids(ServiceRoleType::VikunjaGroup, cast_to_int: true);
         $result = $this->send('GET', "users?s=$user->id");
-        $result_data = json_decode($result->getBody()->getContents());
+        $result_data = json_decode($result?->getBody()?->getContents());
         if ($result_data == null) {
             // no user exists
             if (!$new_teams) {
@@ -101,14 +99,14 @@ class VikunjaLibrary extends BaseLibrary
 
         foreach ($to_delete as $teamdel) {
             $result = $this->send('DELETE', "teams/$teamdel/members/$userid");
-            if ($result->getStatusCode() != 200) {
+            if (!$result || $result->getStatusCode() != 200) {
                 Log::info("Error member $user->id could not be deleted from team $teamdel");
             }
         }
 
         foreach ($to_add as $teamadd) {
             $result = $this->send('PUT', "teams/$teamadd/members", ['admin' => false, 'id' => 0, 'username' => strval($user->id)]);
-            if ($result->getStatusCode() != 201) {
+            if (!$result || $result->getStatusCode() != 201) {
                 Log::info("Error member $user->id could not be added to team $teamdel");
             }
         }
@@ -170,6 +168,7 @@ class VikunjaLibrary extends BaseLibrary
         $result_data = json_decode($result->getBody()->getContents());
         return $result_data?->token;
     }
+
     private function get_groups(): array
     {
         $result = $this->send('GET', 'teams');
@@ -231,6 +230,7 @@ class VikunjaLibrary extends BaseLibrary
             return false;
         }
     }
+
     private function map_project_and_label(int $supporttype, int $area): object
     {
         $map = (object) ['label' => 11, 'project_id' => 4];

@@ -3,6 +3,8 @@
 namespace App\Console;
 
 use App\Jobs\CleanupJob;
+use App\Jobs\UpdateToursDatabase;
+
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -25,6 +27,7 @@ class Kernel extends ConsoleKernel
             ->weekly()
             ->mondays()
             ->at('05:00');
+
     }
 
     /**

@@ -138,19 +138,20 @@ class APILibrary
     {
         // Example request
         // curl -H 'Accept: application/json; indent=4' -H "Authorization: Token 7796bdb6b0be14ccf3f147036e133f1719d4712b" "https://api.vatsim.net/api/divisions/test/members/"
+        $base_uri = config('vatsim.api.host') . '/api';
+
         $client = new Client([
-            'base_uri' => config('vatsim.api.base'),
+            'base_uri' => $base_uri,
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json; indent=4',
                 'Authorization' => $with_token ? 'Token ' . config('vatsim.api.token') : null,
-                'X-API-Key' => $with_token ? config('vatsim.api.token') : null,
             ],
             'connect_timeout' => 25,
         ]);
 
         try {
-            $endpoint = config('vatsim.api.base') . '/' . $urlEndpoint;
+            $endpoint = $base_uri . '/' . $urlEndpoint;
             $response = $client->get($endpoint);
             if ($response->getStatusCode() == 200) {
                 return json_decode($response->getBody());

@@ -3,20 +3,20 @@
 namespace App\Libraries\VATSIM;
 
 use App\Libraries\BaseLibrary;
+use App\Libraries\MembershipLibrary;
 use App\Models\Membership\User\User;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
-use function Laravel\Prompts\select;
-use function Symfony\Component\String\u;
 
 class CoreApiLibrary2 extends BaseLibrary
 {
+    public static string $cache_key_user = 'CoreApiLibrary2.last_member_refresh.';
+
     public static function send(string $type, string $endpoint, array $data = []): array|object|null
     {
         $apikey = config('vatsim.api.token2');
-        $uri = config('vatsim.api.base') . '/v2/' . ltrim($endpoint, '/');
+        $uri = config('vatsim.api.host') . '/v2/' . ltrim($endpoint, '/');
         $type = strtoupper($type);
         $client = self::constructClient([
             'headers' => [
@@ -41,7 +41,7 @@ class CoreApiLibrary2 extends BaseLibrary
 
     private static function cache_expired(string $key, int $max_cache_time): bool
     {
-        if (!Cache::has($key)) {
+        if (!Cache::has($key) || $max_cache_time <= 0) {
             return true;
         }
         $saved_timestamp = Cache::get($key);
@@ -49,15 +49,14 @@ class CoreApiLibrary2 extends BaseLibrary
         return $diff > $max_cache_time;
     }
 
-    public static function updateMember(User $user, int $max_cache_time = 60 * 60 * 12): void
+    public static function updateMember(User $user, int $max_cache_time = 60 * 60 * 12, bool $update_vatger_membership = false): void
     {
-        $cache_key = "CoreApiLibrary2.last_member_refresh.$user->id";
+        $cache_key = self::$cache_key_user . $user->id;
         if (!self::cache_expired($cache_key, $max_cache_time)) {
             return;
         }
         $result = self::send('GET', "members/$user->id");
-        self::insertMemberData($user, $result);
-        Cache::put($cache_key, Carbon::now()->timestamp);
+        self::insertMemberData($user, $result, $update_vatger_membership);
     }
 
     public static function updateSubdivisionMembers(int $offset, int $limit = 100): int
@@ -67,16 +66,16 @@ class CoreApiLibrary2 extends BaseLibrary
             'limit' => $limit,
             'offset' => $offset,
         ]);
+        if (empty($result)) {
+            return $offset;
+        }
         $count = $result->count;
         $new_offset = $offset;
         foreach ($result->items as $data) {
             $user = User::find($data->id);
             if ($user) {
-                $cache_key = "CoreApiLibrary2.last_member_refresh.$user->id";
-                self::insertMemberData($user, $data);
-                Cache::put($cache_key, Carbon::now()->timestamp);
+                self::insertMemberData($user, $data, membership_refresh: true);
             }
-
             $new_offset++;
         }
 
@@ -86,7 +85,7 @@ class CoreApiLibrary2 extends BaseLibrary
         return $new_offset;
     }
 
-    private static function insertMemberData(User $user, object $data): void
+    private static function insertMemberData(User $user, object $data, bool $membership_refresh = false): void
     {
         $user->update([
             'firstname' => $data->name_first,
@@ -104,6 +103,13 @@ class CoreApiLibrary2 extends BaseLibrary
             'subdivision_code' => $data->subdivision_id,
             'subdivision_name' => $user->vatsimDetails->subdivision_code == $data->subdivision_id ? $user->vatsimDetails->subdivision_name : '',
             'last_rating_change_at' => $data->lastratingchange,
+            'registered_at' => $data->reg_date ?? $user->vatsimDetails->registered_at,
+            'updated_at' => Carbon::now(),
         ]);
+        $cache_key = self::$cache_key_user . $user->id;
+        Cache::put($cache_key, Carbon::now()->timestamp);
+        if ($membership_refresh) {
+            MembershipLibrary::update($user, api_refresh: false);
+        }
     }
 }
