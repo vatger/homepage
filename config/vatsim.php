@@ -11,7 +11,7 @@ return [
     ],
     'api' => [
         'testing' => env('VATSIM_API_TESTING', false),
-        'base' => rtrim(env('VATSIM_API_BASE', 'https://api.vatsim.net/api'), '/'),
+        'host' => rtrim(env('VATSIM_API_HOST', 'https://api.vatsim.net'), '/'),
         'token' => env('VATSIM_API_TOKEN'),
         'token2' => env('VATSIM_API_TOKEN2'),
     ],
