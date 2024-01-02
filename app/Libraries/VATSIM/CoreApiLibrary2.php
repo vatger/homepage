@@ -66,6 +66,9 @@ class CoreApiLibrary2 extends BaseLibrary
             'limit' => $limit,
             'offset' => $offset,
         ]);
+        if (empty($result)) {
+            return $offset;
+        }
         $count = $result->count;
         $new_offset = $offset;
         foreach ($result->items as $data) {
@@ -103,7 +106,6 @@ class CoreApiLibrary2 extends BaseLibrary
             'registered_at' => $data->reg_date ?? $user->vatsimDetails->registered_at,
             'updated_at' => Carbon::now(),
         ]);
-        dump($data);
         $cache_key = self::$cache_key_user . $user->id;
         Cache::put($cache_key, Carbon::now()->timestamp);
         if ($membership_refresh) {

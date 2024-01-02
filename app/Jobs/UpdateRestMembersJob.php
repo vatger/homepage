@@ -21,8 +21,8 @@ class UpdateRestMembersJob implements ShouldQueue
 
     public Collection $collection;
 
-    public int $total_to_update;
-    public int $really_updating;
+    public int $total_to_update = 0;
+    public int $really_updating = 0;
 
     public static int $refresh_time = 60 * 60 * 12;
 
