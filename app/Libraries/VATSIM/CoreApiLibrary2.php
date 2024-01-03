@@ -34,6 +34,7 @@ class CoreApiLibrary2 extends BaseLibrary
                 $res = $client->request($type, $uri, ['query' => $data]);
             }
         } catch (GuzzleException $e) {
+            return null;
         }
         $json = json_decode($res?->getBody()?->getContents());
         return $json;
@@ -59,7 +60,7 @@ class CoreApiLibrary2 extends BaseLibrary
         self::insertMemberData($user, $result, $update_vatger_membership);
     }
 
-    public static function updateSubdivisionMembers(int $offset, int $limit = 100): int
+    public static function updateSubdivisionMembers(int $offset, int $limit = 50): int
     {
         $result = self::send('GET', 'orgs/subdivision/GER', [
             'include_inactive' => true,
@@ -87,11 +88,13 @@ class CoreApiLibrary2 extends BaseLibrary
 
     private static function insertMemberData(User $user, object $data, bool $membership_refresh = false): void
     {
-        $user->update([
-            'firstname' => $data->name_first,
-            'lastname' => $data->name_last,
-            'email' => $data->email,
-        ]);
+        if (!empty($data->name_first) && !empty($data->name_last) && !empty($data->email)) {
+            $user->update([
+                'firstname' => $data->name_first,
+                'lastname' => $data->name_last,
+                'email' => $data->email,
+            ]);
+        }
         $user->vatsimDetails->update([
             'rating_atc' => $data->rating,
             'rating_pilot' => $data->pilotrating,
