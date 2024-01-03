@@ -86,8 +86,11 @@ class CoreApiLibrary2 extends BaseLibrary
         return $new_offset;
     }
 
-    private static function insertMemberData(User $user, object $data, bool $membership_refresh = false): void
+    private static function insertMemberData(?User $user, ?object $data, bool $membership_refresh = false): void
     {
+        if (empty($data) || empty($user)) {
+            return;
+        }
         if (!empty($data->name_first) && !empty($data->name_last) && !empty($data->email)) {
             $user->update([
                 'firstname' => $data->name_first,
