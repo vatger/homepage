@@ -108,8 +108,8 @@ class CoreApiLibrary2 extends BaseLibrary
             'division_name' => $user->vatsimDetails->division_code == $data->division_id ? $user->vatsimDetails->division_name : '',
             'subdivision_code' => $data->subdivision_id,
             'subdivision_name' => $user->vatsimDetails->subdivision_code == $data->subdivision_id ? $user->vatsimDetails->subdivision_name : '',
-            'last_rating_change_at' => $data->lastratingchange,
-            'registered_at' => $data->reg_date ?? $user->vatsimDetails->registered_at,
+            'last_rating_change_at' => $data->lastratingchange ? Carbon::parse($data->lastratingchange) : $user->vatsimDetails->last_rating_change_at,
+            'registered_at' => $data->reg_date ? Carbon::parse($data->reg_date) : $user->vatsimDetails->registered_at,
             'updated_at' => Carbon::now(),
         ]);
         $cache_key = self::$cache_key_user . $user->id;

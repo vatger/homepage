@@ -5,6 +5,7 @@ namespace App\Libraries;
 use App\Jobs\UpdateAccountJob;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Libraries\VATSIM\APILibrary;
+use App\Libraries\VATSIM\CoreApiLibrary2;
 use App\Models\Membership\User\User;
 use App\Models\Membership\User\UserBan;
 use App\Models\Membership\User\UserBanType;
@@ -39,7 +40,7 @@ class MembershipLibrary
             return;
         }
         if ($api_refresh) {
-            APILibrary::MemberUpdate($user, $cache);
+            CoreApiLibrary2::updateMember($user, $cache ? 60 : 0);
             $user = $user->refresh();
         }
         self::check_bans($user);
