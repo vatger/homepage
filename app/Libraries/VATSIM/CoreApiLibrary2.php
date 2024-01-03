@@ -60,7 +60,7 @@ class CoreApiLibrary2 extends BaseLibrary
         self::insertMemberData($user, $result, $update_vatger_membership);
     }
 
-    public static function updateSubdivisionMembers(int $offset, int $limit = 50): int
+    public static function updateSubdivisionMembers(int $offset, int $limit = 100): int
     {
         $result = self::send('GET', 'orgs/subdivision/GER', [
             'include_inactive' => true,
@@ -91,7 +91,7 @@ class CoreApiLibrary2 extends BaseLibrary
         if (empty($data) || empty($user)) {
             return;
         }
-        if (!empty($data->name_first) && !empty($data->name_last) && !empty($data->email)) {
+        if (isset($data->name_first) && isset($data->name_last) && isset($data->email)) {
             $user->update([
                 'firstname' => $data->name_first,
                 'lastname' => $data->name_last,
