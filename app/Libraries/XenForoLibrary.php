@@ -131,6 +131,10 @@ class XenForoLibrary extends BaseLibrary
             $dataArray['username'] = $user->username;
         }
 
+        if (isset($forumUserObject->email)) {
+            $user->email_backup = $forumUserObject->email;
+            $user->save();
+        }
         /**
          * Array to store forum groups that must be assigned to the user.
          */
@@ -198,12 +202,6 @@ class XenForoLibrary extends BaseLibrary
 
     /**
      * Send an alert to a forum account
-     *
-     * @param User $user
-     * @param string $message
-     * @param string|null $link_url
-     * @param string|null $link_text
-     * @return boolean
      */
     public static function sendForumAlert(User $user, string $message, ?string $link_url = null, ?string $link_text = null): bool
     {
@@ -228,24 +226,20 @@ class XenForoLibrary extends BaseLibrary
 
     /**
      * Sends a private message to a user in the forum
-     * @param  [type] $account [description]
-     * @param  [type] $title   [description]
-     * @param  [type] $message [description]
-     * @return [type]          [description]
      */
-    public static function sendAccountNotification($account, $title, $message)
+    public static function sendAccountNotification(User $user, string $title, string $message): bool
     {
-        if (null == $account->setting->forum_id) {
+        if (null == $user->settings->forum_id) {
             return false;
         }
 
-        $dataArray['recipient_ids'] = [$account->setting->forum_id];
+        $dataArray['recipient_ids'] = [$user->settings->forum_id];
 
         $dataArray['title'] = $title;
         $dataArray['message'] = $message;
         $dataArray['open_invite'] = false;
 
-        $result = self::_sendAPIPostCommand('conversations', $dataArray);
+        $result = self::send('POST', 'conversations', $dataArray);
         if ($result && 200 == $result->getStatusCode()) {
             return true;
         }
@@ -286,20 +280,7 @@ class XenForoLibrary extends BaseLibrary
     public static function getGroupName(int $id): ?string
     {
         $array = config('forum.groups');
-    }
-
-    /**
-     * Grab the threads from the news forum
-     * @return [type] [description]
-     */
-    public static function getNewsThreads()
-    {
-        $result = self::send('GET', 'forums/' . config('forum.newsId') . '/threads', []);
-        if ($result && 200 == $result->getStatusCode()) {
-            return json_decode($result->getBody()->getContents());
-        }
-
-        return false;
+        return null;
     }
 
     /**
