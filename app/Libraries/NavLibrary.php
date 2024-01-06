@@ -35,14 +35,15 @@ class NavLibrary extends BaseLibrary
         Station::query()->update(['active' => false]);
         foreach ($stations as $s) {
             try {
-                if (!isset($s->logon) || !isset($s->frequency) || !isset($s->description)) {
+                if (!isset($s->logon) || !isset($s->description)) {
                     continue;
                 }
+
                 // create the station
                 $d = Station::where('ident', 'LIKE', $s->logon)->firstOrNew();
                 $d->setAttribute('active', true);
                 $d->setAttribute('ident', $s->logon);
-                $d->setAttribute('frequency', floatval($s->frequency));
+                $d->setAttribute('frequency', floatval($s?->frequency ?? 199.998));
                 $d->setAttribute('name', $s->description);
                 $d->save();
 
