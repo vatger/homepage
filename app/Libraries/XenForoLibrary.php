@@ -5,6 +5,7 @@ namespace App\Libraries;
 use App\Models\Groups\ServiceRoleType;
 use App\Models\Membership\User\User;
 use App\Notifications\BasicNotification;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\ResponseInterface;
@@ -30,13 +31,15 @@ class XenForoLibrary extends BaseLibrary
             $url = config('forum.url') . '/api/' . $endpoint;
         }
         try {
-            $response = $client->request($method, $url, ['form_params' => $data]);
+            return $client->request($method, $url, ['form_params' => $data]);
+        } catch (ClientException $e) {
+            $response = $e->getResponse();
             dump($response->getBody()->getContents());
-            return $response;
+            Log::debug($e->getMessage());
         } catch (GuzzleException $e) {
             Log::debug($e->getMessage());
-            return false;
         }
+        return false;
     }
 
     /**
