@@ -210,7 +210,7 @@ class XenForoLibrary extends BaseLibrary
      */
     public static function sendForumAlert(User $user, string $message, ?string $link_url = null, ?string $link_text = null): bool
     {
-        $forum_user_id = $user->settings->get('forum_id');
+        $forum_user_id = $user->settings?->forum_id;
         if ($forum_user_id == null) {
             return false;
         }
