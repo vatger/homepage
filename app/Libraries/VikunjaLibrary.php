@@ -90,10 +90,12 @@ class VikunjaLibrary extends BaseLibrary
                 }
             }
         }
+
         if (!empty($old_teams)) {
             $to_delete = array_diff($old_teams, $new_teams);
             $to_add = array_diff($new_teams, $old_teams);
         } else {
+            $to_delete = [];
             $to_add = $new_teams;
         }
 
@@ -125,7 +127,7 @@ class VikunjaLibrary extends BaseLibrary
                 'Dein Account bei der Vikunja-Installation',
                 "Es wurde ein Account für dich im Vikunja angelegt. Dein Loginname lautet:
                     <code>$user->id</code>
-                    mit der Email: 
+                    mit der E-Mail: 
                     <code>$user->email</code>
                     Bitte verwende die Passwort-vergessen-Funktion, um dein Passwort für den erstmaligen Login zu setzen",
                 'Tech Leitung',
