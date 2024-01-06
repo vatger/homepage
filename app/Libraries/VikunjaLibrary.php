@@ -122,12 +122,12 @@ class VikunjaLibrary extends BaseLibrary
 
         $user->notify(
             new BasicNotification(
-                'Dein Account im Ticketsystem',
+                'Dein Account bei der Vikunja-Installation',
                 "Es wurde ein Account für dich im Vikunja angelegt. Dein Loginname lautet:
                     <code>$user->id</code>
                     mit der Email: 
                     <code>$user->email</code>
-                    Bitte verwende die Passwort vergessen Funktion um dein Passwort für den erstmaligen Login zu setzen",
+                    Bitte verwende die Passwort-vergessen-Funktion, um dein Passwort für den erstmaligen Login zu setzen",
                 'Tech Leitung',
                 'hier gehts zum Login',
                 'https://vikunja.vatsim-germany.org/',
