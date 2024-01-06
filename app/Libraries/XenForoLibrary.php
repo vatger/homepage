@@ -213,10 +213,8 @@ class XenForoLibrary extends BaseLibrary
         $dataArray['to_user_id'] = $forum_user_id;
         $dataArray['alert'] = $message;
         $dataArray['from_user_id'] = 0; //anonymous
-        if (!empty($link_url) && !empty($link_text)) {
-            $dataArray['link_url'] = $link_url;
-            $dataArray['link_title'] = $link_text;
-        }
+        $dataArray['link_url'] = $link_url ?? '';
+        $dataArray['link_title'] = $link_text ?? '';
         $res = self::send('POST', 'alerts/', $dataArray);
         if (!$res) {
             return false;
