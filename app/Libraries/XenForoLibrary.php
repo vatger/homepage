@@ -34,7 +34,7 @@ class XenForoLibrary extends BaseLibrary
             return $client->request($method, $url, ['form_params' => $data]);
         } catch (ClientException $e) {
             $response = $e->getResponse();
-            dump($response->getBody()->getContents());
+            //dump($response->getBody()->getContents());
             Log::debug($e->getMessage());
         } catch (GuzzleException $e) {
             Log::debug($e->getMessage());
