@@ -29,11 +29,11 @@ class XenForoLibrary extends BaseLibrary
         } else {
             $url = config('forum.url') . '/api/' . $endpoint;
         }
-
         try {
-            return $client->request($method, $url, ['form_params' => $data]);
+            $response = $client->request($method, $url, ['form_params' => $data]);
+            dump($response->getBody()->getContents());
+            return $response;
         } catch (GuzzleException $e) {
-            dump($e->getMessage());
             Log::debug($e->getMessage());
             return false;
         }
