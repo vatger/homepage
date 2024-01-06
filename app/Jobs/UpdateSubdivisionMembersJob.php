@@ -36,9 +36,9 @@ class UpdateSubdivisionMembersJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Log::info('[UpdateSubdivisionMembersJob]::Starting');
+        Log::info("[UpdateSubdivisionMembersJob]::Starting at offset $this->offset");
         $new_offset = CoreApiLibrary2::updateSubdivisionMembers($this->offset);
         Cache::put(self::$offset_key, $new_offset);
-        Log::info('[UpdateSubdivisionMembersJob]::Completed');
+        Log::info("[UpdateSubdivisionMembersJob]::Completed at offset $new_offset");
     }
 }
