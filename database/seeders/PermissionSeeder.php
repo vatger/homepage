@@ -34,6 +34,9 @@ class PermissionSeeder extends Seeder
         'navigation.aerodromes.view',
         'navigation.aerodromes.edit',
         'navigation.stations.view',
+
+        // Mail
+        // TODO 'mail',
     ];
 
     /**
