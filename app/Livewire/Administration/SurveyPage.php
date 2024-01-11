@@ -54,6 +54,7 @@ class SurveyPage extends Component
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
+        $this->authorize('survey');
         return view('pages.admin.survey')->with([
             'surveys' => $this->ls->list_surveys(),
             'keys' => SurveyKey::all(),

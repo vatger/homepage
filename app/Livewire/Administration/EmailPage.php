@@ -63,6 +63,7 @@ class EmailPage extends Component
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
+        $this->authorize('mail.manage');
         return view('pages.admin.email');
     }
 

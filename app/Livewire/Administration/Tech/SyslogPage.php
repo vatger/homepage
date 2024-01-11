@@ -21,6 +21,7 @@ class SyslogPage extends Component
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
+        $this->authorize('tech.access');
         $query = SysLog::where('created_at', 'LIKE', $this->search . '%');
         $this->sortQueryModifier($query);
         return view('pages.admin.syslogs')->with(['logs' => $query->paginate()]);
