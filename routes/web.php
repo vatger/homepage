@@ -107,4 +107,4 @@ Route::get('documentation', function () {
     return view('pages.admin.apidoku');
 });
 
-Route::get('support', SupportPage::class)->name('redirect.support');
+//Route::get('support', SupportPage::class)->name('redirect.support');
