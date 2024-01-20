@@ -21,7 +21,7 @@
                         position="left"
                         title="Persönliche Daten"
                         :items="[
-                            $user->can('membership.users.details.view.email') ? ['Email', $user->email ,'mail'] : [],
+                            $acting_user?->can('membership.users.details.view.email') ? ['Email', $user->email ,'mail'] : [],
                             ['Ausbildung', $user->vatsimDetails->rating_atc_short . ' | ' .$user->vatsimDetails->rating_pilot_short . ' | ' . $user->vatsimDetails->rating_military_short,'book-open'],
                             ['Regionszuweisung', $user->vatsimDetails->region_name . ' (' . $user->vatsimDetails->region_code . ')','globe'],
                             ['Divisionszuordnung', $user->vatsimDetails->division_name . ' (' . $user->vatsimDetails->division_code . ')','globe'],
