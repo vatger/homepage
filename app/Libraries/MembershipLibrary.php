@@ -41,11 +41,13 @@ class MembershipLibrary
         }
         if ($api_refresh) {
             CoreApiLibrary2::updateMember($user, $cache ? 60 : 0);
-            $user = $user->refresh();
+            $user = $user->fresh();
         }
         self::check_bans($user);
         self::check_status($user, $cache);
         self::check_staff($user);
+
+        $user = $user->fresh();
 
         # TODO: Handle all changes that might have triggered this function
 
