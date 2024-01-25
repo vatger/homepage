@@ -32,10 +32,6 @@ class SupportPage extends Component
             $this->mail = $user->email;
             $this->cid = $user->id;
         }
-
-        if ($success) {
-            $this->showNoty(__('support.text-success'), 'success');
-        }
     }
     #[Layout('layouts.master')]
     public function render()
@@ -147,7 +143,7 @@ class SupportPage extends Component
         }
 
         if ($result) {
-            return redirect(request()->header('Referer'))->with('success', 'Your message has been sent successfully!');
+            return redirect(request()->header('Referer'))->with('success', __('support.text-success'));
         } else {
             $this->showNoty(__('support.text-fail'), 'error');
         }
