@@ -22,6 +22,7 @@ class SupportPage extends Component
     public string $cid = '';
     public string $subject = '';
     public string $content = '';
+    private bool $captcha = true;
 
     public function mount()
     {
@@ -76,21 +77,25 @@ class SupportPage extends Component
     }
     public function send()
     {
-        if (empty($this->token)) {
-            $this->showNoty(__('support.text-missing-captcha'), 'error');
-            return;
-        }
+        if ($this->captcha) {
+            if (empty($this->token)) {
+                $this->showNoty(__('support.text-missing-captcha'), 'error');
+                return;
+            }
 
-        $captchaResp = Http::asForm()
-            ->post('https://hcaptcha.com/siteverify', [
-                'response' => $this->token,
-                'secret' => env('HCAPTCHA_SECRET'),
-            ])
-            ->object();
+            $captchaResp = Http::asForm()
+                ->post('https://hcaptcha.com/siteverify', [
+                    'response' => $this->token,
+                    'secret' => env('HCAPTCHA_SECRET'),
+                ])
+                ->object();
 
-        if (!$captchaResp->success) {
-            $this->showNoty(__('support.text-error-captcha'), 'error');
-            return;
+            if (!$captchaResp->success) {
+                $this->showNoty(__('support.text-error-captcha'), 'error');
+                return;
+            }
+
+            $this->captcha = false;
         }
 
         if ($this->chosen_sup_type == 0) {
@@ -144,7 +149,7 @@ class SupportPage extends Component
 
         if ($result) {
             $this->showNoty(__('support.text-success'), 'success');
-            hcaptcha . reset();
+
             $this->chosen_sup_type = 0;
             $this->chosen_area = 0;
             $this->subject = '';
