@@ -98,6 +98,7 @@ class SupportPage extends Component
 
             $this->captcha = false;
         }
+        $this->showNoty($this->captcha);
 
         if ($this->chosen_sup_type == 0) {
             $this->showNoty(__('support.text-missing-supporttype'), 'error');
