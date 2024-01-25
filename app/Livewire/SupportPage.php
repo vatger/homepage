@@ -138,7 +138,7 @@ class SupportPage extends Component
                 $this->chosen_area,
             );
         } else {
-            $L = new VikunjaLibrary();
+            $L = VikunjaLibrary::get_instance();
             $result = $L->create_task($this->subject, $this->content, $this->cid, $this->chosen_sup_type, $this->chosen_area);
         }
 
