@@ -100,7 +100,7 @@ class VikunjaLibrary extends BaseLibrary
         }
 
         foreach ($to_delete as $teamdel) {
-            $result = $this->send('DELETE', "teams/$teamdel/members/$userid");
+            $result = $this->send('DELETE', "teams/$teamdel/members/$user->id");
             if (!$result || $result->getStatusCode() != 200) {
                 Log::info("Error member $user->id could not be deleted from team $teamdel");
             }
