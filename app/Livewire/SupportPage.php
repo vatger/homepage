@@ -23,7 +23,7 @@ class SupportPage extends Component
     public string $subject = '';
     public string $content = '';
 
-    public function mount()
+    public function mount(bool $success = false)
     {
         $user = Auth::user();
 
@@ -31,6 +31,10 @@ class SupportPage extends Component
             $this->name = $user->username;
             $this->mail = $user->email;
             $this->cid = $user->id;
+        }
+
+        if ($success) {
+            $this->showNoty(__('support.text-success'), 'success');
         }
     }
     #[Layout('layouts.master')]
@@ -143,13 +147,7 @@ class SupportPage extends Component
         }
 
         if ($result) {
-            $this->showNoty(__('support.text-success'), 'success');
-
-            $this->chosen_sup_type = 0;
-            $this->chosen_area = 0;
-            $this->subject = '';
-            $this->content = '';
-            return redirect(request()->header('Referer'));
+            return redirect(request()->header('Referer'))->with(true);
         } else {
             $this->showNoty(__('support.text-fail'), 'error');
         }
