@@ -77,6 +77,7 @@ class SupportPage extends Component
     }
     public function send()
     {
+        $this->showNoty($this->captcha);
         if ($this->captcha) {
             if (empty($this->token)) {
                 $this->showNoty(__('support.text-missing-captcha'), 'error');
