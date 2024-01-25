@@ -147,9 +147,7 @@ class SupportPage extends Component
         }
 
         if ($result) {
-            return redirect()
-                ->back()
-                ->with('success', 'Your message has been sent successfully!');
+            return redirect(request()->header('Referer'))->with('success', 'Your message has been sent successfully!');
         } else {
             $this->showNoty(__('support.text-fail'), 'error');
         }
