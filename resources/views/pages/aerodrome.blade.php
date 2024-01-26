@@ -27,12 +27,11 @@
                 <div class="col-lg-8 col-md-6 mb-4">
                     <div class="card blog blog-detail border-0 shadow rounded">
                         <div class="card-body content">
-                            <h4>General Information</h4>
                             <div class="w-100">
                                 <div class="row" id="counter">
                                     <div class="col-sm-3 col-6 pt-2">
                                         <div class="counter-box text-center">
-                                            <h4 class="mb-0 mt-4">{{ $aerodrome->icao }}</h4>
+                                            <h4 class="mb-0">{{ $aerodrome->icao }}</h4>
                                             <h6 class="counter-head text-muted">ICAO</h6>
                                         </div>
                                         <!--end counter box-->
@@ -40,7 +39,7 @@
 
                                     <div class="col-sm-3 col-6 pt-2">
                                         <div class="counter-box text-center">
-                                            <h4 class="mb-0 mt-4">
+                                            <h4 class="mb-0">
                                                 {{ $aerodrome->iata ?? '-' }}
                                             </h4>
                                             <h6 class="counter-head text-muted">IATA</h6>
@@ -50,7 +49,7 @@
 
                                     <div class="col-sm-3 col-6 pt-2">
                                         <div class="counter-box text-center">
-                                            <h4 class="mb-0 mt-4">{{ $aerodrome->elevation }}</h4>
+                                            <h4 class="mb-0">{{ $aerodrome->elevation }}</h4>
                                             <h6 class="counter-head text-muted">Elevation (ft)</h6>
                                         </div>
                                         <!--end counter box-->
@@ -58,7 +57,7 @@
 
                                     <div class="col-sm-3 col-6 pt-2">
                                         <div class="counter-box text-center">
-                                            <h4 class="mb-0 mt-4">
+                                            <h4 class="mb-0">
                                                 @if ($aerodrome->civilian == 1)
                                                     @lang('general.phrases.yes')
                                                 @else
@@ -86,7 +85,7 @@
                         </div>
                     </div>
 
-                    <div class="card blog blog-detail border-0 shadow rounded mt-4">
+                    <div class="card blog-detail border-0 shadow rounded mt-4">
                         <div class="card-body content">
                             <h4>@lang('pilot.aerodromes.aerodrome.upcoming-event-title-text')</h4>
                             <div wire:ignore class="w-100" id="event-container">
@@ -105,8 +104,13 @@
                 <div class="col-lg-4 col-md-6 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                     <div class="card border-0 sidebar sticky-bar ms-lg-4">
                         <div class="card-body p-0">
+                            <a class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#wishlist">
+                                Charts
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link ms-1" style="vertical-align: text-top"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                            </a>
+
                             <!-- RECENT POST -->
-                            <div class="widget">
+                            <div class="widget mt-4">
                                 <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0">
                                     METAR
                                 </span>
@@ -121,7 +125,7 @@
                             </div>
                             <!-- RECENT POST -->
                             <!-- RECENT POST -->
-                            <div class="widget" id="atis-widget" style="visibility: hidden" wire:ignore.self>
+                            <div class="widget mt-4" id="atis-widget" wire:ignore.self>
                                 <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0">
                                     ATIS
                                 </span>
@@ -135,50 +139,6 @@
                                 </div>
                             </div>
                             <!-- RECENT POST -->
-                            <!-- RECENT POST -->
-                            {{--
-                            <div class="widget">
-                                <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0">
-                                    Links
-                                </span>
-
-                                <div class="mt-4">
-                                    @if ($aerodrome->aip_link != '')
-                                        <a href="{{ $aerodrome->aip_link }}" target="_blank">
-                                            <button type="button" class="btn btn-soft-primary" style="width: 90%; margin-left: 5%">AIP
-                                                <svg
-                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="feather feather-external-link fea icon-sm" style="margin-left: 10px; margin-top:-4px">
-                                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                                    <polyline points="15 3 21 3 21 9"></polyline>
-                                                    <line x1="10" y1="14" x2="21" y2="3"></line>
-                                                </svg>
-                                            </button>
-                                        </a>
-                                    @else
-
-                                        <a href="{{ route('pilots.aerodromes.charts', $aerodrome->icao) }}">
-                                            <button type="button" class="btn btn-soft-primary" style="width: 90%; margin-left: 5%">Charts</button>
-                                        </a>
-
-                                    @endif
-                                    <a href="https://wiki.vatsim-germany.org/{{ strtoupper($aerodrome->icao) }}" target="_blank">
-                                        <button type="button" class="btn btn-soft-primary mt-3" style="width: 90%; margin-left: 5%">Wiki
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-external-link fea icon-sm" style="margin-left: 10px; margin-top:-4px">
-                                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                                <polyline points="15 3 21 3 21 9"></polyline>
-                                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                                            </svg>
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                            --}}
-                            <!-- RECENT POST -->
 
                             <!-- RECENT POST -->
                             <div class="widget mt-4">
@@ -186,19 +146,11 @@
                                     Active ATC
                                 </span>
 
-                                <div class="mt-4">
+                                <div class="mt-2">
                                     <div class="d-flex align-items-center">
-                                        <div class="flex-1 ms-3 table-responsive" style="margin-right: 1rem !important;" id="table-atc-container">
+                                        <div wire:ignore class="flex-1 ms-3 table-responsive" style="margin-right: 1rem !important;" id="table-atc-container">
                                             <table class="table table-center" id="table-active-atc">
-                                                {{--
-                                                <thead>
-                                                <tr>
-                                                    <th class="text-center border-bottom fw-bold">@lang('pilot.aerodromes.aerodrome.station-table-header.0')</th>
-                                                    <th class="text-center border-bottom fw-bold">@lang('pilot.aerodromes.aerodrome.station-table-header.1')</th>
-                                                </tr>
-                                                </thead>
-                                                --}}
-                                                <tbody wire:ignore id="loading-text-atc">
+                                                <tbody id="loading-text-atc">
                                                 <tr>
                                                     <td class="text-center" colspan="2">Loading...</td>
                                                 </tr>
@@ -218,6 +170,29 @@
             <!--end row-->
         </div>
         <!--end container-->
+
+        <div class="modal fade" id="wishlist" tabindex="-1" aria-labelledby="LoginForm-title" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded shadow border-0">
+                    <div class="modal-body text-center">
+                        <div class="icon d-flex align-items-center justify-content-center bg-soft-danger rounded-circle mx-auto" style="height: 80px; width:80px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        </div>
+                        <div class="mt-4">
+                            <h4>Weiterleitung</h4>
+                            <p class="text-muted">
+                                Du verlässt VATSIM Germany.
+                                Der von dir ausgewählte Link leitet dich auf <span style="font-family: monospace">https://chartfox.org/{{strtoupper($aerodrome->icao)}}</span> weiter.
+                                VATSIM Germany ist in keiner Weise mit Chartfox verbunden und für keine Inhalte der Seite verantwortlich.
+                            </p>
+                            <div class="mt-4">
+                                <a href="https://chartfox.org/{{$aerodrome->icao}}" target="_blank" class="btn btn-primary">Verstanden</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
 
