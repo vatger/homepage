@@ -101,7 +101,7 @@ class MembershipLibrary
             }
         }
         // 7. Discord
-        if (BaseLibrary::is_active(BaseLibrary::SyncVikunja)) {
+        if (BaseLibrary::is_active(BaseLibrary::SyncDiscord)) {
             try {
                 DiscordLibrary::check_user($user);
             } catch (Exception $e) {

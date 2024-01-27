@@ -7,5 +7,6 @@ return [
     'vikunja' => env('ACTIVE_SYNC_VIKUNJA', false),
     'osticket' => env('ACTIVE_SYNC_OSTICKET', false),
     'mailcow' => env('ACTIVE_SYNC_MAILCOW', false),
+    'discord' => env('ACTIVE_SYNC_DISCORD', false),
     'sdp_enforce' => env('SDP_ENFORCE', false),
 ];
