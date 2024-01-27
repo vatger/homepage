@@ -1,7 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import $ from 'jquery';
 import { isEmpty } from 'lodash';
-import { zroute } from '@/ts/myziggy';
 import { findLivewireComponent } from '@/ts/livewire';
 import dayjs from 'dayjs';
 
@@ -47,7 +46,7 @@ async function map() {
         if (!isEmpty(stand['occupier'])) {
             callsign = `<p class="pb-0 mb-0">${stand['occupier']}</p>`;
         }
-        let marker = new mapboxgl.Marker(el)
+        new mapboxgl.Marker(el)
             .setLngLat([stand['longitude'], stand['latitude']])
             .setPopup(
                 new mapboxgl.Popup({
@@ -69,11 +68,13 @@ async function metar() {
 async function atis() {
     let lwc = findLivewireComponent('aerodrome-page');
     const atis_data: string = await lwc.$wire.load_atis();
-    if (!atis_data) return;
     let atis_el = document.getElementById('atis-container');
     let atis_wid = document.getElementById('atis-widget');
-    if (!atis_el || !atis_wid) return;
-    atis_wid.setAttribute('style', 'visibility=visible');
+    if (!atis_el || !atis_wid || !atis_data) {
+        if (atis_wid) atis_wid.style.display = 'none';
+        return;
+    }
+    atis_wid.style.display = 'block';
     let string = '';
     atis_data['text_atis'].forEach((line) => {
         string += line + ' ';
@@ -102,7 +103,8 @@ async function indicator() {
     checkindicator('_APP', 'app_indicator');
     checkindicator('_CTR', 'ctr_indicator');
     let table = document.getElementById('loading-text-atc');
-    if (!table) return;
+    let tableContainer = document.getElementById('table-atc-container');
+    if (!table || !tableContainer) return;
 
     let html = '';
     data.forEach((station) => {
@@ -121,8 +123,10 @@ async function indicator() {
     });
 
     if (isEmpty(data)) {
-        html += '<tr><td>No ATC online.</td></tr>';
+        tableContainer.innerHTML = '<p style="text-align: center">No ATC Online</p>';
+        return;
     }
+
     table.innerHTML = html;
 }
 
@@ -154,7 +158,7 @@ async function event() {
         event_container?.insertAdjacentHTML(
             'beforeend',
             `
-                <div class="col-12 mb-4 pb-2 ${i > 5 ? 'hide' : ''}" id="event-${i}">
+                <div class="col-12 mt-4 pb-2 ${i > 5 ? 'hide' : ''}" id="event-${i}">
                     <a href="${window.location.origin}/events/view/${e.id}">
                         <div class="card blog rounded border-0 shadow overflow-hidden">
                             <div class="position-relative">
