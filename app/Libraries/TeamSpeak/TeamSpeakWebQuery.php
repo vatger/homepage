@@ -97,7 +97,7 @@ class TeamSpeakWebQuery
         $registrations = TeamspeakRegistration::where('user_id', $user->id)->get();
 
         // ban handling
-        $has_active_ban = $user->isCurrentlyBanned;
+        $has_active_ban = $user->isCurrentlyTSBanned;
         foreach ($registrations as $registration) {
             $existingTSBans = self::getBansFromRegistration($registration);
             if ($has_active_ban && empty($existingTSBans)) {
