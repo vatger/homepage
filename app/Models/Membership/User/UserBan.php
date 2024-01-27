@@ -44,6 +44,11 @@ class UserBan extends Model
         $this->save();
     }
 
+    public function getIsActiveAttribute(): bool
+    {
+        return $this->permanent || $this->ends_at >= Carbon::now();
+    }
+
     public function getPermanentAttribute(): bool
     {
         return is_null($this->ends_at);

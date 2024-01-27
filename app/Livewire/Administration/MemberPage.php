@@ -70,8 +70,21 @@ class MemberPage extends Component
         }
 
         $this->banInformation->delete();
+        MembershipLibrary::update($this->user, cache: false);
 
-        $this->showNoty("Sperre erfolgreich aufgehoben.");
+        $this->showNoty("Sperre erfolgreich aufgehoben");
+    }
+
+    public function endBanNow() {
+        if ($this->banInformation == null) {
+            $this->showNoty("Ein Fehler ist aufgetreten", 'error');
+            return;
+        }
+
+        $this->banInformation->endBanNow();
+        MembershipLibrary::update($this->user, cache: false);
+
+        $this->showNoty("Sperre erfolgreich aufgehoben");
     }
 
     #[Layout('layouts.admin.admin-master')]
