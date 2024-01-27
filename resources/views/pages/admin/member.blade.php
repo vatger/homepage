@@ -181,7 +181,7 @@
                                 <!--end teb pane-->
 
                                 <div wire:ignore.self class="tab-pane fade" id="bans-pill" role="tabpanel" aria-labelledby="bans-pill">
-                                    <button type="button" class="mb-5 btn btn-sm btn-danger" data-bs-target="#suspension-modal" data-bs-toggle="modal">Sperre Hinzufügen</button>
+                                    <button type="button" class="mb-3 btn btn-sm btn-danger" data-bs-target="#suspension-modal" data-bs-toggle="modal">Sperre Hinzufügen</button>
 
                                     <table class="table mb-0 table-center">
                                         <thead>
@@ -195,7 +195,13 @@
                                         <tbody>
                                         @foreach($user->bans as $b)
                                             <tr>
-                                                <td>{{ $b->type }}</td>
+                                                <td>@switch($b->type)
+                                                        @case(\App\Models\Membership\User\UserBanType::vatger_ban) VATGER @break
+                                                        @case(\App\Models\Membership\User\UserBanType::vatsim_inactivity) Inaktiv @break
+                                                        @case(\App\Models\Membership\User\UserBanType::vatsim_ban) VATSIM @break
+                                                        @default Unbekannt @break
+                                                    @endswitch
+                                                </td>
                                                 <td>{{ $b->starts_at->format('d.m.Y H:i') }}</td>
                                                 <td>{{ $b->ends_at?->format('d.m.Y H:i') ?? 'Permanent' }}</td>
                                                 <td>
