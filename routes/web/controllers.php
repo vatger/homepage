@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Restricted;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('controllers')
@@ -11,3 +12,5 @@ Route::prefix('controllers')
             })->name('controllers.booking');
         });
     });
+
+Route::get('restricted', Restricted::class)->name('redirect.restricted');

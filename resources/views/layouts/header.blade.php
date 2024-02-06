@@ -61,6 +61,7 @@
                         <li><a href="{{ route('controllers.booking') }}" class="sub-menu-item">@lang('navigation.user.booking')</a></li>
                         <li><a href="{{ route('redirect.training-center') }}" target="_blank" class=" sub-menu-item">ATC Training</a></li>
                         <li><a href="{{ route("redirect.sectorfiles") }}" target="_blank" class="sub-menu-item">Sectorfiles</a></li>
+                        <!--<li><a href="{{ route("redirect.restricted") }}" class="sub-menu-item">Restricted Stations</a></li>-->
                         <li><a href="{{ route("redirect.support.feedback") }}" target="_blank" class="sub-menu-item">@lang('navigation.lotsen.feedback')</a></li>
                     </ul>
                 </li>
