@@ -79,7 +79,7 @@
                 <li class="has-submenu parent-menu-item">
                     <a href="javascript:void(0)">@lang('navigation.hilfe.titel')</a><span class="menu-arrow"></span>
                     <ul class="submenu">
-                        <li><a href="{{ route('redirect.support') }}" target="_blank" class="sub-menu-item">@lang('navigation.hilfe.support')</a></li>
+                        <li><a href="{{ route('redirect.support') }}" class="sub-menu-item">@lang('navigation.hilfe.support')</a></li>
                         <li><a href="{{ route('redirect.knowledgebase.contact') }}" target="_blank" class="sub-menu-item">@lang('navigation.hilfe.personal')</a></li>
                     </ul>
                 </li>
