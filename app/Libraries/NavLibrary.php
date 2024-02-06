@@ -48,8 +48,8 @@ class NavLibrary extends BaseLibrary
                 $gcap_class = $s?->gcap_status ?? '0';
                 $gcap_class = $gcap_class == '0' || $gcap_class == '1' ? intval($gcap_class) : 2;
                 $d->setAttribute('gcap_class', $gcap_class);
-                $d->setAttribute('gcap_class_group', strval($s?->gcap_status ?? '0'));
-                $d->setAttribute('gcap_training_airport', $s?->gcap_training_airport == false);
+                $d->setAttribute('gcap_class_group', strval($s->gcap_status ?? '0'));
+                $d->setAttribute('gcap_training_airport', $s->gcap_training_airport == false);
                 $d->save();
 
                 // attach to aerodromes
