@@ -45,6 +45,8 @@ class NavLibrary extends BaseLibrary
                 $d->setAttribute('ident', $s->logon);
                 $d->setAttribute('frequency', floatval($s?->frequency ?? 199.998));
                 $d->setAttribute('name', $s->description);
+                $d->setAttribute('gcap_class_group', strval($s?->gcap_status ?? '0'));
+                $d->setAttribute('gcap_training_aiport', $s?->gcap_training_airport == false);
                 $d->save();
 
                 // attach to aerodromes
