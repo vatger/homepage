@@ -48,7 +48,7 @@ class UserSetting extends Model
 
     public function getSatzungAgreedAttribute(): bool
     {
-        return $this->satzung_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('public/policies/satzung.txt'));
+        return $this->satzung_agreed_at > Carbon::createFromTimestamp(Storage::lastModified('public/policies/satzung.pdf'));
         /* config('vatger.termsofuse_date') */
     }
 

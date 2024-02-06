@@ -30,6 +30,7 @@ export default defineConfig({
             'resources/ts/app.ts',
             'resources/ts/special/events.ts',
             'resources/ts/special/aerodrome.ts',
+            'resources/ts/special/member.ts',
             'resources/ts/special/landing-typewriter.ts',
             'resources/scss/special/aerodrome-mapbox.scss',
         ]),

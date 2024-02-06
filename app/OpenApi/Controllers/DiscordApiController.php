@@ -23,16 +23,20 @@ class DiscordApiController extends ApiController
     {
         $this->authorizeApiRequest('discord.find_member');
         $user = User::find($cid);
-        $data = new \stdClass();
-        $data->is_vatger_member = !empty($user);
-        $data->is_vatger_fullmember = $user?->vatgerDetails?->is_vatger_member;
-        $data->atc_rating = $user?->vatsimDetails?->rating_atc;
-        $data->pilot_rating = $user?->vatsimDetails?->rating_pilot;
-        $data->teams = $user
-            ?->teams()
-            ->map(fn($team) => $team->name)
-            ->values()
-            ->toArray();
+
+        $data = (object) [
+            'cid' => $user?->id,
+            'is_vatger_member' => !empty($user),
+            'is_vatger_fullmember' => $user?->vatgerDetails?->is_vatger_member,
+            'atc_rating' => $user?->vatsimDetails?->rating_atc,
+            'pilot_rating' => $user?->vatsimDetails?->rating_pilot,
+            'teams' => $user
+                ?->teams()
+                ->map(fn($team) => $team->name)
+                ->values()
+                ->toArray(),
+        ];
+
         return $data;
     }
 }

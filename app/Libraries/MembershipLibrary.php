@@ -4,7 +4,6 @@ namespace App\Libraries;
 
 use App\Jobs\UpdateAccountJob;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
-use App\Libraries\VATSIM\APILibrary;
 use App\Libraries\VATSIM\CoreApiLibrary2;
 use App\Models\Membership\User\User;
 use App\Models\Membership\User\UserBan;
@@ -97,6 +96,14 @@ class MembershipLibrary
             try {
                 $VL = VikunjaLibrary::get_instance();
                 $VL->check_user($user);
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+            }
+        }
+        // 7. Discord
+        if (BaseLibrary::is_active(BaseLibrary::SyncDiscord)) {
+            try {
+                DiscordLibrary::check_user($user);
             } catch (Exception $e) {
                 Log::error($e->getMessage());
             }

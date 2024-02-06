@@ -18,6 +18,16 @@ class UserBan extends Model
         'type' => UserBanType::class,
     ];
 
+    protected $fillable = [
+        'user_id',
+        'author_id',
+        'ends_at',
+        'homepage',
+        'forum',
+        'teamspeak',
+        'reason'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
@@ -32,6 +42,11 @@ class UserBan extends Model
     {
         $this->ends_at = Carbon::now();
         $this->save();
+    }
+
+    public function getIsActiveAttribute(): bool
+    {
+        return $this->permanent || $this->ends_at >= Carbon::now();
     }
 
     public function getPermanentAttribute(): bool
