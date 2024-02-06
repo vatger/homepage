@@ -52,7 +52,7 @@ return new class extends Migration {
             $table->string('ident', 32)->unique();
             $table->string('name');
             $table->double('frequency', 6, 3);
-            $table->boolean('gcap_training_aiport')->default(false);
+            $table->boolean('gcap_training_airport')->default(false);
             $table->unsignedTinyInteger('gcap_class')->default(0);
             $table
                 ->string('gcap_class_group')
