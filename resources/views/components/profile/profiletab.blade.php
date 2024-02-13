@@ -30,10 +30,22 @@
                                               feaicon="mic"></x-profile.profiletabitem>
                     <x-profile.profiletabitem title="Mil-Rating" :text="$user->vatsimDetails->rating_military_long" :subtext="$user->vatsimDetails->rating_military_short"
                                               feaicon="target"></x-profile.profiletabitem>
-                    <x-profile.profiletabitem title="Region" :text="$user->vatsimDetails->region_name" :subtext="$user->vatsimDetails->region_code" feaicon="map-pin"></x-profile.profiletabitem>
-                    <x-profile.profiletabitem title="Division" :text="$user->vatsimDetails->division_name" :subtext="$user->vatsimDetails->division_code" feaicon="map-pin"></x-profile.profiletabitem>
+                    <x-profile.profiletabitem title="Region" :text="$user->vatsimDetails->region_name" :subtext="$user->vatsimDetails->region_code" feaicon="map-pin">
+                        <a href="https://my.vatsim.net/user/region">change</a>
+                    </x-profile.profiletabitem>
+                    <x-profile.profiletabitem title="Division" :text="$user->vatsimDetails->division_name" :subtext="$user->vatsimDetails->division_code" feaicon="map-pin">
+                        <a href="https://my.vatsim.net/user/region">change</a>
+                    </x-profile.profiletabitem>
                     <x-profile.profiletabitem title="Subdivision/vACC" :text="$user->vatsimDetails->subdivision_name" :subtext="$user->vatsimDetails->subdivision_code"
-                                              feaicon="map-pin"></x-profile.profiletabitem>
+                                              feaicon="map-pin">
+                        @if(strtolower($user->vatsimDetails->division_code) == "eud")
+                            <a href="https://members.vateud.net">change</a>
+                        @endif
+                    </x-profile.profiletabitem>
+                    <br>
+                    <a href="{{ route('member.refresh') }}">
+                        <button class="btn btn-sm btn-primary">Fetch new VATSIM Data</button>
+                    </a>
                 </div>
             </div>
             <!--end col-->
