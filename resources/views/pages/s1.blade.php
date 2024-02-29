@@ -20,11 +20,11 @@
                     </thead>
                     <tbody>
                     @foreach($s1stations as $s)
-                    <tr>
-                        <th scope="row">{{$s->ident}}</th>
-                        <td>{{$s->name}}</td>
-                        <td>{{$s->frequency}}</td>
-                    </tr>
+                        <tr>
+                            <th scope="row">{{$s->ident}}</th>
+                            <td>{{$s->name}}</td>
+                            <td>{{$s->fixedFrequency}}</td>
+                        </tr>
                     @endforeach
                     </tbody>
                 </table>
@@ -32,6 +32,3 @@
         </div>
     </section>
 </div>
-
-
-

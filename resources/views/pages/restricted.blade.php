@@ -13,7 +13,7 @@
                 <label class="form-label text-primary">Choose restriction type<span class="text-danger">*</span></label>
                 <select wire:model.live="restriction" class="form-select form-control" aria-label="RestrictionChooser">
                     <option selected></option>
-                    @foreach($rests as $r )
+                    @foreach($rests as $r)
                         <option value="{{$r->id}}" @if($restriction == $r->id) selected @endif>{{$r->desc}}</option>
                     @endforeach
                 </select>
@@ -30,12 +30,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($fstations as $s)
-                    <tr>
-                        <th scope="row">{{$s->ident}}</th>
-                        <td>{{$s->name}}</td>
-                        <td>{{$s->frequency}}</td>
-                    </tr>
+                    @foreach($stations as $s)
+                        <tr>
+                            <th scope="row">{{$s->ident}}</th>
+                            <td>{{$s->name}}</td>
+                            <td>{{$s->fixedFrequency}}</td>
+                        </tr>
                     @endforeach
                     </tbody>
                 </table>
@@ -43,6 +43,3 @@
         </div>
     </section>
 </div>
-
-
-

@@ -1,7 +1,7 @@
 <?php
 
-use App\Livewire\Restricted;
-use App\Livewire\S1;
+use App\Livewire\RestrictedPage;
+use App\Livewire\S1Page;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('controllers')
@@ -13,6 +13,8 @@ Route::prefix('controllers')
             })->name('controllers.booking');
         });
     });
-
-Route::get('restricted', Restricted::class)->name('redirect.restricted');
-Route::get('s1', S1::class)->name('redirect.s1');
+Route::prefix('controllers')
+    ->group(function () {
+        Route::get('restricted', RestrictedPage::class)->name('controllers.restricted');
+        Route::get('s1', S1Page::class)->name('controllers.s1');
+    });
