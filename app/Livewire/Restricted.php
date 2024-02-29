@@ -24,6 +24,7 @@ class Restricted extends Component
     {
         $restrictionsDB = Station::select('gcap_class_group')
             ->distinct()
+            ->where('gcap_class_group', '!=', '0')
             ->get();
 
         foreach ($restrictionsDB as $stations) {
