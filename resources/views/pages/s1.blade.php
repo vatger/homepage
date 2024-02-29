@@ -1,6 +1,6 @@
 <div>
     @component('components.layouts.content',[
-        'header' => 'Restricted Stations',
+        'header' => 'S1 Tower',
         'links' => [
             route('landing') => config('app.name'),'Controllers','S1 Tower'
             ]
