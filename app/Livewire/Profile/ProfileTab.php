@@ -3,6 +3,7 @@
 namespace App\Livewire\Profile;
 
 use App\Libraries\MembershipLibrary;
+use App\Libraries\XenForoLibrary;
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\Groups\Fir;
 use App\Models\Membership\User\Concerns\FirMembership;
@@ -28,6 +29,12 @@ class ProfileTab extends Component
         $user = Auth::user();
         $this->user_fir = Auth::user()->fir;
         return view('components.profile.profiletab')->with(['user' => $user, 'userfir' => $this->user_fir]);
+    }
+
+    public function changeEmail(): void
+    {
+        $user = Auth::user();
+        XenForoLibrary::updateForumAccount($user, true);
     }
 
     public function changeFir(): void
