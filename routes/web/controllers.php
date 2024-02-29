@@ -14,3 +14,4 @@ Route::prefix('controllers')
     });
 
 Route::get('restricted', Restricted::class)->name('redirect.restricted');
+Route::get('s1', Restricted::class)->name('redirect.s1');

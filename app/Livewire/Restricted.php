@@ -44,7 +44,7 @@ class Restricted extends Component
             $this->stations[] = (object) [
                 'ident' => $station->ident,
                 'name' => $station->name,
-                'frequency' => $station->frequency,
+                'frequency' => $station->fixed_frequency,
                 'gcap_class_group' => $station->gcap_class_group,
             ];
         }
