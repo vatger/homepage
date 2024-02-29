@@ -107,7 +107,7 @@ class XenForoLibrary extends BaseLibrary
         return false;
     }
 
-    public static function updateForumAccount(User $user): bool
+    public static function updateForumAccount(User $user, bool $resetEmail = false): bool
     {
         $user->loadMissing('settings');
 
@@ -136,10 +136,19 @@ class XenForoLibrary extends BaseLibrary
             $dataArray['username'] = $user->username;
         }
 
-        if (isset($forumUserObject->email)) {
+        if ($resetEmail) {
+            $dataArray['email'] = $user->email;
+            $user->email_backup = $user->email;
+            $user->save();
+        }
+
+        // Fetch back the current email set in the forum and save as backup
+        if (isset($forumUserObject->email) && !$resetEmail) {
             $user->email_backup = $forumUserObject->email;
             $user->save();
         }
+
+
         /**
          * Array to store forum groups that must be assigned to the user.
          */
@@ -171,7 +180,8 @@ class XenForoLibrary extends BaseLibrary
         }
         $response = json_decode($result->getBody()->getContents());
 
-        return (bool) $response->success;
+
+        return (bool)$response->success;
     }
 
     /** @param User $user
