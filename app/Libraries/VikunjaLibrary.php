@@ -90,15 +90,17 @@ class VikunjaLibrary extends BaseLibrary
                 }
             }
         }
+
         if (!empty($old_teams)) {
             $to_delete = array_diff($old_teams, $new_teams);
             $to_add = array_diff($new_teams, $old_teams);
         } else {
+            $to_delete = [];
             $to_add = $new_teams;
         }
 
         foreach ($to_delete as $teamdel) {
-            $result = $this->send('DELETE', "teams/$teamdel/members/$userid");
+            $result = $this->send('DELETE', "teams/$teamdel/members/$user->id");
             if (!$result || $result->getStatusCode() != 200) {
                 Log::info("Error member $user->id could not be deleted from team $teamdel");
             }
@@ -122,12 +124,12 @@ class VikunjaLibrary extends BaseLibrary
 
         $user->notify(
             new BasicNotification(
-                'Dein Account im Ticketsystem',
+                'Dein Account bei der Vikunja-Installation',
                 "Es wurde ein Account für dich im Vikunja angelegt. Dein Loginname lautet:
                     <code>$user->id</code>
-                    mit der Email: 
+                    mit der E-Mail: 
                     <code>$user->email</code>
-                    Bitte verwende die Passwort vergessen Funktion um dein Passwort für den erstmaligen Login zu setzen",
+                    Bitte verwende die Passwort-vergessen-Funktion, um dein Passwort für den erstmaligen Login zu setzen",
                 'Tech Leitung',
                 'hier gehts zum Login',
                 'https://vikunja.vatsim-germany.org/',

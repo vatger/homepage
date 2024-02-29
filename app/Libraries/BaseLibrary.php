@@ -15,6 +15,8 @@ class BaseLibrary
     public const SyncOSTicket = 'osticket';
     public const SyncMailcow = 'mailcow';
 
+    public const SyncDiscord = 'discord';
+
     protected static function constructClient(array $config = []): Client
     {
         $config['headers'] = array_merge($config['headers'] ?? [], ['User-Agent' => 'VATGER/3']);

@@ -34,6 +34,7 @@ class CoreApiLibrary2 extends BaseLibrary
                 $res = $client->request($type, $uri, ['query' => $data]);
             }
         } catch (GuzzleException $e) {
+            return null;
         }
         $json = json_decode($res?->getBody()?->getContents());
         return $json;
@@ -85,13 +86,18 @@ class CoreApiLibrary2 extends BaseLibrary
         return $new_offset;
     }
 
-    private static function insertMemberData(User $user, object $data, bool $membership_refresh = false): void
+    private static function insertMemberData(?User $user, ?object $data, bool $membership_refresh = false): void
     {
-        $user->update([
-            'firstname' => $data->name_first,
-            'lastname' => $data->name_last,
-            'email' => $data->email,
-        ]);
+        if (empty($data) || empty($user)) {
+            return;
+        }
+        if (isset($data->name_first) && isset($data->name_last) && isset($data->email)) {
+            $user->update([
+                'firstname' => $data->name_first,
+                'lastname' => $data->name_last,
+                'email' => $data->email,
+            ]);
+        }
         $user->vatsimDetails->update([
             'rating_atc' => $data->rating,
             'rating_pilot' => $data->pilotrating,
@@ -102,8 +108,8 @@ class CoreApiLibrary2 extends BaseLibrary
             'division_name' => $user->vatsimDetails->division_code == $data->division_id ? $user->vatsimDetails->division_name : '',
             'subdivision_code' => $data->subdivision_id,
             'subdivision_name' => $user->vatsimDetails->subdivision_code == $data->subdivision_id ? $user->vatsimDetails->subdivision_name : '',
-            'last_rating_change_at' => $data->lastratingchange,
-            'registered_at' => $data->reg_date ?? $user->vatsimDetails->registered_at,
+            'last_rating_change_at' => $data->lastratingchange ? Carbon::parse($data->lastratingchange) : $user->vatsimDetails->last_rating_change_at,
+            'registered_at' => $data->reg_date ? Carbon::parse($data->reg_date) : $user->vatsimDetails->registered_at,
             'updated_at' => Carbon::now(),
         ]);
         $cache_key = self::$cache_key_user . $user->id;

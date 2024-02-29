@@ -36,9 +36,11 @@ class MemberListPage extends Component
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
+        $this->authorize('membership.users.view');
         // build sql query
         $query = User::with(['vatsimDetails', 'vatgerDetails']);
         $search_str = strtolower($this->membersearch . '');
+        $search_str = trim($search_str);
 
         $this->searchQueryModifier($query, $search_str);
 

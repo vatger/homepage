@@ -90,7 +90,18 @@
                                     </a>
                                     <!--end nav link-->
                                 </li>
-                                <!--end nav item-->
+                                @if($user->staffDetails)
+                                    <li class="nav-item mt-2 pb-2" wire:click="sel('staff')">
+                                        <a class="nav-link rounded {{ $tab == 'staff' ? 'active' : '' }}" data-bs-toggle="pill" role="tab"
+                                           aria-controls="profile" aria-selected="true">
+                                            <div class="text-start py-1 px-2">
+                                                <h6 class="mb-0">Staff</h6>
+                                            </div>
+                                        </a>
+                                        <!--end nav link-->
+                                    </li>
+                                    <!--end nav item-->
+                                @endif
                                 <li class="nav-item mt-2 pt-2 border-top">
                                     <a href="{{ route('vatsim.authentication.connect.logout') }}" class="nav-link rounded" aria-selected="false">
                                         <div class="text-start py-1 px-2">
@@ -120,6 +131,9 @@
                                 @break
                             @case('surveykeys')
                                 <x-profile.surveykeys></x-profile.surveykeys>
+                                @break
+                            @case('staff')
+                                <x-profile.stafftab></x-profile.stafftab>
                                 @break
                             @default
                                 <livewire:profile.profile-tab />

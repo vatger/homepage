@@ -35,15 +35,21 @@ class NavLibrary extends BaseLibrary
         Station::query()->update(['active' => false]);
         foreach ($stations as $s) {
             try {
-                if (!isset($s->logon) || !isset($s->frequency) || !isset($s->description)) {
+                if (!isset($s->logon) || !isset($s->description)) {
                     continue;
                 }
+
                 // create the station
                 $d = Station::where('ident', 'LIKE', $s->logon)->firstOrNew();
                 $d->setAttribute('active', true);
                 $d->setAttribute('ident', $s->logon);
-                $d->setAttribute('frequency', floatval($s->frequency));
+                $d->setAttribute('frequency', floatval($s?->frequency ?? 199.998));
                 $d->setAttribute('name', $s->description);
+                $gcap_class = $s?->gcap_status ?? '0';
+                $gcap_class = $gcap_class == '0' || $gcap_class == '1' ? intval($gcap_class) : 2;
+                $d->setAttribute('gcap_class', $gcap_class);
+                $d->setAttribute('gcap_class_group', strval($s->gcap_status ?? '0'));
+                $d->setAttribute('gcap_training_airport', $s->gcap_training_airport ?? false);
                 $d->save();
 
                 // attach to aerodromes

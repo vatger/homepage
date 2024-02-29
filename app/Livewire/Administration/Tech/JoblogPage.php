@@ -25,6 +25,7 @@ class JoblogPage extends Component
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
+        $this->authorize('tech.access');
         $query = FailedJob::where('failed_at', 'LIKE', $this->search . '%');
         $this->sortQueryModifier($query);
 

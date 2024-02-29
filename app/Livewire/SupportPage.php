@@ -23,7 +23,7 @@ class SupportPage extends Component
     public string $subject = '';
     public string $content = '';
 
-    public function mount()
+    public function mount(bool $success = false)
     {
         $user = Auth::user();
 
@@ -138,17 +138,12 @@ class SupportPage extends Component
                 $this->chosen_area,
             );
         } else {
-            $L = new VikunjaLibrary();
+            $L = VikunjaLibrary::get_instance();
             $result = $L->create_task($this->subject, $this->content, $this->cid, $this->chosen_sup_type, $this->chosen_area);
         }
 
         if ($result) {
-            $this->showNoty(__('support.text-success'), 'success');
-
-            $this->chosen_sup_type = 0;
-            $this->chosen_area = 0;
-            $this->subject = '';
-            $this->content = '';
+            return redirect(request()->header('Referer'))->with('success', __('support.text-success'));
         } else {
             $this->showNoty(__('support.text-fail'), 'error');
         }

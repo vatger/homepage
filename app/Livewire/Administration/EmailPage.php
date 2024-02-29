@@ -18,6 +18,7 @@ use Livewire\Component;
 class EmailPage extends Component
 {
     use NotyTrait;
+
     private $users = [];
     public $emails = [];
     public $newmail = '';
@@ -58,16 +59,20 @@ class EmailPage extends Component
             }
         }
     }
+
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
+        $this->authorize('mail.manage');
         return view('pages.admin.email');
     }
+
     public function change(string $id, string $email)
     {
         $this->newmail = $email;
         $this->cid = $id;
     }
+
     public function save()
     {
         if (!filter_var($this->newmail, FILTER_VALIDATE_EMAIL)) {
@@ -86,6 +91,7 @@ class EmailPage extends Component
             }
         }
     }
+
     public function create(string $id)
     {
         $mailcreated = false;
@@ -107,7 +113,7 @@ class EmailPage extends Component
                     $user->notify(
                         new BasicNotification(
                             'Deine VATSIM Germany E-Mail Adresse',
-                            "Es wurde eine VATSIM Germany E-Mail Adresse für dich angelegt. Diese lautet:
+                            "Es wurde eine VATSIM Germany E-Mail-Adresse für dich angelegt. Diese lautet:
                     <code>$email->email</code>.
                     Das Initialpasswort lautet: 
                     <code>$pwd</code>

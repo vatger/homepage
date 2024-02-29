@@ -3,6 +3,7 @@
 namespace App\Libraries\VATSIM;
 
 use App\Models\AtcBooking;
+use App\Models\Membership\User\User;
 use GuzzleHttp\Client;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -15,6 +16,13 @@ class ATCBookingsApi
      */
     public static function createAndSaveBooking(AtcBooking $booking): array
     {
+        if (User::find($booking->controller_id)?->vatsimDetails?->rating_atc <= 1) {
+            return [
+                'ok' => false,
+                'message' => 'Can not book, you need an ATC Rating!',
+            ];
+        }
+
         $type = 'booking';
         if ($booking->event) {
             $type = 'event';

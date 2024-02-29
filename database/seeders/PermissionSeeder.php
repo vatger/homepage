@@ -5,8 +5,9 @@ namespace Database\Seeders;
 use App\Models\Groups\Team;
 use App\Models\Membership\User\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Throwable;
 
 class PermissionSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class PermissionSeeder extends Seeder
         // Membership
         'membership.users.view',
         'membership.users.details.view',
+        'membership.users.details.view.email',
         'membership.users.details.edit',
         'membership.teams.view',
         'membership.teams.edit',
@@ -34,10 +36,15 @@ class PermissionSeeder extends Seeder
         'navigation.aerodromes.view',
         'navigation.aerodromes.edit',
         'navigation.stations.view',
+
+        // Mail
+        'mail.use',
+        'mail.manage',
     ];
 
     /**
      * Run the database seeds.
+     * @throws Throwable
      */
     public function run(): void
     {
@@ -56,18 +63,34 @@ class PermissionSeeder extends Seeder
         //$this->command->getOutput()->writeln('Truncated teams table.');
         //DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
-        $this->command->getOutput()->writeln('Starting seeding of new information...');
-        $this->command->getOutput()->progressStart(count($this->permissions));
+        $this->command->getOutput()->writeln('Starting seeding of permissions...');
 
         // Create permissions
         foreach ($this->permissions as $name) {
-            $this->command->getOutput()->progressAdvance();
             if (Permission::where('name', 'LIKE', $name)->exists()) {
                 continue;
             }
-            $p = new Permission();
-            $p->name = $name;
-            $p->save();
+            $permission = Permission::make(['name' => $name]);
+            $permission->saveOrFail();
+            $this->command->getOutput()->writeln("Added $permission->name");
+        }
+
+        // Delete unused permissions
+        foreach (Permission::all() as $permission) {
+            $delete = true;
+            foreach ($this->permissions as $name) {
+                if ($permission->name == $name) {
+                    $delete = false;
+                    break;
+                }
+            }
+            if ($delete) {
+                foreach (Role::all() as $role) {
+                    $role->revokePermissionTo($permission);
+                }
+                $this->command->getOutput()->writeln("Deleted $permission->name");
+                $permission->delete();
+            }
         }
 
         // Create administration role with all permissions
@@ -86,7 +109,6 @@ class PermissionSeeder extends Seeder
             $user?->assignRole($team->role);
         }
 
-        $this->command->getOutput()->progressFinish();
         $this->command->getOutput()->writeln('Finished seeding.');
     }
 }

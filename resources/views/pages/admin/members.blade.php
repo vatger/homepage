@@ -14,7 +14,7 @@
                 <li class="list-inline-item" style="width: 100%">
                     <div class="form-icon position-relative">
                         <i data-feather="search" class="fea icon-sm icons"></i>
-                        <input class="form-control ps-5" wire:model.live="membersearch" type="search" placeholder="CID, Vorname, Nachname, EMail">
+                        <input class="form-control ps-5" wire:model.live="membersearch" type="search" placeholder="CID, Vorname, Nachname, E-Mail">
                     </div>
                 </li>
                 <li class="list-inline-item" style="width: 100%">
@@ -34,8 +34,9 @@
                         <th class="border-bottom p-3" wire:click="sortBy('lastname')">Name
                             <i data-feather="{{ $this->getSortIconClasses('lastname') }}"></i>
                         </th>
-                        <th class="border-bottom p-3">E-Mail</th>
+                        {{--  <th class="border-bottom p-3">E-Mail</th> --}}
                         <th class="border-bottom p-3">(Sub)division</th>
+                        <th class="border-bottom p-3">FIR</th>
                         <th class="border-bottom p-3">Rating</th>
                         <th class="border-bottom p-3">Beitritt</th>
                         <th class="border-bottom p-3"></th>
@@ -47,12 +48,13 @@
                         <tr>
                             <td>{{ $member->id }}</td>
                             <td>{{ $member->username }}</td>
-                            <td>{{ $member->email }}</td>
+                            {{--<td>{{ $member->email }}</td>--}}
                             <td>
                                 {{ $member->vatsimDetails->region_code }}
                                 / {{ $member->vatsimDetails->division_code }}
                                 {{ $member->vatsimDetails->subdivision_code ? '/ ' . $member->vatsimDetails->subdivision_code : '' }}
                             </td>
+                            <td>{{ $member->fir?->slug ?? '-'}} <small>{{ $member->fir ? '(' . \Carbon\Carbon::parse($member->fir->joined_at)->format('d.m.Y') . ')': '' }}</small></td>
                             <td>{{ $member->vatsimDetails->rating_atc_short }} / {{ $member->vatsimDetails->rating_pilot_short }}
                                 / {{ $member->vatsimDetails->rating_military_short }}</td>
                             <td>{{ $member->vatgerDetails->registered_at->format('d.m.Y') }}</td>

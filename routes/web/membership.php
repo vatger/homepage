@@ -16,6 +16,15 @@ Route::prefix('members')
         })
             ->withoutMiddleware('banned')
             ->name('member.banned');
+
+        Route::get('refresh', function (Request $request) {
+            \App\Libraries\MembershipLibrary::update(Auth::user(), cache: false);
+            sleep(10);
+            return redirect()->back(fallback: route('member.profile'));
+        })
+            ->withoutMiddleware('banned')
+            ->name('member.refresh');
+
         Route::get('/sdp', \App\Livewire\Administration\StaffDataProtection::class)
             ->withoutMiddleware(['staff_data_protection'])
             ->name('administration.sdp');

@@ -27,7 +27,7 @@
                                     <option value="red">@lang('profile.profile.settings.color.red')</option>
                                     <option value="green">@lang('profile.profile.settings.color.green')</option>
                                     <option value="purple">@lang('profile.profile.settings.color.purple')</option>
-                                    <option value="slateblue">@lang('profile.profile.settings.color.slateblue')</option>
+                                    <!--<option value="slateblue">@lang('profile.profile.settings.color.slateblue')</option>-->
                                     <option value="skobleoff">@lang('profile.profile.settings.color.skobleoff')</option>
                                     <option value="yellow">@lang('profile.profile.settings.color.yellow')</option>
                                 </select>

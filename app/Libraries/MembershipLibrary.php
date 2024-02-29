@@ -4,7 +4,7 @@ namespace App\Libraries;
 
 use App\Jobs\UpdateAccountJob;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
-use App\Libraries\VATSIM\APILibrary;
+use App\Libraries\VATSIM\CoreApiLibrary2;
 use App\Models\Membership\User\User;
 use App\Models\Membership\User\UserBan;
 use App\Models\Membership\User\UserBanType;
@@ -39,12 +39,14 @@ class MembershipLibrary
             return;
         }
         if ($api_refresh) {
-            APILibrary::MemberUpdate($user, $cache);
-            $user = $user->refresh();
+            CoreApiLibrary2::updateMember($user, $cache ? 60 : 0);
+            $user = $user->fresh();
         }
         self::check_bans($user);
         self::check_status($user, $cache);
         self::check_staff($user);
+
+        $user = $user->fresh();
 
         # TODO: Handle all changes that might have triggered this function
 
@@ -94,6 +96,14 @@ class MembershipLibrary
             try {
                 $VL = VikunjaLibrary::get_instance();
                 $VL->check_user($user);
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+            }
+        }
+        // 7. Discord
+        if (BaseLibrary::is_active(BaseLibrary::SyncDiscord)) {
+            try {
+                DiscordLibrary::check_user($user);
             } catch (Exception $e) {
                 Log::error($e->getMessage());
             }

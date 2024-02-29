@@ -10,16 +10,15 @@ class BoardChannel
 {
     /**
      * Send the given notification.
-     *
      */
-    public function send(mixed $notifiable, Notification $notification): void
+    public function send(object $notifiable, Notification $notification): void
     {
         // Send notification to the $notifiable instance...
 
         if (!$notifiable instanceof User) {
             return;
         }
-        $user = User::query()->find($notifiable->id);
+        $user = User::find($notifiable->id);
         if (empty($user)) {
             return;
         }
