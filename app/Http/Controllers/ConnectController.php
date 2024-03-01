@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Libraries\MembershipLibrary;
 use App\Models\Membership\User\User;
 use App\Providers\ConnectProvider;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -99,7 +100,12 @@ class ConnectController extends Controller
             return redirect()->route('check-terms');
         }
 
-        return redirect()->intended('/');
+        try {
+            MembershipLibrary::update($user, cache: false, api_refresh: true);
+        } catch (Exception $e) {
+        }
+
+        return redirect()->intended(route('member.profile'));
     }
 
     /**
