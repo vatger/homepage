@@ -33,6 +33,7 @@ class SupportPage extends Component
             $this->cid = $user->id;
         }
     }
+
     #[Layout('layouts.master')]
     public function render()
     {
@@ -40,27 +41,28 @@ class SupportPage extends Component
 
         return view('pages.support')->with([
             'supporttype' => [
-                (object) ['name' => 'Feature Request', 'id' => '1', 'areas' => ['1', '2']],
-                (object) ['name' => 'Bug Report', 'id' => '2', 'areas' => ['1', '2']],
-                (object) ['name' => __('support.text-error-kb'), 'id' => '3', 'areas' => ['2', '3', '4', '5', '6', '8']],
-                (object) ['name' => __('support.text-credentials'), 'id' => '4', 'areas' => ['1', '2', '3']],
-                (object) ['name' => __('support.text-others'), 'id' => '5', 'areas' => ['1', '2', '3', '4', '5', '6', '7', '8']],
-                (object) ['name' => 'ATCO / IVAO Rating Transfer', 'id' => '6', 'areas' => ['4']],
+                (object)['name' => 'Feature Request', 'id' => '1', 'areas' => ['1', '2']],
+                (object)['name' => 'Bug Report', 'id' => '2', 'areas' => ['1', '2']],
+                (object)['name' => __('support.text-error-kb'), 'id' => '3', 'areas' => ['2', '3', '4', '5', '6', '8']],
+                (object)['name' => __('support.text-credentials'), 'id' => '4', 'areas' => ['1', '2', '3']],
+                (object)['name' => __('support.text-others'), 'id' => '5', 'areas' => ['1', '2', '3', '4', '5', '6', '7', '8']],
+                (object)['name' => 'ATCO / IVAO Rating Transfer', 'id' => '6', 'areas' => ['4']],
             ],
             'areas' => [
-                (object) ['id' => '1', 'name' => 'Tech'],
-                (object) ['id' => '2', 'name' => 'NAV'],
-                (object) ['id' => '3', 'name' => 'Event'],
-                (object) ['id' => '4', 'name' => 'ATC Training Department'],
-                (object) ['id' => '5', 'name' => 'Pilot Training Department'],
-                (object) ['id' => '6', 'name' => __('support.text-pilot-rep')],
-                (object) ['id' => '7', 'name' => __('support.text-director')],
-                (object) ['id' => '8', 'name' => __('support.text-others')],
+                (object)['id' => '1', 'name' => 'Tech'],
+                (object)['id' => '2', 'name' => 'NAV'],
+                (object)['id' => '3', 'name' => 'Event'],
+                (object)['id' => '4', 'name' => 'ATC Training Department'],
+                (object)['id' => '5', 'name' => 'Pilot Training Department'],
+                (object)['id' => '6', 'name' => __('support.text-pilot-rep')],
+                (object)['id' => '7', 'name' => __('support.text-director')],
+                (object)['id' => '8', 'name' => __('support.text-others')],
             ],
 
             'user' => $user,
         ]);
     }
+
     private function choose_system(): string
     {
         $ret = 'T';
@@ -74,6 +76,7 @@ class SupportPage extends Component
         }
         return $ret;
     }
+
     public function send()
     {
         if (empty($this->token)) {
@@ -130,10 +133,10 @@ class SupportPage extends Component
 
         if ($this->choose_system() == 'T') {
             $result = OSTicketLibrary::create_ticket(
-                $this->name,
+                "$this->name ($this->cid)",
                 $this->mail,
                 $this->subject,
-                $this->content,
+                nl2br("Anfrage von: $this->name ($this->cid), \n \n $this->content"),
                 $this->chosen_sup_type,
                 $this->chosen_area,
             );
