@@ -21,7 +21,7 @@ class DataFeedLibrary
     /**
      * The base URL to use to fetch the current VATSIM.net status file from
      */
-    protected static $_cacheUrl = 'http://df.vatsim-germany.org/datafeed';
+    protected static $_cacheUrl = 'http://docker.vatsim-germany.org:8007/datafeed';
 
     /**
      * PREG patterns for german atc stations
