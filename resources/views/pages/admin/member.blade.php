@@ -199,13 +199,16 @@
                                                         @case(\App\Models\Membership\User\UserBanType::vatger_ban) VATGER @break
                                                         @case(\App\Models\Membership\User\UserBanType::vatsim_inactivity) Inaktiv @break
                                                         @case(\App\Models\Membership\User\UserBanType::vatsim_ban) VATSIM @break
+                                                        @case(\App\Models\Membership\User\UserBanType::pilot_rating_incomplete) P0 nicht bestanden @break
                                                         @default Unbekannt @break
                                                     @endswitch
                                                 </td>
                                                 <td>{{ $b->starts_at->format('d.m.Y H:i') }}</td>
                                                 <td>{{ $b->ends_at?->format('d.m.Y H:i') ?? 'Permanent' }}</td>
                                                 <td>
-                                                    <button data-bs-target="#suspension-modal-view" wire:click="showBanInformation({{$b->id}})" data-bs-toggle="modal" class="btn btn-sm btn-outline-primary">Details</button>
+                                                    <button data-bs-target="#suspension-modal-view" wire:click="showBanInformation({{$b->id}})" data-bs-toggle="modal"
+                                                            class="btn btn-sm btn-outline-primary">Details
+                                                    </button>
                                                 </td>
                                             </tr>
                                         @endforeach

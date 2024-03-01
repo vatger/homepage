@@ -16,12 +16,38 @@ class DataFeedLibrary
     /**
      * The base URL to use to fetch the current VATSIM.net status file from
      */
-    protected static $_baseStatusUrl = 'http://df.vatsim-germany.org/datafeed';
+    protected static $_baseStatusUrl = 'https://status.vatsim.net/status.json';
+
+    /**
+     * The base URL to use to fetch the current VATSIM.net status file from
+     */
+    protected static $_cacheUrl = 'http://df.vatsim-germany.org/datafeed';
 
     /**
      * PREG patterns for german atc stations
      */
     protected static $deAtcPattern = '/(ED[A-Z]{2}|ET[AHIMNS]{1}[A-Z]{1})/A';
+
+    /**
+     * Download and cache the status file
+     *
+     * @return string The json representation of the status file
+     */
+    private static function _downloadStatusFile()
+    {
+        return Cache::remember('net.vatsim.status', 24 * 60 * 60, function () {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, self::$_baseStatusUrl);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HEADER, false);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+            $data = curl_exec($ch);
+            curl_close($ch);
+            return $data;
+        });
+    }
+
 
     /**
      * Update the datafeed in our local cache
@@ -33,14 +59,8 @@ class DataFeedLibrary
     private static function UpdateDataFeed(): string
     {
         return Cache::remember('net.vatsim.datafeed', 59, function () {
-            $status = json_decode(self::_downloadStatusFile());
-            if ($status == null || $status == false) {
-                Cache::forget('net.vatsim.status');
-                return false;
-            }
-
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, self::$_baseStatusUrl);
+            curl_setopt($ch, CURLOPT_URL, self::$_cacheUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HEADER, false);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
