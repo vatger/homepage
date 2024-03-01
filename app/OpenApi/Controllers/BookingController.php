@@ -3,7 +3,6 @@
 namespace App\OpenApi\Controllers;
 
 use App\Models\AtcBooking;
-use App\Models\Navigation\Station;
 use App\OpenApi\Helpers\ApiPathfinder;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Carbon\Carbon;
@@ -63,52 +62,5 @@ class BookingController extends ApiController
         });
 
         return $bookings->toArray();
-    }
-
-    /**
-     * Allow the mass creation of bookings
-     * // TODO: Move this to a booking Library such that we can use it from internally as well.
-     *
-     * @param Request $request
-     * @return array
-     */
-    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
-    #[ApiPathfinder('booking.create')]
-    public function createMassBookings(Request $request): array
-    {
-        $this->authorizeApiRequest('booking.create');
-
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'stations' => 'required'
-        ]);
-
-        $start = Carbon::parse($request->start_date);
-        $end = Carbon::parse($request->end_date);
-
-        $not_found = [];
-        foreach ($request->stations as $station) {
-            $s = Station::query()->where('ident', 'LIKE', $station)->select('id')->first();
-            if ($s == null) {
-                $not_found[] = $station;
-                continue;
-            };
-
-            // TODO: Check for overlaps
-            // TODO: Abort on single overlap!
-            AtcBooking::query()->create([
-                'station_id' => $s->id,
-                'controller_id' => '1',
-                'starts_at' => $start,
-                'ends_at' => $end,
-                'event' => true,
-            ]);
-        }
-
-        return [
-            'error' => count($not_found) > 0,
-            'missing' => $not_found
-        ];
     }
 }

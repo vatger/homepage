@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('booking/{start?}/{end?}', [BookingController::class, 'index']);
-Route::post('booking', [BookingController::class, 'createMassBookings']);
 Route::get('teamspeak/{cid}', [TeamspeakApiController::class, 'ids']);
 Route::get('discord/{cid}', [\App\OpenApi\Controllers\DiscordApiController::class, 'find_member']);
 Route::get('solos/{cid}', [\App\OpenApi\Controllers\SolosApiController::class, 'find_member']);
