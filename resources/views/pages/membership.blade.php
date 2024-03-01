@@ -22,7 +22,7 @@
                         <div class="col-lg-10 col-md-9">
                             <div class="row align-items-end">
                                 <div class="col-md-7 text-md-start text-center mt-4 mt-sm-0">
-                                    <h3 class="title mb-0">@yield('section-title', $user->username)</h3>
+                                    <h3 class="title text-dark mb-0">@yield('section-title', $user->username)</h3>
                                     <small class="text-muted h6 me-2">@yield('section-subtitle', $user->id)</small>
                                 </div>
                                 <!--end col-->
@@ -127,7 +127,18 @@
                                 <livewire:profile.settings-tab />
                                 @break
                             @case('accounts')
+                                @if (\Illuminate\Support\Facades\Auth::user()->vatsimDetails->rating_pilot == -1)
+                                    <div class="tab-pane fade bg-white p-4 rounded shadow active show" role="tabpanel" aria-labelledby="profile">
+                                        <h5>Fehler</h5>
+                                        <div class="alert alert-danger mt-4">
+                                            @lang('profile.profile.error.account-inactive-text')
+                                        </div>
+
+                                        <div class="small text-muted mt-4">@lang('profile.profile.error.contact-support-text')</div>
+                                    </div>
+                                @else
                                 <livewire:profile.accounts-tab />
+                                @endif
                                 @break
                             @case('surveykeys')
                                 <x-profile.surveykeys></x-profile.surveykeys>
