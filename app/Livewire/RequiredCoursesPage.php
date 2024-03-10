@@ -14,7 +14,7 @@ class RequiredCoursesPage extends Component
     #[Layout('layouts.master')]
     public function render()
     {
-        $data = Cache::remember('RequiredCoursesPage.courses.data', 1, function () {
+        $data = Cache::remember('RequiredCoursesPage.courses.data', 60 * 60 * 4, function () {
             return json_decode(Http::get('https://raw.githubusercontent.com/VATGER-ATD/required-courses/main/courses.json')->body());
         });
         $courses = collect($data);
