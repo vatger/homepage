@@ -136,7 +136,7 @@ class SupportPage extends Component
                 "$this->name ($this->cid)",
                 $this->mail,
                 $this->subject,
-                nl2br("Anfrage von: $this->name ($this->cid), \n \n $this->content"),
+                "Anfrage von: $this->name ($this->cid),\n------------------------------\n \n $this->content",
                 $this->chosen_sup_type,
                 $this->chosen_area,
             );
