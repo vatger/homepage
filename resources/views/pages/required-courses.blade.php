@@ -11,7 +11,7 @@
         <div class="container">
             <div class="alert bg-soft-primary fw-medium" role="alert">
                 <i data-feather="info" class="fea fs-5 align-middle me-1"></i>
-                Welcome to our Moodle Courses and Positions Overview!
+                Here you can find a list of positions with their required Moodle courses.
             </div>
 
             <div class="mb-3">
