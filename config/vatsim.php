@@ -19,4 +19,8 @@ return [
         'base' => rtrim(env('VATSIM_BOOKING_API_BASE', 'https://api.vatsim.net/api'), '/'),
         'token' => env('VATSIM_BOOKING_API_TOKEN'),
     ],
+    'vateud' => [
+        'base' => rtrim(env('VATSIM_VATEUD_API_BASE', 'https://core.vateud.net/api'), '/'),
+        'token' => env('VATSIM_VATEUD_API_TOKEN'),
+    ]
 ];
