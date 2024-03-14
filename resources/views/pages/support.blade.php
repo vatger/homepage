@@ -15,30 +15,41 @@
                 <div class="col-lg col-md mb-4">
                     <div class="card features rounded p-4 bg-white shadow position-relative overflow-hidden border-0 ">
                         <div class="card-body content">
-                            @if($chosen_area=='1' && ($chosen_sup_type =='1' || $chosen_sup_type =='2' ))
-                                <div class="alert bg-soft-warning fw-medium" role="alert"> <i data-feather="alert-triangle" class=" fea fs-5 align-middle me-1"></i>@lang('support.text-no-credentials')</div>
-                                <div class="alert alert-info" role="alert"> @lang('support.text-check-board') <a target='_blank' class="alert-link" href={{config('support.vikunja_tech_board')}}>@lang('support.text-here')</a>. </div>
+                            @if($selected_type && ($selected_type->system == "V" || property_exists($selected_type, 'public_url')))
+                                <div class="alert bg-soft-warning fw-medium" role="alert">
+                                    <i data-feather="alert-triangle" class=" fea fs-5 align-middle me-1"></i>
+                                    @lang('support.text-no-credentials')
+                                </div>
+                                @if($selected_type->public_url)
+                                    <div class="alert alert-info" role="alert"> @lang('support.text-check-board')
+                                        <a target='_blank' class="alert-link" href={{ $selected_type->public_url }}>
+                                            @lang('support.text-here')
+                                        </a>.
+                                    </div>
+                                @endif
                             @endif
                             <div class="mb-3">
-                            <label class="form-label text-primary">@lang('support.text-choose-area')<span class="text-danger">*</span></label>
-                            <select wire:model.live="chosen_area" class="form-select form-control" aria-label="AreaChooser">
-                                <option selected></option>
-                                @foreach($areas as $area )
+                                <label class="form-label text-primary">@lang('support.text-choose-area')<span class="text-danger">*</span></label>
+                                <select wire:model.live="chosen_area" class="form-select form-control" aria-label="AreaChooser">
+                                    <option value="0" @if($chosen_area == 0) selected @endif></option>
+                                    @foreach($areas as $area)
                                         <option value="{{$area->id}}">{{$area->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                            <div class="mb-3">
-                                <label class="form-label text-primary">@lang('support.text-choose-cat')<span class="text-danger">*</span></label>
-                                    <select wire:model.live="chosen_sup_type" class="form-select form-control" aria-label="CategoryChooser">
-                                    <option selected></option>
-                                    @foreach($supporttype as $category )
-                                        @if(in_array($chosen_area,$category->areas))
-                                        <option value="{{$category->id}}" @if($chosen_sup_type == $category->id) selected @endif>{{$category->name}}</option>
-                                        @endif
                                     @endforeach
                                 </select>
                             </div>
+                            @if($chosen_area != 0)
+                                <div class="mb-3">
+                                    <label class="form-label text-primary">@lang('support.text-choose-cat')<span class="text-danger">*</span></label>
+                                    <select wire:model.live="chosen_sup_type" class="form-select form-control" aria-label="CategoryChooser">
+                                        <option value="0" @if($chosen_sup_type == 0) selected @endif></option>
+                                        @if($selected_area != null)
+                                            @foreach($selected_area->types as $type)
+                                                <option value="{{$type->id}}" @if($chosen_sup_type == $type->id) selected @endif>{{$type->name}}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            @endif
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -91,7 +102,7 @@
                             </div><!--end row-->
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <button name="send" wire:click="send()" wire:loading.attr="disabled" class="btn btn-soft-success" >
+                                    <button name="send" wire:click="send()" wire:loading.attr="disabled" class="btn btn-soft-success">
                                         <i data-feather="plus" class="fea fea-primary"></i>@lang('support.text-send')
                                     </button>
                                 </div><!--end col-->
@@ -103,6 +114,3 @@
         </div>
     </section>
 </div>
-
-
-

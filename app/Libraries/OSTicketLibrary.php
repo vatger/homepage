@@ -99,7 +99,7 @@ class OSTicketLibrary extends BaseLibrary
         return true;
     }
 
-    public static function create_ticket(string $name, string $mail, string $subject, string $content, int $supporttype = 0, int $area = 0): bool
+    public static function create_ticket(string $name, string $mail, string $subject, string $content, int $topic_id): bool
     {
         $result = self::send(
             'POST',
@@ -109,7 +109,7 @@ class OSTicketLibrary extends BaseLibrary
                 'email' => $mail,
                 'subject' => $subject,
                 'message' => $content,
-                'topicId' => self::map_topic_id($supporttype, $area),
+                'topicId' => $topic_id,
             ],
             true,
         );
@@ -118,20 +118,5 @@ class OSTicketLibrary extends BaseLibrary
         } else {
             return false;
         }
-    }
-
-    private static function map_topic_id(int $supporttype, int $area): int
-    {
-        $topicId = match ($area) {
-            1 => 16, // Tech
-            2 => 23, // NAV
-            3 => 22, // Event
-            4 => 21, // ATD
-            5 => 20, // PTD
-            6 => 28, // PV
-            7 => 29, // Dir
-            default => 14,
-        };
-        return $topicId;
     }
 }
