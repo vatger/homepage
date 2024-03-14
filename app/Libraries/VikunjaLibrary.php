@@ -226,7 +226,7 @@ class VikunjaLibrary extends BaseLibrary
         if ($result) {
             if ($label != 0) {
                 $result_data = json_decode($result->getBody()->getContents());
-                $result = $this->send('PUT', "tasks/$result_data->id/labels", ['label_id' => $map->label]);
+                $result = $this->send('PUT', "tasks/$result_data->id/labels", ['label_id' => $label]);
             }
             return true;
         } else {
