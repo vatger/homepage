@@ -29,7 +29,6 @@ class VATEUDCoreLibrary extends BaseLibrary
             } else {
                 $res = $client->request($type, $uri, ['query' => $data]);
             }
-
         } catch (GuzzleException $e) {
             return null;
         }

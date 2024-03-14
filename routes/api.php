@@ -21,6 +21,7 @@ Route::get('booking/{start?}/{end?}', [BookingController::class, 'index']);
 Route::get('teamspeak/{cid}', [TeamspeakApiController::class, 'ids']);
 Route::get('discord/{cid}', [\App\OpenApi\Controllers\DiscordApiController::class, 'find_member']);
 Route::get('solos/{cid}', [\App\OpenApi\Controllers\SolosApiController::class, 'find_member']);
+Route::get('vateud/roster', [\App\OpenApi\Controllers\VATEUDCoreContoller::class, 'roster_controller']);
 
 Route::get('test', [TestApiController::class, 'test']);
 
