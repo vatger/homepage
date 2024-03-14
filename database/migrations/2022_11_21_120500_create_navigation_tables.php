@@ -58,6 +58,7 @@ return new class extends Migration {
                 ->string('gcap_class_group')
                 ->nullable()
                 ->default(null);
+            $table->boolean('s1_twr')->default(false);
             $table->boolean('active')->default(true);
             $table->text('description')->nullable();
             $table->unsignedBigInteger('selection')->default(0);

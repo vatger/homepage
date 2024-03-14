@@ -73,6 +73,7 @@ class UserVatsimDetail extends Model
     public function getRatingPilotShortAttribute(): string
     {
         return match ($this->rating_pilot) {
+            -1 => 'NOP0',
             0 => 'NEW',
             1 => 'PPL',
             3 => 'IR',
@@ -87,6 +88,7 @@ class UserVatsimDetail extends Model
     public function getRatingPilotLongAttribute(): string
     {
         return match ($this->rating_pilot) {
+            -1 => 'Missing P0 Test',
             0 => 'Basic Member',
             1 => 'Private Pilot License',
             3 => 'Instrument Rating',

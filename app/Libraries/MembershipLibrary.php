@@ -115,8 +115,28 @@ class MembershipLibrary
     protected static function check_bans(User $user): void
     {
         $now = Carbon::now();
+        $vatsim_pilot_inactive = $user->vatsimDetails->rating_atc == -1 && $user->vatsimDetails->rating_pilot == -1;
         $vatsim_inactive = $user->vatsimDetails->rating_atc == -1;
         $vatsim_suspended = $user->vatsimDetails->rating_atc == 0;
+
+        // VATSIM pilot rating / new member orientation
+        $vatsim_pilot_inactive_ban = UserBan::where('user_id', $user->id)
+            ->where('type', UserBanType::pilot_rating_incomplete)
+            ->where(function (QBuilder|EBuilder $query) use ($now) {
+                $query->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
+            })
+            ->first();
+
+        if ($vatsim_pilot_inactive && !$vatsim_pilot_inactive_ban) {
+            $b = new UserBan();
+            $b->user_id = $user->id;
+            $b->type = UserBanType::pilot_rating_incomplete;
+            $b->save();
+        }
+        if (!$vatsim_pilot_inactive && $vatsim_pilot_inactive_ban) {
+            $vatsim_pilot_inactive_ban->endBanNow();
+        }
+
 
         // VATSIM inactivity
         $vatsim_inactive_ban = UserBan::where('user_id', $user->id)

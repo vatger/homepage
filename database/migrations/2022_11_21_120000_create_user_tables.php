@@ -96,7 +96,7 @@ return new class extends Migration {
         Schema::create('user_bans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('user_users');
-            $table->enum('type', ['vatger_ban', 'vatsim_inactivity', 'vatsim_ban'])->default('vatger_ban');
+            $table->enum('type', ['vatger_ban', 'vatsim_inactivity', 'vatsim_ban', 'pilot_rating_incomplete'])->default('vatger_ban');
             $table
                 ->foreignId('author_id')
                 ->nullable()

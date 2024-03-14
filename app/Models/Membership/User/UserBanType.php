@@ -7,4 +7,6 @@ enum UserBanType: string
     case vatger_ban = 'vatger_ban';
     case vatsim_inactivity = 'vatsim_inactivity';
     case vatsim_ban = 'vatsim_ban';
+
+    case pilot_rating_incomplete = 'pilot_rating_incomplete';
 }

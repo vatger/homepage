@@ -6,7 +6,7 @@
                 <div class="mt-1">
                     <x-profile.profiletabitem title="E-Mail (Forum)" :text="$user->email_backup ?? 'N/A' " feaicon="mail">
                         @if($user->email_backup)
-                            <a wire:click="changeEmail()">reset to VATSIM E-Mail</a>
+                            <button wire:click="changeEmail()"><a>reset to VATSIM E-Mail</a></button>
                         @endif
                     </x-profile.profiletabitem>
                     <x-profile.profiletabitem title="Vollmitglied" :text="$user->vatgerDetails->is_vatger_member ? 'YES':'NO'"
@@ -27,7 +27,9 @@
             <div class="col-md-6">
                 <h5>VATSIM Details:</h5>
                 <div class="mt-1">
-                    <x-profile.profiletabitem title="E-Mail" :text="$user->email" feaicon="mail"></x-profile.profiletabitem>
+                    <x-profile.profiletabitem title="E-Mail" :text="$user->email" feaicon="mail">
+                        <a href="https://my.vatsim.net/user/email">change</a>
+                    </x-profile.profiletabitem>
                     <x-profile.profiletabitem title="ATC-Rating" :text="$user->vatsimDetails->rating_atc_long" :subtext="$user->vatsimDetails->rating_atc_short"
                                               feaicon="radio"></x-profile.profiletabitem>
                     <x-profile.profiletabitem title="Pilot-Rating" :text="$user->vatsimDetails->rating_pilot_long" :subtext="$user->vatsimDetails->rating_pilot_short"
