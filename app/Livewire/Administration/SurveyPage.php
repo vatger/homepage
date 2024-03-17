@@ -19,7 +19,7 @@ class SurveyPage extends Component
     private $selections = [
         [
             'id' => 1,
-            'name' => 'Wahlberechtigt VATGER',
+            'name' => 'Alle User',
         ],
         [
             'id' => 2,
@@ -37,6 +37,7 @@ class SurveyPage extends Component
             'id' => 5,
             'name' => 'Vollmitglied VATGER',
         ],
+
     ];
 
     private LimesurveyLibrary $ls;
@@ -67,6 +68,10 @@ class SurveyPage extends Component
         $users = collect();
 
         switch ($this->selected_selection) {
+            case 1:
+                $users = User::lazy()->collect();
+                break;
+
             case 2:
                 $users = User::with(['vatgerDetails', 'fir'])
                     ->lazy()
@@ -83,6 +88,12 @@ class SurveyPage extends Component
                 $users = User::with(['vatgerDetails', 'fir'])
                     ->lazy()
                     ->filter(fn(User $u) => $u->fir?->slug == 'EDMM' && $u->vatgerDetails->is_fir_voter)
+                    ->collect();
+                break;
+            case 5:
+                $users = User::with(['vatgerDetails'])
+                    ->lazy()
+                    ->filter(fn(User $u) => $u->vatgerDetails?->active_vatger_member_at != null)
                     ->collect();
                 break;
             default:
