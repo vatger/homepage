@@ -5,7 +5,6 @@ import { Modal } from 'bootstrap';
 //for Livewire3
 import { Livewire, Alpine, Component } from '../../vendor/livewire/livewire/dist/livewire.esm';
 import Clipboard from '@ryangjchandler/alpine-clipboard';
-import feather, { replace as featherReplace } from 'feather-icons';
 
 export function findLivewireComponent(name: string): Component {
     return Livewire.all().find((value: any) => value['name'] == name);
@@ -13,19 +12,22 @@ export function findLivewireComponent(name: string): Component {
 
 export function loadLivewireExtensions() {
     Livewire.hook('commit', ({ component, commit, respond, succeed, fail }) => {
-        // Equivelant of 'message.sent'
+        // Runs immediately before a commit's payload is sent to the server...
+
+        respond(() => {
+            // Runs after a response is received but before it's processed...
+        });
 
         succeed(({ snapshot, effect }) => {
-            // Equivelant of 'message.received'
-
-            queueMicrotask(() => {
-                // Equivelant of 'message.processed'
-                featherReplace();
-            });
+            // Runs after a successful response is received and processed
+            // with a new snapshot and list of effects...
+            console.log(123);
+            window.dispatchEvent(new Event('featherReplace'));
+            console.log(456);
         });
 
         fail(() => {
-            // Equivelant of 'message.failed'
+            // Runs if some part of the request failed...
         });
     });
 
