@@ -75,6 +75,7 @@
                         <li><a href="{{ route('redirect.board') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.forum')</a></li>
                         <li><a href="{{ route('redirect.discord') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.discord')</a></li>
                         <li><a href="{{ route('redirect.knowledgebase') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.wiki')</a></li>
+                        <li><a href="{{ route('redirect.moodle') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.moodle')</a></li>
                         <li><a href="{{ route('redirect.spreadshop') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.fan-shop')</a></li>
                     </ul>
                 </li>

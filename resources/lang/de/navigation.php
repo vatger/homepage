@@ -25,7 +25,8 @@ return [
         'forum' => 'Forum',
         'discord' => 'Discord',
         'fan-shop' => 'Fan-Shop',
-        'wiki' => 'Wiki',
+        'wiki' => 'Knowledgebase',
+        'moodle' => 'Moodle',
         'stats' => 'Statistikzentrum',
     ],
 
