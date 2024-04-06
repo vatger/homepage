@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Helpers\SearchTrait;
+use App\Livewire\Helpers\SortableTrait;
 use App\Models\Navigation\Station;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
@@ -9,10 +11,17 @@ use Livewire\Component;
 
 class RestrictedPage extends Component
 {
+    use SortableTrait, SearchTrait;
+
     public string $restriction = '1';
 
     #[Locked]
     public $restrictions = [];
+
+    public string $search = '';
+
+    private array $searchable_fields = ['ident', 'name', 'frequency'];
+    private array $sortable_fields = ['ident', 'name', 'frequency'];
 
 
     public function mount(): void
@@ -36,8 +45,11 @@ class RestrictedPage extends Component
     public function render()
     {
         $stations = Station::where('active', true)
-            ->where('gcap_class_group', 'LIKE', $this->restriction)
-            ->get();
-        return view('pages.restricted')->with(['rests' => $this->restrictions, 'stations' => $stations]);
+            ->where('gcap_class_group', 'LIKE', $this->restriction);
+
+        $this->searchQueryModifier($stations, $this->search);
+        $this->sortQueryModifier($stations);
+
+        return view('pages.restricted')->with(['rests' => $this->restrictions, 'stations' => $stations->get()]);
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 /**
+ * @private array $searchable_fields
  * @internal array $searchable_fields
  * @internal bool $custom_name_filtering
  *
