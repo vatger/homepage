@@ -1,5 +1,4 @@
 import { showNoty } from './noty';
-import jquery from 'jquery';
 import { Modal } from 'bootstrap';
 
 //for Livewire3
@@ -21,9 +20,7 @@ export function loadLivewireExtensions() {
         succeed(({ snapshot, effect }) => {
             // Runs after a successful response is received and processed
             // with a new snapshot and list of effects...
-            console.log(123);
             window.dispatchEvent(new Event('featherReplace'));
-            console.log(456);
         });
 
         fail(() => {

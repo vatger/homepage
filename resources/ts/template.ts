@@ -12,10 +12,8 @@ export default function initTemplate() {
     };
 
     async function asyncFeatherReplace() {
-        console.log('calling');
+        await new Promise((resolve) => setTimeout(resolve, 100));
         featherReplace();
-        console.log('called');
-        // Expected output: "resolved"
     }
 
     try {
