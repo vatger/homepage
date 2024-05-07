@@ -2,25 +2,25 @@
     <div class="container-fluid">
         <div class="layout-specing">
             <x-layouts.admin.content
-                    :header="$user->username"
-                    :links="[
+                :header="$user->username"
+                :links="[
                         route('administration.dashboard') => 'Administration',
                         route('administration.members') => 'Mitgliederverwaltung'
                     ]"
             ></x-layouts.admin.content>
 
             <x-layouts.admin.card-image-bar
-                    :bg_img="asset('images/profile/profile_1.png')"
-                    :m_img="asset('/images/profile/avatar_placeholder.png')"
-                    :title="$user->username"
-                    :subtitle="$user->id"
+                :bg_img="asset('images/profile/profile_1.png')"
+                :m_img="asset('/images/profile/avatar_placeholder.png')"
+                :title="$user->username"
+                :subtitle="$user->id"
             ></x-layouts.admin.card-image-bar>
 
             <div class="row">
                 <x-layouts.admin.sidebar-col
-                        position="left"
-                        title="Persönliche Daten"
-                        :items="[
+                    position="left"
+                    title="Persönliche Daten"
+                    :items="[
                             $acting_user?->can('membership.users.details.view.email') ? ['Email', $user->email ,'mail'] : [],
                             ['Ausbildung', $user->vatsimDetails->rating_atc_short . ' | ' .$user->vatsimDetails->rating_pilot_short . ' | ' . $user->vatsimDetails->rating_military_short,'book-open'],
                             ['Regionszuweisung', $user->vatsimDetails->region_name . ' (' . $user->vatsimDetails->region_code . ')','globe'],
@@ -31,7 +31,7 @@
                 ></x-layouts.admin.sidebar-col>
 
                 <x-layouts.admin.sidebar-col
-                        position="right">
+                    position="right">
                     <x-layouts.admin.card>
                         <div class="col-lg-12">
                             <ul class="nav nav-pills nav-justified flex-column flex-sm-row" id="pills-tab" role="tablist">
@@ -47,43 +47,33 @@
                                 <!--end nav item-->
 
                                 <li class="nav-item">
-                                    <a wire:ignore.self class="nav-link" id="pills-smart-tab" data-bs-toggle="pill" href="#notes-pill" role="tab"
-                                       aria-controls="pills-smart" aria-selected="false">
+                                    <a wire:ignore.self class="nav-link" id="pills-apps-tab" data-bs-toggle="pill" href="#ts-board-pill" role="tab"
+                                       aria-controls="pills-apps" aria-selected="false">
                                         <div class="text-center py-1">
-                                            <h6 class="mb-0">Notizen</h6>
+                                            <h6 class="mb-0">TS & Forum</h6>
                                         </div>
                                     </a>
                                     <!--end nav link-->
                                 </li>
                                 <!--end nav item-->
 
-                                <li class="nav-item">
-                                    <a wire:ignore.self class="nav-link" id="pills-apps-tab" data-bs-toggle="pill" href="#teamspeak-pill" role="tab"
-                                       aria-controls="pills-apps" aria-selected="false">
-                                        <div class="text-center py-1">
-                                            <h6 class="mb-0">TeamSpeak</h6>
-                                        </div>
-                                    </a>
-                                    <!--end nav link-->
-                                </li>
-                                <!--end nav item-->
-
-                                <li class="nav-item">
-                                    <a wire:ignore.self class="nav-link" id="pills-apps-tab" data-bs-toggle="pill" href="#forum-pill" role="tab"
-                                       aria-controls="pills-apps" aria-selected="false">
-                                        <div class="text-center py-1">
-                                            <h6 class="mb-0">Forum</h6>
-                                        </div>
-                                    </a>
-                                    <!--end nav link-->
-                                </li>
-                                <!--end nav item-->
 
                                 <li class="nav-item">
                                     <a wire:ignore.self class="nav-link" id="pills-apps-tab" data-bs-toggle="pill" href="#bans-pill" role="tab"
                                        aria-controls="pills-apps" aria-selected="false">
                                         <div class="text-center py-1">
                                             <h6 class="mb-0">Sperren</h6>
+                                        </div>
+                                    </a>
+                                    <!--end nav link-->
+                                </li>
+                                <!--end nav item-->
+
+                                <li class="nav-item">
+                                    <a wire:ignore.self class="nav-link" id="pills-apps-tab" data-bs-toggle="pill" href="#staff-pill" role="tab"
+                                       aria-controls="pills-apps" aria-selected="false">
+                                        <div class="text-center py-1">
+                                            <h6 class="mb-0">Staff</h6>
                                         </div>
                                     </a>
                                     <!--end nav link-->
@@ -108,6 +98,34 @@
                         <div class="col-12">
                             <div class="tab-content" id="pills-tabContent">
                                 <div wire:ignore.self class="tab-pane fade show active" id="activity-pill" role="tabpanel" aria-labelledby="activity-pill">
+                                    <h4 class="card-title">Membership data:</h4>
+                                    <ul>
+                                        <li>last_seen_at: {{ $user->vatgerDetails->last_seen_at }}</li>
+                                        <li>registered_at: {{ $user->vatgerDetails->registered_at }}</li>
+                                        <li>active_member_at: {{ $user->vatgerDetails->active_member_at }}</li>
+                                        <li>vatger_member_at: {{ $user->vatgerDetails->vatger_member_at }}</li>
+                                        <li>active_vatger_member_at:
+                                            {{ $user->vatgerDetails->active_vatger_member_at }}
+                                        </li>
+                                        <li>warning_inactive_at: {{ $user->vatgerDetails->warning_inactive_at }}</li>
+                                        <li>inactive_at: {{ $user->vatgerDetails->inactive_at }}</li>
+                                        <li>warning_delete_at: {{ $user->vatgerDetails->warning_delete_at }}</li>
+                                        <li>delete_at: {{ $user->vatgerDetails->delete_at }}</li>
+
+                                        <li>is_fir_active_member:
+                                            {{ $user->vatgerDetails->is_fir_active_member ? 'yes' : 'no' }}</li>
+                                        <li>is_vatger_voter:
+                                            {{ $user->vatgerDetails->is_vatger_voter ? 'yes' : 'no' }}</li>
+                                        <li>is_fir_voter:
+                                            {{ $user->vatgerDetails->is_fir_voter ? 'yes' : 'no' }}</li>
+                                        <li>can_change_fir:
+                                            {{ $user->vatgerDetails->can_change_fir ? 'yes' : 'no' }}
+                                            <small>({{  $user->vatgerDetails->can_change_fir_reason }})</small>
+                                        </li>
+
+                                    </ul>
+
+
                                     <h4 class="card-title">Current and past FIR memberships:</h4>
                                     <table class="table mb-0 table-center">
                                         <thead>
@@ -132,51 +150,53 @@
                                 </div>
                                 <!--end teb pane-->
 
-                                <div class="tab-pane fade" id="notes-pill" role="tabpanel" aria-labelledby="notes-pill">
-                                    <p class="text-muted mb-0">
-                                        @json($user->notes)
-                                    </p>
-                                </div>
-                                <!--end teb pane-->
 
-                                <div wire:ignore.self class="tab-pane fade" id="teamspeak-pill" role="tabpanel" aria-labelledby="teamspeak-pill">
-                                    <h4 class="card-title">Current teamspeak registrations:</h4>
-                                    <table class="table mb-0 table-center">
-                                        <thead>
-                                        <tr>
-                                            <th>uid</th>
-                                            <th>dbid</th>
-                                            <th>created_at</th>
-                                            <th>last_login</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($user->teamspeakRegistrations as $t)
+                                <div wire:ignore.self class="tab-pane fade" id="ts-board-pill" role="tabpanel" aria-labelledby="teamspeak-pill">
+                                    <h4 class="card-title">Teamspeak:</h4>
+
+                                    @if(count($user->teamspeakRegistrations) > 0)
+                                        <table class="table mb-0 table-center">
+                                            <thead>
                                             <tr>
-                                                <td>{{ $t->uid }}</td>
-                                                <td>{{ $t->dbid }}</td>
-                                                <td>{{ $t->created_at }}</td>
-                                                <td>{{ $t->last_login }}</td>
+                                                <th>uid</th>
+                                                <th>dbid</th>
+                                                <th>created_at</th>
+                                                <th>last_login</th>
                                             </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
-                                    <p class="text-muted mb-0">
-                                        He should have the groups: <code>@json($user->service_roles(\App\Models\Groups\ServiceRoleType::TeamspeakServergroup))</code>.
-                                    </p>
-                                </div>
-                                <!--end teb pane-->
+                                            </thead>
+                                            <tbody>
+                                            @foreach($user->teamspeakRegistrations as $t)
+                                                <tr>
+                                                    <td>{{ $t->uid }}</td>
+                                                    <td>{{ $t->dbid }}</td>
+                                                    <td>{{ $t->created_at }}</td>
+                                                    <td>{{ $t->last_login }}</td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <p class="text-muted mb-0">
+                                            The user does not have an account.
+                                        </p>
+                                    @endif
 
-                                <div wire:ignore.self class="tab-pane fade" id="forum-pill" role="tabpanel" aria-labelledby="forum-pill">
+                                    <hr>
+                                    <h4 class="card-title">Forum:</h4>
                                     <p class="text-muted mb-0">
                                         @if($user->settings->forum_id)
                                             The user has an account with the id <code>{{ $user->settings->forum_id }}</code>.
-                                            He should have the groups: <code>@json($user->service_roles(\App\Models\Groups\ServiceRoleType::ForumGroup))</code>.
                                         @else
                                             The user does not have an account.
                                         @endif
 
                                     </p>
+
+                                </div>
+                                <!--end teb pane-->
+
+                                <div wire:ignore.self class="tab-pane fade" id="forum-pill" role="tabpanel" aria-labelledby="forum-pill">
+
                                 </div>
                                 <!--end teb pane-->
 
@@ -214,6 +234,37 @@
                                         @endforeach
                                         </tbody>
                                     </table>
+                                </div>
+                                <!--end teb pane-->
+
+                                <div wire:ignore class="tab-pane fade" id="staff-pill" role="tabpanel" aria-labelledby="danger-pill">
+                                    <h4 class="card-title">Staff service accounts:</h4>
+                                    @if(count($user->service_roles()) > 0)
+                                        <table class="table mb-0 table-center">
+                                            <thead>
+                                            <tr>
+                                                <th>service_type</th>
+                                                <th>service_role</th>
+                                                <th>service_role_name</th>
+                                                <th>via team_id</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($user->service_roles() as $s)
+                                                <tr>
+                                                    <td>{{ $s->service_type }}</td>
+                                                    <td>{{ $s->service_role }}</td>
+                                                    <td>{{ $s->service_role_name }}</td>
+                                                    <td>{{ $s->team_id }}</td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    @else
+                                        <p class="text-muted mb-0">
+                                            The user does not have an account.
+                                        </p>
+                                    @endif
                                 </div>
                                 <!--end teb pane-->
 
