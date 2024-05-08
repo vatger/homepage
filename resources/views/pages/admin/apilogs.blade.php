@@ -1,5 +1,5 @@
 <div class="container-fluid">
-    <div class="layout-specing">
+<div class="layout-specing">
         <x-layouts.admin.content
                 header="API Logs"
         ></x-layouts.admin.content>
