@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Models\Membership\User;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
+
+class GdprRemoval extends Model
+{
+    protected $table = 'gdpr_removals';
+    public $timestamps = false;
+
+    public $appends = ['user', 'pending_services', 'completed_services', 'running'];
+
+    public function getUserAttribute(): User|null
+    {
+        return User::find($this->user_id);
+    }
+
+    public function getPendingServicesAttribute(): array
+    {
+        $services = collect(json_decode(File::get(storage_path("app/configurations/gdpr-removal-services.json"))));
+        $service_names = $services->map(fn($service) => $service->name)->toArray();
+        $completed = collect(json_decode($this->service_data))->filter(fn($service_data) => $service_data->completed_at != null)->map(fn($service) => $service->name)->toArray();
+        return array_diff($service_names, $completed);
+    }
+
+    public function getCompletedServicesAttribute(): array
+    {
+        return collect(json_decode($this->service_data))->filter(fn($service) => $service->completed_at != null)->map(fn($service) => [$service->name => $service->completed_at])->toArray();
+    }
+
+    public function getRunningAttribute(): bool
+    {
+        return $this->completed_at == null || !empty($this->getPendingServicesAttribute());
+    }
+}

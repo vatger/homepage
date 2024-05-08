@@ -1,0 +1,16 @@
+[
+    {
+        "name": "board",
+        "deletion_type": "library",
+        "prevents_deletion": true
+    },
+    {
+        "name": "teamspeak",
+        "deletion_type": "library",
+        "prevents_deletion": true
+    },
+    {
+        "name": "knowledgebase",
+        "deletion_type": "library"
+    }
+]
