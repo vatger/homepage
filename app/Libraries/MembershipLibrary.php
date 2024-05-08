@@ -5,6 +5,7 @@ namespace App\Libraries;
 use App\Jobs\UpdateAccountJob;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Libraries\VATSIM\CoreApiLibrary2;
+use App\Models\Membership\User\GdprRemoval;
 use App\Models\Membership\User\User;
 use App\Models\Membership\User\UserBan;
 use App\Models\Membership\User\UserBanType;
@@ -226,6 +227,11 @@ class MembershipLibrary
             return;
         }
 
+        // if we are currently in the removal process, don't continue
+        if (GdprRemoval::where('user_id', $user->id)->whereNull('completed_at')->exists()) {
+            return;
+        }
+
         $warning_inactive = Carbon::now()->diffInDays($user->vatgerDetails->last_seen_at, true) > 180 - 30;
         $inactive = Carbon::now()->diffInDays($user->vatgerDetails->last_seen_at, true) > 180;
         $warning_delete = Carbon::now()->diffInDays($user->vatgerDetails->last_seen_at, true) > 180 * 2 - 30;
@@ -245,7 +251,6 @@ class MembershipLibrary
 
         if ($warning_inactive && !$user->vatgerDetails->warning_inactive_at) {
             $user->vatgerDetails->update(['warning_inactive_at' => Carbon::now()]);
-            //TODO send email
             $date = $user->vatgerDetails->last_seen_at->addDays(180);
             $n = new BasicNotification(
                 __('membership_library.inactivity_warning.title'),
@@ -260,7 +265,6 @@ class MembershipLibrary
         }
         if ($inactive && !$user->vatgerDetails->inactive_at) {
             $user->vatgerDetails->update(['inactive_at' => Carbon::now()]);
-            //TODO send email
             $date = $user->vatgerDetails->last_seen_at->addDays(180);
             $n = new BasicNotification(
                 __('membership_library.inactivity_notice.title'),
@@ -275,7 +279,6 @@ class MembershipLibrary
         }
         if ($warning_delete && !$user->vatgerDetails->warning_delete_at) {
             $user->vatgerDetails->update(['warning_delete_at' => Carbon::now()]);
-            //TODO send email
             $date = $user->vatgerDetails->last_seen_at->addDays(180 * 2);
             $n = new BasicNotification(
                 __('membership_library.deletion_warning.title'),
@@ -290,11 +293,10 @@ class MembershipLibrary
         }
         if ($delete && !$user->vatgerDetails->delete_at) {
             $user->vatgerDetails->update(['delete_at' => Carbon::now()]);
-            //TODO send email
             $date = $user->vatgerDetails->last_seen_at->addDays(180 * 2);
             $n = new BasicNotification(
                 __('membership_library.deletion_notice.title'),
-                __('membership_library.deletion_notice.message', ['date' => $date->format('d.m.Y')]),
+                __('membership_library.deletion_notice.message', ['date' => $date->format('d.m.Y H:i')]),
                 'VATGER Membership System',
                 __('membership_library.deletion_notice.link'),
                 route('vatsim.authentication.connect.login'),
