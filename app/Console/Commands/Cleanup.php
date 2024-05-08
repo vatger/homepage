@@ -3,8 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Jobs\CleanupJob;
-use App\Jobs\UpdateSubdivisionMembersJob;
-use App\Libraries\NavLibrary;
 use Illuminate\Console\Command;
 
 class Cleanup extends Command

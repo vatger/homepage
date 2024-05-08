@@ -269,9 +269,21 @@
                                 <!--end teb pane-->
 
                                 <div wire:ignore class="tab-pane fade" id="danger-pill" role="tabpanel" aria-labelledby="danger-pill">
-                                    <p class="text-muted mb-0">
+                                    <div class="mt-4">
                                         <button class="btn btn-sm btn-primary" wire:click="force_member_update()">Force Member Update</button>
-                                    </p>
+                                        <p class="text-muted mt-2">
+                                            Zieht sich einmal neue Informationen aus der API und stößt update Aktionen an. Kann bedenkenlos ausgeführt werden.
+                                        </p>
+                                    </div>
+                                    <hr>
+                                    <div class="mt-4">
+                                        <button class="btn btn-sm btn-danger" wire:confirm="ACHTUNG: Soll der Nutzer zur Löschung markiert werden?" wire:click="mark_member_for_removal()">Mark for
+                                            deletion!
+                                        </button>
+                                        <p class="text-muted mt-2">
+                                            Markiert den Account zur Löschung, wenn der User nicht in 24h auf die E-Mail reagiert, wird der Account gelöscht.
+                                        </p>
+                                    </div>
                                 </div>
                                 <!--end teb pane-->
                             </div>

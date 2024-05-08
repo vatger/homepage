@@ -7,6 +7,7 @@ use App\Models\Membership\User\GdprRemoval;
 use App\Models\Membership\User\User;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class GDPRLibrary
 {
@@ -22,6 +23,14 @@ class GDPRLibrary
         if ($user->vatgerDetails->delete_at) {
             return;
         }
+
+        {
+            $current_user = Auth::user();
+            Auth::setUser($user);
+            Auth::logout();
+            Auth::setUser($current_user);
+        }
+
         $user->vatgerDetails->update(['delete_at' => Carbon::now()]);
         $date = Carbon::now()->addHours(24);
         $n = new BasicNotification(
@@ -53,10 +62,24 @@ class GDPRLibrary
 
     }
 
-    static function call_service(GdprRemoval $gdprRemoval, string $service): bool
+    public static function work(GdprRemoval $gdprRemoval): void
+    {
+        $todos = $gdprRemoval->pending_services;
+        foreach ($todos as $todo) {
+            self::call_service($gdprRemoval, $todo);
+        }
+        $gdprRemoval->fresh();
+        $todos = $gdprRemoval->pending_services;
+        if (empty($todos) && $gdprRemoval->completed_at == null) {
+            $gdprRemoval->completed_at = Carbon::now();
+            $gdprRemoval->save();
+        }
+    }
+
+    private static function call_service(GdprRemoval $gdprRemoval, string $service): void
     {
         if (!in_array($service, $gdprRemoval->pending_services)) {
-            return true;
+            return;
         }
         self::mark_started($gdprRemoval, $service);
         $result = false;
@@ -77,10 +100,10 @@ class GDPRLibrary
             self::mark_complete($gdprRemoval, $service);
         }
 
-        return $result;
+
     }
 
-    static function mark_started(GdprRemoval $gdprRemoval, string $service): void
+    private static function mark_started(GdprRemoval $gdprRemoval, string $service): void
     {
         $original_service_data = collect(json_decode($gdprRemoval->service_data));
         $current_data = $original_service_data->first(fn($service_data) => $service_data->name == $service);
@@ -93,7 +116,7 @@ class GDPRLibrary
         $gdprRemoval->save();
     }
 
-    static function mark_complete(GdprRemoval $gdprRemoval, string $service): void
+    private static function mark_complete(GdprRemoval $gdprRemoval, string $service): void
     {
         $original_service_data = collect(json_decode($gdprRemoval->service_data));
         $current_data = $original_service_data->first(fn($service_data) => $service_data->name == $service);

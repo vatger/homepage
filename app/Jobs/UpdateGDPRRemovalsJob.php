@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Libraries\GDPRLibrary;
+use App\Models\Membership\User\GdprRemoval;
 use App\Models\Membership\User\UserVatgerDetail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,12 +18,17 @@ class UpdateGDPRRemovalsJob implements ShouldQueue
 
     public function handle(): void
     {
+        
         UserVatgerDetail::whereNotNull('delete_at')
             ->where('delete_at', '<', now()->subHours(24))
             ->cursor()
             ->each(function ($vatger_details) {
                 GDPRLibrary::start_deletion($vatger_details->user);
-            });;
+            });
+
+        GdprRemoval::cursor()->each(function ($gdpr_removal) {
+            GDPRLibrary::work($gdpr_removal);
+        });
     }
 
 
