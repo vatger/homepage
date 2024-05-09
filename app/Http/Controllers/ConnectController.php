@@ -158,12 +158,12 @@ class ConnectController extends Controller
 
         MembershipLibrary::seen($user);
 
-        $user->tokens()->delete();
-        $user->createToken('api-token');
+        //$user->tokens()->delete();
+        //$user->createToken('api-token');
 
         return $user->fresh();
     }
-    
+
     /**
      * End an authenticated session
      */

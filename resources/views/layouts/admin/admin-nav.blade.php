@@ -87,7 +87,7 @@
             <li>
                 <a href="{{ route('administration.tech.gdpr') }}">
                     <i data-feather="user-x" class="fea me-2"></i>
-                    Job Log
+                    GDPR Log
                 </a>
             </li>
         </ul>
