@@ -154,7 +154,7 @@
 
                             <p class="small">
                                 Du kannst die FIR alle 90 Tage wechseln. Mit diesem Wechsel bestätigst du, dass du dies verstanden hast und damit
-                                einverstanden bist, bis zum {{\Carbon\Carbon::now()->add('90', 'days')->format('d.m.Y')}} keinen weiteren
+                                einverstanden bist, bis zum {{\Carbon\Carbon::now()->addDays(90)->format('d.m.Y')}} keinen weiteren
                                 Wechsel mehr durchführen zu können. Bestätige bitte, dass du diesen Hinweis gelesen und verstanden hast.
                             </p>
                             <input wire:model="fir_selection_checkbox" class="form-check-input" type="checkbox" value="true" id="fir-check">
