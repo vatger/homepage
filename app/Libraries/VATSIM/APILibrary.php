@@ -75,7 +75,7 @@ class APILibrary
     {
         $cache_key = 'vatsim.api.member_update.' . $user->id;
         $cached_val = Carbon::parse(Cache::get($cache_key));
-        if ($cache && Cache::has($cache_key) && $cached_val->diffInSeconds(Carbon::now()) < $cache_time) {
+        if ($cache && Cache::has($cache_key) && $cached_val->diffInSeconds(Carbon::now(), true) < $cache_time) {
             return true;
         }
         $data = self::Member($user);

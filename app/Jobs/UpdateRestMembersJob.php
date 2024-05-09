@@ -40,7 +40,7 @@ class UpdateRestMembersJob implements ShouldQueue
                 $cache_key = CoreApiLibrary2::$cache_key_user . $user->id;
                 $cache_exists = Cache::has($cache_key);
                 $cached_val = $cache_exists ? Carbon::createFromTimestamp(intval(Cache::get($cache_key))) : Carbon::now()->subDay();
-                if (!$cache_exists || $cached_val->diffInSeconds(Carbon::now()) > self::$refresh_time) {
+                if (!$cache_exists || $cached_val->diffInSeconds(Carbon::now(), true) > self::$refresh_time) {
                     $this->collection->add(['id' => $user->id, 'time' => $cached_val->timestamp]);
                 }
             });
