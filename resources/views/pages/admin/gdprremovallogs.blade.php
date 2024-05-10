@@ -39,7 +39,7 @@
                             <td>{{ $log->user_id }}</td>
                             <td>{{ " " }}</td>
                             <td>{{ " " }}</td>
-                            <td>@json(json_decode($log->service_data))</td>
+                            <td>{{  $log->service_data }}</td>
 
                         </tr>
                     @endforeach
