@@ -51,7 +51,7 @@ class GDPRLibrary
             $gdpr = new GdprRemoval();
             $gdpr->user_id = $user->id;
             $gdpr->started_at = Carbon::now();
-            $gdpr->service_data = "[]";
+            $gdpr->service_data = [];
             $gdpr->save();
         }
 
@@ -105,27 +105,27 @@ class GDPRLibrary
 
     private static function mark_started(GdprRemoval $gdprRemoval, string $service): void
     {
-        $original_service_data = collect(json_decode($gdprRemoval->service_data));
+        $original_service_data = collect($gdprRemoval->service_data);
         $current_data = $original_service_data->first(fn($service_data) => $service_data->name == $service);
         if (empty($current_data)) {
             $current_data = (object)['name' => $service, 'started_at' => Carbon::now(), 'completed_at' => null];
         }
         $rest_data = $original_service_data->filter(fn($service_data) => $service_data->name != $service);
         $new_data = $rest_data->push($current_data);
-        $gdprRemoval->service_data = json_encode($new_data->toArray());
+        $gdprRemoval->service_data = $new_data->toArray();
         $gdprRemoval->save();
     }
 
     private static function mark_complete(GdprRemoval $gdprRemoval, string $service): void
     {
-        $original_service_data = collect(json_decode($gdprRemoval->service_data));
+        $original_service_data = collect($gdprRemoval->service_data);
         $current_data = $original_service_data->first(fn($service_data) => $service_data->name == $service);
         if ($current_data->completed_at == null) {
             $current_data->completed_at = Carbon::now();
         }
         $rest_data = $original_service_data->filter(fn($service_data) => $service_data->name != $service);
         $new_data = $rest_data->push($current_data);
-        $gdprRemoval->service_data = json_encode($new_data->toArray());
+        $gdprRemoval->service_data = $new_data->toArray();
         $gdprRemoval->save();
     }
 

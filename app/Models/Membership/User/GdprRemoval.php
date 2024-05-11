@@ -2,6 +2,7 @@
 
 namespace App\Models\Membership\User;
 
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 
@@ -12,6 +13,13 @@ class GdprRemoval extends Model
 
     public $appends = ['user', 'pending_services', 'completed_services', 'running'];
 
+    protected function casts(): array
+    {
+        return [
+            'service_data' => 'object',
+        ];
+    }
+
     public function getUserAttribute(): User|null
     {
         return User::find($this->user_id);
@@ -21,13 +29,13 @@ class GdprRemoval extends Model
     {
         $services = collect(json_decode(File::get(storage_path("app/configurations/gdpr-removal-services.json"))));
         $service_names = $services->map(fn($service) => $service->name)->toArray();
-        $completed = collect(json_decode($this->service_data))->filter(fn($service_data) => $service_data->completed_at != null)->map(fn($service) => $service->name)->toArray();
+        $completed = collect($this->service_data)->filter(fn($service_data) => $service_data->completed_at != null)->map(fn($service) => $service->name)->toArray();
         return array_diff($service_names, $completed);
     }
 
     public function getCompletedServicesAttribute(): array
     {
-        return collect(json_decode($this->service_data))->filter(fn($service) => $service->completed_at != null)->map(fn($service) => [$service->name => $service->completed_at])->toArray();
+        return collect($this->service_data)->filter(fn($service) => $service->completed_at != null)->map(fn($service) => $service->name)->toArray();
     }
 
     public function getRunningAttribute(): bool
