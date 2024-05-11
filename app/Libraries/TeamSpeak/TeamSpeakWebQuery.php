@@ -49,7 +49,7 @@ class TeamSpeakWebQuery
         $servergroupId = self::getServergroupId(config('teamspeak.default_group'));
         $clientDBid = $registration->dbid;
 
-        if (self::_servergroupdelclient($clientDBid, $servergroupId) == false) {
+        if (!self::_servergroupdelclient($clientDBid, $servergroupId)) {
             return false;
         }
 
@@ -127,5 +127,18 @@ class TeamSpeakWebQuery
                 self::delFromServergroup($registration, $service_role_id);
             }
         }
+    }
+
+    public static function deleteUser(User $user): bool
+    {
+        $registrations = TeamspeakRegistration::where('user_id', $user->id)->get();
+        $result = true;
+        foreach ($registrations as $registration) {
+            $result &= self::removeRegistation($registration);
+        }
+
+        TeamspeakRegistration::where('user_id', $user->id)->onlyTrashed()->forceDelete();
+
+        return $result;
     }
 }

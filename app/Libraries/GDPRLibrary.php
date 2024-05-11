@@ -2,6 +2,7 @@
 
 namespace App\Libraries;
 
+use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Models\Groups\Team;
 use App\Models\Membership\User\GdprRemoval;
 use App\Models\Membership\User\User;
@@ -89,6 +90,12 @@ class GDPRLibrary
                     $result = XenForoLibrary::deleteForumAccount($gdprRemoval->user);
                     break;
                 case 'teamspeak':
+                    $result = TeamSpeakWebQuery::deleteUser($gdprRemoval->user);
+                    break;
+                case 'knowledgebase':
+                    $result = false;
+                    break;
+                default:
                     $result = false;
                     break;
 
