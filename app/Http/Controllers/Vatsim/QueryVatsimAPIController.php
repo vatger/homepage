@@ -32,16 +32,6 @@ class QueryVatsimAPIController extends Controller
         return EventLibrary::getEvents($count, true);
     }
 
-    public function getBanner(Request $request, int $id)
-    {
-        $filepath = "public/banners/" . $id . ".png";
-        if (!Storage::exists($filepath)) {
-            return response()->status(404);
-        }
-
-        return response(Storage::get($filepath), 200)->header('Content-Type', 'image/png');
-    }
-
     /**
      * Queries the myVatsim event API and selects events for a given ICAO code.
      * Parsed response (1 Airport) data cached for 10 minutes (600s)

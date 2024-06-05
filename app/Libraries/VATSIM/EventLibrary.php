@@ -116,8 +116,8 @@ class EventLibrary extends BaseLibrary
         $client = self::constructClient([
             'headers' => [
                 'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0', // Spoof the User-Agent Header
-                'Referer' => env('APP_URL'),
-                'Host' => 'vatger.test',
+                'Referer' => config('app.url'),
+                'Host' => parse_url(config('app.url'), PHP_URL_HOST),
             ]
         ]);
 
@@ -128,8 +128,7 @@ class EventLibrary extends BaseLibrary
             foreach ($event->airports as $event_airport) {
                 $icao = substr($event_airport->icao, 0, 2);
                 if (strtolower($icao) == 'ed' || strtolower($icao) == 'et') {
-                    $banner_url = self::_downloadImage($client, $event);
-                    $event->banner = $banner_url;
+                    $event->banner = self::_downloadImage($client, $event);
 
                     $eventArray[] = $event;
                     break;
@@ -147,7 +146,7 @@ class EventLibrary extends BaseLibrary
 
     private static function _downloadImage(\GuzzleHttp\Client $client, $event): string
     {
-        $filepath = "public/banners/" . $event->id . ".png";
+        $filepath = "public/banners/" . $event->id . ".webp";
 
         if (!Storage::exists($filepath)) {
             $response = $client->get($event->banner);
@@ -162,13 +161,13 @@ class EventLibrary extends BaseLibrary
 
                 $image->scale(width: 1920);
 
-                Storage::put($filepath, $image->toPng()->toString());
+                Storage::put($filepath, $image->toWebp()->toString());
             } catch (\Exception $e) {
                 Log::warning($e->getMessage());
                 return $event->banner;
             }
         }
 
-        return env('APP_URL') . "/web_api/queryevents/banner/" . $event->id;
+        return Storage::url($filepath);
     }
 }

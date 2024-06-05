@@ -15,12 +15,11 @@
             <div class="col-lg-4 col-md-6 col-12 d-lg-block d-none">
                 <div class="sidebar sticky-bar p-4 rounded shadow">
                     <div class="widget border-bottom pb-4">
-                        <h5 class="widget-title">Fortschritt:</h5>
-                        <div class="progress-box mt-3">
-                            <h6 class="title text-muted">0/4 Abgeschlossen</h6>
+                        <div class="progress-box mt-2">
+                            <p class="title text-muted mb-2">0/4 Abgeschlossen</p>
 
                             <div class="progress">
-                                <div class="progress-bar position-relative bg-primary" style="width: 0;"></div>
+                                <div class="progress-bar position-relative bg-primary" style="width: 50%;"></div>
                             </div>
                         </div><!--end process box-->
                     </div>
@@ -36,7 +35,7 @@
                             <!-- Class text-success if <a> is completed -->
 
                             <li class="navbar-item account-menu px-0 mt-2">
-                                <a href="account-profile.html" class="text-muted d-flex rounded shadow align-items-center py-2 px-2">
+                                <a href="account-profile.html" class="text-success d-flex rounded shadow align-items-center py-2 px-2">
                                     <h6 class="mb-0 ms-2">2. Registrierung VATSIM Germany</h6>
                                 </a>
                             </li>
