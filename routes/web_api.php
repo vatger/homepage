@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 | Other API requests shall be handled by api.php
 |
 */
+Route::get('queryevents/banner/{id}', [QueryVatsimAPIController::class, 'getBanner'])->name('api.getBanner');
 Route::get('queryevents/{count?}', [QueryVatsimAPIController::class, 'loadEvents'])->name('api.loadEvents');
 Route::get('queryevent', [QueryVatsimAPIController::class, 'loadSingleEvent'])->name('api.loadEvent');
 Route::get('activecontrollers/{icao}', [QueryVatsimAPIController::class, 'loadActiveAtc'])->name('api.loadActiveAtc');

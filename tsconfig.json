@@ -3,6 +3,10 @@
         "target": "es5",
         "module": "es2020",
         "moduleResolution": "node",
+        "lib": [
+            "es2015",
+            "dom"
+        ],
         "baseUrl": "./",
         "strict": true,
         // Enable strict type-checking options

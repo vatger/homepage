@@ -59,7 +59,7 @@ require_once 'web/booking_images.php';
 ###################
 # GETTING STARTED #
 ###################
-//require_once 'web/getting-started.php';
+require_once 'web/getting-started.php';
 
 ###################
 # LEGAL STUFF     #

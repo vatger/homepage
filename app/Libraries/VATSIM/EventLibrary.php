@@ -2,13 +2,20 @@
 
 namespace App\Libraries\VATSIM;
 
+use App\Libraries\BaseLibrary;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 use Stevebauman\Purify\Facades\Purify;
 
-class EventLibrary
+class EventLibrary extends BaseLibrary
 {
+    private static ImageManager $_imageManager;
+
     /**
      * Get a single event from the VATSIM API
      * https://my.vatsim.net/api/v2/events/view/<event_id>
@@ -57,7 +64,7 @@ class EventLibrary
             return [];
         }
 
-        return Cache::remember('de.vatsim-germany.events.aerodrome.' . $icao, 60 * 10, function () use ($icao, $count) {
+        return Cache::remember('de.vatsim-germany.events.aerodrome.' . $icao, \DateInterval::createFromDateString("3 hours"), function () use ($icao, $count) {
             $events = self::loadEvents();
             $eventArray = [];
 
@@ -89,7 +96,7 @@ class EventLibrary
      */
     private static function loadEvents(): array
     {
-        return Cache::remember('de.vatsim-germany.events.all', 600, function () {
+        return Cache::remember('de.vatsim-germany.events.all', 60 * 10, function () {
             $response = Http::get('https://my.vatsim.net/api/v1/events/all');
             return json_decode($response)->data;
         });
@@ -106,12 +113,24 @@ class EventLibrary
         // Init array
         $eventArray = [];
 
+        $client = self::constructClient([
+            'headers' => [
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0', // Spoof the User-Agent Header
+                'Referer' => env('APP_URL'),
+                'Host' => 'vatger.test',
+            ]
+        ]);
+
+        self::$_imageManager = new ImageManager(new Driver());
+
         // Loop through response array (i.e. through events)
         foreach ($events as $event) {
             foreach ($event->airports as $event_airport) {
                 $icao = substr($event_airport->icao, 0, 2);
-
                 if (strtolower($icao) == 'ed' || strtolower($icao) == 'et') {
+                    $banner_url = self::_downloadImage($client, $event);
+                    $event->banner = $banner_url;
+
                     $eventArray[] = $event;
                     break;
                 }
@@ -124,5 +143,32 @@ class EventLibrary
 
         // Return json encoded data (i.e. the <= 6 found events)
         return json_encode($eventArray);
+    }
+
+    private static function _downloadImage(\GuzzleHttp\Client $client, $event): string
+    {
+        $filepath = "public/banners/" . $event->id . ".png";
+
+        if (!Storage::exists($filepath)) {
+            $response = $client->get($event->banner);
+            if ($response->getStatusCode() != 200) {
+                return $event->banner;
+            }
+
+            try {
+                $data = $response->getBody()->getContents();
+
+                $image = self::$_imageManager->read($data);
+
+                $image->scale(width: 1920);
+
+                Storage::put($filepath, $image->toPng()->toString());
+            } catch (\Exception $e) {
+                Log::warning($e->getMessage());
+                return $event->banner;
+            }
+        }
+
+        return env('APP_URL') . "/web_api/queryevents/banner/" . $event->id;
     }
 }
