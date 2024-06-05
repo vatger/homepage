@@ -2,30 +2,30 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\CleanupJob;
+use App\Jobs\UpdateGDPRRemovalsJob;
 use Illuminate\Console\Command;
 
-class Cleanup extends Command
+class UpdateGDPRRemovals extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'vatger:cleanup';
+    protected $signature = 'vatger:update-removals';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command to cleanup some logs';
+    protected $description = 'Command to trigger GDPR removals';
 
     /**
      * Execute the console command.
      */
-    public function handle(): void
+    public function handle()
     {
-        dispatch(new CleanupJob());
+        dispatch(new UpdateGDPRRemovalsJob());
     }
 }

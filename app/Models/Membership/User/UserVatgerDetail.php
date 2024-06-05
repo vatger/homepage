@@ -83,12 +83,12 @@ class UserVatgerDetail extends Model
 
     public function getIsVatgerVoterAttribute(): bool
     {
-        return Carbon::now()->diffInDays($this->active_vatger_member_at) >= 180;
+        return Carbon::now()->diffInDays($this->active_vatger_member_at, true) >= 180;
     }
 
     public function getIsFirVoterAttribute(): bool
     {
-        return $this->getIsFirActiveMemberAttribute() && Carbon::now()->diffInDays($this->user->fir?->active_fir_member_at) >= 180;
+        return $this->getIsFirActiveMemberAttribute() && Carbon::now()->diffInDays($this->user->fir?->active_fir_member_at, true) >= 180;
     }
 
     public function getCanChangeFirAttribute(): bool
@@ -113,7 +113,7 @@ class UserVatgerDetail extends Model
         }
 
         $joined = Carbon::create($latest_fir->joined_at);
-        $diff = Carbon::now()->diffInDays($joined);
+        $diff = Carbon::now()->diffInDays($joined, true);
         if ($diff < 90) {
             return __(
                 'vatger-details.lastfir',

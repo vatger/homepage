@@ -58,18 +58,24 @@ class ConnectController extends Controller
             ]);
         } catch (UnexpectedValueException $e) {
             Log::error('[ConnectController]::_verifyLogin::AccessToken::' . $e->getMessage());
-            return redirect()->route('vatsim.authentication.connect.failed'); // Wrong format received from the Connect service
+            return redirect()
+                ->route('landing')
+                ->withErrors('Error logging in (UnexpectedValueException). Please try again.');
+            // Wrong format received from the Connect service
         } catch (IdentityProviderException $e) {
             Log::error('[ConnectController]::_verifyLogin::AccessToken::' . $e->getMessage());
-            return redirect()->route('vatsim.authentication.connect.failed');
+            return redirect()
+                ->route('landing')
+                ->withErrors('Error logging in (IdentityProviderException). Please try again.');
         }
 
         try {
             $resourceOwner = json_decode(json_encode($this->_provider->getResourceOwner($accessToken)->toArray()));
-            // $resourceOwner = $this->_provider->getResourceOwner($accessToken);
         } catch (UnexpectedValueException $e) {
             Log::error('[ConnectController]::_verifyLogin::ResourceOwner::' . $e->getMessage());
-            return redirect()->route('vatsim.authentication.connect.failed');
+            return redirect()
+                ->route('landing')
+                ->withErrors('Error logging in (ResourceOwnerUnexpectedValueException). Please try again.');
         }
 
         if (
@@ -80,7 +86,9 @@ class ConnectController extends Controller
             !isset($resourceOwner->data->personal->email) ||
             $resourceOwner->data->oauth->token_valid !== 'true'
         ) {
-            return redirect()->route('vatsim.authentication.connect.failed');
+            return redirect()
+                ->route('landing')
+                ->withErrors('Error logging in (ResourceOwnerEmpty). Please try again.');
         }
 
         if (
@@ -88,7 +96,9 @@ class ConnectController extends Controller
                 ->where('id', '!=', $resourceOwner->data->cid)
                 ->exists()
         ) {
-            return redirect()->route('vatsim.authentication.connect.failed');
+            return redirect()
+                ->route('landing')
+                ->withErrors('Login Error: Wende dich an den VATSIM Germany Support.');
         }
 
         // All checks completed. Let's finally sign in the user
@@ -148,20 +158,10 @@ class ConnectController extends Controller
 
         MembershipLibrary::seen($user);
 
-        $user->tokens()->delete();
-        $user->createToken('api-token');
+        //$user->tokens()->delete();
+        //$user->createToken('api-token');
 
         return $user->fresh();
-    }
-
-    /**
-     * Display a failed message and then return to the login
-     */
-    public function failed(Request $request): RedirectResponse
-    {
-        return redirect()
-            ->route('landing')
-            ->withErrors('Error logging in. Please try again.');
     }
 
     /**

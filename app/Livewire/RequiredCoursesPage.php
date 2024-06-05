@@ -18,7 +18,7 @@ class RequiredCoursesPage extends Component
             return json_decode(Http::get('https://raw.githubusercontent.com/VATGER-ATD/required-courses/main/courses.json')->body());
         });
         $courses = collect($data);
-        //dd($courses);
+
         if ($courses->count() < 2) return Redirect::back()->withErrors('Error');
 
 

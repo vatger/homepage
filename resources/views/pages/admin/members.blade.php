@@ -1,8 +1,8 @@
 <div class="container-fluid">
     <div class="layout-specing">
         <x-layouts.admin.content
-                header="Mitgliederverwaltung"
-                :links="[
+            header="Mitgliederverwaltung"
+            :links="[
                     route('administration.dashboard') => 'Administration',
                 ]"
         />
@@ -39,6 +39,7 @@
                         <th class="border-bottom p-3">FIR</th>
                         <th class="border-bottom p-3">Rating</th>
                         <th class="border-bottom p-3">Beitritt</th>
+                        <th class="border-bottom p-3">Status</th>
                         <th class="border-bottom p-3"></th>
                     </tr>
 
@@ -58,6 +59,13 @@
                             <td>{{ $member->vatsimDetails->rating_atc_short }} / {{ $member->vatsimDetails->rating_pilot_short }}
                                 / {{ $member->vatsimDetails->rating_military_short }}</td>
                             <td>{{ $member->vatgerDetails->registered_at->format('d.m.Y') }}</td>
+                            <td>
+                                <small>
+                                    {{ $member->vatgerDetails->is_inactive ? 'vatger_inactive' : '' }}
+                                    {{ $member->vatgerDetails->is_vatger_member ? 'vatger_member' : '' }}
+                                    {{ $member->vatgerDetails->is_vatger_voter ? 'vatger_voter' : '' }}
+                                </small>
+                            </td>
                             <td>
 
                                 <a href="{{ route('administration.member', ['user' => $member->id]) }}">

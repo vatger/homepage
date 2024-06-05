@@ -10,6 +10,12 @@ export default function initTemplate() {
     window.onscroll = function () {
         scrollFunction();
     };
+
+    async function asyncFeatherReplace() {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        featherReplace();
+    }
+
     try {
         activateMenu();
         loadSidebar();
@@ -18,6 +24,7 @@ export default function initTemplate() {
         loadTooltips();
         loadSmallMenu();
         featherReplace();
+        window.addEventListener('featherReplace', (ev) => asyncFeatherReplace());
     } catch (e) {
         console.error(e);
     }

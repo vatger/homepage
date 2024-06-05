@@ -34,14 +34,14 @@
                     </a>
                 </li>
             @endcan
-                @can('mail.manage')
-                    <li>
-                        <a href="{{ route('administration.email') }}">
-                            <i data-feather="mail" class="fea me-2"></i>
-                            Staff E-Mail
-                        </a>
-                    </li>
-                @endcan
+            @can('mail.manage')
+                <li>
+                    <a href="{{ route('administration.email') }}">
+                        <i data-feather="mail" class="fea me-2"></i>
+                        Staff E-Mail
+                    </a>
+                </li>
+            @endcan
             @can('survey')
                 <li>
                     <a href="{{ route('administration.survey') }}">
@@ -82,6 +82,12 @@
                 <a href="{{ route('administration.tech.jobs') }}">
                     <i data-feather="terminal" class="fea me-2"></i>
                     Job Log
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('administration.tech.gdpr') }}">
+                    <i data-feather="user-x" class="fea me-2"></i>
+                    GDPR Log
                 </a>
             </li>
         </ul>

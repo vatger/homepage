@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\CookieConsentMiddleware;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\LocaleMiddleware;
+use App\Http\Middleware\Membership\CheckGDPRMiddleware;
 use App\Http\Middleware\Membership\CheckHomepageBanned;
 use App\Http\Middleware\Membership\CheckSDPMiddleware;
 use App\Http\Middleware\Membership\CheckTermsMiddleware;
@@ -33,7 +34,6 @@ use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 class Kernel extends HttpKernel
 {
@@ -73,7 +73,7 @@ class Kernel extends HttpKernel
             SysLogMiddleware::class,
         ],
 
-        'web_api' => [EnsureFrontendRequestsAreStateful::class, 'throttle:api', SubstituteBindings::class, PreventRequestsDuringMaintenance::class],
+        'web_api' => ['throttle:api', SubstituteBindings::class, PreventRequestsDuringMaintenance::class],
 
         'api' => [
             JsonResponse::class,
@@ -103,6 +103,7 @@ class Kernel extends HttpKernel
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
         'cookie.consent' => CookieConsentMiddleware::class,
+        'pending_removal' => CheckGDPRMiddleware::class,
         'banned' => CheckHomepageBanned::class,
         'check-terms' => CheckTermsMiddleware::class,
         'staff_data_protection' => CheckSDPMiddleware::class,

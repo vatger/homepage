@@ -3,15 +3,11 @@
 namespace App\Libraries\VATSIM;
 
 use App\Libraries\BaseLibrary;
-use App\Libraries\MembershipLibrary;
-use App\Models\Membership\User\User;
-use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Facades\Cache;
 
 class VATEUDCoreLibrary extends BaseLibrary
 {
-    public static string $cache_key_user = 'CoreApiLibrary2.last_member_refresh.';
+
 
     public static function send(string $type, string $endpoint, array $data = []): array|object|null
     {
@@ -42,7 +38,7 @@ class VATEUDCoreLibrary extends BaseLibrary
 
     public static function roster(): object|null
     {
-        return self::send("GET", "roster")->data;
+        return self::send("GET", "facility/roster")?->data;
     }
 
 }

@@ -9,12 +9,15 @@ use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class VikunjaLibrary extends BaseLibrary
 {
+
+
+    const array CATEGORIES = [];
+
     private $jwt_token;
 
     /**
@@ -177,7 +180,7 @@ class VikunjaLibrary extends BaseLibrary
         $result_data = json_decode($result->getBody()->getContents());
 
         foreach ($result_data as $team) {
-            $teams[] = (object) ['team' => $team->id, 'name' => $team->name];
+            $teams[] = (object)['team' => $team->id, 'name' => $team->name];
         }
         return $teams;
     }
@@ -205,53 +208,29 @@ class VikunjaLibrary extends BaseLibrary
         return $lib;
     }
 
-    public function create_task(string $subject, string $content, string $sender, int $supporttype = 0, int $area = 0, array $attachments = []): bool
+    public function create_task(string $subject, string $content, string $sender, int $project_id, int $label, array $attachments = []): bool
     {
-        $map = $this->map_project_and_label($supporttype, $area);
-
         $content = nl2br("Anfrage von: $sender, \n \n $content");
         $due_date = new \DateTime('now', new \DateTimeZone('Europe/Berlin'));
         $due_date->add(\DateInterval::createFromDateString('2 day'));
         $due_date->setTimezone(new \DateTimeZone('UTC'));
 
-        $result = $this->send('PUT', "projects/$map->project_id", [
+        $result = $this->send('PUT', "projects/$project_id", [
             'description' => $content,
             'done' => false,
             'due_date' => $due_date->format('Y-m-d\TH:i:s\Z'),
-            'project_id' => $map->project_id,
+            'project_id' => $project_id,
             'title' => $subject,
         ]);
 
         if ($result) {
-            if ($map->label != 0) {
+            if ($label != 0) {
                 $result_data = json_decode($result->getBody()->getContents());
-                $result = $this->send('PUT', "tasks/$result_data->id/labels", ['label_id' => $map->label]);
+                $result = $this->send('PUT', "tasks/$result_data->id/labels", ['label_id' => $label]);
             }
             return true;
         } else {
             return false;
         }
-    }
-
-    private function map_project_and_label(int $supporttype, int $area): object
-    {
-        $map = (object) ['label' => 11, 'project_id' => 4];
-        if ($area == 1) {
-            //Tech
-            $map->project_id = 5;
-
-            $map->label = match ($supporttype) {
-                1 => 8, // Feature Request
-                2 => 7, // Bug Report
-                default => 0,
-            };
-        }
-
-        if ($area == 3) {
-            $map->project_id = 20;
-            $map->label = 0;
-        }
-
-        return $map;
     }
 }

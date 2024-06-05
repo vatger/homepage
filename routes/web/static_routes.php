@@ -23,6 +23,8 @@ Route::prefix('redirect')->group(function () {
         'redirect.knowledgebase.training-pilot',
     );
 
+    Route::get('moodle', redir('https://moodle.vatsim-germany.org/'))->name('redirect.moodle');
+
     Route::get('sectorfiles', redir('https://files.aero-nav.com/edxx'))->name('redirect.sectorfiles');
 
     Route::get('board', redir('https://board.vatsim-germany.org/'))->name('redirect.board');

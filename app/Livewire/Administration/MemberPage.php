@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Administration;
 
+use App\Libraries\GDPRLibrary;
 use App\Libraries\MembershipLibrary;
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\Membership\User\User;
@@ -40,7 +41,8 @@ class MemberPage extends Component
     public BanForm $form;
     public ?UserBan $banInformation;
 
-    public function saveBan() {
+    public function saveBan()
+    {
         $author = Auth::user();
 
         UserBan::query()->create([
@@ -59,11 +61,13 @@ class MemberPage extends Component
         $this->showNoty("Sperre erfolgreich angelegt");
     }
 
-    public function showBanInformation(int $id) {
+    public function showBanInformation(int $id)
+    {
         $this->banInformation = UserBan::query()->with('author')->find($id);
     }
 
-    public function removeBan() {
+    public function removeBan()
+    {
         if ($this->banInformation == null) {
             $this->showNoty("Ein Fehler ist aufgetreten", 'error');
             return;
@@ -75,7 +79,8 @@ class MemberPage extends Component
         $this->showNoty("Sperre erfolgreich aufgehoben");
     }
 
-    public function endBanNow() {
+    public function endBanNow()
+    {
         if ($this->banInformation == null) {
             $this->showNoty("Ein Fehler ist aufgetreten", 'error');
             return;
@@ -97,5 +102,11 @@ class MemberPage extends Component
     public function force_member_update(): void
     {
         MembershipLibrary::update($this->user, cache: false);
+    }
+
+    public function mark_member_for_removal(): void
+    {
+        GDPRLibrary::mark_for_deletion($this->user);
+        $this->showNoty("Nutzer zur Löschung markiert");
     }
 }

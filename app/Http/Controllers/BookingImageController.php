@@ -23,7 +23,7 @@ class BookingImageController extends Controller
         'Content-Type' => 'image/png'
     ];
 
-    public function serveBookingImage(Request $request, string $image_id): Response | JsonResponse | BinaryFileResponse
+    public function serveBookingImage(Request $request, string $image_id): Response|JsonResponse|BinaryFileResponse
     {
         if (!Auth::check()) {
             if ($this->_getDisplayMode($request) == "dark") {
@@ -51,7 +51,7 @@ class BookingImageController extends Controller
             return response()->json(['message' => 'Cookie Consent not given. Can\'t save preferences.']);
         }
 
-        $cookie = cookie(self::$BOOKING_COOKIE_NAME, 'dark', Carbon::now()->addYear()->diffInMinutes(Carbon::now()));
+        $cookie = cookie(self::$BOOKING_COOKIE_NAME, 'dark', Carbon::now()->addYear()->diffInMinutes(Carbon::now(), true));
         return response()->json(['message' => 'Dark Mode Set!'])->withCookie($cookie);
     }
 
@@ -61,7 +61,7 @@ class BookingImageController extends Controller
             return response()->json(['message' => 'Cookie Consent not given. Can\'t save preferences.']);
         }
 
-        $cookie = cookie(self::$BOOKING_COOKIE_NAME, 'light', Carbon::now()->addYear()->diffInMinutes(Carbon::now()));
+        $cookie = cookie(self::$BOOKING_COOKIE_NAME, 'light', Carbon::now()->addYear()->diffInMinutes(Carbon::now(), true));
         return response()->json(['message' => 'Light Mode Set!'])->withCookie($cookie);
     }
 

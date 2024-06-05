@@ -14,7 +14,7 @@ Route::prefix('authentication')
             Route::get('login', [ConnectController::class, 'login'])->name('vatsim.authentication.connect.login');
             Route::get('callback', [ConnectController::class, 'callback'])->name('vatsim.authentication.connect.callback');
             Route::get('logout', [ConnectController::class, 'logout'])->name('vatsim.authentication.connect.logout');
-            Route::get('failed', [ConnectController::class, 'failed'])->name('vatsim.authentication.connect.failed');
+            //Route::get('failed', [ConnectController::class, 'failed'])->name('vatsim.authentication.connect.failed');
         });
 
         Route::get('check_terms', \App\Livewire\TermsPage::class)

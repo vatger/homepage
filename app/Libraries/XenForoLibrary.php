@@ -262,6 +262,7 @@ class XenForoLibrary extends BaseLibrary
     public static function deleteForumAccount(User $user)
     {
         $forumId = $user->settings->forum_id;
+        if ($forumId == null) return true;
         $vid = $user->id;
         $result = self::send('DELETE', 'users/' . $forumId, ['rename_to' => $vid]);
         if ($result && 200 == $result->getStatusCode()) {

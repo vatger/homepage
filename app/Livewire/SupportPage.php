@@ -5,23 +5,64 @@ namespace App\Livewire;
 use App\Libraries\OSTicketLibrary;
 use App\Libraries\VikunjaLibrary;
 use App\Livewire\Helpers\NotyTrait;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use function Symfony\Component\Translation\t;
+
 
 class SupportPage extends Component
 {
     use NotyTrait;
 
     public string $token = '';
-    public int $chosen_sup_type = 0;
     public int $chosen_area = 0;
+    public int $chosen_sup_type = 0;
+
+    public ?object $selected_area = null;
+    public ?object $selected_type = null;
+
     public string $name = '';
     public string $mail = '';
     public string $cid = '';
     public string $subject = '';
     public string $content = '';
+
+
+    public static function getData(?int $area_id = null, ?int $type_id = null): array|object
+    {
+        try {
+            $data = File::get(storage_path("app/configurations/support.json"));
+        } catch (FileNotFoundException $e) {
+            return [];
+        }
+        $json = json_decode($data);
+        $counter_area = 1;
+        $counter_type = 1;
+        foreach ($json as $area) {
+            $area->id = $counter_area++;
+            if (property_exists($area, 'trans')) {
+                $area->name = __($area->trans);
+            }
+            foreach ($area->types as $type) {
+                $type->id = $counter_type++;
+                if (property_exists($type, 'trans')) {
+                    $type->name = __($type->trans);
+                }
+                if ($type_id != null && $type->id == $type_id) {
+                    return $type;
+                }
+            }
+            if ($area_id != null && $area->id == $area_id) {
+                return $area;
+            }
+        }
+        return $json;
+    }
+
 
     public function mount(bool $success = false)
     {
@@ -34,47 +75,35 @@ class SupportPage extends Component
         }
     }
 
+    public function updating($property, $value)
+    {
+        if ($property === 'chosen_area') {
+            $this->chosen_sup_type = 0;
+        }
+    }
+
+    public function test()
+    {
+        $this->selected_area = $this->chosen_area == 0 ? null : self::getData($this->chosen_area);
+        $this->selected_type = $this->chosen_sup_type == 0 ? null : self::getData($this->chosen_area, $this->chosen_sup_type);
+    }
+
     #[Layout('layouts.master')]
     public function render()
     {
         $user = Auth::user();
 
-        return view('pages.support')->with([
-            'supporttype' => [
-                (object)['name' => 'Feature Request', 'id' => '1', 'areas' => ['1', '2']],
-                (object)['name' => 'Bug Report', 'id' => '2', 'areas' => ['1', '2']],
-                (object)['name' => __('support.text-error-kb'), 'id' => '3', 'areas' => ['2', '3', '4', '5', '6', '8']],
-                (object)['name' => __('support.text-credentials'), 'id' => '4', 'areas' => ['1', '2', '3']],
-                (object)['name' => __('support.text-others'), 'id' => '5', 'areas' => ['1', '2', '3', '4', '5', '6', '7', '8']],
-                (object)['name' => 'ATCO / IVAO Rating Transfer', 'id' => '6', 'areas' => ['4']],
-            ],
-            'areas' => [
-                (object)['id' => '1', 'name' => 'Tech'],
-                (object)['id' => '2', 'name' => 'NAV'],
-                (object)['id' => '3', 'name' => 'Event'],
-                (object)['id' => '4', 'name' => 'ATC Training Department'],
-                (object)['id' => '5', 'name' => 'Pilot Training Department'],
-                (object)['id' => '6', 'name' => __('support.text-pilot-rep')],
-                (object)['id' => '7', 'name' => __('support.text-director')],
-                (object)['id' => '8', 'name' => __('support.text-others')],
-            ],
+        $areas = self::getData();
 
+        $this->test();
+
+
+        return view('pages.support')->with([
+            'areas' => $areas,
+            'selected_area' => $this->selected_area,
+            'selected_type' => $this->selected_type,
             'user' => $user,
         ]);
-    }
-
-    private function choose_system(): string
-    {
-        $ret = 'T';
-        if ($this->chosen_area == '1') {
-            if ($this->chosen_sup_type == '1' || $this->chosen_sup_type == '2') {
-                $ret = 'V';
-            }
-        }
-        if ($this->chosen_sup_type == '3') {
-            $ret = 'V';
-        }
-        return $ret;
     }
 
     public function send()
@@ -87,7 +116,7 @@ class SupportPage extends Component
         $captchaResp = Http::asForm()
             ->post('https://hcaptcha.com/siteverify', [
                 'response' => $this->token,
-                'secret' => env('HCAPTCHA_SECRET'),
+                'secret' => config('hcaptcha.secret')
             ])
             ->object();
 
@@ -131,18 +160,26 @@ class SupportPage extends Component
             return;
         }
 
-        if ($this->choose_system() == 'T') {
+        $result = null;
+
+        if ($this->selected_type?->system == 'T') {
             $result = OSTicketLibrary::create_ticket(
                 "$this->name ($this->cid)",
                 $this->mail,
                 $this->subject,
                 "Anfrage von: $this->name ($this->cid),\n------------------------------\n \n $this->content",
-                $this->chosen_sup_type,
-                $this->chosen_area,
+                $this->selected_type->topic_id
             );
-        } else {
+        }
+        if ($this->selected_type?->system == 'V') {
             $L = VikunjaLibrary::get_instance();
-            $result = $L->create_task($this->subject, $this->content, $this->cid, $this->chosen_sup_type, $this->chosen_area);
+            $result = $L->create_task(
+                $this->subject,
+                $this->content,
+                $this->cid,
+                $this->selected_type->project_id,
+                $this->selected_type->label,
+            );
         }
 
         if ($result) {

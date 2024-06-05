@@ -5,6 +5,7 @@ namespace App\OpenApi\Controllers;
 use App\Libraries\VATSIM\VATEUDCoreLibrary;
 use App\Models\AtcBooking;
 use App\OpenApi\Helpers\ApiPathfinder;
+use App\OpenApi\Responses\VateudRosterControllerResponse;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,12 +21,13 @@ class VATEUDCoreContoller extends ApiController
      * @return array
      */
     #[OpenApi\Operation(security: TokenSecurityScheme::class)]
+    #[OpenApi\Response(VateudRosterControllerResponse::class)]
     #[ApiPathfinder('vateud.roster.controller')]
     public function roster_controller(Request $request): array
     {
-        $this->authorizeApiRequest('booking.index');
+        $this->authorizeApiRequest('vateud.roster.controller');
 
-        return VATEUDCoreLibrary::roster()?->controllers;
+        return VATEUDCoreLibrary::roster()?->roster_members;
     }
 
 
