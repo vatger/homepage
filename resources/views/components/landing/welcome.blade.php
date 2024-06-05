@@ -14,9 +14,6 @@
                         <span class="badge rounded-pill bg-soft-primary">@lang('landing.welcome.badge-text')</span>
                         <h4 class="title mt-3 mb-4">@lang('landing.welcome.title')</h4>
                         <p class="text-muted para-desc mx-auto">@lang('landing.welcome.text.0')</p>
-                        <div class="mt-4">
-                            <a href="javascript:void(0)" class="btn btn-pills btn-soft-primary">@lang('landing.read-more-button-content')</a>
-                        </div>
                     </div>
                 </div>
             </div>

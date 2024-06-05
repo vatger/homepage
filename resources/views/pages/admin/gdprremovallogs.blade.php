@@ -37,9 +37,9 @@
                             <td>{{ $log->started_at }}</td>
                             <td>{{ $log->completed_at }}</td>
                             <td>{{ $log->user_id }}</td>
-                            <td>{{ join(", ", $log->pending_services) }}</td>
-                            <td>{{ join(", ", $log->completed_services) }}</td>
-                            <td>@json(json_decode($log->service_data))</td>
+                            <td>{{ join(',',$log->pending_services) }}</td>
+                            <td>{{ join(',',$log->completed_services) }}</td>
+                            <td>{{ json_encode($log->service_data) }}</td>
 
                         </tr>
                     @endforeach
