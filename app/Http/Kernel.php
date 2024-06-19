@@ -73,7 +73,12 @@ class Kernel extends HttpKernel
             SysLogMiddleware::class,
         ],
 
-        'web_api' => ['throttle:api', SubstituteBindings::class, PreventRequestsDuringMaintenance::class],
+        'web_api' => [
+            StartSession::class,
+            'throttle:api',
+            SubstituteBindings::class,
+            PreventRequestsDuringMaintenance::class
+        ],
 
         'api' => [
             StartSession::class,
