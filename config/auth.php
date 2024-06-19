@@ -43,11 +43,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'api' => [
+        'openid_api' => [
             'driver' => 'passport',
             'provider' => 'users',
         ],
-        'openapi' => [
+        'api' => [
             'driver' => 'session', // but really custom
             'provider' => 'api_tokens',
         ],
