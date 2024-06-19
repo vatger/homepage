@@ -9,10 +9,11 @@ return [
          */
         'tokens_can' => [
             'openid' => 'Enable OpenID Connect',
-            'profile' => 'Information about your profile',
-            'email' => 'Information about your email address',
-            'phone' => 'Information about your phone numbers',
-            'address' => 'Information about your address',
+            'name' => 'The first last name',
+            //'profile' => 'Information about your profile',
+            //'email' => 'Information about your email address',
+            //'phone' => 'Information about your phone numbers',
+            //'address' => 'Information about your address',
             // 'login' => 'See your login information',
         ],
     ],
