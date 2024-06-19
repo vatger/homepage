@@ -76,6 +76,7 @@ class Kernel extends HttpKernel
         'web_api' => ['throttle:api', SubstituteBindings::class, PreventRequestsDuringMaintenance::class],
 
         'api' => [
+            StartSession::class,
             JsonResponse::class,
             SubstituteBindings::class,
             'throttle:api',
