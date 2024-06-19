@@ -8,13 +8,13 @@ return [
          * To receive an `id_token, you should at least provide the openid scope.
          */
         'tokens_can' => [
-            //'openid' => 'Enable OpenID Connect',
-            //'name' => 'The first last name',
+            'openid' => 'Enable OpenID Connect',
+            'name' => 'The first last name',
+            'email' => 'Information about your email address',
             //'profile' => 'Information about your profile',
-            //'email' => 'Information about your email address',
             //'phone' => 'Information about your phone numbers',
             //'address' => 'Information about your address',
-            // 'login' => 'See your login information',
+            //'login' => 'See your login information',
         ],
     ],
 
