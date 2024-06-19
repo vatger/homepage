@@ -3,6 +3,7 @@
 
 use App\Livewire\Administration\Tech\ApilogPage;
 use App\Livewire\Administration\Tech\JoblogPage;
+use App\Livewire\Administration\Tech\OpenIDConnectPage;
 use App\Livewire\Administration\Tech\SyslogPage;
 use App\Livewire\Administration\Tech\GdprRemovalsLogPage;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,8 @@ Route::prefix('tech')->group(function () {
     Route::get('sys-log', SyslogPage::class)->name('administration.tech.syslog');
 
     Route::get('api-log', ApilogPage::class)->name('administration.tech.apilog');
+
+    Route::get('openidconnect', OpenIDConnectPage::class)->name('administration.tech.openidconnect');
 
     //Route::prefix('backend')->group(function () {
     //    Route::get('/', [BackendController::class, 'index'])->name('administration.tech.backend');
