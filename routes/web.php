@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Administration\Content\MediaController;
 use App\Http\Controllers\Administration\Content\ShortLinkController;
+use App\Http\Controllers\OpenIdConnectController;
 use App\Livewire\SupportPage;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -79,7 +80,7 @@ require_once 'web/static_routes.php';
 ##################
 # OIDC ROUTES    #
 ##################
-Route::get('/oauth/userinfo', [\App\Http\Controllers\OpenIdConnectController::class, 'userinfo'])->middleware('auth:openid_api')->name('openid.userinfo');
+Route::get('/oauth/userinfo', [OpenIdConnectController::class, 'userinfo'])->middleware('auth:openid_api')->name('openid.userinfo');
 
 ##################
 # MEDIA ROUTES   #
