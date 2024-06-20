@@ -36,7 +36,7 @@ class OpenIdConnectController
             $userinfo['fir_code'] = $user->fir?->slug;
         }
 
-        $userinfo['openid'] = 'vatger v' . app()->version();
+        $userinfo['openid'] = 'vatger v' . config('app.version');
         return response()->json((object)$userinfo);
     }
 

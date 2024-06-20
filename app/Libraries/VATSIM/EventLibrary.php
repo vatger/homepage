@@ -3,6 +3,7 @@
 namespace App\Libraries\VATSIM;
 
 use App\Libraries\BaseLibrary;
+use App\Libraries\ImageHelperLibrary;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -22,10 +23,14 @@ class EventLibrary extends BaseLibrary
      */
     public static function getEvent(int $id): mixed
     {
-        return Cache::remember('de.vatsim-germany.events.view.' . $id, 60 * 10, function () use ($id) {
+        $event = Cache::remember('de.vatsim-germany.events.view.' . $id, 60 * 10, function () use ($id) {
             $res = Http::get('https://my.vatsim.net/api/v2/events/view/' . $id);
             return json_decode($res->body())?->data;
         });
+
+        $image_lib = new ImageHelperLibrary();
+        $event->banner = $image_lib->get("event_banners/" . $event->id, $event->banner);
+        return $event;
     }
 
     /**
@@ -113,23 +118,15 @@ class EventLibrary extends BaseLibrary
         // Init array
         $eventArray = [];
 
-        $client = self::constructClient([
-            'headers' => [
-                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0', // Spoof the User-Agent Header
-                'Referer' => config('app.url'),
-                'Host' => parse_url(config('app.url'), PHP_URL_HOST),
-            ]
-        ]);
 
-        self::$_imageManager = new ImageManager(new Driver());
+        $image_lib = new ImageHelperLibrary();
 
         // Loop through response array (i.e. through events)
         foreach ($events as $event) {
             foreach ($event->airports as $event_airport) {
                 $icao = substr($event_airport->icao, 0, 2);
                 if (strtolower($icao) == 'ed' || strtolower($icao) == 'et') {
-                    $event->banner = self::_downloadImage($client, $event);
-
+                    $event->banner = $image_lib->get("event_banners/" . $event->id, $event->banner);
                     $eventArray[] = $event;
                     break;
                 }
@@ -144,30 +141,4 @@ class EventLibrary extends BaseLibrary
         return json_encode($eventArray);
     }
 
-    private static function _downloadImage(\GuzzleHttp\Client $client, $event): string
-    {
-        $filepath = "public/banners/" . $event->id . ".webp";
-
-        if (!Storage::exists($filepath)) {
-            $response = $client->get($event->banner);
-            if ($response->getStatusCode() != 200) {
-                return $event->banner;
-            }
-
-            try {
-                $data = $response->getBody()->getContents();
-
-                $image = self::$_imageManager->read($data);
-
-                $image->scale(width: 1920);
-
-                Storage::put($filepath, $image->toWebp()->toString());
-            } catch (\Exception $e) {
-                Log::warning($e->getMessage());
-                return $event->banner;
-            }
-        }
-
-        return Storage::url($filepath);
-    }
 }
