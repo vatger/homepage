@@ -10,7 +10,7 @@ class OpenIdConnectController
     public function userinfo()
     {
         $token = Passport::token();
-        $user = User::findOrFail($token->user()->id);
+        $user = User::findOrFail($token->user()->first()->id);
         $userinfo = [];
 
         $userinfo['id'] = $user->id;
