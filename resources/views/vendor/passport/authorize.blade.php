@@ -6,7 +6,7 @@
 <body>
 
 <section class="bg-home d-flex align-items-center position-relative">
-    <div class="container mt-5 mb-5">
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card card-default">
@@ -50,7 +50,7 @@
                             <input type="hidden" name="state" value="{{ $request->state }}">
                             <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
                             <input type="hidden" name="auth_token" value="{{ $authToken }}">
-                            <button class="btn btn-danger w-100 mt-5">Cancel</button>
+                            <button class="btn btn-danger w-100 mt-2">Cancel</button>
                         </form>
                     </div>
 
