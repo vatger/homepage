@@ -5,32 +5,33 @@
 </head>
 <body>
 
+<section class="bg-home d-flex align-items-center position-relative">
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card card-default">
+                    <div class="card-header">
+                        <img src="https://cdn.vatsim-germany.org/img/favicon.ico" class="avatar avatar-small mb-4 d-block mx-auto" alt="">
+                        Authorization Request
+                    </div>
+                    <div class="card-body">
+                        <!-- Introduction -->
+                        <p><strong>{{ $client->name }}</strong> is requesting permission to access your account.</p>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card card-default">
-                <div class="card-header">
-                    Authorization Request
-                </div>
-                <div class="card-body">
-                    <!-- Introduction -->
-                    <p><strong>{{ $client->name }}</strong> is requesting permission to access your account.</p>
+                        <!-- Scope List -->
+                        @if (count($scopes) > 0)
+                            <div class="scopes">
+                                <p><strong>This application will be able to (read):</strong></p>
 
-                    <!-- Scope List -->
-                    @if (count($scopes) > 0)
-                        <div class="scopes">
-                            <p><strong>This application will be able to:</strong></p>
+                                <ul>
+                                    @foreach ($scopes as $scope)
+                                        <li>{{ $scope->description }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
-                            <ul>
-                                @foreach ($scopes as $scope)
-                                    <li>{{ $scope->description }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
 
-                    <div class="buttons">
                         <!-- Authorize Button -->
                         <form method="post" action="{{ route('passport.authorizations.approve') }}">
                             @csrf
@@ -38,7 +39,7 @@
                             <input type="hidden" name="state" value="{{ $request->state }}">
                             <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
                             <input type="hidden" name="auth_token" value="{{ $authToken }}">
-                            <button type="submit" class="btn btn-success btn-approve">Authorize</button>
+                            <button type="submit" class="btn btn-success w-100">Authorize</button>
                         </form>
 
                         <!-- Cancel Button -->
@@ -49,15 +50,15 @@
                             <input type="hidden" name="state" value="{{ $request->state }}">
                             <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
                             <input type="hidden" name="auth_token" value="{{ $authToken }}">
-                            <button class="btn btn-danger">Cancel</button>
+                            <button class="btn btn-success w-100">Cancel</button>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
-</div>
-
+</section>
 
 @include('layouts.footer')
 </body>
