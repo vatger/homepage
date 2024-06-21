@@ -17,6 +17,7 @@ class OpenIdConnectController
         if ($user->tokenCan('name')) {
             $userinfo['firstname'] = $user->firstname;
             $userinfo['lastname'] = $user->lastname;
+            $userinfo['fullname'] = $user->firstname . ' ' . $user->lastname;
         }
         if ($user->tokenCan('email')) {
             $userinfo['email'] = $user->email;
