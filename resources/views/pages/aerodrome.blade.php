@@ -7,7 +7,7 @@
             route('pilots.aerodromes.viewall') => __('pilot.aerodromes.title'),
             $aerodrome->icao,
             ],
-        'backgroundurl' => $aerodrome->background_image_url ?? asset('images/profile/profile_1.png')
+        'backgroundurl' => $aerodrome->background_image_url ?? iasset('images/profile/profile_1.png')
     ])
         <ul class="list-unstyled mt-4 mb-0">
             <li class="list-inline-item h4 user me-2 text-light" wire:ignore>
@@ -176,7 +176,7 @@
                 <div class="modal-content rounded shadow border-0">
                     <div class="modal-body text-center">
                         <div class="icon d-flex align-items-center justify-content-center bg-soft-danger rounded-circle mx-auto" style="height: 80px; width:80px;">
-                             <i data-feather="alert-triangle" class=""></i>
+                            <i data-feather="alert-triangle" class=""></i>
                         </div>
                         <div class="mt-4">
                             <h4>Weiterleitung</h4>

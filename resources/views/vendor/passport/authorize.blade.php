@@ -59,7 +59,8 @@
         </div>
     </div>
     <div
-        style="top: 0;left: 0;position: fixed;right: 0;bottom: 0;background-image: url( '{{asset('images/oauth/oauth1.png')}}');z-index: -1;filter: blur(4px); background-size: cover;background-position: center"></div>
+        style="top: 0;left: 0;position: fixed;right: 0;bottom: 0;background-image: url( '{{ iasset('images/oauth/oauth1.png')}}');z-index: -1;filter: blur(4px); background-size: cover;
+        background-position: center"></div>
 </section>
 
 @include('layouts.footer')

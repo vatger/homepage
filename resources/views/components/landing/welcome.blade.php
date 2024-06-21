@@ -3,7 +3,7 @@
         <div class="row align-items-center pb-5 @if (\App\Models\Partner::all()->count() > 0) border-bottom @endif">
             <div class="col-lg-5 col-md-6 col-12">
                 <div class="position-relative">
-                    <img class="rounded img-fluid mx-auto d-block bg-light" src="{{ asset('images/pilots/aerodromes_2.png') }}" alt="">
+                    <img class="rounded img-fluid mx-auto d-block bg-light" src="{{ iasset('images/pilots/aerodromes_2.png') }}" alt="">
                 </div>
             </div>
             <!--end col-->

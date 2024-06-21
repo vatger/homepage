@@ -3,7 +3,7 @@
 namespace App\Libraries;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
@@ -38,6 +38,53 @@ class ImageHelperLibrary extends BaseLibrary
             $data = $response->getBody()->getContents();
             $image = $this->manager->read($data);
             $image->scale(width: 1920);
+            Storage::put($filepath, $image->toWebp()->toString());
+            return Storage::url($filepath);
+        } catch (\Throwable $e) {
+            return $url;
+        }
+    }
+
+    public static function static_get(string $url, ?int $width = null): string
+    {
+        $filename = str_replace(' ', '-', $url);
+        $filename = preg_replace('/[^A-Za-z0-9\-]/', '', $filename);
+
+        $filepath = "public/image_cache/get/" . $filename . ".webp";
+        if (Storage::exists($filepath)) {
+            return Storage::url($filepath);
+        }
+        $lib = new self();
+
+        try {
+            $response = $lib->client->get($url);
+            throw_if($response->getStatusCode() != 200, new \Exception());
+            $data = $response->getBody()->getContents();
+            $image = $lib->manager->read($data);
+            if ($width != null)
+                $image->scale(width: $width);
+            Storage::put($filepath, $image->toWebp()->toString());
+            return Storage::url($filepath);
+        } catch (\Throwable $e) {
+            return $url;
+        }
+    }
+
+    public static function asset(string $url, ?int $width = null): string
+    {
+        $filename = str_replace(' ', '-', $url);
+        $filename = preg_replace('/[^A-Za-z0-9\-\/.]/', '', $filename);
+
+        $filepath = "public/image_cache/asset/" . $filename . ".webp";
+        if (Storage::exists($filepath)) {
+            return Storage::url($filepath);
+        }
+        $lib = new self();
+
+        try {
+            $image = $lib->manager->read(File::get(public_path($url)));
+            if ($width != null)
+                $image->scale(width: $width);
             Storage::put($filepath, $image->toWebp()->toString());
             return Storage::url($filepath);
         } catch (\Throwable $e) {
