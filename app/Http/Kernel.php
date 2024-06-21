@@ -60,9 +60,9 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
+            StartSession::class,
             EncryptCookies::class,
             AddQueuedCookiesToResponse::class,
-            StartSession::class,
             AuthenticateSession::class,
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
@@ -73,7 +73,11 @@ class Kernel extends HttpKernel
             SysLogMiddleware::class,
         ],
 
-        'web_api' => ['throttle:api', SubstituteBindings::class, PreventRequestsDuringMaintenance::class],
+        'web_api' => [
+            'throttle:api',
+            SubstituteBindings::class,
+            PreventRequestsDuringMaintenance::class
+        ],
 
         'api' => [
             JsonResponse::class,

@@ -7,9 +7,8 @@ import * as path from 'path';
 
 export default defineConfig({
     server: {
-        hmr: {
-            host: 'vatger.test',
-        },
+		host: "127.0.0.1",
+		port: 3000,
     },
 
     plugins: [

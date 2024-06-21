@@ -18,7 +18,7 @@ class SysLogMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!env('ACCESS_LOG_ENABLED')) {
+        if (!config('system.accesslog.enabled')) {
             return $next($request);
         }
 

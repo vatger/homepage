@@ -6,6 +6,7 @@ use App\Models\Groups\Team;
 use App\Models\Membership\User\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Passport::tokensCan(config('openid.passport.tokens_can'));
+
         $this->registerPolicies();
 
         Gate::define('membership.teams.edit.members.subteam-check', function (User $user, Team $team) {

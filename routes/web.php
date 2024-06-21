@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Administration\Content\MediaController;
 use App\Http\Controllers\Administration\Content\ShortLinkController;
+use App\Http\Controllers\OpenIdConnectController;
 use App\Livewire\SupportPage;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -59,7 +60,7 @@ require_once 'web/booking_images.php';
 ###################
 # GETTING STARTED #
 ###################
-//require_once 'web/getting-started.php';
+require_once 'web/getting-started.php';
 
 ###################
 # LEGAL STUFF     #
@@ -76,6 +77,14 @@ require_once 'web/admin.php';
 ##################
 require_once 'web/static_routes.php';
 
+##################
+# OIDC ROUTES    #
+##################
+Route::get('/oauth/userinfo', [OpenIdConnectController::class, 'userinfo'])->middleware('auth:openid_api')->name('openid.userinfo');
+
+##################
+# MEDIA ROUTES   #
+##################
 Route::get('resources/media/{mediaFilePath}', [MediaController::class, 'showPublic']);
 
 ###################

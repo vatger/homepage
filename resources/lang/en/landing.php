@@ -15,9 +15,6 @@ return [
             </p>
             <p>
                 Enjoy your stay in German airspace!
-            </p>
-            <p>
-                Your Staff of VATSIM Germany
             </p>',
         ],
         'badge-text' => 'The vACC for Germany on the VATSIM network.',

@@ -7,6 +7,7 @@ use App\Libraries\VATSIM\DataFeedLibrary;
 use App\Libraries\VATSIM\EventLibrary;
 use App\Models\Navigation\Aerodrome;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class QueryVatsimAPIController extends Controller
 {
@@ -28,7 +29,7 @@ class QueryVatsimAPIController extends Controller
      */
     public function loadEvents(Request $request, int $count = 9): string
     {
-        return EventLibrary::getEvents($count);
+        return EventLibrary::getEvents($count, true);
     }
 
     /**

@@ -2,23 +2,35 @@
 
 namespace App\Libraries\VATSIM;
 
+use App\Libraries\BaseLibrary;
+use App\Libraries\ImageHelperLibrary;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 use Stevebauman\Purify\Facades\Purify;
 
-class EventLibrary
+class EventLibrary extends BaseLibrary
 {
+    private static ImageManager $_imageManager;
+
     /**
      * Get a single event from the VATSIM API
      * https://my.vatsim.net/api/v2/events/view/<event_id>
      */
     public static function getEvent(int $id): mixed
     {
-        return Cache::remember('de.vatsim-germany.events.view.' . $id, 60 * 10, function () use ($id) {
+        $event = Cache::remember('de.vatsim-germany.events.view.' . $id, 60 * 10, function () use ($id) {
             $res = Http::get('https://my.vatsim.net/api/v2/events/view/' . $id);
             return json_decode($res->body())?->data;
         });
+
+        $image_lib = new ImageHelperLibrary();
+        $event->banner = $image_lib->get("event_banners/" . $event->id, $event->banner);
+        return $event;
     }
 
     /**
@@ -57,7 +69,7 @@ class EventLibrary
             return [];
         }
 
-        return Cache::remember('de.vatsim-germany.events.aerodrome.' . $icao, 60 * 10, function () use ($icao, $count) {
+        return Cache::remember('de.vatsim-germany.events.aerodrome.' . $icao, \DateInterval::createFromDateString("3 hours"), function () use ($icao, $count) {
             $events = self::loadEvents();
             $eventArray = [];
 
@@ -89,7 +101,7 @@ class EventLibrary
      */
     private static function loadEvents(): array
     {
-        return Cache::remember('de.vatsim-germany.events.all', 600, function () {
+        return Cache::remember('de.vatsim-germany.events.all', 60 * 10, function () {
             $response = Http::get('https://my.vatsim.net/api/v1/events/all');
             return json_decode($response)->data;
         });
@@ -106,12 +118,15 @@ class EventLibrary
         // Init array
         $eventArray = [];
 
+
+        $image_lib = new ImageHelperLibrary();
+
         // Loop through response array (i.e. through events)
         foreach ($events as $event) {
             foreach ($event->airports as $event_airport) {
                 $icao = substr($event_airport->icao, 0, 2);
-
                 if (strtolower($icao) == 'ed' || strtolower($icao) == 'et') {
+                    $event->banner = $image_lib->get("event_banners/" . $event->id, $event->banner);
                     $eventArray[] = $event;
                     break;
                 }
@@ -125,4 +140,5 @@ class EventLibrary
         // Return json encoded data (i.e. the <= 6 found events)
         return json_encode($eventArray);
     }
+
 }

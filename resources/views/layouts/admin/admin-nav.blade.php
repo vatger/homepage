@@ -90,6 +90,12 @@
                     GDPR Log
                 </a>
             </li>
+            <li>
+                <a href="{{ route('administration.tech.openidconnect') }}">
+                    <i data-feather="feather" class="fea me-2"></i>
+                    Open ID Connect
+                </a>
+            </li>
         </ul>
         <!-- sidebar-menu  -->
     </div>

@@ -3,7 +3,7 @@
 @section('content')
     <!-- Hero Start -->
     <section class="bg-half-260 bg-primary d-table w-100" id="hero-section"
-             style="background: url('{{ asset('images/hero-banners/hero_' . rand(1, 9) . '.png') }}') center center; background-size: cover">
+             style="background: url('{{ iasset('images/hero-banners/hero_' . rand(1, 9) . '.png') }}') center center; background-size: cover">
         <div class="bg-overlay" style="background-color: rgb(30 41 58 / 70%)"></div>
         <div class="container">
             <div class="row align-items-center position-relative" style="z-index: 1;">

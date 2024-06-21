@@ -10,8 +10,8 @@
             ></x-layouts.admin.content>
 
             <x-layouts.admin.card-image-bar
-                :bg_img="asset('images/profile/profile_1.png')"
-                :m_img="asset('/images/profile/avatar_placeholder.png')"
+                :bg_img="iasset('images/profile/profile_1.png')"
+                :m_img="iasset('/images/profile/avatar_placeholder.png')"
                 :title="$user->username"
                 :subtitle="$user->id"
             ></x-layouts.admin.card-image-bar>

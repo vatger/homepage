@@ -3,7 +3,7 @@
 namespace App\Libraries;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
+
 
 class BaseLibrary
 {
