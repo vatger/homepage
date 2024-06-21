@@ -5,8 +5,8 @@
 </head>
 <body>
 
-<section class="bg-home d-flex align-items-center position-relative" style="background: url('{{asset('images/oauth/oauth1.png')}}') center; filter: blur(4px);background-size: cover;">
-    
+<section class="bg-home d-flex align-items-center position-relative">
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -58,6 +58,8 @@
             </div>
         </div>
     </div>
+    <div
+        style="top: 0;left: 0;position: fixed;right: 0;bottom: 0;background-image: url( '{{asset('images/oauth/oauth1.png')}}');z-index: -1;filter: blur(4px); background-size: cover;background-position: center"></div>
 </section>
 
 @include('layouts.footer')
