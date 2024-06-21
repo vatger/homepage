@@ -9,7 +9,7 @@
             'Controllers',
             route('controllers.booking') => __('booking.atc.title')
             ],
-            'backgroundurl' => asset('images/bookings/booking_' . rand(1, 1) . '.png')
+            'backgroundurl' => iasset('images/bookings/booking_' . rand(1, 1) . '.png')
         ])
         @endcomponent
 

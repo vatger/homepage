@@ -2,8 +2,8 @@
     <div class="layout-specing">
 
         <x-layouts.admin.content
-                :header="$aerodrome->icao"
-                :links="[
+            :header="$aerodrome->icao"
+            :links="[
                     route(
                     'administration.dashboard') => 'Administration',
                     route('administration.navigation') => 'Navigation',
@@ -12,17 +12,17 @@
         ></x-layouts.admin.content>
 
         <x-layouts.admin.card-image-bar
-                :bg_img="$aerodrome->background_image_url ?? asset('images/profile/profile_1.png')"
-                :m_img="asset('/images/profile/avatar_placeholder.png')"
-                :title="$aerodrome->name"
-                :subtitle="$aerodrome->icao . ' ' . $aerodrome->iata "
+            :bg_img="$aerodrome->background_image_url ?? iasset('images/profile/profile_1.png')"
+            :m_img="iasset('/images/profile/avatar_placeholder.png')"
+            :title="$aerodrome->name"
+            :subtitle="$aerodrome->icao . ' ' . $aerodrome->iata "
         ></x-layouts.admin.card-image-bar>
 
         <div class="row">
             <x-layouts.admin.sidebar-col
-                    title="Übersicht"
-                    position="left"
-                    :items="[
+                title="Übersicht"
+                position="left"
+                :items="[
                         ['Name', $aerodrome->name],
                         ['ICAO', $aerodrome->icao, 'database'],
                         ['IATA', $aerodrome->iata, 'database'],
@@ -57,16 +57,16 @@
             <!--end col-->
 
             <x-layouts.admin.sidebar-col
-                    position="right"
+                position="right"
             >
                 <x-layouts.admin.card>
                     <x-layouts.admin.card-header
-                            position="left"
-                            title="Zugewiesene Stationen"
-                            :subtitle="$aerodrome->stations()->count()"
+                        position="left"
+                        title="Zugewiesene Stationen"
+                        :subtitle="$aerodrome->stations()->count()"
                     ></x-layouts.admin.card-header>
                     <x-layouts.admin.card-header
-                            position="right"
+                        position="right"
                     >
                         <li class="list-inline-item" style="width: 100%">
                             <div class="row">
@@ -101,12 +101,12 @@
 
                 <x-layouts.admin.card>
                     <x-layouts.admin.card-header
-                            position="left"
-                            title="Links"
-                            :subtitle="$aerodrome->links()->count()"
+                        position="left"
+                        title="Links"
+                        :subtitle="$aerodrome->links()->count()"
                     ></x-layouts.admin.card-header>
                     <x-layouts.admin.card-header
-                            position="right"
+                        position="right"
                     >
                         Add
                     </x-layouts.admin.card-header>

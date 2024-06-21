@@ -1,6 +1,6 @@
 <div>
     <section class="bg-half-170 bg-primary d-table w-100" id="hero-section"
-             style="background: url('{{ asset('images/profile/profile_1.png') }}') center center; background-size: cover">
+             style="background: url('{{ iasset('images/profile/profile_1.png') }}') center center; background-size: cover">
         <div class="bg-overlay" style="background-color: rgb(30 41 58 / 70%);"></div>
         <div class="container">
             <div class="row">
@@ -137,7 +137,7 @@
                                         <div class="small text-muted mt-4">@lang('profile.profile.error.contact-support-text')</div>
                                     </div>
                                 @else
-                                <livewire:profile.accounts-tab />
+                                    <livewire:profile.accounts-tab />
                                 @endif
                                 @break
                             @case('surveykeys')
