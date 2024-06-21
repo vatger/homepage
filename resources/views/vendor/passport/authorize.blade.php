@@ -5,13 +5,13 @@
 </head>
 <body>
 
-<section class="bg-home d-flex align-items-center position-relative">
+<section class="bg-home d-flex align-items-center position-relative" style="background: url('{{asset('images/oauth/oauth1.png')}}') center;">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card card-default">
                     <div class="card-header">
-                        <img src="https://cdn.vatsim-germany.org/img/favicon.ico" class="avatar avatar-small mb-4 d-block mx-auto" alt="">
+                        <img src="{{ asset('images/vacc_logo.png') }}" class="avatar avatar-small mb-4 d-block mx-auto" alt="">
                         <h5 class="mb-3 text-center">Authorization Request</h5>
                     </div>
                     <div class="card-body">
