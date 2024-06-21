@@ -12,7 +12,7 @@
                 <div class="card card-default">
                     <div class="card-header">
                         <img src="https://cdn.vatsim-germany.org/img/favicon.ico" class="avatar avatar-small mb-4 d-block mx-auto" alt="">
-                        Authorization Request
+                        <h5 class="mb-3 text-center">Authorization Request</h5>
                     </div>
                     <div class="card-body">
                         <!-- Introduction -->
@@ -39,7 +39,7 @@
                             <input type="hidden" name="state" value="{{ $request->state }}">
                             <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
                             <input type="hidden" name="auth_token" value="{{ $authToken }}">
-                            <button type="submit" class="btn btn-success w-100">Authorize</button>
+                            <button type="submit" class="btn btn-success w-100 mt-5">Authorize</button>
                         </form>
 
                         <!-- Cancel Button -->
@@ -50,7 +50,7 @@
                             <input type="hidden" name="state" value="{{ $request->state }}">
                             <input type="hidden" name="client_id" value="{{ $client->getKey() }}">
                             <input type="hidden" name="auth_token" value="{{ $authToken }}">
-                            <button class="btn btn-success w-100">Cancel</button>
+                            <button class="btn btn-danger w-100 mt-5">Cancel</button>
                         </form>
                     </div>
 
