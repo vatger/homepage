@@ -5,14 +5,14 @@
 </head>
 <body>
 
-<section class="bg-home d-flex align-items-center position-relative" style="background: url('{{asset('images/oauth/oauth1.png')}}') center;">
+<section class="bg-home d-flex align-items-center position-relative" style="background: url('{{asset('images/oauth/oauth1.png')}}') center; filter: blur(4px);background-size: cover;">
+    
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card card-default">
-                    <div class="card-header">
-                        <img src="{{ asset('images/vacc_logo.png') }}" class="avatar avatar-small mb-4 d-block mx-auto" alt="">
-                        <h5 class="mb-3 text-center">Authorization Request</h5>
+                    <div>
+                        <img src="{{ asset('images/vacc_logo.png') }}" alt="" style="width: 70%;" class="mt-4 mb-4 d-block mx-auto">
                     </div>
                     <div class="card-body">
                         <!-- Introduction -->
