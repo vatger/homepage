@@ -8,11 +8,11 @@ return [
          * To receive an `id_token, you should at least provide the openid scope.
          */
         'tokens_can' => [
-            'openid' => 'Enable Vatsim Germany Connect',
-            'name' => 'Your first and last name',
-            'email' => 'Information about your email address',
-            'rating' => 'Information about your ratings',
-            'assignment' => 'Information about your region, division, subdivision and fir',
+            'openid' => 'Authenticate against Vatsim Germany Connect',
+            'name' => 'First and last name',
+            'email' => 'Email address',
+            'rating' => 'ATC, Pilot and Military ratings',
+            'assignment' => 'Region, division, subdivision and fir',
             //'address' => 'Information about your address',
             //'login' => 'See your login information',
         ],
