@@ -7,6 +7,7 @@ use App\Models\Navigation\Station;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class NavLibrary extends BaseLibrary
@@ -19,7 +20,7 @@ class NavLibrary extends BaseLibrary
             try {
                 $res = $client->get($url);
                 return json_decode($res->getBody(), false, 512, JSON_THROW_ON_ERROR);
-            } catch (GuzzleException | \JsonException $e) {
+            } catch (GuzzleException|\JsonException $e) {
                 Log::debug($e->getMessage());
                 return null;
             }
@@ -74,6 +75,34 @@ class NavLibrary extends BaseLibrary
                 }
             } catch (\Exception $e) {
             }
+        }
+    }
+
+    public static function sync_stands(): void
+    {
+        $client = self::constructClient();
+
+        $repo = 'VATGER-Nav/airport-data';
+        $branch = 'production';
+        $path = 'api';
+
+        // GitHub API URL to get the content of the folder
+        $url = "https://api.github.com/repos/$repo/contents/$path?ref=$branch";
+
+        try {
+            $response = $client->get($url);
+            $files = json_decode($response->getBody()->getContents(), true);
+
+            foreach ($files as $file) {
+                if ($file['type'] === 'file') {
+                    $fileContent = $client->get($file['download_url'])->getBody()->getContents();
+                    $filename = Str::lower($file['name']);
+                    $filePath = "navigation/stands/$filename";
+                    Storage::put($filePath, $fileContent);
+                }
+            }
+
+        } catch (GuzzleException|\Exception $e) {
         }
     }
 }

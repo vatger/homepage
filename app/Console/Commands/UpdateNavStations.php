@@ -25,10 +25,11 @@ class UpdateNavStations extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $this->info('Starting update-nav-stations.');
         NavLibrary::sync_stations();
+        NavLibrary::sync_stands();
         $this->info('Finished update-nav-stations.');
     }
 }
