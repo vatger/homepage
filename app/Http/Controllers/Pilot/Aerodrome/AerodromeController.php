@@ -142,7 +142,7 @@ class AerodromeController extends Controller
                 return [];
             }
 
-            return StandStatusLibrary::status($aerodrome);
+            return StandStatusLibrary::standstatus($aerodrome);
         }
         abort(403);
     }

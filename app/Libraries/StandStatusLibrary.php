@@ -15,7 +15,7 @@ class StandStatusLibrary
     private static int $maxAircraftGroundspeed = 10; // In knots
     private static array $standExtensions = ['R', 'L', 'A', 'B', 'C'];
 
-    public static function status(Aerodrome $aerodrome): array
+    public static function status(Aerodrome $aerodrome): ?StandStatus
     {
         try {
             $standFilePath = storage_path('app/navigation/stands/') . strtolower($aerodrome->icao) . '.csv';
@@ -28,22 +28,48 @@ class StandStatusLibrary
                 $stands->setMaxAircraftAltitude($aerodrome->elevation + self::$maxAircraftHeight);
                 $stands->setMaxAircraftGroundspeed(self::$maxAircraftGroundspeed);
                 $stands->setStandExtensions(self::$standExtensions);
-                
-                $stands->loadStandDataFromCSV($standFilePath)->parseData();
 
-                return collect($stands->stands())
-                    ->map(function ($stand) {
-                        return [
-                            'id' => $stand->getName(),
-                            'latitude' => floatval($stand->latitude),
-                            'longitude' => floatval($stand->longitude),
-                            'occupier' => $stand->occupier?->callsign,
-                        ];
-                    })
-                    ->toArray();
+                $stands->loadStandDataFromCSV($standFilePath)->parseData();
+                return $stands;
             }
         } catch (\Exception $e) {
         }
-        return [];
+        return null;
+    }
+
+    public static function standstatus(Aerodrome $aerodrome): array
+    {
+        $status = self::status($aerodrome);
+        if (!$status) return [];
+
+        return collect($status->stands())
+            ->map(function ($stand) {
+                return [
+                    'id' => $stand->getName(),
+                    'latitude' => floatval($stand->latitude),
+                    'longitude' => floatval($stand->longitude),
+                    'occupier' => $stand->occupier?->callsign,
+                ];
+            })
+            ->toArray();
+    }
+
+
+    public static function aircraftstatus(Aerodrome $aerodrome): array
+    {
+        $status = self::status($aerodrome);
+        if (!$status) return [];
+        
+        return collect($status->allAircraft())
+            ->filter(fn($aircraft) => !$aircraft->onStand())
+            ->map(function ($aircraft) {
+                return [
+                    'callsign' => $aircraft->callsign,
+                    'type' => $aircraft->flight_plan->aircraft_short,
+                    'latitude' => floatval($aircraft->latitude),
+                    'longitude' => floatval($aircraft->longitude),
+                ];
+            })
+            ->toArray();
     }
 }

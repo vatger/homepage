@@ -4,17 +4,18 @@ import { isEmpty } from 'lodash';
 import { findLivewireComponent } from '@/ts/livewire';
 import dayjs from 'dayjs';
 
-$(map);
+$(load_map);
 $(metar);
 $(atis);
 $(indicator);
 $(event);
 
-async function map() {
+async function load_map() {
     let lwc = findLivewireComponent('aerodrome-page');
     const aerodrome_data: Object = await lwc.$wire.load_aerodrome();
     const standstatus_data: Array<0> = await lwc.$wire.load_stands();
-
+    const aircraftstatus_data: Array<0> = await lwc.$wire.load_aircraft();
+    
     let styleUrl = 'mapbox://styles/nikki2048/ckyg6998m2ec515o86wkmkjnn';
     mapboxgl.accessToken = 'pk.eyJ1Ijoibmlra2kyMDQ4IiwiYSI6ImNrOXpibmR5bTA1MTIzZnJ0aXh1cG4yNjYifQ.b-1gEcULFsxkvP2s9BCXQg';
 
@@ -31,10 +32,13 @@ async function map() {
     map.on('zoom', () => {
         let marker_occupied = $('.marker-occupied');
         let marker_free = $('.marker-free');
+        let marker_ac = $('.marker-ac');
         marker_occupied.css('width', 12 * ((map.getZoom() - 3) / 10));
         marker_occupied.css('height', 12 * ((map.getZoom() - 3) / 10));
         marker_free.css('width', 12 * ((map.getZoom() - 3) / 10));
         marker_free.css('height', 12 * ((map.getZoom() - 3) / 10));
+        marker_ac.css('width', 12 * ((map.getZoom() - 3) / 20));
+        marker_ac.css('height', 12 * ((map.getZoom() - 3) / 20));
     });
 
     $.each(standstatus_data, (key, stand) => {
@@ -46,7 +50,7 @@ async function map() {
         if (!isEmpty(stand['occupier'])) {
             callsign = `<p class="pb-0 mb-0">${stand['occupier']}</p>`;
         }
-        new mapboxgl.Marker(el)
+        const marker = new mapboxgl.Marker(el)
             .setLngLat([stand['longitude'], stand['latitude']])
             .setPopup(
                 new mapboxgl.Popup({
@@ -55,6 +59,23 @@ async function map() {
                     .setHTML(`<p class="pb-0 mb-0" style="font-size: 15px"><strong>${stand['id']}</strong></p>` + callsign)
             )
             .addTo(map);
+        marker.addTo(map);
+    });
+
+    $.each(aircraftstatus_data, (key, aircraft) => {
+        const el = document.createElement('div');
+        el.className = 'marker-ac';
+        let callsign = `<p class="pb-0 mb-0">${aircraft['type']}</p>`;
+        const marker = new mapboxgl.Marker(el)
+            .setLngLat([aircraft['longitude'], aircraft['latitude']])
+            .setPopup(
+                new mapboxgl.Popup({
+                    offset: 8,
+                }) // add popups
+                    .setHTML(`<p class="pb-0 mb-0" style="font-size: 15px"><strong>${aircraft['callsign']}</strong></p>` + callsign)
+            )
+            .addTo(map);
+        marker.addTo(map);
     });
 }
 

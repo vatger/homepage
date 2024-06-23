@@ -30,7 +30,12 @@ class AerodromePage extends Component
 
     public function load_stands(): array
     {
-        return StandStatusLibrary::status($this->aerodrome);
+        return StandStatusLibrary::standstatus($this->aerodrome);
+    }
+
+    public function load_aircraft(): array
+    {
+        return StandStatusLibrary::aircraftstatus($this->aerodrome);
     }
 
     public function load_aerodrome(): array
