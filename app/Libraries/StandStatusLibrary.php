@@ -18,8 +18,7 @@ class StandStatusLibrary
     public static function status(Aerodrome $aerodrome): array
     {
         try {
-            $standFilePath = storage_path('app') . '/navigation/stands/' . strtolower($aerodrome->icao) . '.csv';
-
+            $standFilePath = storage_path('app/navigation/stands/') . strtolower($aerodrome->icao) . '.csv';
             if (File::exists($standFilePath)) {
                 $stands = new StandStatus($aerodrome->latitude, $aerodrome->longitude);
 
@@ -29,7 +28,7 @@ class StandStatusLibrary
                 $stands->setMaxAircraftAltitude($aerodrome->elevation + self::$maxAircraftHeight);
                 $stands->setMaxAircraftGroundspeed(self::$maxAircraftGroundspeed);
                 $stands->setStandExtensions(self::$standExtensions);
-
+                
                 $stands->loadStandDataFromCSV($standFilePath)->parseData();
 
                 return collect($stands->stands())

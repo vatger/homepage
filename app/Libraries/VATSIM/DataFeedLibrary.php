@@ -19,10 +19,8 @@ class DataFeedLibrary
     protected static string $_baseStatusUrl = 'https://status.vatsim.net/status.json';
 
 
-    /**
-     * The base URL to use to fetch the current VATSIM.net status file from
-     */
-    protected static string $_cacheUrl = 'http://docker.vatsim-germany.org:8007/datafeed';
+    protected static string $_cachedDfUrl = 'http://docker.vatsim-germany.org:8007/datafeed';
+    protected static string $_uncachedDfUrl = 'https://data.vatsim.net/v3/vatsim-data.json';
 
     /**
      * PREG patterns for german atc stations
@@ -45,6 +43,7 @@ class DataFeedLibrary
             curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
             $data = curl_exec($ch);
             curl_close($ch);
+
             return $data;
         });
     }
@@ -55,20 +54,27 @@ class DataFeedLibrary
      *
      * The feed will be cached for 59 seconds to allow / force updates via supervisor / artisan commands later
      *
-     * @return string The json representation of the datafeed
+     * @return ?object The json representation of the datafeed
      */
-    private static function UpdateDataFeed(): string
+    private static function UpdateDataFeed(): ?object
     {
-        return Cache::remember('net.vatsim.datafeed', 59, function () {
+
+        $use_df_cache = env('VATSIM_DATAFEED_USE_CACHE', true);
+        $cacheUrl = $use_df_cache ? self::$_cachedDfUrl : self::$_uncachedDfUrl;
+
+        return Cache::remember('datafeed.datafeed', 59, function () use ($use_df_cache, $cacheUrl) {
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, self::$_cacheUrl);
+            curl_setopt($ch, CURLOPT_URL, $cacheUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HEADER, false);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
             $data = curl_exec($ch);
             curl_close($ch);
-            return $data;
+            if ($use_df_cache)
+                return json_decode($data)?->data;
+            else
+                return json_decode($data);
         });
     }
 
@@ -110,7 +116,7 @@ class DataFeedLibrary
     {
         $df = self::UpdateDataFeed();
         if ($df) {
-            return json_decode($df)->data->pilots;
+            return $df->pilots;
         } else {
             return [];
         }
@@ -133,7 +139,7 @@ class DataFeedLibrary
     {
         $df = self::UpdateDataFeed();
         if ($df) {
-            return json_decode($df)->data->controllers;
+            return $df->controllers;
         } else {
             return [];
         }
@@ -179,7 +185,7 @@ class DataFeedLibrary
     {
         $df = self::UpdateDataFeed();
         if ($df) {
-            return json_decode($df)->data->atis;
+            return $df->atis;
         } else {
             return [];
         }

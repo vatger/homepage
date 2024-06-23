@@ -73,6 +73,8 @@ class EventLibrary extends BaseLibrary
             $events = self::loadEvents();
             $eventArray = [];
 
+            $image_lib = new ImageHelperLibrary();
+
             $index = 0;
             foreach ($events as $e) {
                 if ($index >= $count) {
@@ -83,6 +85,7 @@ class EventLibrary extends BaseLibrary
                     if (Str::upper($a->icao) == Str::upper($icao)) {
                         $nextEvent = $e;
                         if ($nextEvent != null) {
+                            $nextEvent->banner = $image_lib->get("event_banners/" . $nextEvent->id, $nextEvent->banner);
                             // Prevent xss attack
                             $nextEvent->description = Purify::clean($nextEvent->description);
                         }
