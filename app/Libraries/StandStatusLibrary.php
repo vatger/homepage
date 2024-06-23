@@ -59,13 +59,13 @@ class StandStatusLibrary
     {
         $status = self::status($aerodrome);
         if (!$status) return [];
-        
+
         return collect($status->allAircraft())
             ->filter(fn($aircraft) => !$aircraft->onStand())
             ->map(function ($aircraft) {
                 return [
                     'callsign' => $aircraft->callsign,
-                    'type' => $aircraft->flight_plan->aircraft_short,
+                    'type' => $aircraft->flight_plan?->aircraft_short,
                     'latitude' => floatval($aircraft->latitude),
                     'longitude' => floatval($aircraft->longitude),
                 ];
