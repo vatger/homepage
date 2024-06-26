@@ -3,6 +3,7 @@ import $ from 'jquery';
 import { isEmpty } from 'lodash';
 import { findLivewireComponent } from '@/ts/livewire';
 import dayjs from 'dayjs';
+import { getDarkmode } from '@/ts/template';
 
 $(load_map);
 $(metar);
@@ -15,8 +16,10 @@ async function load_map() {
     const aerodrome_data: Object = await lwc.$wire.load_aerodrome();
     const standstatus_data: Array<0> = await lwc.$wire.load_stands();
     const aircraftstatus_data: Array<0> = await lwc.$wire.load_aircraft();
-    
-    let styleUrl = 'mapbox://styles/nikki2048/ckyg6998m2ec515o86wkmkjnn';
+
+    const styleUrlDark = 'mapbox://styles/nikki2048/ckyg12wrq5h6b15pcb4b4dev1';
+    const styleUrlLight = 'mapbox://styles/nikki2048/ckyg6998m2ec515o86wkmkjnn';
+    const styleUrl = getDarkmode() ? styleUrlDark : styleUrlLight;
     mapboxgl.accessToken = 'pk.eyJ1Ijoibmlra2kyMDQ4IiwiYSI6ImNrOXpibmR5bTA1MTIzZnJ0aXh1cG4yNjYifQ.b-1gEcULFsxkvP2s9BCXQg';
 
     let map_el = document.getElementById('map');

@@ -1,5 +1,23 @@
 import { replace as featherReplace } from 'feather-icons';
 
+export function getDarkmode(): boolean {
+    const metaTag = document.querySelector('meta[name="color-scheme"]');
+    if (metaTag) {
+        const content = metaTag.getAttribute('content');
+        if (content && content.includes('dark')) {
+            return true;
+        }
+    }
+    return false;
+}
+
+export function getLanguage(): 'de' | 'en' {
+    const metaElement = document.querySelector('meta[name="lang"]');
+    const language = metaElement?.getAttribute('content');
+    if (language == 'de') return 'de';
+    else return 'en';
+}
+
 export default function initTemplate() {
     window.addEventListener('load', loadPreloader, false);
     clickablemenu();

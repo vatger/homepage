@@ -31,7 +31,7 @@
                                 <div class="row" id="counter">
                                     <div class="col-sm-3 col-6 pt-2">
                                         <div class="counter-box text-center">
-                                            <h4 class="mb-0">{{ $aerodrome->icao }}</h4>
+                                            <h4 class="mb-0 text-primary">{{ $aerodrome->icao }}</h4>
                                             <h6 class="counter-head text-muted">ICAO</h6>
                                         </div>
                                         <!--end counter box-->
@@ -39,7 +39,7 @@
 
                                     <div class="col-sm-3 col-6 pt-2">
                                         <div class="counter-box text-center">
-                                            <h4 class="mb-0">
+                                            <h4 class="mb-0 text-primary">
                                                 {{ $aerodrome->iata ?? '-' }}
                                             </h4>
                                             <h6 class="counter-head text-muted">IATA</h6>
@@ -49,7 +49,7 @@
 
                                     <div class="col-sm-3 col-6 pt-2">
                                         <div class="counter-box text-center">
-                                            <h4 class="mb-0">{{ $aerodrome->elevation }}</h4>
+                                            <h4 class="mb-0 text-primary">{{ $aerodrome->elevation }}</h4>
                                             <h6 class="counter-head text-muted">Elevation (ft)</h6>
                                         </div>
                                         <!--end counter box-->
@@ -57,7 +57,7 @@
 
                                     <div class="col-sm-3 col-6 pt-2">
                                         <div class="counter-box text-center">
-                                            <h4 class="mb-0">
+                                            <h4 class="mb-0 text-primary">
                                                 @if ($aerodrome->civilian == 1)
                                                     @lang('general.phrases.yes')
                                                 @else
@@ -75,11 +75,11 @@
 
                     <div class="card blog blog-detail border-0 shadow rounded mt-4">
                         <div class="card-body content">
-                            <h4>Stand Information</h4>
+                            <h4 class="text-dark">Stand Information</h4>
                             @vite('resources/scss/special/aerodrome-mapbox.scss')
                             <div class="w-100" id="map-container">
                                 <div wire:ignore id="map" class="w-100 mt-3 rounded" style="height: 500px">
-                                    <h5 class="mt-3" id="event-title">@lang('pilot.aerodromes.aerodrome.loading-event-text')</h5>
+                                    <h5 class="mt-3 text-muted" id="event-title">@lang('pilot.aerodromes.aerodrome.loading-event-text')</h5>
                                 </div>
                             </div>
                         </div>
@@ -87,10 +87,10 @@
 
                     <div class="card blog-detail border-0 shadow rounded mt-4">
                         <div class="card-body content">
-                            <h4>@lang('pilot.aerodromes.aerodrome.upcoming-event-title-text')</h4>
+                            <h4 class="text-dark">@lang('pilot.aerodromes.aerodrome.upcoming-event-title-text')</h4>
                             <div wire:ignore class="w-100" id="event-container">
                                 <img src="" class="card-img-top loader-show overflow-hidden mt-3 w-100" id="event-banner" style="min-width: 100%">
-                                <h5 class="mt-3" id="event-title">@lang('pilot.aerodromes.aerodrome.loading-event-text')</h5>
+                                <h5 class="mt-3 text-muted" id="event-title">@lang('pilot.aerodromes.aerodrome.loading-event-text')</h5>
                                 <div class="mt-3 text-muted" id="event-text"></div>
 
                                 <div class="alert alert-light shadow" id="event-routes" role="alert" style="display: none"></div>
@@ -111,7 +111,7 @@
 
                             <!-- RECENT POST -->
                             <div class="widget mt-4">
-                                <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0">
+                                <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0 text-dark">
                                     METAR
                                 </span>
 
@@ -126,7 +126,7 @@
                             <!-- RECENT POST -->
                             <!-- RECENT POST -->
                             <div class="widget mt-4" id="atis-widget" wire:ignore.self>
-                                <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0">
+                                <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0 text-dark">
                                     ATIS
                                 </span>
 
@@ -142,7 +142,7 @@
 
                             <!-- RECENT POST -->
                             <div class="widget mt-4">
-                                <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0">
+                                <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0 text-dark">
                                     Active ATC
                                 </span>
 
