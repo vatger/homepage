@@ -27,7 +27,7 @@ class BoardController extends ApiController
 
         $u = User::find($vatsim_id);
 
-        if (!$u || $u->settings->forum_id) return false;
+        if (!$u || $u->settings->forum_id) abort(400);
 
         $u->settings->forum_id = $forum_id;
 
