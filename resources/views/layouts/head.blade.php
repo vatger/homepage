@@ -8,6 +8,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="canonical" href="https://vatsim-germany.org">
 <meta name="lang" content="{{ app()->getLocale() }}">
+<meta name="color-scheme" content="{{ (!auth()->check() || !Auth::user()->settings->dark_mode) ? 'light' : 'dark' }}">
 
 <!-- favicon -->
 <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">

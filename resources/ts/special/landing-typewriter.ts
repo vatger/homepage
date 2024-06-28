@@ -1,5 +1,6 @@
 import Typewriter from 'typewriter-effect/dist/core';
 import _ from 'lodash';
+import { getLanguage } from '@/ts/template';
 
 let slogans_de = [
     'Deutschlands Himmel, Virtuell Perfekt!',
@@ -52,10 +53,7 @@ let slogans_en = [
     'Experience the Thrill of Virtual Flying in Real Time.',
 ];
 
-const metaElement = document.querySelector('meta[name="lang"]');
-const language = metaElement?.getAttribute('content');
-
-let slogans = _.shuffle(language == 'en' ? slogans_en : slogans_de);
+let slogans = _.shuffle(getLanguage() == 'en' ? slogans_en : slogans_de);
 
 new Typewriter('#typewriter', {
     strings: slogans,
