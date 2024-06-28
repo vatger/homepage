@@ -26,6 +26,7 @@ return [
     'text-pilot-rep' => 'Pilot representation',
     'text-no-credentials' =>
         'Please note that your message content is publicly visible to everyone. Therefore, please do not write any credentials or personal data in your message. For such cases, please use the category Credentials or Other',
+    'text-no-reply' => 'You will not receive any notifications about the status of your enquiry. It may take longer to process your enquiry. If you need a quicker response or feedback, select a different category.',
     'text-check-board' =>
         'Please check whether a bug report or feature request already exists for your topic before creating it. You can find existing bug reports and feature requests here',
     'text-here' => 'here',

@@ -26,8 +26,9 @@ return [
     'text-pilot-rep' => 'Pilotenvertretung',
     'text-no-credentials' =>
         'Beachte, dass dein Nachrichteninhalt für alle öffentlich sichtbar ist. Bitte schreibe daher keine Zugangsdaten oder andere persönliche Daten in deine Nachricht. Verwende für solche Fälle bitte die Kategorie Zugangsdaten oder Sonstiges',
+    'text-no-reply' => 'Du bekommst keine Benachrichtigungen über den Status deiner Anfrage. Möglicherweise dauert die Bearbeitung länger. Brauchst du eine schnellere Antwort oder eine Rückmeldung wähle eine andere Kategorie.',
     'text-check-board' =>
-        'Bitte prüfe vor dem Erstellen ob bereits ein Bug-Report oder Feature Request zu deinem Thema existiert. Bereits ertellte Bug Reports und Feature Requests findest du',
+        'Bitte prüfe vor dem Erstellen ob bereits ein Bug-Report oder Feature Request zu deinem Thema existiert. Bereits erstellte Bug Reports und Feature Requests findest du',
     'text-here' => 'hier',
     'text-missing-captcha' => 'Bitte löse das Captcha',
     'text-error-captcha' => 'Du hast das Captcha nicht korrekt gelöst',
