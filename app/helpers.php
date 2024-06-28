@@ -1,7 +1,7 @@
 <?php
 if (!function_exists('iasset')) {
-    function iasset($path): string
+    function iasset(string $path, ?int $width): string
     {
-        return \App\Libraries\ImageHelperLibrary::asset($path, null);
+        return \App\Libraries\ImageHelperLibrary::asset($path, $width);
     }
 }
