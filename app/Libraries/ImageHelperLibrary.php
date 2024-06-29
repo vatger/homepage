@@ -37,7 +37,7 @@ class ImageHelperLibrary extends BaseLibrary
             throw_if($response->getStatusCode() != 200, new \Exception());
             $data = $response->getBody()->getContents();
             $image = $this->manager->read($data);
-            $image->scale(width: 1920);
+            $image->scale(width: $width);
             Storage::put($filepath, $image->toWebp()->toString());
             return Storage::url($filepath);
         } catch (\Throwable $e) {
@@ -83,8 +83,12 @@ class ImageHelperLibrary extends BaseLibrary
 
         try {
             $image = $lib->manager->read(File::get(public_path($url)));
+
+            if ($width == null && $image->width() > 1920)
+                $image->scale(1920);
             if ($width != null)
                 $image->scale(width: $width);
+
             Storage::put($filepath, $image->toWebp()->toString());
             return Storage::url($filepath);
         } catch (\Throwable $e) {

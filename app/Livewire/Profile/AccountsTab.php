@@ -29,12 +29,12 @@ class AccountsTab extends Component
 
     public function create_board_account(): void
     {
-        $user = Auth::user();
-        $result = XenForoLibrary::createForumAccount($user, $this->password);
-        if (!$result) {
-            $this->showNoty('Forenaccount konnte nicht erstellt werden', 'error');
-            return;
-        }
+        //$user = Auth::user();
+        //$result = XenForoLibrary::createForumAccount($user, $this->password);
+        //if (!$result) {
+        $this->showNoty('Forenaccount konnte nicht erstellt werden', 'error');
+        //    return;
+        //}
     }
 
     public function create_teamspeak_account(): void
