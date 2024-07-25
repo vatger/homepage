@@ -2,8 +2,9 @@
 
 namespace App\Libraries\VATSIM;
 
-use App\Libraries\VATSIM\DataFeedLibrary;
 use Illuminate\Support\Str;
+use VatsimData\Datafeed;
+use VatsimData\Metar;
 
 class MetarLibrary
 {
@@ -17,10 +18,10 @@ class MetarLibrary
     {
         $results = [];
 
-        $vatsimAtises = DataFeedLibrary::Atises();
+        $vatsimAtises = Datafeed::Atis();
 
         foreach ($icaos as $icao) {
-            $metar = DataFeedLibrary::Metar($icao);
+            $metar = Metar::get($icao);
 
             foreach ($vatsimAtises as $va) {
                 if (substr($va->callsign, 0, 4) == $icao) {
@@ -104,7 +105,7 @@ class MetarLibrary
 
         if (preg_match('/RUNWAYS IN USE/', $combinedAtis) !== false) {
             $rwyInUseString = Str::after($combinedAtis, 'RUNWAYS IN USE');
-        } elseif (preg_match('/RUNWAY \d{2}(L|R|C)? IN/', $combinedAtis) !== false) {
+        } elseif (preg_match('/RUNWAY \d{2}([LRC])? IN/', $combinedAtis) !== false) {
             $rwyInUseString = Str::after($combinedAtis, 'RUNWAY');
             $rwyInUseString = Str::before($rwyInUseString, 'IN USE');
         } elseif (preg_match('/RWY/', $combinedAtis) !== false) {
@@ -127,7 +128,7 @@ class MetarLibrary
                 '/FOR TAKE OFF/',
                 '/DEPARTURE RWY/',
                 '/AND /',
-                '/\. EXPECT ILS (Y |Z )?APPROACH \d{2}(L|R|C)?/',
+                '/\. EXPECT ILS (Y |Z )?APPROACH \d{2}([LRC])?/',
                 '/\./',
             ],
             '',

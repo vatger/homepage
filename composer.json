@@ -14,10 +14,6 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/paulhollmann/vatsim-datafeed.git"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/TartanLeGrand/laravel-openapi.git"
         }
     ],
@@ -37,6 +33,7 @@
         "livewire/livewire": "^v3.2",
         "paragonie/paseto": "^1.1",
         "paulhollmann/vatsim-stand-status": "dev-master",
+        "paulhollmann/vatsim-data": "dev-master",
         "spatie/laravel-cookie-consent": "^3.2",
         "spatie/laravel-permission": "^6.0",
         "spatie/laravel-webhook-client": "^3.1",
