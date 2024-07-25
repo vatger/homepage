@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
  * DataFeedLibrary
  *
  * This class does download and cache the VATSIM.net datafeed
+ *
+ * @deprecated
  */
 class DataFeedLibrary
 {
