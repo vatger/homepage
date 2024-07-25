@@ -16,9 +16,13 @@
                     <div class="card features rounded p-4 bg-white shadow position-relative overflow-hidden border-0 ">
                         <div class="card-body content">
                             @if($selected_type && ($selected_type->system == "V" || property_exists($selected_type, 'public_url')))
-                                <div class="alert bg-soft-warning fw-medium" role="alert">
+                                <div class="alert bg-soft-danger fw-medium" role="alert">
                                     <i data-feather="alert-triangle" class=" fea fs-5 align-middle me-1"></i>
                                     @lang('support.text-no-credentials')
+                                </div>
+                                <div class="alert bg-soft-warning fw-medium" role="alert">
+                                    <i data-feather="alert-triangle" class=" fea fs-5 align-middle me-1"></i>
+                                    @lang('support.text-no-reply')
                                 </div>
                                 @if($selected_type->public_url)
                                     <div class="alert alert-info" role="alert"> @lang('support.text-check-board')
