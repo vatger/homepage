@@ -9,20 +9,11 @@
             <p class="text-muted mb-4">
                 Du besitzt noch keinen Forenaccount. Du kannst dir einen Account über VATGER Connect erstellen.
             </p>
-            <form wire:submit.prevent>
-                <div class="mb-3">
-                    <label class="form-label">neues Forenpasswort erstellen</label>
-                    <div class="form-icon position-relative">
-                        <i data-feather="key" class="fea icon-sm icons"></i>
-                        <input wire:model="password" type="password" class="form-control ps-5" placeholder="Passwort" required="">
-                    </div>
+            <div class="mb-5">
+                <div class="form-icon position-relative">
+                    <button wire:loading.attr="disabled" class="btn btn-primary" wire:click="https://board.vatsim-germany.org/oauth">Forenaccount erstellen</button>
                 </div>
-                <div class="mb-5">
-                    <div class="form-icon position-relative">
-                        <button wire:loading.attr="disabled" class="btn btn-primary" wire:click="create_board_account()">Forenaccount erstellen</button>
-                    </div>
-                </div>
-            </form>
+            </div>
         @endif
     </div>
     <div class="mt-4">

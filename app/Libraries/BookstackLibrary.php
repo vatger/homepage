@@ -28,7 +28,7 @@ class BookstackLibrary extends BaseLibrary
             if ($response_code == 200 || $response_code == 204) {
                 return json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
             }
-        } catch (GuzzleException | \JsonException $e) {
+        } catch (GuzzleException|\JsonException $e) {
         }
         return false;
     }
@@ -87,6 +87,10 @@ class BookstackLibrary extends BaseLibrary
 
     static function _user_update(int $user_id, array $role_ids = []): bool
     {
-        return !empty(self::_send('users/' . $user_id, 'PUT', ['roles' => $role_ids]));
+        $body = [
+            'roles' => $role_ids,
+            'name' => $user_id,
+        ];
+        return !empty(self::_send('users/' . $user_id, 'PUT', $body));
     }
 }
