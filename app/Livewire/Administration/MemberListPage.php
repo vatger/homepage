@@ -53,9 +53,7 @@ class MemberListPage extends Component
         $this->sortQueryModifier($query);
 
         // further filtering
-        $filtered_members = collect($query->get());
-        $this->searchCollectionModifier($filtered_members, $search_str);
 
-        return view('pages.admin.members')->with(['filtered_members' => $filtered_members->paginate(25)]);
+        return view('pages.admin.members')->with(['filtered_members' => $query->paginate(25)]);
     }
 }
