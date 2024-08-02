@@ -9,6 +9,8 @@ use App\Models\Navigation\Aerodrome;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
+use VatsimData\Datafeed;
+use VatsimData\Metar;
 
 class AerodromePage extends Component
 {
@@ -45,7 +47,7 @@ class AerodromePage extends Component
 
     public function load_metar(): ?string
     {
-        return DataFeedLibrary::Metar($this->icao) ?? null;
+        return Metar::get($this->icao) ?? null;
     }
 
     public function load_indicators(): array
@@ -55,7 +57,7 @@ class AerodromePage extends Component
 
     public function load_atis(): ?object
     {
-        return DataFeedLibrary::AtisAerodrome($this->aerodrome);
+        return Datafeed::AtisAerodrome($this->icao);
     }
 
     public function load_events(): array
