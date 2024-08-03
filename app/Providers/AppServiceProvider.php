@@ -36,13 +36,5 @@ class AppServiceProvider extends ServiceProvider
 
         // Set default timezone to UTC
         date_default_timezone_set(config('app.timezone', 'UTC'));
-
-        // Pagination for Collection
-        if (!Collection::hasMacro('paginate')) {
-            Collection::macro('paginate', function ($perPage = 15, $page = null, $options = []) {
-                $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-                return (new LengthAwarePaginator($this->forPage($page, $perPage), $this->count(), $perPage, $page, $options))->withPath('');
-            });
-        }
     }
 }

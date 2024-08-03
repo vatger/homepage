@@ -2,17 +2,18 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\UpdateSubdivisionMembersJob;
+use App\Jobs\DownloadMembersSubdivisionJob;
+use App\Jobs\ProcessMembersSubdivisionJob;
 use Illuminate\Console\Command;
 
-class UpdateSubdivisionMembers extends Command
+class ProcessMembersSubdivision extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'vatger:update-subdivision-members';
+    protected $signature = 'vatger:process-members-subdivision';
 
     /**
      * The console command description.
@@ -24,8 +25,8 @@ class UpdateSubdivisionMembers extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
-        dispatch(new UpdateSubdivisionMembersJob());
+        dispatch(new ProcessMembersSubdivisionJob());
     }
 }

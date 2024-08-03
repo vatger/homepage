@@ -6,7 +6,6 @@ use App\Console\Kernel;
 use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SortableTrait;
 use App\Models\Tech\FailedJob;
-use App\OpenApi\Models\ApiLog;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Events\Dispatcher;
 use Livewire\Attributes\Layout;

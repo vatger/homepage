@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use function Symfony\Component\Translation\t;
 
@@ -19,7 +20,9 @@ class SupportPage extends Component
     use NotyTrait;
 
     public string $token = '';
+    #[Url]
     public int $chosen_area = 0;
+    #[Url]
     public int $chosen_sup_type = 0;
 
     public ?object $selected_area = null;

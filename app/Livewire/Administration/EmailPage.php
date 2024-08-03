@@ -2,15 +2,12 @@
 
 namespace App\Livewire\Administration;
 
-use App\Libraries\LimesurveyLibrary;
 use App\Libraries\MailcowLibrary;
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\Membership\User\User;
 use App\Models\Membership\User\UserStaffDetail;
-use App\Models\SurveyKey;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
-use Hackzilla\PasswordGenerator\Generator\RequirementPasswordGenerator;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -19,20 +16,20 @@ class EmailPage extends Component
 {
     use NotyTrait;
 
-    private $users = [];
-    public $emails = [];
-    public $newmail = '';
+    protected array $emails = [];
+    public string $newmail = '';
     public string $cid = '';
 
-    public function mount()
+    public function mount(): void
     {
-        $this->users = User::permission('mail.use')->get();
+        $users = [];
+        $users = User::permission('mail.use')->get();
 
         $usd = UserStaffDetail::query()
             ->where('staff_email_created', true)
             ->whereNotIn(
                 'user_id',
-                collect($this->users)
+                collect($users)
                     ->map(fn($u) => $u->id)
                     ->flatten()
                     ->toArray(),
@@ -40,13 +37,13 @@ class EmailPage extends Component
             ->get();
 
         foreach ($usd as $item) {
-            $this->users[] = User::findOrFail($item->user_id);
+            $users[] = User::findOrFail($item->user_id);
         }
 
-        foreach ($this->users as $user) {
+        foreach ($users as $user) {
             if ($user->staffDetails) {
                 $mail = strtolower("$user->firstname.$user->lastname@vatger.de");
-                $this->emails[] = (object) [
+                $this->emails[] = (object)[
                     'id' => $user->id,
                     'username' => $user->username,
                     'email' => $user->staffDetails->staff_email_created ? $user->staffDetails->staff_email : $mail,
@@ -67,13 +64,13 @@ class EmailPage extends Component
         return view('pages.admin.email');
     }
 
-    public function change(string $id, string $email)
+    public function change(string $id, string $email): void
     {
         $this->newmail = $email;
         $this->cid = $id;
     }
 
-    public function save()
+    public function save(): void
     {
         if (!filter_var($this->newmail, FILTER_VALIDATE_EMAIL)) {
             $this->showNoty('Bitte gültige E-Mail Adresse erfassen.', 'error');
@@ -92,7 +89,7 @@ class EmailPage extends Component
         }
     }
 
-    public function create(string $id)
+    public function create(string $id): void
     {
         $mailcreated = false;
         foreach ($this->emails as $email) {
