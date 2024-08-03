@@ -44,7 +44,7 @@
                             <td>{{ $log->failed_at }}</td>
                             <td>{{ $log->connection }}</td>
                             <td>{{ $log->queue }}</td>
-                            <td>{{ \Illuminate\Support\Str::words($log->exception, words: 10) }}</td>
+                            <td>{{ \Illuminate\Support\Str::words($log->exception, words: 5) }}</td>
                             <td>
                                 <div class="btn-group btn-group-sm">
                                     <button class="btn btn-sm btn-soft-info" wire:click="view_log({{ $log->id }})">Info</button>
@@ -76,7 +76,7 @@
                                 <p><strong>Queue:</strong> <span>{{ $sellog->queue }}</span></p>
                                 <p><strong>Payload:</strong> <span>{{ $sellog->payload }}</span></p>
                                 <p><strong>Stacktrace:</strong>
-                                <p>{{  $sellog->exception }}</p>
+                                <p>{!! str_replace('#','<hr>#',$sellog->stack_trace) !!}</p>
                             </div>
                         </div>
                         <div class="modal-footer">
