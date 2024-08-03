@@ -5,6 +5,7 @@ namespace App\Livewire\Administration\Tech;
 use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SortableTrait;
 use App\Models\Tech\FailedJob;
+use App\Models\Tech\Job;
 use Illuminate\Console\Scheduling\Schedule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
@@ -34,10 +35,12 @@ class JoblogPage extends Component
         $schedule = app(Schedule::class);
         $schedule_events = collect($schedule->events());
         $schedule_events_due = $schedule->dueEvents(app());
+        $queued_jobs = Job::query()->take(10)->get();
 
         return view('pages.admin.joblogs')->with([
             'logs' => $query->paginate(),
             'sellog' => $log,
+            'qjobs' => $queued_jobs,
             'schedule_events' => $schedule_events,
             'schedule_events_due' => $schedule_events_due,
         ]);
