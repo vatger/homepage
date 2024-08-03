@@ -76,7 +76,7 @@ class OSTicketLibrary extends BaseLibrary
         }
         $result_data = json_decode($result->getBody()->getContents());
 
-        if ($result_data?->usercreated) {
+        if ($result_data && property_exists($result_data, 'usercreated') && $result_data->usercreated) {
             $user->notify(
                 new BasicNotification(
                     'Dein Account im Ticketsystem',
