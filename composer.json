@@ -31,7 +31,6 @@
         "league/commonmark": "^2.3",
         "league/oauth2-client": "^2.6",
         "livewire/livewire": "^v3.2",
-        "mateusjunges/laravel-trackable-jobs": "^1.7",
         "paragonie/paseto": "^1.1",
         "paulhollmann/vatsim-data": "dev-master",
         "paulhollmann/vatsim-stand-status": "dev-master",

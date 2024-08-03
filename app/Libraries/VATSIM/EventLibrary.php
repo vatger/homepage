@@ -21,13 +21,17 @@ class EventLibrary extends BaseLibrary
      * Get a single event from the VATSIM API
      * https://my.vatsim.net/api/v2/events/view/<event_id>
      */
-    public static function getEvent(int $id): mixed
+    public static function getEvent(int $id): ?object
     {
         $event = Cache::remember('de.vatsim-germany.events.view.' . $id, 60 * 10, function () use ($id) {
             $res = Http::get('https://my.vatsim.net/api/v2/events/view/' . $id);
-            return json_decode($res->body())?->data;
+            $res_data = json_decode($res->body());
+            if (!$res_data || !property_exists($res_data, 'data')) {
+                return null;
+            }
+            return $res_data?->data;
         });
-
+        if (!$event) return null;
         $image_lib = new ImageHelperLibrary();
         $event->banner = $image_lib->get("event_banners/" . $event->id, $event->banner);
         return $event;
