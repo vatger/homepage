@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="layout-specing">
         <x-layouts.admin.content
-                header="SYS Logs"
+            header="SYS Logs"
         ></x-layouts.admin.content>
 
 
@@ -49,7 +49,7 @@
                             <td>{{ $log->type }}</td>
                             <td>{{ $log->path }}</td>
                             <td>{{ $log->method }}</td>
-                            <td>{{ \Illuminate\Support\Str::words($log->message, words: 35) }}</td>
+                            <td>{{ \Illuminate\Support\Str::words($log->message, words: 10) }}</td>
                             <td>
                                 <div class="btn-group btn-group-sm">
                                     <button class="btn btn-sm btn-soft-info" wire:click="view_log({{ $log->id }})">Info</button>
@@ -63,5 +63,35 @@
             </div>
 
         </x-layouts.admin.card>
+
+        @if($sellog)
+            <div class="modal show" tabindex="-1" aria-modal="true" role="dialog" style="display: block;">
+                <div class="container">
+                    <div class="modal-content rounded shadow border-0">
+                        <div class="modal-header border-bottom">
+                            <h5 class="modal-title">Log Eintrag #{{$sellog->id}}</h5>
+                            <button wire:click="close_log()" type="button" class="btn btn-icon btn-close">
+                                <i class="uil uil-times fs-4 text-dark"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="bg-white px-3 rounded box-shadow">
+                                <p><strong>ID:</strong> <span>{{ $sellog->id }}</span></p>
+                                <p><strong>User:</strong> <span>{{ $sellog->user_id }}</span></p>
+                                <p><strong>Method:</strong> <span>{{ $sellog->method }}</span></p>
+                                <p><strong>Time:</strong> <span>{{ $sellog->created_at }}</span></p>
+                                <p><strong>Stacktrace:</strong>
+                                <p>{!! str_replace('#','<hr>#',$sellog->stack_trace) !!}</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button wire:click="close_log()" type="button" class="btn btn-sm btn-secondary">Schließen</button>
+                            <button wire:click="delete_log()" type="submit" class="btn btn-sm btn-danger">Löschen</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        @endif
     </div>
 </div>

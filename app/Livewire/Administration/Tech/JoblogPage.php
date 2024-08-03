@@ -6,6 +6,7 @@ use App\Console\Kernel;
 use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SortableTrait;
 use App\Models\Tech\FailedJob;
+use App\Models\Tech\SysLog;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Events\Dispatcher;
 use Livewire\Attributes\Layout;
@@ -19,6 +20,9 @@ class JoblogPage extends Component
     #[Url]
     public $search;
 
+    #[Url]
+    public ?int $log_id = null;
+
     protected $sortable_fields = ['failed_at', 'connection', 'queue', 'payload'];
 
     #[Layout('layouts.admin.admin-master')]
@@ -28,20 +32,34 @@ class JoblogPage extends Component
         $query = FailedJob::where('failed_at', 'LIKE', $this->search . '%');
         $this->sortQueryModifier($query);
 
-        $app = new Kernel(app(), new Dispatcher());
+        $log = $this->log_id ? FailedJob::find($this->log_id) : null;
+
         $schedule = app(Schedule::class);
         $schedule_events = collect($schedule->events());
         $schedule_events_due = $schedule->dueEvents(app());
 
         return view('pages.admin.joblogs')->with([
             'logs' => $query->paginate(),
+            'sellog' => $log,
             'schedule_events' => $schedule_events,
             'schedule_events_due' => $schedule_events_due,
         ]);
     }
 
-    public function view_log($log_id)
+    public function view_log($log_id): void
     {
-        return;
+        $this->log_id = $log_id;
+    }
+
+    public function close_log(): void
+    {
+        $this->log_id = null;
+    }
+
+    public function delete_log(): void
+    {
+        if ($this->log_id) {
+            FailedJob::find($this->log_id)->delete();
+        }
     }
 }

@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="layout-specing">
         <x-layouts.admin.content
-                header="Jobs"
+            header="Jobs"
         ></x-layouts.admin.content>
 
 
@@ -35,10 +35,6 @@
                             queue
                             <i data-feather="{{$this->getSortIconClasses('queue')}}"></i>
                         </th>
-                        <th class="border-bottom p-3" style="white-space: nowrap" wire:click="sortBy('payload')">
-                            payload
-                            <i data-feather="{{$this->getSortIconClasses('payload')}}"></i>
-                        </th>
                         <th class="border-bottom p-3" style="white-space: nowrap">exception</th>
                     </tr>
                     </thead>
@@ -48,8 +44,7 @@
                             <td>{{ $log->failed_at }}</td>
                             <td>{{ $log->connection }}</td>
                             <td>{{ $log->queue }}</td>
-                            <td>{{ $log->payload }}</td>
-                            <td>{{ \Illuminate\Support\Str::words($log->exception, words: 35) }}</td>
+                            <td>{{ \Illuminate\Support\Str::words($log->exception, words: 10) }}</td>
                             <td>
                                 <div class="btn-group btn-group-sm">
                                     <button class="btn btn-sm btn-soft-info" wire:click="view_log({{ $log->id }})">Info</button>
@@ -63,6 +58,36 @@
             </div>
 
         </x-layouts.admin.card>
+
+        @if($sellog)
+            <div class="modal show" tabindex="-1" aria-modal="true" role="dialog" style="display: block;">
+                <div class="container">
+                    <div class="modal-content rounded shadow border-0">
+                        <div class="modal-header border-bottom">
+                            <h5 class="modal-title">Log Eintrag #{{$sellog->id}}</h5>
+                            <button wire:click="close_log()" type="button" class="btn btn-icon btn-close">
+                                <i class="uil uil-times fs-4 text-dark"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="bg-white px-3 rounded box-shadow">
+                                <p><strong>ID:</strong> <span>{{ $sellog->id }}</span></p>
+                                <p><strong>Connection:</strong> <span>{{ $sellog->connection }}</span></p>
+                                <p><strong>Queue:</strong> <span>{{ $sellog->queue }}</span></p>
+                                <p><strong>Payload:</strong> <span>{{ $sellog->payload }}</span></p>
+                                <p><strong>Stacktrace:</strong>
+                                <p>{{  $sellog->exception }}</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button wire:click="close_log()" type="button" class="btn btn-sm btn-secondary">Schließen</button>
+                            <button wire:click="delete_log()" type="submit" class="btn btn-sm btn-danger">Löschen</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        @endif
 
         <x-layouts.admin.card>
             <x-layouts.admin.card-header position="left" title="Scheduled Jobs" :subtitle="count($schedule_events)"></x-layouts.admin.card-header>
