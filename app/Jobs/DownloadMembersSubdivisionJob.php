@@ -26,7 +26,7 @@ class DownloadMembersSubdivisionJob implements ShouldQueue
     public function __construct(public readonly int $offset = 0)
     {
         $this->limit = 1000;
-        $this->chunk_size = 10;
+        $this->chunk_size = 1;
     }
 
     /**
