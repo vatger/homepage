@@ -76,7 +76,7 @@
                                 <p><strong>Queue:</strong> <span>{{ $sellog->queue }}</span></p>
                                 <p><strong>Payload:</strong> <span>{{ $sellog->payload }}</span></p>
                                 <p><strong>Stacktrace:</strong>
-                                <p>{!! str_replace('#','<hr>#',$sellog->stack_trace) !!}</p>
+                                <p>{!! str_replace('#','<hr>#',$sellog->exception) !!}</p>
                             </div>
                         </div>
                         <div class="modal-footer">
