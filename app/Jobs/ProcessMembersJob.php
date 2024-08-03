@@ -16,24 +16,18 @@ class ProcessMembersJob implements ShouldQueue
     use Queueable;
 
     /**
-     * Create a new job instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Execute the job.
      */
     public function handle(): void
     {
         $files = Storage::files('jobs/members/');
         if (empty($files)) return;
-        $file = $files[0];
+        $file = $files[array_rand($files)];
         $time = intval(explode('+', trim($file, "jobs/merlit.n"))[0]);
         if ($time == 0) return;
         $data = json_decode(Storage::get($file));
+
+        Storage::delete($file);
 
         if (is_array($data)) {
             foreach ($data as $d) {
@@ -43,7 +37,11 @@ class ProcessMembersJob implements ShouldQueue
             CoreApiLibrary2::insertMemberData(User::find($data->id), $data, membership_refresh: true, timestamp: $time);
         }
 
-        Storage::delete($file);
+
+        if (array_count_values(Storage::files('jobs/members/')) > 3) {
+            dispatch(new self());
+        }
+
     }
 
 }
