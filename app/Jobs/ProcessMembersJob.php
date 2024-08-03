@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 
-class ProcessMembersSubdivisionJob implements ShouldQueue
+class ProcessMembersJob implements ShouldQueue
 {
     use Queueable;
 
@@ -31,12 +31,16 @@ class ProcessMembersSubdivisionJob implements ShouldQueue
         $files = Storage::files('jobs/members/');
         if (empty($files)) return;
         $file = $files[0];
-        $time = intval(explode('+', trim($file, "jobs/mer.n"))[0]);
+        $time = intval(explode('+', trim($file, "jobs/merlit.n"))[0]);
         if ($time == 0) return;
         $data = json_decode(Storage::get($file));
 
-        foreach ($data as $d) {
-            CoreApiLibrary2::insertMemberData(User::find($d->id), $d, membership_refresh: true, timestamp: $time);
+        if (is_array($data)) {
+            foreach ($data as $d) {
+                CoreApiLibrary2::insertMemberData(User::find($d->id), $d, membership_refresh: true, timestamp: $time);
+            }
+        } elseif (is_object($data)) {
+            CoreApiLibrary2::insertMemberData(User::find($data->id), $data, membership_refresh: true, timestamp: $time);
         }
 
         Storage::delete($file);

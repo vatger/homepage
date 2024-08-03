@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
-class UpdateRestMembersJob implements ShouldQueue
+class DownloadMembersRestJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -51,18 +51,23 @@ class UpdateRestMembersJob implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         Log::info('[UpdateRestMembersJob]::Starting');
-        $this->collection->lazy()->each(function ($obj) {
-            $user = User::find($obj['id']);
-            if (!$user) {
-                return;
-            }
-            CoreApiLibrary2::updateMember($user, update_vatger_membership: true);
-        });
+        $this->collection->lazy()->each(self::handle_user(...));
         Log::info("[UpdateRestMembersJob]::Completed  $this->really_updating of $this->total_to_update updated");
+    }
+
+    static function handle_user($obj): void
+    {
+        $user = User::find($obj['id']);
+        if (!$user) {
+            return;
+        }
+        $start_time = Carbon::now()->timestamp;
+        $data = CoreApiLibrary2::downloadMember($user);
+        if (!$data) return;
+        \Storage::put("jobs/members/member.$start_time+$user->id.json", json_encode($data));
     }
 }

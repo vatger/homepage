@@ -9,15 +9,13 @@ class Kernel extends ConsoleKernel
 {
     /**
      * Define the application's command schedule.
-     *
-     * @param Schedule $schedule
-     * @return void
      */
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('vatger:download-members-subdivision')->everySixHours();
-        $schedule->command('vatger:process-members-subdivision')->everyFiveMinutes();
-        $schedule->command('vatger:update-rest-members')->everyFiveMinutes();
+        $schedule->command('vatger:download-members-rest')->everyFiveMinutes();
+        $schedule->command('vatger:process-members')->everyMinute();
+
         $schedule->command('vatger:update-nav-stations')->everyFourHours();
         $schedule->command('vatger:update-teamspeak')->everyFifteenMinutes();
         $schedule->command('vatger:cleanup')->daily();
@@ -26,8 +24,6 @@ class Kernel extends ConsoleKernel
 
     /**
      * Register the commands for the application.
-     *
-     * @return void
      */
     protected function commands(): void
     {

@@ -26,7 +26,7 @@ class DownloadMembersSubdivisionJob implements ShouldQueue
     public function __construct(public readonly int $offset = 0)
     {
         $this->limit = 1000;
-        $this->chunk_size = 50;
+        $this->chunk_size = 10;
     }
 
     /**
@@ -40,7 +40,7 @@ class DownloadMembersSubdivisionJob implements ShouldQueue
         $chunks = array_chunk($data, $this->chunk_size);
         foreach ($chunks as $chunk_key => $chunk) {
             $pos = $this->offset + $chunk_key * $this->chunk_size;
-            Storage::put("jobs/members/$this->start_time+$pos.json", json_encode($chunk));
+            Storage::put("jobs/members/list.$this->start_time+$pos.json", json_encode($chunk));
         }
         if ($offset == 0) return;
         $job = new self($offset);

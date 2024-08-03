@@ -2,13 +2,10 @@
 
 namespace App\Livewire\Administration\Tech;
 
-use App\Console\Kernel;
 use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SortableTrait;
 use App\Models\Tech\FailedJob;
-use App\Models\Tech\SysLog;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Events\Dispatcher;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;

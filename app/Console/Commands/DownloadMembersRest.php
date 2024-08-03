@@ -2,18 +2,18 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\UpdateRestMembersJob;
+use App\Jobs\DownloadMembersRestJob;
 use App\Jobs\UpdateSubdivisionMembersJob;
 use Illuminate\Console\Command;
 
-class UpdateRestMembers extends Command
+class DownloadMembersRest extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'vatger:update-rest-members';
+    protected $signature = 'vatger:download-members-rest';
 
     /**
      * The console command description.
@@ -27,6 +27,6 @@ class UpdateRestMembers extends Command
      */
     public function handle()
     {
-        dispatch(new UpdateRestMembersJob());
+        dispatch(new DownloadMembersRestJob());
     }
 }

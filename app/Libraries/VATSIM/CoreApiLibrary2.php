@@ -52,12 +52,18 @@ class CoreApiLibrary2 extends BaseLibrary
 
     public static function updateMember(User $user, int $max_cache_time = 60 * 60 * 12, bool $update_vatger_membership = false): void
     {
+        $obj = self::downloadMember($user, $max_cache_time);
+        if (!$obj) return;
+        self::insertMemberData($user, $obj, $update_vatger_membership);
+    }
+
+    public static function downloadMember(User $user, int $max_cache_time = 60 * 60 * 12): ?object
+    {
         $cache_key = self::$cache_key_user . $user->id;
         if (!self::cache_expired($cache_key, $max_cache_time)) {
-            return;
+            return null;
         }
-        $result = self::send('GET', "members/$user->id");
-        self::insertMemberData($user, $result, $update_vatger_membership);
+        return self::send('GET', "members/$user->id");
     }
 
     public static function updateSubdivisionMembers(int $offset, int $limit = 100): int
