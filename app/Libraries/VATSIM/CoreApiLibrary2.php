@@ -62,40 +62,50 @@ class CoreApiLibrary2 extends BaseLibrary
 
     public static function updateSubdivisionMembers(int $offset, int $limit = 100): int
     {
+        $items = self::downloadSubdivisionMembers($offset, $limit);
+        foreach ($items as $data) {
+            $user = User::find($data->id);
+            if ($user) {
+                self::insertMemberData($user, $data, membership_refresh: true);
+            }
+        }
+        return $offset;
+    }
+
+    public static function downloadSubdivisionMembers(int &$offset, int $limit = 100): array
+    {
         $result = self::send('GET', 'orgs/subdivision/GER', [
             'include_inactive' => true,
             'limit' => $limit,
             'offset' => $offset,
         ]);
         if (empty($result)) {
-            return $offset;
+            return [];
         }
-        $count = $result->count;
-        $new_offset = $offset;
-        foreach ($result->items as $data) {
-            $user = User::find($data->id);
-            if ($user) {
-                self::insertMemberData($user, $data, membership_refresh: true);
-            }
-            $new_offset++;
+        $offset = $offset + $limit;
+        if ($result->count <= $offset) {
+            $offset = 0;
         }
-
-        if ($new_offset >= $count) {
-            $new_offset = 0;
-        }
-        return $new_offset;
+        return $result->items;
     }
 
-    private static function insertMemberData(?User $user, ?object $data, bool $membership_refresh = false): void
+    public static function insertMemberData(?User $user, ?object $data, bool $membership_refresh = false, ?int $timestamp = null): void
     {
         if (empty($data) || empty($user)) {
             return;
         }
-        if (isset($data->name_first) && isset($data->name_last) && isset($data->email)) {
+
+        $cache_key = self::$cache_key_user . $user->id;
+
+        if (Cache::has($cache_key) && Cache::has($cache_key) > $timestamp) {
+            return;
+        }
+
+        if (isset($data->name_first) && isset($data->name_last)) {
             $user->update([
                 'firstname' => $data->name_first,
                 'lastname' => $data->name_last,
-                'email' => $data->email,
+                'email' => $data->email ?? $user->email,
             ]);
         }
         $user->vatsimDetails->update([
@@ -112,8 +122,8 @@ class CoreApiLibrary2 extends BaseLibrary
             'registered_at' => $data->reg_date ? Carbon::parse($data->reg_date) : $user->vatsimDetails->registered_at,
             'updated_at' => Carbon::now(),
         ]);
-        $cache_key = self::$cache_key_user . $user->id;
-        Cache::put($cache_key, Carbon::now()->timestamp);
+
+        Cache::put($cache_key, $timestamp ?? Carbon::now()->timestamp);
         if ($membership_refresh) {
             MembershipLibrary::update($user, api_refresh: false);
         }

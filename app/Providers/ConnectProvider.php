@@ -14,10 +14,6 @@ class ConnectProvider extends GenericProvider
      */
     private string $_redirectAtferAuthentication = 'vatsim.authentication.connect.callback';
 
-    /**
-     * Force required scopes
-     */
-    private bool $_useRequiredScopes = true;
 
     /**
      * Initialize the Provider from configuration
@@ -37,42 +33,11 @@ class ConnectProvider extends GenericProvider
             'scopeSeparator' => ' ',
         ]);
     }
-
-    /**
-     * OVERWRITTEN
-     * Returns authorization parameters based on provided options.
-     *
-     * @param array $options
-     * @return string Authorization URL
-     */
-    public function getAuthorizationUrl(array $options = []): string
-    {
-        $base = $this->getBaseAuthorizationUrl();
-
-        // injects getDefaultScopes in the initial redirect url as required_scopes
-        if ($this->_useRequiredScopes) {
-            if (empty($options['required_scopes'])) {
-                $options['required_scopes'] = $this->getDefaultScopes();
-            }
-            if (is_array($options['required_scopes'])) {
-                $separator = $this->getScopeSeparator();
-                $options['required_scopes'] = implode($separator, $options['required_scopes']);
-            }
-        }
-        // end
-
-        $params = $this->getAuthorizationParameters($options);
-        $query = $this->getAuthorizationQuery($params);
-
-        return $this->appendQuery($base, $query);
-    }
-
+    
     /**
      * Get a new token from an older one
-     *
-     * @return Token\AccessToken|Token\AccessTokenInterface
      */
-    public static function updateToken($token)
+    public static function updateToken($token): Token\AccessTokenInterface|Token\AccessToken|null
     {
         $c = new ConnectProvider();
 
