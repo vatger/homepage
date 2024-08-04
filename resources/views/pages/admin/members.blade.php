@@ -47,7 +47,7 @@
                         <th class="border-bottom p-3">FIR</th>
                         <th class="border-bottom p-3">Rating</th>
                         <th class="border-bottom p-3">Beitritt</th>
-                        <th class="border-bottom p-3">Status</th>
+                        <th class="border-bottom p-3">Status (last Seen)</th>
                         <th class="border-bottom p-3"></th>
                     </tr>
 
@@ -72,6 +72,7 @@
                                     {{ $member->vatgerDetails->is_inactive ? 'vatger_inactive' : '' }}
                                     {{ $member->vatgerDetails->is_vatger_member ? 'vatger_member' : '' }}
                                     {{ $member->vatgerDetails->is_vatger_voter ? 'vatger_voter' : '' }}
+                                    {{  \Carbon\Carbon::parse($member->vatgerDetails->last_seen_at)->format('d.m.Y') }}
                                 </small>
                             </td>
                             <td>
