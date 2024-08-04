@@ -19,6 +19,9 @@ class MemberListPage extends Component
     public string $membersearch = '';
     public bool $filter_ger = false;
 
+    public bool $filter_active = true;
+    public bool $filter_inactive = true;
+
     public function mount(): void
     {
         $this->setInitialSortOrder('id', 'asc');
@@ -46,6 +49,18 @@ class MemberListPage extends Component
         if ($this->filter_ger) {
             $query = $query->whereHas('vatsimDetails', function ($query) {
                 $query->where('subdivision_code', 'LIKE', 'GER');
+            });
+        }
+
+        if ($this->filter_active && !$this->filter_inactive) {
+            $query = $query->whereHas('vatgerDetails', function ($query) {
+                $query->whereNotNull('active_member_at');
+            });
+        }
+
+        if ($this->filter_inactive && !$this->filter_active) {
+            $query = $query->whereHas('vatgerDetails', function ($query) {
+                $query->whereNull('active_member_at');
             });
         }
 

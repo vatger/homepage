@@ -5,11 +5,8 @@ namespace App\Jobs;
 use App\Libraries\VATSIM\CoreApiLibrary2;
 use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Jobs\Job;
-use Illuminate\Queue\SerializesModels;
 use Storage;
 
 class DownloadMembersSubdivisionJob implements ShouldQueue
@@ -43,6 +40,7 @@ class DownloadMembersSubdivisionJob implements ShouldQueue
             Storage::put("jobs/members/list.$this->start_time+$pos.json", json_encode($chunk));
         }
         if ($offset == 0) return;
+        if (\App\Models\Tech\Job::count() > 64) return;
         $job = new self($offset);
         dispatch($job);
     }

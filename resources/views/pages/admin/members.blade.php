@@ -21,6 +21,14 @@
                     <input class="form-check-input" type="checkbox" wire:model.live="filter_ger">
                     <label class="form-check-label" for="">nur GER zugeordnete anzeigen</label>
                 </li>
+                <li class="list-inline-item" style="width: 100%">
+                    <input class="form-check-input" type="checkbox" wire:model.live="filter_active">
+                    <label class="form-check-label" for="">active_member anzeigen</label>
+                </li>
+                <li class="list-inline-item" style="width: 100%">
+                    <input class="form-check-input" type="checkbox" wire:model.live="filter_inactive">
+                    <label class="form-check-label" for="">inactive_member anzeigen</label>
+                </li>
             </x-layouts.admin.card-header>
 
 
