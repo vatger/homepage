@@ -327,7 +327,7 @@ class XenForoLibrary extends BaseLibrary
 
     public static function get_group_name(int $id): ?string
     {
-        $teams = Cache::remember('XenforoLibrary.Groups', 120, fn() => (new self())->get_groups());
+        $teams = Cache::remember('XenforoLibrary.Groups', 120, fn() => self::get_groups());
         foreach ($teams as $team) {
             if ($team->id == $id) {
                 return $team->name;
@@ -338,7 +338,7 @@ class XenForoLibrary extends BaseLibrary
 
     public static function find_group(string $name): ?int
     {
-        $teams = Cache::remember("XenforoLibrary.Groups.$name", 120, fn() => (new self())->get_groups());
+        $teams = Cache::remember("XenforoLibrary.Groups", 120, fn() => self::get_groups());
         foreach ($teams as $team) {
             if ($team->name == $name) {
                 return $team->id;
@@ -370,7 +370,7 @@ class XenForoLibrary extends BaseLibrary
                 break;
         }
 
-        switch ($detail->rating_pilot) {
+        switch ($detail->rating_pilot_short) {
             case 'P1':
                 $groups[] = self::find_group('_rating_atc_p1');
                 break;
