@@ -308,10 +308,11 @@ class XenForoLibrary extends BaseLibrary
 
     public static function get_groups(): array
     {
-        $result = self::send('GET', 'usergroups', []);
-        if (!$result) {
+        $response = self::send('GET', 'usergroups', []);
+        if ($response->getStatusCode() != 200) {
             return [];
         }
+        $result = json_decode($response->getBody()->getContents());
         $groups = [];
         foreach ($result as $group) {
             $groups[] = (object)['id' => $group->user_group_id, 'name' => $group->title];
