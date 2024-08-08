@@ -344,7 +344,7 @@ class MembershipLibrary
             $user->vatsimDetails->subdivision_code != 'GER' &&
             ($user->vatgerDetails->active_member_at || $user->vatgerDetails->active_vatger_member_at)
         ) {
-            //TODO kick from FIRs
+            //kick from FIRs
             $user->fir_membership?->delete();
             $user->vatgerDetails->update(['vatger_member_at' => null, 'active_vatger_member_at' => null]);
             $user = $user->fresh();

@@ -7,6 +7,7 @@ use App\Libraries\NextcloudLibrary;
 use App\Libraries\OSTicketLibrary;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Libraries\VikunjaLibrary;
+use App\Libraries\XenForoLibrary;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,6 +36,7 @@ class ServiceRole extends Model
                 ServiceRoleType::BookstackGroup => BookstackLibrary::get_group_name(intval($this->service_role)) ?? '?',
                 ServiceRoleType::NextcloudGroup => NextcloudLibrary::get_group_name($this->service_role) ?? '?',
                 ServiceRoleType::VikunjaGroup => VikunjaLibrary::get_group_name(intval($this->service_role)) ?? '?',
+                ServiceRoleType::ForumGroup => XenForoLibrary::get_group_name(intval($this->service_role)) ?? '?',
                 default => null,
             };
         } catch (Exception $e) {

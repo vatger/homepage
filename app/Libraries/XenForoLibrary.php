@@ -4,9 +4,11 @@ namespace App\Libraries;
 
 use App\Models\Groups\ServiceRoleType;
 use App\Models\Membership\User\User;
+use App\Models\Membership\User\UserVatsimDetail;
 use App\Notifications\BasicNotification;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\ResponseInterface;
 
@@ -157,10 +159,10 @@ class XenForoLibrary extends BaseLibrary
         // Get all forum groups the user has through assigned groups
         $secondaryGroups = array_merge($secondaryGroups, $user->service_role_ids(ServiceRoleType::ForumGroup, true));
 
+
+        $secondaryGroups = array_merge($secondaryGroups, self::map_vatsim_ratings($user->vatsimDetails));
+
         //Assign forum groups based upon vatger status
-
-        // TODO FIR mitglied + VATGER mitglied (+ FIR wahlberechtigt + VATGER wahlberechtigt)
-
         if (!empty($secondaryGroups)) {
             $dataArray['secondary_group_ids'] = $secondaryGroups;
         } else {
@@ -309,4 +311,82 @@ class XenForoLibrary extends BaseLibrary
 
         return false;
     }
+
+    private static function get_groups(): array
+    {
+        $result = self::send('GET', 'usergroups', []);
+        if (!$result) {
+            return false;
+        }
+        $groups = [];
+        foreach ($result as $group) {
+            $groups[] = (object)['id' => $group->user_group_id, 'name' => $group->title];
+        }
+        return $groups;
+    }
+
+    public static function get_group_name(int $id): ?string
+    {
+        $teams = Cache::remember('XenforoLibrary.Groups', 120, fn() => (new self())->get_groups());
+        foreach ($teams as $team) {
+            if ($team->id == $id) {
+                return $team->name;
+            }
+        }
+        return null;
+    }
+
+    public static function find_group(string $name): ?int
+    {
+        $teams = Cache::remember("XenforoLibrary.Groups.$name", 120, fn() => (new self())->get_groups());
+        foreach ($teams as $team) {
+            if ($team->name == $name) {
+                return $team->id;
+            }
+        }
+        return null;
+    }
+
+    private static function map_vatsim_ratings(UserVatsimDetail $detail): array
+    {
+        $groups = [];
+        switch ($detail->rating_atc_short) {
+            case 'S1':
+                $groups[] = self::find_group('_rating_atc_s1');
+                break;
+            case 'S2':
+                $groups[] = self::find_group('_rating_atc_s2');
+                break;
+            case 'S3':
+                $groups[] = self::find_group('_rating_atc_s3');
+                break;
+            case 'C1':
+            case 'C3':
+                $groups[] = self::find_group('_rating_atc_c1');
+                break;
+            case 'SUP':
+            case 'ADM':
+                $groups[] = self::find_group('_rating_atc_sup');
+                break;
+        }
+
+        switch ($detail->rating_pilot) {
+            case 'P1':
+                $groups[] = self::find_group('_rating_atc_p1');
+                break;
+            case 'P2':
+                $groups[] = self::find_group('_rating_atc_p2');
+                break;
+            case 'P3':
+                $groups[] = self::find_group('_rating_atc_p3');
+                break;
+            case 'P4':
+                $groups[] = self::find_group('_rating_atc_p4');
+                break;
+        }
+
+
+        return $groups;
+    }
+
 }
