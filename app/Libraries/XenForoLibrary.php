@@ -293,12 +293,6 @@ class XenForoLibrary extends BaseLibrary
         });
     }
 
-    public static function getGroupName(int $id): ?string
-    {
-        $array = config('forum.groups');
-        return null;
-    }
-
     /**
      * Grab the posts in the news threads
      */
@@ -312,11 +306,11 @@ class XenForoLibrary extends BaseLibrary
         return false;
     }
 
-    private static function get_groups(): array
+    public static function get_groups(): array
     {
         $result = self::send('GET', 'usergroups', []);
         if (!$result) {
-            return false;
+            return [];
         }
         $groups = [];
         foreach ($result as $group) {
