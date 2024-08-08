@@ -17,7 +17,7 @@ class XenForoLibrary extends BaseLibrary
     /**
      * Send an actual call to the XenForo API.
      */
-    private static function send(string $method, string $endpoint, array $data, bool $bypass = true): false|ResponseInterface
+    public static function send(string $method, string $endpoint, array $data, bool $bypass = true): false|ResponseInterface
     {
         $client = self::constructClient([
             'headers' => [
