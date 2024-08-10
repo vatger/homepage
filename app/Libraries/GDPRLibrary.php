@@ -85,21 +85,11 @@ class GDPRLibrary
         self::mark_started($gdprRemoval, $service);
         $result = false;
         try {
-            switch ($service) {
-                case 'board':
-                    $result = XenForoLibrary::deleteForumAccount($gdprRemoval->user);
-                    break;
-                case 'teamspeak':
-                    $result = TeamSpeakWebQuery::deleteUser($gdprRemoval->user);
-                    break;
-                case 'knowledgebase':
-                    $result = false;
-                    break;
-                default:
-                    $result = false;
-                    break;
-
-            }
+            $result = match ($service) {
+                'board' => XenForoLibrary::deleteForumAccount($gdprRemoval->user),
+                'teamspeak' => TeamSpeakWebQuery::deleteUser($gdprRemoval->user),
+                default => false,
+            };
         } catch (\Exception $exception) {
         }
 

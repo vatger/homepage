@@ -1,5 +1,9 @@
 [
     {
+        "name": "homepage",
+        "deletion_type": "internal"
+    },
+    {
         "name": "board",
         "deletion_type": "library",
         "prevents_deletion": true
@@ -8,6 +12,18 @@
         "name": "teamspeak",
         "deletion_type": "library",
         "prevents_deletion": true
+    },
+    {
+        "name": "knowledgebase",
+        "deletion_type": "library"
+    },
+    {
+        "name": "atciss",
+        "deletion_type": "api_request",
+        "endpoint": "http://docker.vatsim-germany.org:1234/api/delete",
+        "authentication": "Token 1234",
+        "request_method": "GET",
+        "request_expected_response_code": 200
     },
     {
         "name": "knowledgebase",
