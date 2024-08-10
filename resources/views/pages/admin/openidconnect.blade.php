@@ -10,12 +10,7 @@
             <x-layouts.admin.card-header position="left" title="Passport Clients" :subtitle="\Laravel\Passport\Client::count()" />
 
             <x-layouts.admin.card-header position="right">
-                <li class="list-inline-item" style="width: 100%">
-                    <div class="form-icon position-relative">
-                        <i data-feather="search" class=" fea icon-sm icons"></i>
-                        <input wire:model.live="search" class="form-control ps-5" type="date">
-                    </div>
-                </li>
+                
             </x-layouts.admin.card-header>
 
 
@@ -24,15 +19,30 @@
                     <thead>
                     <tr class="text">
                         <th class="border-bottom p-3" style="white-space: nowrap">
-                            client
+                            id
                         </th>
-
+                        <th class="border-bottom p-3" style="white-space: nowrap">
+                            user_id
+                        </th>
+                        <th class="border-bottom p-3" style="white-space: nowrap">
+                            name
+                        </th>
+                        <th class="border-bottom p-3" style="white-space: nowrap">
+                            redirect
+                        </th>
+                        <th class="border-bottom p-3" style="white-space: nowrap">
+                            secret
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach ($clients as $c)
                         <tr>
-                            <td>@json($c)</td>
+                            <td>{{ $c->id }}</td>
+                            <td>{{ $c->user_id ?? '-' }}</td>
+                            <td>{{ $c->name }}</td>
+                            <td>{{ $c->redirect }}</td>
+                            <td>{{ $c->plain_secret }}</td>
                         </tr>
                     @endforeach
                     </tbody>
