@@ -11,8 +11,9 @@ return [
             'openid' => 'Authenticate against Vatsim Germany Connect',
             'name' => 'First and last name',
             'email' => 'Email address',
-            'rating' => 'ATC, Pilot and Military ratings',
+            'rating' => 'ATC, pilot and military ratings',
             'assignment' => 'Region, division, subdivision and fir',
+            'legacy' => 'First and last name, email address, ATC, pilot and military ratings, region, division, subdivision and fir',
             //'address' => 'Information about your address',
             //'login' => 'See your login information',
         ],
@@ -25,12 +26,12 @@ return [
         // 'login' => [
         //     'last-login',
         // ],
-        // 'company' => [
-        //     'company_name',
-        //     'company_address',
-        //     'company_phone',
-        //     'company_email',
-        // ],
+        'legacy' => [
+            'name',
+            'email',
+            'rating',
+            'assignment',
+        ],
     ],
 
     /**
