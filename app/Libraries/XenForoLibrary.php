@@ -17,7 +17,7 @@ class XenForoLibrary extends BaseLibrary
     /**
      * Send an actual call to the XenForo API.
      */
-    public static function send(string $method, string $endpoint, array $data, bool $bypass = true): false|ResponseInterface
+    private static function send(string $method, string $endpoint, array $data, bool $bypass = true): false|ResponseInterface
     {
         $client = self::constructClient([
             'headers' => [
@@ -308,6 +308,9 @@ class XenForoLibrary extends BaseLibrary
 
     public static function get_groups(): array
     {
+        if (Cache::has('XenforoLibrary.Groups.cache_valid')) {
+            return Cache::get('XenforoLibrary.Groups');
+        }
         $response = self::send('GET', 'usergroups', []);
         if ($response->getStatusCode() != 200) {
             return [];
@@ -317,12 +320,17 @@ class XenForoLibrary extends BaseLibrary
         foreach ($result as $group) {
             $groups[] = (object)['id' => $group->user_group_id, 'name' => $group->title];
         }
+        if (!empty($groups)) {
+            Cache::forget('XenforoLibrary.Groups');
+            Cache::forever('XenforoLibrary.Groups', $groups);
+            Cache::put('XenforoLibrary.Groups.cache_valid', true, 60 * 10);
+        }
         return $groups;
     }
 
     public static function get_group_name(int $id): ?string
     {
-        $teams = Cache::remember('XenforoLibrary.Groups', 120, fn() => self::get_groups());
+        $teams = self::get_groups();
         foreach ($teams as $team) {
             if ($team->id == $id) {
                 return $team->name;
@@ -333,7 +341,7 @@ class XenForoLibrary extends BaseLibrary
 
     public static function find_group(string $name): ?int
     {
-        $teams = Cache::remember("XenforoLibrary.Groups", 120, fn() => self::get_groups());
+        $teams = self::get_groups();
         foreach ($teams as $team) {
             if ($team->name == $name) {
                 return $team->id;
