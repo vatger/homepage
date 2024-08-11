@@ -377,16 +377,16 @@ class XenForoLibrary extends BaseLibrary
 
         switch ($detail->rating_pilot_short) {
             case 'P1':
-                $groups[] = self::find_group('_rating_atc_p1');
+                $groups[] = self::find_group('_rating_pilot_p1');
                 break;
             case 'P2':
-                $groups[] = self::find_group('_rating_atc_p2');
+                $groups[] = self::find_group('_rating_pilot_p2');
                 break;
             case 'P3':
-                $groups[] = self::find_group('_rating_atc_p3');
+                $groups[] = self::find_group('_rating_pilot_p3');
                 break;
             case 'P4':
-                $groups[] = self::find_group('_rating_atc_p4');
+                $groups[] = self::find_group('_rating_pilot_p4');
                 break;
         }
 
