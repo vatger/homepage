@@ -261,7 +261,7 @@ class XenForoLibrary extends BaseLibrary
         return false;
     }
 
-    public static function deleteForumAccount(User $user)
+    public static function deleteForumAccount(User $user): bool
     {
         $forumId = $user->settings->forum_id;
         if ($forumId == null) return true;
@@ -311,8 +311,10 @@ class XenForoLibrary extends BaseLibrary
         if (Cache::has('XenforoLibrary.Groups.cache_valid')) {
             return Cache::get('XenforoLibrary.Groups');
         }
+        sleep(3);
         $response = self::send('GET', 'usergroups', []);
-        if ($response->getStatusCode() != 200) {
+        sleep(3);
+        if (!$response || $response->getStatusCode() != 200) {
             return [];
         }
         $result = json_decode($response->getBody()->getContents());
