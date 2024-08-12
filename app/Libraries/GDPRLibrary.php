@@ -9,6 +9,8 @@ use App\Models\Membership\User\User;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class GDPRLibrary
 {
@@ -60,7 +62,6 @@ class GDPRLibrary
         foreach (Team::all() as $t) {
             $user->removeRole($t->role);
         }
-
     }
 
     public static function work(GdprRemoval $gdprRemoval): void
@@ -96,9 +97,15 @@ class GDPRLibrary
         if ($result) {
             self::mark_complete($gdprRemoval, $service);
         }
-
-
     }
+
+    private static function call_api_service(GdprRemoval $gdprRemoval, string $service): bool
+    {
+        File::get(storage_path("app/configurations/gdpr-removal-services.json"));
+
+        return false;
+    }
+
 
     private static function mark_started(GdprRemoval $gdprRemoval, string $service): void
     {

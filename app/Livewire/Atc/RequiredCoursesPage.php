@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Atc;
 
 
 use Illuminate\Support\Facades\Cache;

@@ -1,15 +1,17 @@
 import mapboxgl from 'mapbox-gl';
-import $ from 'jquery';
+
 import { isEmpty } from 'lodash';
 import { findLivewireComponent } from '@/ts/livewire';
 import dayjs from 'dayjs';
 import { getDarkmode } from '@/ts/template';
 
-$(load_map);
-$(metar);
-$(atis);
-$(indicator);
-$(event);
+document.addEventListener('DOMContentLoaded', () => {
+    load_map();
+    metar();
+    atis();
+    indicator();
+    event();
+});
 
 async function load_map() {
     let lwc = findLivewireComponent('aerodrome-page');
@@ -44,7 +46,7 @@ async function load_map() {
         marker_ac.css('height', 12 * ((map.getZoom() - 3) / 20));
     });
 
-    $.each(standstatus_data, (key, stand) => {
+    standstatus_data.forEach((stand, key) => {
         const el = document.createElement('div');
         if (stand['occupier'] == null) el.className = 'marker-free';
         else el.className = 'marker-occupied';
@@ -65,7 +67,7 @@ async function load_map() {
         marker.addTo(map);
     });
 
-    $.each(aircraftstatus_data, (key, aircraft) => {
+    aircraftstatus_data.forEach((aircraft, key) => {
         const el = document.createElement('div');
         el.className = 'marker-ac';
         let callsign = `<p class="pb-0 mb-0">${aircraft['type']}</p>`;

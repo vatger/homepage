@@ -10,7 +10,7 @@
             <x-layouts.admin.card-header position="left" title="Passport Clients" :subtitle="\Laravel\Passport\Client::count()" />
 
             <x-layouts.admin.card-header position="right">
-                
+
             </x-layouts.admin.card-header>
 
 
@@ -42,7 +42,7 @@
                             <td>{{ $c->user_id ?? '-' }}</td>
                             <td>{{ $c->name }}</td>
                             <td>{{ $c->redirect }}</td>
-                            <td>{{ $c->plain_secret }}</td>
+                            <td>{{ $c->secret }}</td>
                         </tr>
                     @endforeach
                     </tbody>

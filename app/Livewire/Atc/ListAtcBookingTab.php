@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Atcbooking;
+namespace App\Livewire\Atc;
 
 use App\Libraries\VATSIM\ATCBookingsApi;
 use App\Livewire\Helpers\NotyTrait;
