@@ -28,8 +28,16 @@ class MembershipLibrary
      */
     public static function seen(User $user): void
     {
-        $user->vatgerDetails->update(['last_seen_at' => Carbon::now()]);
+        $data = ['last_seen_at' => Carbon::now()];
+
+        // if we are currently in the removal process, don't set this
+        if (!GdprRemoval::where('user_id', $user->id)->whereNull('completed_at')->exists()) {
+            $data['deleted_at'] = null;
+        }
+
+        $user->vatgerDetails->update($data);
         $user = $user->fresh();
+
         self::check_status($user);
     }
 
@@ -239,12 +247,13 @@ class MembershipLibrary
 
         // user is active clear all flags
         if (!$warning_inactive) {
-            $user->vatgerDetails->update([
+            $data = [
                 'warning_inactive_at' => null,
                 'inactive_at' => null,
                 'warning_delete_at' => null,
-                'delete_at' => null,
-            ]);
+                //'delete_at' => null,
+            ];
+            $user->vatgerDetails->update($data);
         }
 
         App::setLocale($user->settings->language);
