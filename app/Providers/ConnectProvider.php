@@ -23,7 +23,7 @@ class ConnectProvider extends GenericProvider
         parent::__construct([
             'clientId' => config('vatsim.authentication.connect.id'), // The client ID assigned to you by the provider
             'clientSecret' => config('vatsim.authentication.connect.secret'), // The client password assigned to you by the provider
-            'redirectUri' => route($this->_redirectAtferAuthentication),
+            'redirectUri' => str_replace("www.", "", route($this->_redirectAtferAuthentication)),
             'urlAuthorize' => config('vatsim.authentication.connect.base') . '/oauth/authorize',
             'urlAccessToken' => config('vatsim.authentication.connect.base') . '/oauth/token',
             'urlResourceOwnerDetails' => config('vatsim.authentication.connect.base') . '/api/user',
@@ -33,7 +33,7 @@ class ConnectProvider extends GenericProvider
             'scopeSeparator' => ' ',
         ]);
     }
-    
+
     /**
      * Get a new token from an older one
      */

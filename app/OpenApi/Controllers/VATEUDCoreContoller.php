@@ -3,11 +3,9 @@
 namespace App\OpenApi\Controllers;
 
 use App\Libraries\VATSIM\VATEUDCoreLibrary;
-use App\Models\AtcBooking;
 use App\OpenApi\Helpers\ApiPathfinder;
 use App\OpenApi\Responses\VateudRosterControllerResponse;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 

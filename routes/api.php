@@ -23,10 +23,14 @@ Route::get('discord/{cid}', [\App\OpenApi\Controllers\DiscordApiController::clas
 Route::get('solos/{cid}', [\App\OpenApi\Controllers\SolosApiController::class, 'find_member']);
 Route::get('vateud/roster', [\App\OpenApi\Controllers\VATEUDCoreContoller::class, 'roster_controller']);
 Route::post('board', [\App\OpenApi\Controllers\BoardController::class, 'create']);
+Route::post('vatsim/webhook', [\App\OpenApi\Controllers\VatsimWebhookController::class, 'post']);
+
 
 Route::get('test', [TestApiController::class, 'test']);
 
 Route::post('user/{cid}/send_notification', [UserController::class, 'send_notification']);
+
+
 
 //Route::get('bookstack', [BookstackApiController::class, 'bookstack']);
 
