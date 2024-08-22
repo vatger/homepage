@@ -18,8 +18,9 @@ class UpdateGDPRRemovalsJob implements ShouldQueue
 
     public function handle(): void
     {
-        
-        UserVatgerDetail::whereNotNull('delete_at')
+
+        UserVatgerDetail::with("user")
+            ->whereNotNull('delete_at')
             ->where('delete_at', '<', now()->subHours(24))
             ->cursor()
             ->each(function ($vatger_details) {

@@ -5,8 +5,6 @@ namespace App\Models\Membership\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Str;
 
 class UserVatgerDetail extends Model
 {

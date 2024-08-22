@@ -32,8 +32,9 @@ class MembershipLibrary
 
         // if we are currently in the removal process, don't set this
         if (!GdprRemoval::where('user_id', $user->id)->whereNull('completed_at')->exists()) {
-            $data['deleted_at'] = null;
+            $data['delete_at'] = null;
         }
+
 
         $user->vatgerDetails->update($data);
         $user = $user->fresh();
