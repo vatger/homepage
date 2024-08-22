@@ -270,6 +270,8 @@ class XenForoLibrary extends BaseLibrary
         if ($result && 200 == $result->getStatusCode()) {
             return true;
         }
+        $user->settings->forum_id = null;
+        $user->settings->save();
         return false;
     }
 
