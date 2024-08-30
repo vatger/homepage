@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 
-import { isEmpty } from 'lodash';
+import { forEach, isEmpty } from 'lodash';
 import { findLivewireComponent } from '@/ts/livewire';
 import dayjs from 'dayjs';
 import { getDarkmode } from '@/ts/template';
@@ -35,15 +35,25 @@ async function load_map() {
     });
 
     map.on('zoom', () => {
-        let marker_occupied = $('.marker-occupied');
-        let marker_free = $('.marker-free');
-        let marker_ac = $('.marker-ac');
-        marker_occupied.css('width', 12 * ((map.getZoom() - 3) / 10));
-        marker_occupied.css('height', 12 * ((map.getZoom() - 3) / 10));
-        marker_free.css('width', 12 * ((map.getZoom() - 3) / 10));
-        marker_free.css('height', 12 * ((map.getZoom() - 3) / 10));
-        marker_ac.css('width', 12 * ((map.getZoom() - 3) / 20));
-        marker_ac.css('height', 12 * ((map.getZoom() - 3) / 20));
+        let marker_occupied = document.getElementsByClassName('marker-occupied');
+        let marker_free = document.getElementsByClassName('marker-free');
+        let marker_ac = document.getElementsByClassName('marker-ac');
+
+        forEach(marker_occupied, (marker) => {
+            let m = <HTMLElement>marker;
+            m.style.width = String(12 * ((map.getZoom() - 3) / 10));
+            m.style.height = String(12 * ((map.getZoom() - 3) / 10));
+        });
+        forEach(marker_free, (marker) => {
+            let m = <HTMLElement>marker;
+            m.style.width = String(12 * ((map.getZoom() - 3) / 10));
+            m.style.height = String(12 * ((map.getZoom() - 3) / 10));
+        });
+        forEach(marker_ac, (marker) => {
+            let m = <HTMLElement>marker;
+            m.style.width = String(12 * ((map.getZoom() - 3) / 20));
+            m.style.height = String(12 * ((map.getZoom() - 3) / 20));
+        });
     });
 
     standstatus_data.forEach((stand, key) => {
