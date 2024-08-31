@@ -23,7 +23,7 @@ class SysLog extends Model
     {
         $log = new self();
         $log->user_id = $params['user_id'];
-        $log->type = $params['type'] === null ? 'log' : $params['type'];
+        $log->type = $params['type'] ?? 'log';
         $log->path = $params['path'];
         $log->method = $params['method'];
         $log->stack_trace = $params['stack_trace'];

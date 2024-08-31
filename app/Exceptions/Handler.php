@@ -15,7 +15,7 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<Throwable>>
      */
     protected $dontReport = [
-        //401
+        //374
     ];
 
     /**
@@ -41,7 +41,7 @@ class Handler extends ExceptionHandler
     {
         $log = [
             'user_id' => Auth::check() ? Auth::user()->id : null,
-            'type' => 'exception',
+            'type' => $this->isHttpException($e) ? 'http' : 'exception',
             'path' => $request->getPathInfo(),
             'method' => $request->getMethod(),
             'stack_trace' => $e->getTraceAsString(),

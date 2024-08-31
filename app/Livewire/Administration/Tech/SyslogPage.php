@@ -18,6 +18,9 @@ class SyslogPage extends Component
     #[Url]
     public ?int $log_id = null;
 
+    #[Url]
+    public ?string $type = null;
+
     protected $sortable_fields = ['created_at', 'type', 'path', 'method'];
 
     #[Layout('layouts.admin.admin-master')]
@@ -25,6 +28,9 @@ class SyslogPage extends Component
     {
         $this->authorize('tech.access');
         $query = SysLog::where('created_at', 'LIKE', $this->search . '%');
+        if ($this->type) {
+            $query->where('type', 'LIKE', $this->type . '%');
+        }
         $this->sortQueryModifier($query);
         $log = $this->log_id ? SysLog::find($this->log_id) : null;
         return view('pages.admin.syslogs')->with([

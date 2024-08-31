@@ -12,9 +12,17 @@
             <x-layouts.admin.card-header position="right">
                 <li class="list-inline-item" style="width: 100%">
                     <div class="form-icon position-relative">
-                        <i data-feather="search" class=" fea icon-sm icons"></i>
+                        <i data-feather="calendar" class=" fea icon-sm icons"></i>
                         <input wire:model.live="search" class="form-control ps-5" type="date">
                     </div>
+                </li>
+                <li class="list-inline-item" style="width: 100%">
+                    <select wire:model.live="type" class="form-select form-control mt-2" aria-label="Type">
+                        <option value="">-</option>
+                        <option value="http">http</option>
+                        <option value="exception">exception</option>
+                        <option value="log">log</option>
+                    </select>
                 </li>
             </x-layouts.admin.card-header>
 
