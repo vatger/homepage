@@ -99,7 +99,7 @@ class BookingController extends ApiController
 
             return $calendar->get();
         });
-
+        \Debugbar::disable();
         return $calendar_string;
     }
 }
