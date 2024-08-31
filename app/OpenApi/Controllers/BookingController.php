@@ -9,6 +9,7 @@ use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Response;
 use Spatie\IcalendarGenerator\Components\Calendar;
 use Spatie\IcalendarGenerator\Components\Event;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
@@ -100,6 +101,9 @@ class BookingController extends ApiController
             return $calendar->get();
         });
         \Debugbar::disable();
-        return $calendar_string;
+
+        return Response::make($calendar_string)
+            ->header("Content-type", "text/calendar; charset=utf-8")
+            ->header("Content-disposition", "attachment; filename=\"calendar.ics\"");
     }
 }
