@@ -5,6 +5,7 @@ use App\OpenApi\Controllers\BookstackApiController;
 use App\OpenApi\Controllers\TeamspeakApiController;
 use App\OpenApi\Controllers\TestApiController;
 use App\OpenApi\Controllers\UserController;
+use App\OpenApi\Middleware\JsonResponse;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 | non-web API routes.
 |
 */
-
+Route::get('booking/ical/{id}/{token}/calendar.ics', [BookingController::class, 'ical'])->withoutMiddleware(JsonResponse::class)->name('api.booking.ical');
 Route::get('booking/{start?}/{end?}', [BookingController::class, 'index']);
 Route::get('teamspeak/{cid}', [TeamspeakApiController::class, 'ids']);
 Route::get('discord/{cid}', [\App\OpenApi\Controllers\DiscordApiController::class, 'find_member']);

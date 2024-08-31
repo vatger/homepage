@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class UserPassword extends Model
 {
     protected $table = 'user_passwords';
+    protected $primaryKey = 'user_id';
 
     public $timestamps = false;
 

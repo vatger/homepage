@@ -7,6 +7,7 @@ use Illuminate\View\View;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Session;
+use Str;
 
 class SettingsTab extends Component
 {
@@ -27,7 +28,18 @@ class SettingsTab extends Component
     public function render(): View
     {
         $user = Auth::user();
-        return view('components.profile.settingstab')->with(['user' => $user]);
+
+        $ical = $user->passwords->ical_token ? route('api.booking.ical', [
+            'id' => $user->id,
+            'token' => $user->passwords->ical_token
+        ]) : null;
+
+
+        return view('components.profile.settingstab')->with(
+            [
+                'user' => $user,
+                'ical' => $ical
+            ]);
     }
 
     public function updated($name, $value): void
@@ -41,5 +53,12 @@ class SettingsTab extends Component
             ]);
         Session::put('language', $this->language);
         $this->js('window.location.reload()');
+    }
+
+    public function new_ical_token(): void
+    {
+        $user = Auth::user();
+        $user->passwords->ical_token = Str::random(32);
+        $user->passwords->save();
     }
 }

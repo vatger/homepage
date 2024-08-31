@@ -34,6 +34,7 @@
         "paragonie/paseto": "^1.1",
         "paulhollmann/vatsim-data": "dev-master",
         "paulhollmann/vatsim-stand-status": "dev-master",
+        "spatie/icalendar-generator": "^2.8",
         "spatie/laravel-collection-macros": "^7.14",
         "spatie/laravel-cookie-consent": "^3.2",
         "spatie/laravel-permission": "^6.9",

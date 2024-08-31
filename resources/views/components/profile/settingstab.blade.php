@@ -48,4 +48,23 @@
         <!--end row-->
     </form>
     <!--end form-->
+
+    <h5 class="text-md-start text-center mt-4">Settings:</h5>
+
+    <div class="row mt-4">
+        <div class="col-lg-12">
+            <div class="p-4 pb-0">
+                <div class="d-flex justify-content-between">
+                    <h6 class="mb-0">Ical URL:</h6>
+                    <div class="form-check" style="min-width: 30%;">
+                        <code>{{ $ical }}</code>
+                        <br>
+                        <button wire:click="new_ical_token" class="btn btn-icon btn-primary"><i data-feather="refresh-cw" class="fea icon-sm"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end row-->
+
 </div>
