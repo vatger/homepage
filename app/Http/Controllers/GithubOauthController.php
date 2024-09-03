@@ -27,16 +27,15 @@ class GithubOauthController extends Controller
 
     public function callback(Request $request)
     {
-        if ($request->input('state') !== $request->session()->pull($this->state_session_key)) {
-            // Within this state there is no state. The only option here is to start again.
-            $request->session()->remove($this->state_session_key);
-            return redirect()->route(route('github.oauth.link'))->withErrors([]);
+        if ($request->input('state') != session()->pull($this->state_session_key)) {
+            return redirect()->route(route('github.oauth.link'));
         }
         try {
             $this->processCallback($request);
         } catch (\Throwable $exception) {
-
+            
         }
+        return redirect()->route(route('member.profile'));
     }
 
     /**
