@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Providers\GithubOauthProvider;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 
 class GithubOauthController extends Controller
