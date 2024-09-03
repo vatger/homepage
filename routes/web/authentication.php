@@ -32,7 +32,7 @@ Route::prefix('authentication')
             Route::get('link', [GithubOauthController::class, 'link'])
                 ->name('github.oauth.link');
 
-            Route::get('callback', [GithubOauthController::class, 'link'])
+            Route::get('callback', [GithubOauthController::class, 'callback'])
                 ->name('github.oauth.callback');
         });
     });
