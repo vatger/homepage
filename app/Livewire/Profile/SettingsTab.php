@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Profile;
 
+use App\Libraries\XenForoLibrary;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\Rule;
@@ -35,9 +36,13 @@ class SettingsTab extends Component
         ]) : null;
 
 
+        $board_username = XenForoLibrary::getForumUsername($user);
+
+
         return view('components.profile.settingstab')->with(
             [
                 'user' => $user,
+                'board_username' => $board_username,
                 'ical' => $ical
             ]);
     }

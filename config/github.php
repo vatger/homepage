@@ -7,7 +7,9 @@ return [
         'token' => 'https://github.com/login/oauth/access_token',
         'user' => 'https://api.github.com/user',
         'scopes' => 'user'
-
+    ],
+    'organization' => [
+        'name' => env("GITHUB_ORGANIZATION_NAME"),
+        'token' => env("GITHUB_ORGANIZATION_TOKEN"),
     ]
-
 ];

@@ -65,7 +65,7 @@
                                     <a class="nav-link rounded {{ $tab == 'settings' ? 'active' : '' }}" data-bs-toggle="pill" role="tab"
                                        aria-controls="profile" aria-selected="true">
                                         <div class="text-start py-1 px-2">
-                                            <h6 class="mb-0">Settings</h6>
+                                            <h6 class="mb-0">Settings/Accounts</h6>
                                         </div>
                                     </a>
                                     <!--end nav link-->
@@ -75,7 +75,7 @@
                                     <a class="nav-link rounded {{ $tab == 'accounts' ? 'active' : '' }}" data-bs-toggle="pill" role="tab"
                                        aria-controls="profile" aria-selected="true">
                                         <div class="text-start py-1 px-2">
-                                            <h6 class="mb-0">Teamspeak/Forum</h6>
+                                            <h6 class="mb-0">Teamspeak</h6>
                                         </div>
                                     </a>
                                     <!--end nav link-->
@@ -85,7 +85,7 @@
                                     <a class="nav-link rounded {{ $tab == 'surveykeys' ? 'active' : '' }}" data-bs-toggle="pill" role="tab"
                                        aria-controls="profile" aria-selected="true">
                                         <div class="text-start py-1 px-2">
-                                            <h6 class="mb-0">Survey Keys</h6>
+                                            <h6 class="mb-0">Survey/Umfragen</h6>
                                         </div>
                                     </a>
                                     <!--end nav link-->

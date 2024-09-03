@@ -53,16 +53,68 @@
 
     <div class="row mt-4">
         <div class="col-lg-12">
-            <div class="p-4 pb-0">
-                <div class="d-flex justify-content-between">
-                    <h6 class="mb-0">Ical URL:</h6>
-                    <div class="form-check" style="min-width: 30%;">
-                        <a href="{{ $ical }}">{{ $ical }}</a>
-                        <br>
-                        <button wire:click="new_ical_token" class="btn btn-icon btn-primary"><i data-feather="refresh-cw" class="fea icon-sm"></i></button>
-                    </div>
+            <div class="d-flex justify-content-between p-4 pb-0">
+                <h6 class="mb-0">iCalender Link for bookings</h6>
+                <div class="form-check" style="min-width: 30%;">
+                    @if(!empty($ical))
+                        <a href="{{ $ical }}">iCalender Url</a>
+                        <button onclick="navigator.clipboard.writeText('{{ $ical }}');" class="btn btn-primary"><i data-feather="clipboard" class="fea icon-sm"></i> copy</button>
+                    @endif
+                    <button wire:click="new_ical_token" class="btn btn-danger"><i data-feather="refresh-cw" class="fea icon-sm"></i> renew</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--end row-->
+
+    <h5 class="text-md-start text-center mt-4">Accounts:</h5>
+
+    <div class="row mt-4">
+        <div class="col-lg-12">
+
+            <div class="d-flex justify-content-between p-4 pb-0">
+                <h6 class="mb-0">VATSIM Account</h6>
+                <div class="form-check" style="min-width: 30%;">
+                    <span><b>ID</b> {{ $user->id }}</span>
+                    <a href="https://my.vatsim.net/profile">
+                        <button class="btn btn-secondary"><i data-feather="user" class="fea icon-sm"></i> manage</button>
+                    </a>
                 </div>
             </div>
+
+            <div class="d-flex justify-content-between p-4 pb-0">
+                <h6 class="mb-0">Forum Account</h6>
+                <div class="form-check" style="min-width: 30%;">
+                    @if(!empty($board_username))
+                        <span><b>Username</b> {{ $board_username }}</span>
+                        <a href="https://board.vatsim-germany.org/account/account-details">
+                            <button class="btn btn-secondary"><i data-feather="user" class="fea icon-sm"></i> view</button>
+                        </a>
+                    @else
+                        <span><b>Username</b> not set</span>
+                        <a href="https://board.vatsim-germany.org/oauth">
+                            <button class="btn btn-secondary"><i data-feather="user-plus" class="fea icon-sm"></i> create</button>
+                        </a>
+                    @endif
+
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between p-4 pb-0">
+                <h6 class="mb-0">Github Account</h6>
+                <div class="form-check" style="min-width: 30%;">
+                    @if(!empty($user->settings->github_username))
+                        <span><b>Username</b> {{ $user->settings->github_username }}</span>
+                    @else
+                        <span><b>Username</b> not set</span>
+                    @endif
+                    <a href="{{ route('github.oauth.link') }}">
+                        <button class="btn btn-secondary"><i data-feather="github" class="fea icon-sm"></i> link</button>
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
     <!--end row-->
