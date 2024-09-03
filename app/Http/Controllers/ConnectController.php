@@ -19,7 +19,7 @@ class ConnectController extends Controller
     /**
      * The VATSIM Authentication Provider Instance
      */
-    protected ConnectProvider $_provider;
+    protected ConnectProvider $provider;
 
     /**
      * Initialize the Controller with a new ConnectProvider instance
@@ -27,13 +27,13 @@ class ConnectController extends Controller
     function __construct()
     {
         parent::__construct();
-        $this->_provider = new ConnectProvider();
+        $this->provider = new ConnectProvider();
     }
 
     public function login(Request $request): RedirectResponse
     {
-        $authenticationUrl = $this->_provider->getAuthorizationUrl();
-        $request->session()->put('vatsim.authentication.connect.state', $this->_provider->getState());
+        $authenticationUrl = $this->provider->getAuthorizationUrl();
+        $request->session()->put('vatsim.authentication.connect.state', $this->provider->getState());
         return redirect()->away($authenticationUrl);
     }
 
@@ -53,7 +53,7 @@ class ConnectController extends Controller
     private function _verifyLogin(Request $request): RedirectResponse
     {
         try {
-            $accessToken = $this->_provider->getAccessToken('authorization_code', [
+            $accessToken = $this->provider->getAccessToken('authorization_code', [
                 'code' => $request->input('code'),
             ]);
         } catch (UnexpectedValueException $e) {
@@ -70,7 +70,7 @@ class ConnectController extends Controller
         }
 
         try {
-            $resourceOwner = json_decode(json_encode($this->_provider->getResourceOwner($accessToken)->toArray()));
+            $resourceOwner = json_decode(json_encode($this->provider->getResourceOwner($accessToken)->toArray()));
         } catch (UnexpectedValueException $e) {
             Log::error('[ConnectController]::_verifyLogin::ResourceOwner::' . $e->getMessage());
             return redirect()

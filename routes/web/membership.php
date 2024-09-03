@@ -34,4 +34,5 @@ Route::prefix('members')
         Route::get('/sdp', \App\Livewire\Administration\StaffDataProtection::class)
             ->withoutMiddleware(['staff_data_protection'])
             ->name('administration.sdp');
+
     });
