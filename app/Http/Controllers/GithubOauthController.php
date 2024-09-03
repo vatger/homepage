@@ -27,13 +27,17 @@ class GithubOauthController extends Controller
 
     public function callback(Request $request)
     {
+
+        dd($request->input('state'), session()->pull($this->state_session_key), $request);
+
+
         if ($request->input('state') != session()->pull($this->state_session_key)) {
             return redirect()->route(route('github.oauth.link'));
         }
         try {
             $this->processCallback($request);
         } catch (\Throwable $exception) {
-            
+
         }
         return redirect()->route(route('member.profile'));
     }
