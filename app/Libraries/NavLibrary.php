@@ -4,32 +4,18 @@ namespace App\Libraries;
 
 use App\Models\Navigation\Aerodrome;
 use App\Models\Navigation\Station;
-use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class NavLibrary extends BaseLibrary
+class NavLibrary extends BaseGithubLibrary
 {
-    static function pull_stations(): array|null
-    {
-        return Cache::remember('navlibrary.stations', 60 * 5, function () {
-            $url = 'https://raw.githubusercontent.com/VATGER-Nav/datahub/main/data.json';
-            $client = self::constructClient();
-            try {
-                $res = $client->get($url);
-                return json_decode($res->getBody(), false, 512, JSON_THROW_ON_ERROR);
-            } catch (GuzzleException|\JsonException $e) {
-                Log::debug($e->getMessage());
-                return null;
-            }
-        });
-    }
-
     static function sync_stations(): void
     {
-        $stations = self::pull_stations();
+        $repo = 'VATGER-Nav/datahub';
+        $branch = 'main';
+        $path = 'data.json';
+
+        $stations = self::github_dl_file($repo, $branch, $path);
         if (empty($stations)) {
             return;
         }
@@ -86,23 +72,15 @@ class NavLibrary extends BaseLibrary
         $branch = 'production';
         $path = 'api';
 
-        // GitHub API URL to get the content of the folder
-        $url = "https://api.github.com/repos/$repo/contents/$path?ref=$branch";
+        $files = self::github_get_file_list($repo, $branch, $path);
 
-        try {
-            $response = $client->get($url);
-            $files = json_decode($response->getBody()->getContents(), true);
+        foreach ($files as $file) {
+            $content = $client->get($file->download_url)->getBody()->getContents();
+            $filename = Str::lower($file->name);
+            $filePath = "navigation/stands/$filename";
+            Storage::put($filePath, $content);
 
-            foreach ($files as $file) {
-                if ($file['type'] === 'file') {
-                    $fileContent = $client->get($file['download_url'])->getBody()->getContents();
-                    $filename = Str::lower($file['name']);
-                    $filePath = "navigation/stands/$filename";
-                    Storage::put($filePath, $fileContent);
-                }
-            }
-
-        } catch (GuzzleException|\Exception $e) {
         }
+
     }
 }
