@@ -34,7 +34,7 @@ class AerodromePage extends Component
     public function render()
     {
         $data = NavLibrary::download_airport_data($this->icao);
-        $links = collect($data->links)->groupBy('category');
+        $links = $data ? collect($data->links)->groupBy('category') : [];
         return view('pages.aerodrome')->with([
             'aerodrome' => $this->aerodrome,
             'links' => $links
