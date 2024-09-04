@@ -4,6 +4,7 @@ namespace App\Libraries;
 
 use App\Models\Navigation\Aerodrome;
 use App\Models\Navigation\Station;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -75,12 +76,31 @@ class NavLibrary extends BaseGithubLibrary
         $files = self::github_get_file_list($repo, $branch, $path);
 
         foreach ($files as $file) {
+            if (!str_ends_with($file->name, ".csv"))
+                continue;
             $content = $client->get($file->download_url)->getBody()->getContents();
             $filename = Str::lower($file->name);
             $filePath = "navigation/stands/$filename";
             Storage::put($filePath, $content);
 
         }
+    }
 
+    public static function download_airport_data(string $icao): ?object
+    {
+        $repo = 'VATGER-Nav/airport-data';
+        $branch = 'production';
+        $path = 'api/airports.json';
+
+        $airports = Cache::remember('airports-data', 60 * 60 * 4, function () use ($repo, $branch, $path) {
+            return self::github_dl_file($repo, $branch, $path)?->airports;
+        });
+
+        if (empty($airports)) return null;
+
+        foreach ($airports as $airport) {
+            if ($airport?->icao && strtolower($airport?->icao) == strtolower($icao)) return $airport;
+        }
+        return null;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Libraries\NavLibrary;
 use App\Libraries\StandStatusLibrary;
 use App\Libraries\VATSIM\DataFeedLibrary;
 use App\Libraries\VATSIM\EventLibrary;
@@ -16,18 +17,28 @@ class AerodromePage extends Component
 {
     #[Locked]
     public string $icao;
+
+    public string $selected_link;
+
     #[Locked]
     public Aerodrome $aerodrome;
+
 
     public function mount()
     {
         $this->aerodrome = Aerodrome::icao($this->icao)->firstOrFail();
+
     }
 
     #[Layout('layouts.master')]
     public function render()
     {
-        return view('pages.aerodrome')->with(['aerodrome' => $this->aerodrome]);
+        $data = NavLibrary::download_airport_data($this->icao);
+        $links = collect($data->links)->groupBy('category');
+        return view('pages.aerodrome')->with([
+            'aerodrome' => $this->aerodrome,
+            'links' => $links
+        ]);
     }
 
     public function load_stands(): array

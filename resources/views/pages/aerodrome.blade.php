@@ -104,10 +104,37 @@
                 <div class="col-lg-4 col-md-6 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                     <div class="card border-0 sidebar sticky-bar ms-lg-4">
                         <div class="card-body p-0">
-                            <a class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#wishlist">
-                                Charts
-                                <i data-feather="external-link" class="ms-1"></i>
-                            </a>
+
+                            <div class="widget">
+                                <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0 text-dark">
+                                    Links
+                                </span>
+
+                                <div class="mt-2 mb-2">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-1 ms-1">
+                                            @foreach($links as $category)
+                                                <span class="d-block text-center h6 mb-1 mt-2 text-dark">
+                                                    {{ $category[0]->category }}
+                                                </span>
+                                                @foreach($category as $link)
+                                                    @if(!preg_match("/^https:\/\/[a-zA-Z0-9_-]*\.?vatsim-germany\.org.*/", $link->url))
+                                                        <a class="btn btn-secondary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#warning-{{ bin2hex($link->url) }}">
+                                                            {{ $link->name }}
+                                                            <i data-feather="external-link" class="ms-1 fea icon-sm"></i>
+                                                        </a>
+                                                    @else
+                                                        <a href="{{ $link->url }}" class="btn btn-secondary w-100 mb-2">
+                                                            {{ $link->name }}
+                                                        </a>
+                                                    @endif
+                                                @endforeach
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
 
                             <!-- RECENT POST -->
                             <div class="widget mt-4">
@@ -171,28 +198,36 @@
         </div>
         <!--end container-->
 
-        <div class="modal fade" id="wishlist" tabindex="-1" aria-labelledby="LoginForm-title" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content rounded shadow border-0">
-                    <div class="modal-body text-center">
-                        <div class="icon d-flex align-items-center justify-content-center bg-soft-danger rounded-circle mx-auto" style="height: 80px; width:80px;">
-                            <i data-feather="alert-triangle" class=""></i>
-                        </div>
-                        <div class="mt-4">
-                            <h4>Weiterleitung</h4>
-                            <p class="text-muted">
-                                Du verlässt VATSIM Germany.
-                                Der von dir ausgewählte Link leitet dich auf <span style="font-family: monospace">https://chartfox.org/{{strtoupper($aerodrome->icao)}}</span> weiter.
-                                VATSIM Germany ist in keiner Weise mit Chartfox verbunden und für keine Inhalte der Seite verantwortlich.
-                            </p>
-                            <div class="mt-4">
-                                <a href="https://chartfox.org/{{$aerodrome->icao}}" target="_blank" class="btn btn-primary">Verstanden</a>
+        @foreach($links as $category)
+            @foreach($category as $link)
+                <div class="modal fade" id="warning-{{ bin2hex($link->url) }}" tabindex="-1" aria-labelledby="LoginForm-title" style="display: none;"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content rounded shadow border-0">
+                            <div class="modal-body text-center">
+                                <div class="icon d-flex align-items-center justify-content-center bg-soft-danger rounded-circle mx-auto"
+                                     style="height: 80px; width:80px;">
+                                    <i data-feather="alert-triangle" class=""></i>
+                                </div>
+                                <div class="mt-4">
+                                    <h4>Weiterleitung</h4>
+                                    <p class="text-muted">
+                                        Du verlässt VATSIM Germany.
+                                        Der von dir ausgewählte Link leitet dich auf eine externe Seite <span style="font-family: monospace">{{ $link->url }}</span>
+                                        weiter.
+                                        VATSIM Germany ist in keiner Weise mit dieser Seite verbunden und für keine Inhalte der Seite verantwortlich.
+                                    </p>
+                                    <div class="mt-4">
+                                        <a href="{{ $link->url }}" target="_blank" class="btn btn-primary">Verstanden</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            @endforeach
+        @endforeach
+
     </section>
 </div>
 
