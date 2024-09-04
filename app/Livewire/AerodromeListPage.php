@@ -30,7 +30,7 @@ class AerodromeListPage extends Component
         $aerodromes->orderBy('selection', direction: 'desc');
 
         return view('pages.aerodromes')->with([
-            'aerodromes' => $aerodromes->get()->paginate()->onEachSide(1),
+            'aerodromes' => $aerodromes->get()->paginate()->onEachSide(0),
             'firs' => \App\Models\Navigation\Fir::all(),
         ]);
     }
