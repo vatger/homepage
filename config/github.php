@@ -6,7 +6,7 @@ return [
         'authorize' => 'https://github.com/login/oauth/authorize',
         'token' => 'https://github.com/login/oauth/access_token',
         'user' => 'https://api.github.com/user',
-        'scopes' => 'user'
+        'scopes' => ''
     ],
     'app' => [
         'id' => env("GITHUB_APP_ID"),
