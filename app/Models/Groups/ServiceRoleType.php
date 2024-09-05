@@ -10,4 +10,6 @@ enum ServiceRoleType: string
     case BookstackGroup = 'kb.group';
     case VikunjaGroup = 'vikunja.group';
     case NextcloudGroup = 'nextcloud.group';
+
+    case GitHubGroup = 'github.group';
 }

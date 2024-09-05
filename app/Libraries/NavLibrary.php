@@ -2,6 +2,8 @@
 
 namespace App\Libraries;
 
+use App\Models\Groups\ServiceRoleType;
+use App\Models\Membership\User\User;
 use App\Models\Navigation\Aerodrome;
 use App\Models\Navigation\Station;
 use Illuminate\Support\Facades\Cache;
@@ -10,6 +12,23 @@ use Illuminate\Support\Str;
 
 class NavLibrary extends BaseGithubLibrary
 {
+    public static function check_user(User $user): bool
+    {
+        $roles = $user->service_role_ids(ServiceRoleType::GitHubGroup, cast_to_int: false);
+
+        $orga_member = self::github_is_in_organization($user, 'vatger-nav');
+
+        if (empty($roles) && $orga_member) {
+            self::github_remove_from_organization($user, 'vatger-nav');
+        }
+        if (!empty($roles) && !$orga_member) {
+            self::github_add_to_organization($user, 'vatger-nav');
+        }
+
+        return true;
+    }
+
+
     static function sync_stations(): void
     {
         $repo = 'VATGER-Nav/datahub';

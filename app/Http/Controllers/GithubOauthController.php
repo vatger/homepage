@@ -48,6 +48,7 @@ class GithubOauthController extends Controller
         ]);
         $resourceOwner = json_decode(json_encode($this->provider->getResourceOwner($accessToken)->toArray()));
         $this->current_user->settings->github_username = $resourceOwner->login;
+        $this->current_user->settings->github_userid = $resourceOwner->id;
         $this->current_user->settings->save();
     }
 

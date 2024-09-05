@@ -8,6 +8,10 @@ return [
         'user' => 'https://api.github.com/user',
         'scopes' => 'user'
     ],
+    'app' => [
+        'id' => env("GITHUB_APP_ID"),
+        'secret' => env("GITHUB_APP_SECRET"),
+    ],
     'organization' => [
         'name' => env("GITHUB_ORGANIZATION_NAME"),
         'token' => env("GITHUB_ORGANIZATION_TOKEN"),
