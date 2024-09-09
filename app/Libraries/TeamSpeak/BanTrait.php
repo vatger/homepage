@@ -2,7 +2,7 @@
 
 namespace App\Libraries\TeamSpeak;
 
-use App\Models\Membership\TeamspeakRegistration;
+use App\Models\TeamspeakRegistration;
 use Illuminate\Support\Facades\Cache;
 
 trait BanTrait

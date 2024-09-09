@@ -4,7 +4,7 @@ namespace App\Libraries\TeamSpeak;
 
 use App\Models\Groups\ServiceRole;
 use App\Models\Groups\ServiceRoleType;
-use App\Models\Membership\TeamspeakRegistration;
+use App\Models\TeamspeakRegistration;
 use Illuminate\Support\Facades\Cache;
 
 trait ServergroupTrait
