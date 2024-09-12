@@ -34,7 +34,7 @@ class TermsPage extends Component
     #[Layout('layouts.master')]
     public function render()
     {
-        return view('pages.terms')->with([
+        return view('pages.policy_check')->with([
             'gdpr' => $this->gdpr,
             'imprint' => $this->imprint,
             'termsofuse' => $this->termsofuse,
