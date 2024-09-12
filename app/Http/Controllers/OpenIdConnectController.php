@@ -36,23 +36,30 @@ class OpenIdConnectController
         }
         if ($user->tokenCan('legacy')) {
             $userinfo['data']['cid'] = $user->id;
-            $userinfo['data']['personal']['name_first'] = $user->firstname;
-            $userinfo['data']['personal']['name_last'] = $user->lastname;
-            $userinfo['data']['personal']['name_full'] = $user->firstname . ' ' . $user->lastname;
-            $userinfo['data']['personal']['email'] = $user->email;
-            $userinfo['data']['vatsim']['rating']['id'] = $user->vatsimDetails->rating_atc;
-            $userinfo['data']['vatsim']['rating']['short'] = $user->vatsimDetails->rating_atc_short;
-            $userinfo['data']['vatsim']['rating']['long'] = $user->vatsimDetails->rating_atc_long;
-            $userinfo['data']['vatsim']['pilotrating']['id'] = $user->vatsimDetails->rating_pilot;
-            $userinfo['data']['vatsim']['pilotrating']['short'] = $user->vatsimDetails->rating_pilot_short;
-            $userinfo['data']['vatsim']['pilotrating']['long'] = $user->vatsimDetails->rating_pilot_long;
-            $userinfo['data']['vatsim']['region']['id'] = $user->vatsimDetails->region_code;
-            $userinfo['data']['vatsim']['region']['name'] = $user->vatsimDetails->region_name;
-            $userinfo['data']['vatsim']['division']['id'] = $user->vatsimDetails->division_code;
-            $userinfo['data']['vatsim']['division']['name'] = $user->vatsimDetails->division_name;
-            $userinfo['data']['vatsim']['subdivision']['id'] = $user->vatsimDetails->subdivision_code;
-            $userinfo['data']['vatsim']['subdivision']['name'] = $user->vatsimDetails->subdivision_name;
-
+            if ($user->tokenCan('name')) {
+                $userinfo['data']['personal']['name_first'] = $user->firstname;
+                $userinfo['data']['personal']['name_last'] = $user->lastname;
+                $userinfo['data']['personal']['name_full'] = $user->firstname . ' ' . $user->lastname;
+            }
+            if ($user->tokenCan('email')) {
+                $userinfo['data']['personal']['email'] = $user->email;
+            }
+            if ($user->tokenCan('rating')) {
+                $userinfo['data']['vatsim']['rating']['id'] = $user->vatsimDetails->rating_atc;
+                $userinfo['data']['vatsim']['rating']['short'] = $user->vatsimDetails->rating_atc_short;
+                $userinfo['data']['vatsim']['rating']['long'] = $user->vatsimDetails->rating_atc_long;
+                $userinfo['data']['vatsim']['pilotrating']['id'] = $user->vatsimDetails->rating_pilot;
+                $userinfo['data']['vatsim']['pilotrating']['short'] = $user->vatsimDetails->rating_pilot_short;
+                $userinfo['data']['vatsim']['pilotrating']['long'] = $user->vatsimDetails->rating_pilot_long;
+            }
+            if ($user->tokenCan('assignment')) {
+                $userinfo['data']['vatsim']['region']['id'] = $user->vatsimDetails->region_code;
+                $userinfo['data']['vatsim']['region']['name'] = $user->vatsimDetails->region_name;
+                $userinfo['data']['vatsim']['division']['id'] = $user->vatsimDetails->division_code;
+                $userinfo['data']['vatsim']['division']['name'] = $user->vatsimDetails->division_name;
+                $userinfo['data']['vatsim']['subdivision']['id'] = $user->vatsimDetails->subdivision_code;
+                $userinfo['data']['vatsim']['subdivision']['name'] = $user->vatsimDetails->subdivision_name;
+            }
         }
 
         $userinfo['openid'] = 'vatger v' . config('app.version');

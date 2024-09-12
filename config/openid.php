@@ -13,7 +13,7 @@ return [
             'email' => 'Email address',
             'rating' => 'ATC, pilot and military ratings',
             'assignment' => 'Region, division, subdivision and fir',
-            'legacy' => 'First and last name, email address, ATC, pilot and military ratings, region, division, subdivision and fir',
+            'legacy' => 'The information above in legacy format',
             //'address' => 'Information about your address',
             //'login' => 'See your login information',
         ],
