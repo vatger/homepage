@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Libraries\VATSIM\CoreApiLibrary2;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

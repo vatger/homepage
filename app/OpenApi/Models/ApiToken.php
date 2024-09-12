@@ -2,7 +2,7 @@
 
 namespace App\OpenApi\Models;
 
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Cache;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

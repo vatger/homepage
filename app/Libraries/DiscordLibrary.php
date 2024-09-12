@@ -2,7 +2,7 @@
 
 namespace App\Libraries;
 
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
 
@@ -18,14 +18,14 @@ class DiscordLibrary extends BaseLibrary
             if ($response_code == 200 || $response_code == 204) {
                 return json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
             }
-        } catch (GuzzleException | \JsonException $e) {
+        } catch (GuzzleException|\JsonException $e) {
         }
         return false;
     }
 
     public static function check_user(User $user): void
     {
-        $data = (object) [
+        $data = (object)[
             'cid' => $user?->id,
             'is_vatger_member' => !empty($user),
             'is_vatger_fullmember' => $user?->vatgerDetails?->is_vatger_member,
@@ -41,7 +41,7 @@ class DiscordLibrary extends BaseLibrary
         if (Cache::get("DiscordLibrary.check_user.hash.$data->cid") == $current_hash) {
             return;
         }
-        self::_send('member/update', 'POST', (array) $data);
+        self::_send('member/update', 'POST', (array)$data);
         //Cache::put("DiscordLibrary.check_user.hash.$data->cid", $current_hash);
     }
 }

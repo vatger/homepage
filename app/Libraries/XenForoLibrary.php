@@ -3,9 +3,8 @@
 namespace App\Libraries;
 
 use App\Models\Groups\ServiceRoleType;
-use App\Models\Membership\User\User;
-use App\Models\Membership\User\UserVatsimDetail;
-use App\Notifications\BasicNotification;
+use App\Models\Membership\User;
+use App\Models\Membership\UserVatsimDetail;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;

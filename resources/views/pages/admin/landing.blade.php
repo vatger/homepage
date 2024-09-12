@@ -5,7 +5,7 @@
         <div class="layout-specing">
 
             <x-layouts.admin.content
-                    header="Dashboard"
+                header="Dashboard"
             ></x-layouts.admin.content>
 
             <div class="row row-cols-xl-3 row-cols-md-2 row-cols-1">
@@ -18,7 +18,7 @@
                             </div>
                             <div class="flex-1 ms-3">
                                 <h6 class="mb-0 text-muted">Registered Accounts</h6>
-                                <p class="fs-5 text-dark fw-bold mb-0">{{ \App\Models\Membership\User\User::count() }}</p>
+                                <p class="fs-5 text-dark fw-bold mb-0">{{ \App\Models\Membership\User::count() }}</p>
                             </div>
                         </div>
                     </a>

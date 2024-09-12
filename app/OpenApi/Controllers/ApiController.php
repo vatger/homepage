@@ -2,11 +2,9 @@
 
 namespace App\OpenApi\Controllers;
 
-use App\Models\Membership\User\User;
-use App\OpenApi\Helpers\ApiPathfinder;
+use App\Models\Membership\User;
 use App\OpenApi\Models\ApiLog;
 use App\OpenApi\Models\ApiToken;
-use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Carbon\Carbon;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;

@@ -3,8 +3,8 @@
 namespace App\Jobs;
 
 use App\Libraries\GDPRLibrary;
-use App\Models\Membership\User\GdprRemoval;
-use App\Models\Membership\User\UserVatgerDetail;
+use App\Models\Membership\GdprRemoval;
+use App\Models\Membership\UserVatgerDetail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

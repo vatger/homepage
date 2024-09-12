@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\Membership\User\UserSetting;
+use App\Models\Membership\UserSetting;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Connection;

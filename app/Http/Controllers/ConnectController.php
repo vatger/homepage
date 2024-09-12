@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Libraries\MembershipLibrary;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use App\Providers\ConnectProvider;
 use Exception;
 use Illuminate\Http\RedirectResponse;

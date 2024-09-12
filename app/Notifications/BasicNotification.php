@@ -3,13 +3,12 @@
 namespace App\Notifications;
 
 use App\Mail\BasicNotificationMail;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Notifications\Notification;
 use Stevebauman\Purify\Facades\Purify;
-use Symfony\Component\Mailer\MailerInterface;
 
 class BasicNotification extends Notification
 {
@@ -21,14 +20,15 @@ class BasicNotification extends Notification
      * @return void
      */
     public function __construct(
-        public string $title,
-        public string $message, //supports markdown
-        public string $source_name,
+        public string  $title,
+        public string  $message, //supports markdown
+        public string  $source_name,
         public ?string $link_text = null,
         public ?string $link_url = null,
         public ?Carbon $valid_till = null,
         public ?Carbon $delete_at = null,
-    ) {
+    )
+    {
     }
 
     /**

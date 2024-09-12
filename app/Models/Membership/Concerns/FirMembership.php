@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models\Membership\User\Concerns;
+namespace App\Models\Membership\Concerns;
 
 use App\Models\Groups\Fir;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;

@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 use App\Libraries\XenForoLibrary;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Illuminate\Notifications\Notification;
 
 class BoardChannel
@@ -23,8 +23,8 @@ class BoardChannel
             return;
         }
         $data = (method_exists($notification, 'toBoard')
-                ? $notification->toBoard($notifiable)
-                : method_exists($notification, 'toArray'))
+            ? $notification->toBoard($notifiable)
+            : method_exists($notification, 'toArray'))
             ? $notification->toArray($notifiable)
             : null;
         if (empty($data)) {

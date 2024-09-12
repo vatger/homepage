@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Libraries\MembershipLibrary;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;

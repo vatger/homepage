@@ -6,7 +6,7 @@ use App\Libraries\MembershipLibrary;
 use App\Libraries\XenForoLibrary;
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\Groups\Fir;
-use App\Models\Membership\User\Concerns\FirMembership;
+use App\Models\Membership\Concerns\FirMembership;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 

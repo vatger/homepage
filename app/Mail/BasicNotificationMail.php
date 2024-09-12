@@ -2,10 +2,9 @@
 
 namespace App\Mail;
 
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use App\Notifications\BasicNotification;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Attachment;
@@ -48,7 +47,7 @@ class BasicNotificationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.mail-master',
+            view: 'emails.mail-master1',
             with: [
                 'title' => $this->notification->title,
                 'source_name' => $this->notification->source_name,

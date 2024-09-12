@@ -4,7 +4,7 @@ namespace App\Livewire\Administration\Tech;
 
 use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SortableTrait;
-use App\Models\Membership\User\GdprRemoval;
+use App\Models\Membership\GdprRemoval;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 

@@ -2,6 +2,8 @@
 
 namespace App\Libraries;
 
+use App\Models\Groups\ServiceRoleType;
+use App\Models\Membership\User;
 use App\Models\Navigation\Aerodrome;
 use App\Models\Navigation\Station;
 use GuzzleHttp\Exception\GuzzleException;

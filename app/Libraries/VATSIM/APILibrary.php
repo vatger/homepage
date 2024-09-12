@@ -3,7 +3,7 @@
 namespace App\Libraries\VATSIM;
 
 use App\Libraries\MembershipLibrary;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;

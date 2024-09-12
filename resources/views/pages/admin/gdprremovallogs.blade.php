@@ -7,7 +7,7 @@
 
         <x-layouts.admin.card>
 
-            <x-layouts.admin.card-header position="left" title="GDPR Removal Logs" :subtitle="\App\Models\Membership\User\GdprRemoval::count()" />
+            <x-layouts.admin.card-header position="left" title="GDPR Removal Logs" :subtitle="\App\Models\Membership\GdprRemoval::count()" />
 
 
             <div class="p-4 table-responsive">

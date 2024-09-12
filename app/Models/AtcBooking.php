@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use App\Models\Navigation\Station;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Query\Builder as DBuilder;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Query\Builder as DBuilder;
 
 /**
  * ATC Booking

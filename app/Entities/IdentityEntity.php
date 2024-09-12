@@ -2,7 +2,7 @@
 
 namespace App\Entities;
 
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use OpenIDConnect\Claims\Traits\WithClaims;
 use OpenIDConnect\Interfaces\IdentityEntityInterface;

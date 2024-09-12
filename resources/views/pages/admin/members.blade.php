@@ -8,7 +8,7 @@
         />
 
         <x-layouts.admin.card>
-            <x-layouts.admin.card-header position="left" title="Mitglieder" icon="users" :subtitle="\App\Models\Membership\User\User::count()"></x-layouts.admin.card-header>
+            <x-layouts.admin.card-header position="left" title="Mitglieder" icon="users" :subtitle="\App\Models\Membership\User::count()"></x-layouts.admin.card-header>
 
             <x-layouts.admin.card-header position="right">
                 <li class="list-inline-item" style="width: 100%">

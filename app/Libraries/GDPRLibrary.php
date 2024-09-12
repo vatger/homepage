@@ -4,13 +4,12 @@ namespace App\Libraries;
 
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Models\Groups\Team;
-use App\Models\Membership\User\GdprRemoval;
-use App\Models\Membership\User\User;
+use App\Models\Membership\GdprRemoval;
+use App\Models\Membership\User;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 class GDPRLibrary
 {

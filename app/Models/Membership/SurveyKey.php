@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Membership;
 
-use App\Models\Membership\User\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

@@ -2,7 +2,7 @@
 
 namespace App\OpenApi\Controllers;
 
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use App\OpenApi\Helpers\ApiPathfinder;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
@@ -24,7 +24,7 @@ class DiscordApiController extends ApiController
         $this->authorizeApiRequest('discord.find_member');
         $user = User::find($cid);
 
-        $data = (object) [
+        $data = (object)[
             'cid' => $user?->id,
             'is_vatger_member' => !empty($user),
             'is_vatger_fullmember' => $user?->vatgerDetails?->is_vatger_member,

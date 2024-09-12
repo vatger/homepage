@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models\Membership\User\Concerns;
+namespace App\Models\Membership\Concerns;
 
-use App\Models\Membership\User\UserBan;
+use App\Models\Membership\UserBan;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Eloquent\Relations\HasMany;

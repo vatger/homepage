@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Membership\User\Concerns;
+namespace App\Models\Membership\Concerns;
 
 use App\Models\Groups\Fir;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;

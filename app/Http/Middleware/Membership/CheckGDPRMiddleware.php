@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware\Membership;
 
-use App\Models\Membership\User\GdprRemoval;
+use App\Models\Membership\GdprRemoval;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

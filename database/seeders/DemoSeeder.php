@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Libraries\MembershipLibrary;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Session;
 

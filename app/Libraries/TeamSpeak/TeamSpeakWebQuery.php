@@ -4,7 +4,7 @@ namespace App\Libraries\TeamSpeak;
 
 use App\Models\Groups\ServiceRoleType;
 use App\Models\Membership\TeamspeakRegistration;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 

@@ -3,8 +3,7 @@
 namespace App\Libraries;
 
 use App\Models\Groups\ServiceRoleType;
-use App\Models\Membership\User\User;
-use GuzzleHttp\Client;
+use App\Models\Membership\User;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
 

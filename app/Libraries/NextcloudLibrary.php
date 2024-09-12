@@ -3,16 +3,14 @@
 namespace App\Libraries;
 
 use App\Models\Groups\ServiceRoleType;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use phpDocumentor\Reflection\PseudoTypes\LowercaseString;
 
 class NextcloudLibrary extends BaseLibrary
 {
@@ -69,7 +67,7 @@ class NextcloudLibrary extends BaseLibrary
             return null;
         }
         $response_content = json_decode(json_encode(simplexml_load_string($response->getBody()->getContents())));
-        $obj = (object) [
+        $obj = (object)[
             'meta' => $response_content->meta,
             'data' => self::mergeElementAboveLevel($response_content->data),
         ];
