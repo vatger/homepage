@@ -12,7 +12,6 @@ use JsonException;
 
 class BaseGithubLibrary extends BaseLibrary
 {
-
     protected static function constructGithubClient(string $jwt = "", array $config = []): Client
     {
         $config['headers'] = array_merge($config['headers'] ?? [], [

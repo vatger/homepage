@@ -119,6 +119,15 @@ class MembershipLibrary
             }
         }
 
+        // 8. Nav
+        if (true) {
+            try {
+                NavLibrary::check_user($user);
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+            }
+        }
+
         Log::info('[MembershipLibrary::handleMembershipChange]::' . $user->id . '::Membership Update Triggered!');
     }
 

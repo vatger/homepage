@@ -6,7 +6,7 @@
                 <div class="mt-1">
                     <x-profile.profiletabitem title="E-Mail (Forum)" :text="$user->email_backup ?? 'N/A' " feaicon="mail">
                         @if($user->email_backup)
-                            <button wire:click="changeEmail()"><a>reset to VATSIM E-Mail</a></button>
+                            <button wire:click="changeEmail()" class="btn btn-sm btn-primary">reset to VATSIM E-Mail</button>
                         @endif
                     </x-profile.profiletabitem>
                     <x-profile.profiletabitem title="Vollmitglied" :text="$user->vatgerDetails->is_vatger_member ? 'YES':'NO'"

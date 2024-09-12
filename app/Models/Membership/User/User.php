@@ -3,11 +3,11 @@
 namespace App\Models\Membership\User;
 
 use App\Models\Feedback\ControllerFeedback;
-use App\Models\Membership\TeamspeakRegistration;
 use App\Models\Membership\User\Concerns\HasBanConcern;
 use App\Models\Membership\User\Concerns\HasFirConcern;
 use App\Models\Membership\User\Concerns\HasTeamConcern;
 use App\Models\SurveyKey;
+use App\Models\TeamspeakRegistration;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;

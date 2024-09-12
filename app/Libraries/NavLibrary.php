@@ -3,35 +3,58 @@
 namespace App\Libraries;
 
 use App\Models\Groups\ServiceRoleType;
+
 use App\Models\Membership\User;
 use App\Models\Navigation\Aerodrome;
 use App\Models\Navigation\Station;
-use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class NavLibrary extends BaseLibrary
+class NavLibrary extends BaseGithubLibrary
 {
-    static function pull_stations(): array|null
+    public static function check_user(User $user): bool
     {
-        return Cache::remember('navlibrary.stations', 60 * 5, function () {
-            $url = 'https://raw.githubusercontent.com/VATGER-Nav/datahub/main/data.json';
-            $client = self::constructClient();
-            try {
-                $res = $client->get($url);
-                return json_decode($res->getBody(), false, 512, JSON_THROW_ON_ERROR);
-            } catch (GuzzleException|\JsonException $e) {
-                Log::debug($e->getMessage());
-                return null;
-            }
-        });
+        $roles = $user->service_role_ids(ServiceRoleType::GitHubGroup, cast_to_int: false);
+
+        $roles = collect($roles)->map(fn($role) => str_replace('vatger-nav.', '', $role))->toArray();
+
+        $orga_member = self::github_is_in_organization($user, 'vatger-nav');
+
+        if (empty($roles) && $orga_member) {
+            self::github_remove_from_organization($user, 'vatger-nav');
+            return true;
+        }
+        if (!empty($roles) && !$orga_member) {
+            self::github_add_to_organization($user, 'vatger-nav');
+            return true;
+        }
+
+        $current_teams = self::github_get_member_teams($user, 'vatger-nav');
+
+
+        $to_delete = array_diff($current_teams, $roles);
+        $to_add = array_diff($roles, $current_teams);
+
+        foreach ($to_add as $team_slug) {
+            self::github_team_add_member($user, 'vatger-nav', $team_slug);
+        }
+
+        foreach ($to_delete as $team_slug) {
+            self::github_team_remove_member($user, 'vatger-nav', $team_slug);
+        }
+
+        return true;
     }
+
 
     static function sync_stations(): void
     {
-        $stations = self::pull_stations();
+        $repo = 'VATGER-Nav/datahub';
+        $branch = 'main';
+        $path = 'data.json';
+
+        $stations = self::github_dl_file($repo, $branch, $path);
         if (empty($stations)) {
             return;
         }
@@ -88,23 +111,34 @@ class NavLibrary extends BaseLibrary
         $branch = 'production';
         $path = 'api';
 
-        // GitHub API URL to get the content of the folder
-        $url = "https://api.github.com/repos/$repo/contents/$path?ref=$branch";
+        $files = self::github_get_file_list($repo, $branch, $path);
 
-        try {
-            $response = $client->get($url);
-            $files = json_decode($response->getBody()->getContents(), true);
+        foreach ($files as $file) {
+            if (!str_ends_with($file->name, ".csv"))
+                continue;
+            $content = $client->get($file->download_url)->getBody()->getContents();
+            $filename = Str::lower($file->name);
+            $filePath = "navigation/stands/$filename";
+            Storage::put($filePath, $content);
 
-            foreach ($files as $file) {
-                if ($file['type'] === 'file') {
-                    $fileContent = $client->get($file['download_url'])->getBody()->getContents();
-                    $filename = Str::lower($file['name']);
-                    $filePath = "navigation/stands/$filename";
-                    Storage::put($filePath, $fileContent);
-                }
-            }
-
-        } catch (GuzzleException|\Exception $e) {
         }
+    }
+
+    public static function download_airport_data(string $icao): ?object
+    {
+        $repo = 'VATGER-Nav/airport-data';
+        $branch = 'production';
+        $path = 'api/airports.json';
+
+        $airports = Cache::remember('airports-data', 60 * 60 * 4, function () use ($repo, $branch, $path) {
+            return self::github_dl_file($repo, $branch, $path)?->airports;
+        });
+
+        if (empty($airports)) return null;
+
+        foreach ($airports as $airport) {
+            if ($airport?->icao && strtolower($airport?->icao) == strtolower($icao)) return $airport;
+        }
+        return null;
     }
 }

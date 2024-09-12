@@ -22,6 +22,7 @@
         "ext-curl": "*",
         "ext-simplexml": "*",
         "doctrine/dbal": "^3.3",
+        "firebase/php-jwt": "^6.10",
         "guzzlehttp/guzzle": "^7.8",
         "intervention/image": "^3.6",
         "jeremy379/laravel-openid-connect": "^2.3",

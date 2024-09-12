@@ -1,0 +1,19 @@
+<?php
+return [
+    'oauth' => [
+        'id' => env("GITHUB_OAUTH_ID"),
+        'secret' => env("GITHUB_OAUTH_SECRET"),
+        'authorize' => 'https://github.com/login/oauth/authorize',
+        'token' => 'https://github.com/login/oauth/access_token',
+        'user' => 'https://api.github.com/user',
+        'scopes' => ''
+    ],
+    'app' => [
+        'id' => env("GITHUB_APP_ID"),
+        'secret' => env("GITHUB_APP_SECRET"),
+    ],
+    'organization' => [
+        'name' => env("GITHUB_ORGANIZATION_NAME"),
+        'token' => env("GITHUB_ORGANIZATION_TOKEN"),
+    ]
+];

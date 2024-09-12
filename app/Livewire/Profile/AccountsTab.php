@@ -5,7 +5,7 @@ namespace App\Livewire\Profile;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Libraries\XenForoLibrary;
 use App\Livewire\Helpers\NotyTrait;
-use App\Models\Membership\TeamspeakRegistration;
+use App\Models\TeamspeakRegistration;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 

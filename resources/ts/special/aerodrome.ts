@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 
-import { forEach, isEmpty } from 'lodash';
+import { find, forEach, isEmpty } from 'lodash';
 import { findLivewireComponent } from '@/ts/livewire';
 import dayjs from 'dayjs';
 import { getDarkmode } from '@/ts/template';
@@ -56,7 +56,7 @@ async function load_map() {
         });
     });
 
-    standstatus_data.forEach((stand, key) => {
+    forEach(standstatus_data, (stand) => {
         const el = document.createElement('div');
         if (stand['occupier'] == null) el.className = 'marker-free';
         else el.className = 'marker-occupied';
@@ -77,7 +77,7 @@ async function load_map() {
         marker.addTo(map);
     });
 
-    aircraftstatus_data.forEach((aircraft, key) => {
+    forEach(aircraftstatus_data, (aircraft) => {
         const el = document.createElement('div');
         el.className = 'marker-ac';
         let callsign = `<p class="pb-0 mb-0">${aircraft['type']}</p>`;
@@ -124,7 +124,7 @@ async function indicator() {
 
     function checkindicator(ending: string, element_id: string) {
         if (
-            data.find((value) => {
+            find(data, (value) => {
                 let ident: string = value['station']['ident'];
                 return ident.endsWith(ending);
             })
@@ -138,12 +138,14 @@ async function indicator() {
     checkindicator('_TWR', 'twr_indicator');
     checkindicator('_APP', 'app_indicator');
     checkindicator('_CTR', 'ctr_indicator');
+
     let table = document.getElementById('loading-text-atc');
     let tableContainer = document.getElementById('table-atc-container');
     if (!table || !tableContainer) return;
 
     let html = '';
-    data.forEach((station) => {
+
+    forEach(data, (station) => {
         html +=
             '<tr>' +
             '<td><small>' +
@@ -190,7 +192,7 @@ async function event() {
         event_container.removeChild(event_container.lastChild);
     }
 
-    data.forEach((e: Event, i: number) => {
+    forEach(data, (e: Event, i: number) => {
         event_container?.insertAdjacentHTML(
             'beforeend',
             `

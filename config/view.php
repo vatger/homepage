@@ -14,9 +14,6 @@ return [
 
     'paths' => [
         resource_path('views'),
-        //base_path('modules/atciss/resources/views'),
-        //base_path('modules/training-center/resources/views'),
-        //base_path('modules/statistics-center/resources/views'),
     ],
 
     /*

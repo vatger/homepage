@@ -6,14 +6,15 @@ use App\Libraries\MembershipLibrary;
 use App\Libraries\VATSIM\APILibrary;
 use App\Models\Groups\Fir;
 use App\Models\Membership\Concerns\FirMembership;
-use App\Models\Membership\TeamspeakRegistration;
 use App\Models\Membership\User;
 use App\Models\Membership\UserBan;
+use App\Models\TeamspeakRegistration;
+
+
 use Carbon\Carbon;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MigrationSeeder extends Seeder
