@@ -1,19 +1,15 @@
 <?php
 
 return [
-    /*
-     * Use this setting to enable the cookie consent dialog.
-     */
-    'enabled' => env('COOKIE_CONSENT_ENABLED', true),
-
-    /*
-     * The name of the cookie in which we store if the user
-     * has agreed to accept the conditions.
-     */
-    'cookie_name' => 'vatger_cookie_consent',
-
-    /*
-     * Set the cookie duration in days.  Default is 365 * 20.
-     */
-    'cookie_lifetime' => 30,
+    'cookie_key' => 'vatger_cookie_consent',
+    'cookie_value_analytics' => '2',
+    'cookie_value_marketing' => '3',
+    'cookie_value_both' => '4',
+    'cookie_value_none' => '1',
+    'cookie_expiration_days' => '30',
+    'gtm_event' => 'cookie_refresh',
+    'ignored_paths' => ['/gdpr', '/imprint'],
+    'policy_url_en' => 'https:/vatger.de/gdpr',
+    'policy_url_fr' => 'https:/vatger.de/gdpr',
+    'policy_url_nl' => 'https:/vatger.de/gdpr',
 ];
