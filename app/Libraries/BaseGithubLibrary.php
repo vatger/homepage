@@ -214,7 +214,7 @@ class BaseGithubLibrary extends BaseLibrary
 
     }
 
-    public static function github_dl_file(string $repo, string $branch, string $filepath, bool $parse_json = true): string|object|null
+    public static function github_dl_file(string $repo, string $branch, string $filepath, bool $parse_json = true): string|object|array|null
     {
         try {
             $client = self::constructClient();
