@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class MailcowLibrary extends BaseLibrary
 {
-    public static function send(string $method, string $endpoint, array $data = []): false|Response
+    public static function send(string $method, string $endpoint, array $data = []): \Psr\Http\Message\ResponseInterface|false
     {
         $client = self::constructClient([
             'headers' => [
