@@ -4,6 +4,7 @@ namespace App\Logging;
 
 use App\Models\Tech\SysLog;
 use Illuminate\Support\Arr;
+use Log;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\LogRecord;
 
@@ -21,7 +22,7 @@ class DBLoggingHandler extends AbstractProcessingHandler
             $log->channel = $record->channel;
             $log->save();
         } catch (\Exception $exception) {
-            \Log::channel('stack')->log($record->level, $record->message, $record->context);
+            Log::channel('stack')->log($record->level->getName(), $record->message);
         }
     }
 }
