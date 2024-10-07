@@ -20,9 +20,8 @@ class EmailPage extends Component
     public string $newmail = '';
     public string $cid = '';
 
-    public function mount(): void
+    public function boot(): void
     {
-        $users = [];
         $users = User::permission('mail.use')->get();
 
         $usd = UserStaffDetail::query()
