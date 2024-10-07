@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('LOG_CHANNEL', 'stack'),
+    'default' => 'custom', //env('LOG_CHANNEL', 'stack'),
 
     /*
     |--------------------------------------------------------------------------
@@ -112,5 +112,9 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+        'custom' => [
+            'driver' => 'monolog',
+            'handler' => \App\Logging\DBLoggingHandler::class,
+        ]
     ],
 ];
