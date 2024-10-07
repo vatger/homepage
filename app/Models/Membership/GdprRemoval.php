@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Models\Membership\User;
+namespace App\Models\Membership;
 
-use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 

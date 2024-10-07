@@ -4,7 +4,7 @@ return [
     'inactivity_warning' => [
         'title' => 'Your VATSIM Germany Account - upcoming inactivity',
         'message' =>
-            'Your account at VATSIM Germany will be set to inactive on :DATE. Please log in again on the VATSIM Germany website within the next 30 days to prevent this.',
+            'It has been noted that you have not logged into the VATSIM Germany website for an extended period (only logins on the main page are counted). Your account will be set to inactive on :DATE. Please log in to the VATSIM Germany website within the next 30 days to prevent this.',
         'link' => 'Click here to log in',
     ],
     'inactivity_notice' => [

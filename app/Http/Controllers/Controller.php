@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;

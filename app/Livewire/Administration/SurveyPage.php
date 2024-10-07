@@ -4,8 +4,8 @@ namespace App\Livewire\Administration;
 
 use App\Libraries\LimesurveyLibrary;
 use App\Livewire\Helpers\NotyTrait;
-use App\Models\Membership\User\User;
-use App\Models\SurveyKey;
+use App\Models\Membership\SurveyKey;
+use App\Models\Membership\User;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 

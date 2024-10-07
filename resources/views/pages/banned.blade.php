@@ -20,7 +20,7 @@
                 <p><b>Grund:</b> {{ $ban->type }}</p>
                 <p>{{ $ban->reason }}</p>
             @endif
-            @if($ban->type == \App\Models\Membership\User\UserBanType::vatsim_inactivity)
+            @if($ban->type == \App\Models\Membership\UserBanType::vatsim_inactivity)
                 <p>
                     Durch längere Inaktivität im VATSIM-Netzwerk ist dein Konto (Account) in der zentralen Datenbank von VATSIM automatisch auf 'INACTIVE' gesetzt worden. Wir haben leider keinen
                     Zugriff auf diese Datenbank und können dir daher nicht weiterhelfen.
@@ -36,7 +36,7 @@
                     Germany does not work centrally with the database.
 
                 </p>
-            @elseif($ban->type == \App\Models\Membership\User\UserBanType::pilot_rating_incomplete)
+            @elseif($ban->type == \App\Models\Membership\UserBanType::pilot_rating_incomplete)
                 <p>
                     Es scheint als ob der New Member Orientation Test noch nicht abgeschlossen ist.
                 </p>

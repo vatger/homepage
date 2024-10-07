@@ -27,7 +27,8 @@
                                 <label for="tsmodal-uuid" class="form-label">Ausgesprochen Durch</label>
                                 <div class="form-icon position-relative">
                                     <i data-feather="calendar" class="fea icon-sm icons"></i>
-                                    <input disabled name="until_date" type="text" id="suspension-end" class="form-control disabled ps-5" value="{{$banInformation?->author?->username}} ({{$banInformation?->author?->id}})">
+                                    <input disabled name="until_date" type="text" id="suspension-end" class="form-control disabled ps-5"
+                                           value="{{$banInformation?->author?->username}} ({{$banInformation?->author?->id}})">
                                 </div>
                             </div>
                         </div>
@@ -86,7 +87,8 @@
                             <div class="mb-3">
                                 <label for="tsmodal-uuid" class="form-label">Grund</label>
                                 <div class="form-icon position-relative">
-                                    <textarea disabled class="form-control disabled mt-0" rows="4">{{strlen($banInformation?->reason) == 0 ? "Kein Grund angegeben" : $banInformation?->reason}}</textarea>
+                                    <textarea disabled class="form-control disabled mt-0"
+                                              rows="4">{{strlen($banInformation?->reason) == 0 ? "Kein Grund angegeben" : $banInformation?->reason}}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -98,11 +100,11 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" data-bs-dismiss="modal">Schließen</button>
 
-                @if($banInformation?->type == \App\Models\Membership\User\UserBanType::vatger_ban)
+                @if($banInformation?->type == \App\Models\Membership\UserBanType::vatger_ban)
                     <button type="button" class="btn btn-sm btn-danger" wire:loading.class="disabled" data-dismiss="modal" data-bs-dismiss="modal" wire:click="removeBan()">Löschen</button>
                 @endif
 
-                @if($banInformation?->isActive && $banInformation?->type == \App\Models\Membership\User\UserBanType::vatger_ban)
+                @if($banInformation?->isActive && $banInformation?->type == \App\Models\Membership\UserBanType::vatger_ban)
                     <button type="button" class="btn btn-sm btn-danger" wire:loading.class="disabled" data-dismiss="modal" data-bs-dismiss="modal" wire:click="endBanNow()">Jetzt Beenden</button>
                 @endif
             </div>

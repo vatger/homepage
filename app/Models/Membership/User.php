@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Models\Membership\User;
+namespace App\Models\Membership;
 
-use App\Models\Feedback\ControllerFeedback;
-use App\Models\Membership\User\Concerns\HasBanConcern;
-use App\Models\Membership\User\Concerns\HasFirConcern;
-use App\Models\Membership\User\Concerns\HasTeamConcern;
-use App\Models\SurveyKey;
+use App\Models\Membership\Concerns\HasBanConcern;
+use App\Models\Membership\Concerns\HasFirConcern;
+use App\Models\Membership\Concerns\HasTeamConcern;
 use App\Models\TeamspeakRegistration;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -70,16 +68,6 @@ class User extends Authenticatable
     public function surveyKeys(): HasMany
     {
         return $this->hasMany(SurveyKey::class, 'user_id', 'id');
-    }
-
-    public function controllerFeedback(): HasMany
-    {
-        return $this->hasMany(ControllerFeedback::class, 'controller_id', 'id');
-    }
-
-    public function controllerReports(): HasMany
-    {
-        return $this->hasMany(ControllerFeedback::class, 'reporter_id', 'id');
     }
 
     public function staffDetails(): HasOne

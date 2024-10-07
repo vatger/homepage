@@ -3,7 +3,7 @@
 namespace App\OpenApi\Controllers;
 
 use App\Models\AtcBooking;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use App\OpenApi\Helpers\ApiPathfinder;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Carbon\Carbon;

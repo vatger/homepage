@@ -12,7 +12,7 @@ class StandStatusLibrary
     private static bool $hideStandSidesWhenOccupied = true;
     private static int $maxDistanceFromAirport = 5; // In kilometres
     private static int $maxAircraftHeight = 300; // In feet above the aerodrome
-    private static int $maxAircraftGroundspeed = 10; // In knots
+    private static int $maxAircraftGroundspeed = 25; // In knots
     private static array $standExtensions = ['R', 'L', 'A', 'B', 'C'];
 
     public static function status(Aerodrome $aerodrome): ?StandStatus

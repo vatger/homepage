@@ -3,12 +3,9 @@
 namespace App\Jobs;
 
 use App\Libraries\VATSIM\CoreApiLibrary2;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 
 class ProcessMembersJob implements ShouldQueue

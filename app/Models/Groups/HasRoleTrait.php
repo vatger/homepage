@@ -2,8 +2,7 @@
 
 namespace App\Models\Groups;
 
-use App\Models\Membership\User\User;
-
+use App\Models\Membership\User;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;

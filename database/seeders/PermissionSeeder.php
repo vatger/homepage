@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Groups\Team;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;

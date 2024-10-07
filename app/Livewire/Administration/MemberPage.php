@@ -5,14 +5,12 @@ namespace App\Livewire\Administration;
 use App\Libraries\GDPRLibrary;
 use App\Libraries\MembershipLibrary;
 use App\Livewire\Helpers\NotyTrait;
-use App\Models\Membership\User\User;
-use App\Models\Membership\User\UserBan;
-use Carbon\Carbon;
+use App\Models\Membership\User;
+use App\Models\Membership\UserBan;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
-use Livewire\Form;
 
 class MemberPage extends Component
 {

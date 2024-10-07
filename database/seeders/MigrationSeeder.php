@@ -5,10 +5,12 @@ namespace Database\Seeders;
 use App\Libraries\MembershipLibrary;
 use App\Libraries\VATSIM\APILibrary;
 use App\Models\Groups\Fir;
-use App\Models\Membership\User\Concerns\FirMembership;
-use App\Models\Membership\User\User;
-use App\Models\Membership\User\UserBan;
+use App\Models\Membership\Concerns\FirMembership;
+use App\Models\Membership\User;
+use App\Models\Membership\UserBan;
 use App\Models\TeamspeakRegistration;
+
+
 use Carbon\Carbon;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;

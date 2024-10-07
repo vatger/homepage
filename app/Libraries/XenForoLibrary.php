@@ -3,9 +3,8 @@
 namespace App\Libraries;
 
 use App\Models\Groups\ServiceRoleType;
-use App\Models\Membership\User\User;
-use App\Models\Membership\User\UserVatsimDetail;
-use App\Notifications\BasicNotification;
+use App\Models\Membership\User;
+use App\Models\Membership\UserVatsimDetail;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
@@ -35,76 +34,9 @@ class XenForoLibrary extends BaseLibrary
         try {
             return $client->request($method, $url, ['form_params' => $data]);
         } catch (ClientException $e) {
-            $response = $e->getResponse();
-            //dump($response->getBody()->getContents());
             Log::debug($e->getMessage());
         } catch (GuzzleException $e) {
             Log::debug($e->getMessage());
-        }
-        return false;
-    }
-
-    /**
-     * A function to create an Account for the XenForo Application via API call.
-     */
-    public static function createForumAccount(User $user, string $password, int $try = 0): bool
-    {
-        if (null != $user->settings->forum_id) {
-            return false;
-        }
-        // Build the data we need from the existing user object
-        $dataArray = [];
-        // Set all options we need as defaults
-        $dataArray['option'] = [
-            'content_show_signature' => true,
-            'email_on_conversation' => true,
-            'push_on_conversation' => true,
-            'receive_admin_email' => true,
-            'show_dob_year' => false,
-            'show_dob_date' => false,
-            'is_discouraged' => false,
-        ];
-        // Profile specific Account-Data
-        $dataArray['profile'] = [
-            'location' => '',
-            'website' => '',
-            'about' => '',
-            'signature' => '',
-        ];
-        $dataArray['visible'] = true;
-        $dataArray['activity_visible'] = true;
-        $dataArray['timezome'] = 'Europe/Berlin';
-        $dataArray['custom_title'] = $user->id;
-
-        // Is nothing else than $user->firstname.' '.$user->lastname
-        if (0 == $try) {
-            $dataArray['username'] = $user->username;
-        } else {
-            $dataArray['username'] = $user->username . ' ' . $try;
-        }
-        $dataArray['email'] = $user->email;
-        // Set Default Usergroup
-        $dataArray['user_group_id'] = config('forum.defaultGroup'); // Default Registered User Group
-        $dataArray['is_staff'] = false;
-
-        $dataArray['password'] = $password;
-
-        $dataArray['custom_fields'] = [
-            'vatsimid' => $user->id,
-        ];
-
-        $result = self::send('POST', 'users', $dataArray);
-        if ($result && 200 == $result->getStatusCode()) {
-            $body = $result->getBody()->getContents();
-            $forumUserObject = json_decode($body);
-            $user->settings->forum_id = $forumUserObject->user->user_id;
-            $user->settings->save();
-            return true;
-        } else {
-            ++$try;
-            if ($try <= 99) {
-                return self::createForumAccount($user, $password, $try);
-            }
         }
         return false;
     }
@@ -184,37 +116,6 @@ class XenForoLibrary extends BaseLibrary
 
 
         return (bool)$response->success;
-    }
-
-    /** @param User $user
-     * @return boolean
-     * @deprecated
-     * Set a given forum account to the "discouraged" and "suspended" group
-     *
-     */
-    private static function banForumAccount(User $user): bool
-    {
-        $suspendedGroup = config('forum.suspendedGroup');
-
-        // Build the data we need from the existing user object
-        $dataArray = [];
-        // Set all options we need as defaults
-        $dataArray['option'] = [
-            'is_discouraged' => false,
-        ];
-        $dataArray['secondary_group_ids'] = [];
-        $dataArray['secondary_group_ids'][] = $suspendedGroup;
-
-        $result = self::send('POST', 'users/' . $user->settings->forum_id, $dataArray);
-        if (!$result) {
-            return false;
-        }
-        $response = json_decode($result->getBody()->getContents());
-        if ($response->success) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -391,8 +292,6 @@ class XenForoLibrary extends BaseLibrary
                 $groups[] = self::find_group('_rating_pilot_p4');
                 break;
         }
-
-
         return $groups;
     }
 

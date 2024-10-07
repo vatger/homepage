@@ -2,7 +2,7 @@
 
 namespace App\OpenApi\Controllers;
 
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use App\OpenApi\Responses\ListUsersResponse;
 use Illuminate\Http\Request;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;

@@ -2,8 +2,8 @@
 
 namespace App\Libraries;
 
-use App\Models\Membership\User\User;
-use App\Models\SurveyKey;
+use App\Models\Membership\SurveyKey;
+use App\Models\Membership\User;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -115,7 +115,7 @@ class LimesurveyLibrary
     {
         $users_data = collect($users)
             ->map(
-                fn(User $u) => (object) [
+                fn(User $u) => (object)[
                     'email' => $u->email,
                     'lastname' => $u->lastname,
                     'firstname' => $u->firstname,

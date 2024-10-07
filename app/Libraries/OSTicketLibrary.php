@@ -2,9 +2,8 @@
 
 namespace App\Libraries;
 
-use App\Libraries\BaseLibrary;
 use App\Models\Groups\ServiceRoleType;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;

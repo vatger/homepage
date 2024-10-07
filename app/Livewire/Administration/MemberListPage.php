@@ -5,7 +5,7 @@ namespace App\Livewire\Administration;
 use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SearchTrait;
 use App\Livewire\Helpers\SortableTrait;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;

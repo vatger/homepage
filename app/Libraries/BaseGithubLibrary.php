@@ -2,7 +2,7 @@
 
 namespace App\Libraries;
 
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
 use GuzzleHttp\Client;
@@ -12,8 +12,6 @@ use JsonException;
 
 class BaseGithubLibrary extends BaseLibrary
 {
-
-
     protected static function constructGithubClient(string $jwt = "", array $config = []): Client
     {
         $config['headers'] = array_merge($config['headers'] ?? [], [
@@ -216,7 +214,7 @@ class BaseGithubLibrary extends BaseLibrary
 
     }
 
-    public static function github_dl_file(string $repo, string $branch, string $filepath, bool $parse_json = true): string|object|null
+    public static function github_dl_file(string $repo, string $branch, string $filepath, bool $parse_json = true): string|object|array|null
     {
         try {
             $client = self::constructClient();

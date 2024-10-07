@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Membership\User;
+namespace App\Models\Membership;
 
 enum UserBanType: string
 {

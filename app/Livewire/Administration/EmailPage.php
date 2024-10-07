@@ -4,8 +4,8 @@ namespace App\Livewire\Administration;
 
 use App\Libraries\MailcowLibrary;
 use App\Livewire\Helpers\NotyTrait;
-use App\Models\Membership\User\User;
-use App\Models\Membership\User\UserStaffDetail;
+use App\Models\Membership\User;
+use App\Models\Membership\UserStaffDetail;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
 use Illuminate\Support\Str;

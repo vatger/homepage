@@ -2,7 +2,6 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\CookieConsentMiddleware;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\LocaleMiddleware;
 use App\Http\Middleware\Membership\CheckGDPRMiddleware;
@@ -16,13 +15,12 @@ use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\OpenApi\Middleware\JsonResponse;
-
 use App\OpenApi\Middleware\OptionalAuthenticate;
+
 use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
-
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
@@ -34,6 +32,7 @@ use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Statikbe\CookieConsent\CookieConsentMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -68,7 +67,7 @@ class Kernel extends HttpKernel
             VerifyCsrfToken::class,
             SubstituteBindings::class,
             LocaleMiddleware::class,
-            \Spatie\CookieConsent\CookieConsentMiddleware::class,
+            CookieConsentMiddleware::class,
             PreventRequestsDuringMaintenance::class,
             SysLogMiddleware::class,
         ],

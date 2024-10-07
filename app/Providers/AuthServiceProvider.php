@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Groups\Team;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Passport\Passport;

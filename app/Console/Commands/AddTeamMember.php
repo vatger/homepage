@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Groups\Team;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use Illuminate\Console\Command;
 
 class AddTeamMember extends Command

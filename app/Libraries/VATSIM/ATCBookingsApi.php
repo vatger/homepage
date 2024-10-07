@@ -3,9 +3,8 @@
 namespace App\Libraries\VATSIM;
 
 use App\Models\AtcBooking;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use GuzzleHttp\Client;
-use JetBrains\PhpStorm\ArrayShape;
 
 class ATCBookingsApi
 {

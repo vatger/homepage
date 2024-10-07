@@ -7,9 +7,8 @@ use App\Livewire\Helpers\NotyTrait;
 use App\Models\Groups\ServiceRole;
 use App\Models\Groups\ServiceRoleType;
 use App\Models\Groups\Team;
-use App\Models\Membership\User\User;
-use App\Models\Membership\User\UserStaffDetail;
-use App\Notifications\BasicNotification;
+use App\Models\Membership\User;
+use App\Models\Membership\UserStaffDetail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Livewire\Attributes\Layout;
@@ -88,6 +87,7 @@ class TeamPage extends Component
             $user->staffDetails->save();
         }
     }
+
     public function addUser(): void
     {
         $this->authorize('membership.teams.edit.members.subteam-check', $this->team);

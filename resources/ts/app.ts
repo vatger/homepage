@@ -1,7 +1,4 @@
-// Import custom Javascripts
-//import { Pagination } from './pagination';
-
-//window.Pagination = Pagination;
+// Import custom Javascript
 
 import initTemplate from './template';
 

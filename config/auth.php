@@ -73,7 +73,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Membership\User\User::class,
+            'model' => \App\Models\Membership\User::class,
         ],
 
         'api_tokens' => [

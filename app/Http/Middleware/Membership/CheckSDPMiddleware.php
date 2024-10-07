@@ -2,11 +2,8 @@
 
 namespace App\Http\Middleware\Membership;
 
-use App\Models\Membership\User\UserStaffDetail;
-use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Membership\UserStaffDetail;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class CheckSDPMiddleware

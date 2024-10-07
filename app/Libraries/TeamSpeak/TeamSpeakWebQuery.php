@@ -3,8 +3,9 @@
 namespace App\Libraries\TeamSpeak;
 
 use App\Models\Groups\ServiceRoleType;
-use App\Models\Membership\User\User;
+use App\Models\Membership\User;
 use App\Models\TeamspeakRegistration;
+
 use Carbon\Carbon;
 
 class TeamSpeakWebQuery
