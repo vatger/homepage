@@ -61,7 +61,7 @@ class EmailPage extends Component
     public function render()
     {
         $this->authorize('mail.manage');
-        return view('pages.admin.email');
+        return view('pages.admin.email')->with(['emails' => $this->emails]);
     }
 
     public function change(string $id, string $email): void
