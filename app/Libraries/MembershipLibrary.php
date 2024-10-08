@@ -210,8 +210,8 @@ class MembershipLibrary
                             'Deine VATSIM Germany E-Mail Adresse',
                             "Du bist nicht mehr im Besitz einer Staffrolle, die zu einer VATSIM Germany E-Mail Adresse berechtigt. Daher werden wir deine VATSIM Germany E-Mail Adresse am $date um $time löschen. Bitte sichere dir bis dahin alle relevanten Daten.",
                             'Tech Leitung',
-                            Carbon::now()->addDays(14),
-                            Carbon::now()->addDays(365),
+                            valid_till: Carbon::now()->addDays(14),
+                            delete_at: Carbon::now()->addDays(365),
                         ),
                     );
                 }
@@ -222,17 +222,6 @@ class MembershipLibrary
                 }
             }
         }
-        if ($user->staffDetails?->delete_mail_at < now() && $user->staffDetails?->delete_staff_email_at != null) {
-            if (BaseLibrary::is_active(BaseLibrary::SyncMailcow)) {
-                if (MailcowLibrary::delete_email($user->staffDetails->staff_email)) {
-                    $user->staffDetails->staff_email_created = false;
-                    $user->staffDetails->staff_email = null;
-                    $user->staffDetails->delete_staff_email_at = null;
-                    $user->staffDetails->save();
-                }
-            }
-        }
-
         if ($user->staffDetails?->leaving_staff_at < now() && !$user->staffDetails?->staff_email_created) {
             $user->staff_details?->delete();
         }

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Administration;
 
+use App\Libraries\BaseLibrary;
 use App\Libraries\MailcowLibrary;
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\Membership\User;
@@ -20,9 +21,8 @@ class EmailPage extends Component
     public string $newmail = '';
     public string $cid = '';
 
-    public function mount(): void
+    public function boot(): void
     {
-        $users = [];
         $users = User::permission('mail.use')->get();
 
         $usd = UserStaffDetail::query()
@@ -49,9 +49,7 @@ class EmailPage extends Component
                     'email' => $user->staffDetails->staff_email_created ? $user->staffDetails->staff_email : $mail,
                     'change' => $user->staffDetails->staff_email_created,
                     'create' => $user->staffDetails->staff_email_created,
-                    'deletion_date' => $user->staffDetails->delete_staff_email_at
-                        ? date('d.m.Y H:i:s', strtotime($user->staffDetails->delete_staff_email_at))
-                        : '',
+                    'deletion_date' => $user->staffDetails->delete_staff_email_at ?? null,
                 ];
             }
         }
@@ -61,7 +59,7 @@ class EmailPage extends Component
     public function render()
     {
         $this->authorize('mail.manage');
-        return view('pages.admin.email');
+        return view('pages.admin.email')->with(['emails' => $this->emails]);
     }
 
     public function change(string $id, string $email): void
@@ -89,9 +87,32 @@ class EmailPage extends Component
         }
     }
 
+    public function delete(string $id): void
+    {
+        $email_address = null;
+        $user = null;
+        foreach ($this->emails as $email) {
+            if ($email->id == $id) {
+                $user = User::find($id);
+                $email_address = $email->email;
+            }
+        }
+        if ($email_address && $user) {
+            if ($user->staffDetails?->delete_mail_at < now() && $user->staffDetails?->delete_staff_email_at != null) {
+                if (BaseLibrary::is_active(BaseLibrary::SyncMailcow)) {
+                    if (MailcowLibrary::delete_email($user->staffDetails->staff_email)) {
+                        $user->staffDetails->staff_email_created = false;
+                        $user->staffDetails->staff_email = null;
+                        $user->staffDetails->delete_staff_email_at = null;
+                        $user->staffDetails->save();
+                    }
+                }
+            }
+        }
+    }
+
     public function create(string $id): void
     {
-        $mailcreated = false;
         foreach ($this->emails as $email) {
             if ($email->id == $id) {
                 $user = User::find($id);

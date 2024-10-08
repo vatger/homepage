@@ -3,12 +3,11 @@
 namespace App\Libraries;
 
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Log;
 
 class MailcowLibrary extends BaseLibrary
 {
-    public static function send(string $method, string $endpoint, array $data = []): false|Response
+    public static function send(string $method, string $endpoint, array $data = []): \Psr\Http\Message\ResponseInterface|false
     {
         $client = self::constructClient([
             'headers' => [
