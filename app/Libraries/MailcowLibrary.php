@@ -51,6 +51,8 @@ class MailcowLibrary extends BaseLibrary
 
     public static function delete_email(string $email): bool
     {
+        Log::info("deleting email " . $email);
+        return false;
         $result = self::send('POST', 'delete/mailbox', ["$email"]);
         return $result?->getStatusCode() == 200;
     }
