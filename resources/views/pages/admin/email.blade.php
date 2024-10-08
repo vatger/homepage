@@ -53,10 +53,12 @@
                                     </td>
                                     <td>
                                         @if($email->deletion_date)
-                                            {{ $email->deletion_date }}
-                                            <button wire:click='delete("{{ $email->id }}")' name="delete"
-                                                    class="btn btn-danger">Löschen
-                                            </button>
+                                            {{ date('d.m.Y H:i:s', strtotime($email->deletion_date) }}
+                                            @if($email->deletion_date < Carbon\Carbon::now())
+                                                <button wire:click='delete("{{ $email->id }}")' name="delete"
+                                                        class="btn btn-danger">Löschen
+                                                </button>
+                                            @endif
                                         @endif
                                     </td>
                                 </tr>
