@@ -14,7 +14,7 @@
         <thead style="background-color: #2f55d4; padding: 32px; border: none; border-radius: 20px;">
         <tr>
             <th scope="col" style="padding: 32px;">
-                <img src="{{ $message->embed(public_path('images/vacclogowhite.png.png')) }}" alt="VATSIM Germany">
+                <img src="{{ $message->embed(public_path('images/vacclogo.png.png')) }}" alt="VATSIM Germany">
             </th>
         </tr>
         </thead>
