@@ -3,7 +3,6 @@
 namespace App\Libraries;
 
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Log;
 
 class MailcowLibrary extends BaseLibrary

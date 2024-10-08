@@ -222,17 +222,6 @@ class MembershipLibrary
                 }
             }
         }
-        if ($user->staffDetails?->delete_mail_at < now() && $user->staffDetails?->delete_staff_email_at != null) {
-            if (BaseLibrary::is_active(BaseLibrary::SyncMailcow)) {
-                if (MailcowLibrary::delete_email($user->staffDetails->staff_email)) {
-                    $user->staffDetails->staff_email_created = false;
-                    $user->staffDetails->staff_email = null;
-                    $user->staffDetails->delete_staff_email_at = null;
-                    $user->staffDetails->save();
-                }
-            }
-        }
-
         if ($user->staffDetails?->leaving_staff_at < now() && !$user->staffDetails?->staff_email_created) {
             $user->staff_details?->delete();
         }

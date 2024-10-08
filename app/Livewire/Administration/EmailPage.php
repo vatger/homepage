@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Administration;
 
+use App\Libraries\BaseLibrary;
 use App\Libraries\MailcowLibrary;
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\Membership\User;
@@ -88,9 +89,32 @@ class EmailPage extends Component
         }
     }
 
+    public function delete(string $id): void
+    {
+        $email_address = null;
+        $user = null;
+        foreach ($this->emails as $email) {
+            if ($email->id == $id) {
+                $user = User::find($id);
+                $email_address = $email->email;
+            }
+        }
+        if ($email_address && $user) {
+            if ($user->staffDetails?->delete_mail_at < now() && $user->staffDetails?->delete_staff_email_at != null) {
+                if (BaseLibrary::is_active(BaseLibrary::SyncMailcow)) {
+                    if (MailcowLibrary::delete_email($user->staffDetails->staff_email)) {
+                        $user->staffDetails->staff_email_created = false;
+                        $user->staffDetails->staff_email = null;
+                        $user->staffDetails->delete_staff_email_at = null;
+                        $user->staffDetails->save();
+                    }
+                }
+            }
+        }
+    }
+
     public function create(string $id): void
     {
-        $mailcreated = false;
         foreach ($this->emails as $email) {
             if ($email->id == $id) {
                 $user = User::find($id);

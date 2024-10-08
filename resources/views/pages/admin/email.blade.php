@@ -23,7 +23,7 @@
                                 <th class="border-bottom" style="width: 20%">E-Mailadresse</th>
                                 <th class="border-bottom" style="width: 15%">Adresse anpassen</th>
                                 <th class="border-bottom" style="width: 15%">Anlegen</th>
-                                <th class="border-bottom" style="width: 20%">Löschung geplant</th>
+                                <th class="border-bottom" style="width: 20%">Löschen ab</th>
                             </tr>
                             </thead>
                             <tbody id="member-list-content">
@@ -54,6 +54,9 @@
                                     <td>
                                         @if($email->deletion_date)
                                             {{ $email->deletion_date }}
+                                            <button wire:click='delete("{{ $email->id }}")' name="delete"
+                                                    class="btn btn-danger">Löschen
+                                            </button>
                                         @endif
                                     </td>
                                 </tr>
