@@ -9,7 +9,7 @@ Route::get('login', function () {
 })->name('login');
 
 Route::prefix('authentication')
-    ->middleware('cookie.consent')
+    ->middleware('cookie.redirect')
     ->group(function () {
 
         Route::prefix('connect')->group(function () {

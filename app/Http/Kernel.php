@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CookieChecker;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\LocaleMiddleware;
 use App\Http\Middleware\Membership\CheckGDPRMiddleware;
@@ -105,10 +106,12 @@ class Kernel extends HttpKernel
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
-        'cookie.consent' => CookieConsentMiddleware::class,
+
         'pending_removal' => CheckGDPRMiddleware::class,
         'banned' => CheckHomepageBanned::class,
         'check-terms' => CheckTermsMiddleware::class,
         'staff_data_protection' => CheckSDPMiddleware::class,
+        'cookie.consent' => CookieConsentMiddleware::class,
+        'cookie.redirect' => CookieChecker::class,
     ];
 }

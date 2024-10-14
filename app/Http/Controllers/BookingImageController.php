@@ -47,20 +47,12 @@ class BookingImageController extends Controller
 
     public function setDarkMode(Request $request): JsonResponse
     {
-        if (!$this->_checkCookieConsent($request)) {
-            return response()->json(['message' => 'Cookie Consent not given. Can\'t save preferences.']);
-        }
-
         $cookie = cookie(self::$BOOKING_COOKIE_NAME, 'dark', Carbon::now()->addYear()->diffInMinutes(Carbon::now(), true));
         return response()->json(['message' => 'Dark Mode Set!'])->withCookie($cookie);
     }
 
     public function setLightMode(Request $request): JsonResponse
     {
-        if (!$this->_checkCookieConsent($request)) {
-            return response()->json(['message' => 'Cookie Consent not given. Can\'t save preferences.']);
-        }
-
         $cookie = cookie(self::$BOOKING_COOKIE_NAME, 'light', Carbon::now()->addYear()->diffInMinutes(Carbon::now(), true));
         return response()->json(['message' => 'Light Mode Set!'])->withCookie($cookie);
     }
@@ -72,10 +64,5 @@ class BookingImageController extends Controller
         }
 
         return 'light';
-    }
-
-    private function _checkCookieConsent(Request $request): bool
-    {
-        return $request->cookie('vatger_cookie_consent') != null;
     }
 }
