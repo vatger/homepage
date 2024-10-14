@@ -5,7 +5,7 @@ use App\Livewire\Atc\S1Page;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('controllers')
-    ->middleware(['auth', 'pending_removal', 'banned'])
+    ->middleware(['cookie.consent', 'auth', 'pending_removal', 'banned'])
     ->group(function () {
         Route::prefix('booking')->group(function () {
             Route::get('', function () {

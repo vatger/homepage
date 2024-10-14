@@ -1,10 +1,15 @@
 <?php
 
+use App\OpenApi\Controllers\BoardController;
 use App\OpenApi\Controllers\BookingController;
 use App\OpenApi\Controllers\BookstackApiController;
+use App\OpenApi\Controllers\DiscordApiController;
+use App\OpenApi\Controllers\SolosApiController;
 use App\OpenApi\Controllers\TeamspeakApiController;
 use App\OpenApi\Controllers\TestApiController;
 use App\OpenApi\Controllers\UserController;
+use App\OpenApi\Controllers\VATEUDCoreContoller;
+use App\OpenApi\Controllers\VatsimWebhookController;
 use App\OpenApi\Middleware\JsonResponse;
 use Illuminate\Support\Facades\Route;
 
@@ -20,11 +25,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('booking/ical/{id}/{token}/calendar.ics', [BookingController::class, 'ical'])->withoutMiddleware(JsonResponse::class)->name('api.booking.ical');
 Route::get('booking/{start?}/{end?}', [BookingController::class, 'index']);
 Route::get('teamspeak/{cid}', [TeamspeakApiController::class, 'ids']);
-Route::get('discord/{cid}', [\App\OpenApi\Controllers\DiscordApiController::class, 'find_member']);
-Route::get('solos/{cid}', [\App\OpenApi\Controllers\SolosApiController::class, 'find_member']);
-Route::get('vateud/roster', [\App\OpenApi\Controllers\VATEUDCoreContoller::class, 'roster_controller']);
-Route::post('board', [\App\OpenApi\Controllers\BoardController::class, 'create']);
-Route::post('vatsim/webhook', [\App\OpenApi\Controllers\VatsimWebhookController::class, 'post']);
+Route::get('discord/{cid}', [DiscordApiController::class, 'find_member']);
+Route::get('solos/{cid}', [SolosApiController::class, 'find_member']);
+Route::get('vateud/roster', [VATEUDCoreContoller::class, 'roster_controller']);
+Route::post('board', [BoardController::class, 'create']);
+Route::post('vatsim/webhook', [VatsimWebhookController::class, 'post']);
 
 
 Route::get('test', [TestApiController::class, 'test']);

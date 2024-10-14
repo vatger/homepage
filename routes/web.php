@@ -107,7 +107,7 @@ Route::get('language/{lang?}', function ($lang = 'de') {
 ############################
 Route::get('/', function () {
     return view('pages.landing');
-})->name('landing');
+})->middleware('cookie.consent')->name('landing');
 
 ############
 # API DOKU #

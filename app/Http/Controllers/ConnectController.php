@@ -28,13 +28,6 @@ class ConnectController extends Controller
 
     public function login(Request $request): RedirectResponse
     {
-        $has_cookie_consent = collect($request->cookies)->keys()->contains(fn($key) => $key == config('cookie-consent.cookie_key'));
-
-        if (!$has_cookie_consent) {
-            return redirect()
-                ->route('landing')
-                ->withErrors('Accept cookies first');
-        }
         $authenticationUrl = $this->provider->getAuthorizationUrl();
         $request->session()->put($this->state_session_key, $this->provider->getState());
         return redirect()->away($authenticationUrl);
