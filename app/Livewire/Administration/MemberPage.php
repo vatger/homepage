@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Administration;
 
+use App\Jobs\UpdateGDPRRemovalsJob;
 use App\Libraries\GDPRLibrary;
 use App\Libraries\MembershipLibrary;
 use App\Livewire\Helpers\NotyTrait;
@@ -89,5 +90,12 @@ class MemberPage extends Component
     {
         GDPRLibrary::mark_for_deletion($this->user);
         $this->showNoty("Nutzer zur Löschung markiert");
+    }
+
+    public function mark_member_for_removal_now(): void
+    {
+        GDPRLibrary::mark_for_deletion($this->user);
+        $this->showNoty("Nutzer zur direkten Löschung markiert");
+        dispatch(new UpdateGDPRRemovalsJob());
     }
 }

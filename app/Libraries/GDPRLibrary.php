@@ -15,7 +15,7 @@ class GDPRLibrary
 {
 
     // use this when calling as not the user itself
-    public static function mark_for_deletion(User $user): void
+    public static function mark_for_deletion(User $user, bool $now = false): void
     {
         // if we are currently in the removal process, don't continue
         if (GdprRemoval::where('user_id', $user->id)->whereNull('completed_at')->exists()) {
@@ -33,6 +33,10 @@ class GDPRLibrary
             Auth::setUser($current_user);
         }
 
+        if ($now) {
+            $user->vatgerDetails->update(['delete_at' => Carbon::now()->subHours(25)]);
+            return;
+        }
         $user->vatgerDetails->update(['delete_at' => Carbon::now()]);
         $date = Carbon::now()->addHours(24);
         $n = new BasicNotification(

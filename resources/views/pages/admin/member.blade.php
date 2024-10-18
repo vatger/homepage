@@ -284,6 +284,14 @@
                                             Markiert den Account zur Löschung, wenn der User nicht in 24h auf die E-Mail reagiert, wird der Account gelöscht.
                                         </p>
                                     </div>
+                                    <hr>
+                                    <div class="mt-4">
+                                        <button class="btn btn-sm btn-danger" wire:confirm="ACHTUNG: Soll der Nutzer gelöscht werden?" wire:click="mark_member_for_removal_now()">Delete now!!!
+                                        </button>
+                                        <p class="text-muted mt-2">
+                                            Markiert den Account zur Löschung, der Account wird direkt gelöscht.
+                                        </p>
+                                    </div>
                                 </div>
                                 <!--end teb pane-->
                             </div>
