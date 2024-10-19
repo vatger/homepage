@@ -10,7 +10,7 @@ class OpenIdConnectController
     {
         $user = $request->user('openid_api');
         $user_client_id = $request->user()->token()->client->user_id;
-        if ($user_client_id == null || $user_client_id == $user->id) {
+        if ($user_client_id != null && $user_client_id != $user->id) {
             abort(401, 'This client can only used by ' . $user_client_id);
         }
 
