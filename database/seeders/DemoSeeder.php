@@ -48,9 +48,6 @@ class DemoSeeder extends Seeder
                 ]);
 
                 MembershipLibrary::seen($user);
-
-                $user->tokens()->delete();
-                $user->createToken('api-token');
             }
         }
     }

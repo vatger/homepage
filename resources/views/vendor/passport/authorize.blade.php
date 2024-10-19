@@ -64,12 +64,12 @@
             </div>
         </div>
     </div>
-    @if(auth()->check() && Auth::user()->settings->dark_mode)
+    @if(auth()->check() && auth()->user()->settings->dark_mode)
         <div style="top: 0;left: 0;position: fixed;right: 0;bottom: 0;background-color: black; opacity: 0.7; z-index: -1"></div>
     @endif
 
-    <div style="top: 0;left: 0;position: fixed;right: 0;bottom: 0;background-image: url( '{{ iasset('images/oauth/oauth1.png')}}');z-index: -2;filter: blur(4px); background-size: cover;
-    background-position: center"></div>
+    <div
+        style="top: 0;left: 0;position: fixed;right: 0;bottom: 0;background-image: url( '{{ iasset('images/oauth/oauth1.png')}}');z-index: -2;filter: blur(4px); background-size: cover; background-position: center"></div>
 </section>
 </body>
 </html>

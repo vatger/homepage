@@ -22,7 +22,7 @@ class MemberPage extends Component
     public BanForm $form;
     public ?UserBan $banInformation;
 
-    public function saveBan()
+    public function saveBan(): void
     {
         $author = Auth::user();
 
@@ -42,12 +42,12 @@ class MemberPage extends Component
         $this->showNoty("Sperre erfolgreich angelegt");
     }
 
-    public function showBanInformation(int $id)
+    public function showBanInformation(int $id): void
     {
         $this->banInformation = UserBan::query()->with('author')->find($id);
     }
 
-    public function removeBan()
+    public function removeBan(): void
     {
         if ($this->banInformation == null) {
             $this->showNoty("Ein Fehler ist aufgetreten", 'error');
@@ -60,7 +60,7 @@ class MemberPage extends Component
         $this->showNoty("Sperre erfolgreich aufgehoben");
     }
 
-    public function endBanNow()
+    public function endBanNow(): void
     {
         if ($this->banInformation == null) {
             $this->showNoty("Ein Fehler ist aufgetreten", 'error');
@@ -83,6 +83,7 @@ class MemberPage extends Component
     public function force_member_update(): void
     {
         MembershipLibrary::update($this->user, cache: false);
+        $this->showNoty("Nutzer aktualisiert");
     }
 
     public function mark_member_for_removal(): void
