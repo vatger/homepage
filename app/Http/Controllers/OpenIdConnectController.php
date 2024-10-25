@@ -40,11 +40,13 @@ class OpenIdConnectController
             $userinfo['fir_code'] = $user->fir?->slug;
         }
         if ($user->tokenCan('legacy')) {
-            $userinfo['data']['cid'] = $user->id;
+            $userinfo['data']['cid'] = strval($user->id);
             if ($user->tokenCan('name')) {
                 $userinfo['data']['personal']['name_first'] = $user->firstname;
                 $userinfo['data']['personal']['name_last'] = $user->lastname;
                 $userinfo['data']['personal']['name_full'] = $user->firstname . ' ' . $user->lastname;
+                $userinfo['data']['personal']['country']['id'] = null;
+                $userinfo['data']['personal']['country']['name'] = null;
             }
             if ($user->tokenCan('email')) {
                 $userinfo['data']['personal']['email'] = $user->email;
@@ -65,6 +67,7 @@ class OpenIdConnectController
                 $userinfo['data']['vatsim']['subdivision']['id'] = $user->vatsimDetails->subdivision_code;
                 $userinfo['data']['vatsim']['subdivision']['name'] = $user->vatsimDetails->subdivision_name;
             }
+            $userinfo['data']['oauth']['token_valid']['id'] = 'true';
         }
 
         $userinfo['openid'] = 'vatger v' . config('app.version');
