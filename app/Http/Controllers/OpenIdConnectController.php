@@ -67,7 +67,7 @@ class OpenIdConnectController
                 $userinfo['data']['vatsim']['subdivision']['id'] = $user->vatsimDetails->subdivision_code;
                 $userinfo['data']['vatsim']['subdivision']['name'] = $user->vatsimDetails->subdivision_name;
             }
-            $userinfo['data']['oauth']['token_valid']['id'] = 'true';
+            $userinfo['data']['oauth']['token_valid'] = 'false';
         }
 
         $userinfo['openid'] = 'vatger v' . config('app.version');
