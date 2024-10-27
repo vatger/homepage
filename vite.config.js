@@ -1,14 +1,13 @@
-import { defineConfig, splitVendorChunkPlugin } from 'vite';
+import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import { run } from 'vite-plugin-run';
+import viteTsconfigPaths from 'vite-tsconfig-paths';
 import * as path from 'path';
-// import react from '@vitejs/plugin-react';
-// import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     server: {
-		host: "127.0.0.1",
-		port: 3000,
+        host: '127.0.0.1',
+        port: 3000,
     },
 
     plugins: [
@@ -40,6 +39,7 @@ export default defineConfig({
                 condition: (file) => file.includes('/routes/'),
             },
         ]),
+        viteTsconfigPaths(),
     ],
 
     build: {
