@@ -3,10 +3,10 @@
         <!-- Logo container-->
         <a class="logo" href="{{ route('landing') }}">
             <span class="logo-light-mode">
-                <img src="{{ asset('images/vacc_logo.png') }}" class="l-dark" height="32" alt="">
-                <img src="{{ asset('images/vacc_logo_white.png') }}" class="l-light" height="32" alt="">
+                <img src="{{ iasset('images/vacc_logo.png', 170*2) }}" class="l-dark" height="32px">
+                <img src="{{ iasset('images/vacc_logo_white.png', 170*2) }}" class="l-light" height="32px">
             </span>
-            <img src="{{ asset('images/vacc_logo_white.png') }}" height="32" class="logo-dark-mode" alt="">
+            <img src="{{ iasset('images/vacc_logo_white.png', 170*2) }}" class="logo-dark-mode" alt="">
         </a>
 
         <!-- End Logo container-->

@@ -74,6 +74,7 @@ class ImageHelperLibrary extends BaseLibrary
     {
         $filename = str_replace(' ', '-', $url);
         $filename = preg_replace('/[^A-Za-z0-9\-\/.]/', '', $filename);
+        if ($width != null) $filename .= '-w' . $width . "px";
 
         $filepath = "public/image_cache/asset/" . $filename . ".webp";
         if (Storage::exists($filepath)) {

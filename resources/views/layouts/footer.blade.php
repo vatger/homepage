@@ -6,7 +6,7 @@
                 <div class="footer-py-60" style="padding-bottom: 0">
                     <div class="row">
                         <div class="col-lg-4 col-12 mb-0 mb-md-4 pb-0 pb-md-2">
-                            <img src="{{ asset('images/vacc_logo_white.png') }}" width="55%">
+                            <img src="{{ iasset('images/vacc_logo_white.png', 300) }}" width="55%">
 
                             <p class="mt-4">Controlling The Virtual German Airspace With Passion!</p>
 
@@ -49,8 +49,8 @@
 
                         <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                             <h5 class="footer-head"></h5>
-                            <a href="https://vatsim.net"><img class="mb-4" src="{{ asset('images/vatsim/VATSIM_Logo_White_500px.png') }}" width="80%"></a>
-                            <a href="https://vateud.net"><img src="{{ asset('images/vateud.png') }}" width="80%"></a>
+                            <a href="https://vatsim.net"><img class="mb-4" src="{{ iasset('images/vatsim/VATSIM_Logo_White_500px.png', 300) }}" width="80%"></a>
+                            <a href="https://vateud.net"><img src="{{ iasset('images/vateud.png',300) }}" width="80%"></a>
                         </div>
                         <!--end col-->
                     </div>
