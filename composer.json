@@ -11,10 +11,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/paulhollmann/vatsim-stand-status.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/TartanLeGrand/laravel-openapi.git"
         }
     ],
     "require": {
@@ -40,7 +36,7 @@
         "spatie/laravel-permission": "^6.9",
         "statikbe/laravel-cookie-consent": "^1.8",
         "stevebauman/purify": "^6.0",
-        "tartanlegrand/laravel-openapi": "^1.13",
+        "tartanlegrand/laravel-openapi": "^2.0",
         "tightenco/ziggy": "^1.6",
         "weberhofer/jsonrpcphp": "^2.2"
     },
