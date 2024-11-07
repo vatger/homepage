@@ -275,6 +275,12 @@
                                             Zieht sich einmal neue Informationen aus der API und stößt update Aktionen an. Kann bedenkenlos ausgeführt werden.
                                         </p>
                                     </div>
+                                    <div class="mt-4">
+                                        <button class="btn btn-sm btn-primary" wire:click="mark_member_seen()">Force Member Update</button>
+                                        <p class="text-muted mt-2">
+                                            Der Member ist inaktiv, will seinen Account verlängern. Setzt last_seen_at = now().
+                                        </p>
+                                    </div>
                                     <hr>
                                     <div class="mt-4">
                                         <button class="btn btn-sm btn-danger" wire:confirm="ACHTUNG: Soll der Nutzer zur Löschung markiert werden?" wire:click="mark_member_for_removal()">Mark for

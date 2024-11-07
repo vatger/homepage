@@ -8,6 +8,7 @@ use App\Libraries\MembershipLibrary;
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\Membership\User;
 use App\Models\Membership\UserBan;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
@@ -87,14 +88,27 @@ class MemberPage extends Component
         $this->showNoty("Nutzer aktualisiert");
     }
 
+    public function mark_member_seen(): void
+    {
+        $this->authorize('membership.users.details.edit');
+        $details = $this->user->vatgerDetails;
+        $details->last_seen_at = Carbon::now();
+        $details->save();
+        
+        MembershipLibrary::update($this->user, cache: false);
+        $this->showNoty("Nutzer last_seen gesetzt und aktualisiert");
+    }
+
     public function mark_member_for_removal(): void
     {
+        $this->authorize('membership.users.details.edit');
         GDPRLibrary::mark_for_deletion($this->user);
         $this->showNoty("Nutzer zur Löschung markiert");
     }
 
     public function mark_member_for_removal_now(): void
     {
+        $this->authorize('membership.users.details.edit');
         GDPRLibrary::mark_for_deletion($this->user);
         $this->showNoty("Nutzer zur direkten Löschung markiert");
         dispatch(new UpdateGDPRRemovalsJob());
