@@ -33,6 +33,16 @@ class MembershipLibrary
         // if we are currently in the removal process, don't set this
         if (!GdprRemoval::where('user_id', $user->id)->whereNull('completed_at')->exists()) {
             $data['delete_at'] = null;
+            if ($user->vatgerDetails->delete_at != null) {
+                $n = new BasicNotification(
+                    __('membership_library.welcome_back.title.title'),
+                    __('membership_library.welcome_back.message'),
+                    'VATGER Membership System',
+                    valid_till: Carbon::now()->addDays(180),
+                    delete_at: Carbon::now()->addDays(365),
+                );
+                $user->notify($n);
+            }
         }
 
 
@@ -246,6 +256,16 @@ class MembershipLibrary
 
         // user is active clear all flags
         if (!$warning_inactive) {
+            if ($user->vatgerDetails->warning_inactive_at != null) {
+                $n = new BasicNotification(
+                    __('membership_library.welcome_back.title.title'),
+                    __('membership_library.welcome_back.message'),
+                    'VATGER Membership System',
+                    valid_till: Carbon::now()->addDays(180),
+                    delete_at: Carbon::now()->addDays(365),
+                );
+                $user->notify($n);
+            }
             $data = [
                 'warning_inactive_at' => null,
                 'inactive_at' => null,
@@ -301,7 +321,7 @@ class MembershipLibrary
         }
         if ($delete && !$user->vatgerDetails->delete_at) {
             $user->vatgerDetails->update(['delete_at' => Carbon::now()]);
-            $date = $user->vatgerDetails->last_seen_at->addDays(180 * 2);
+            $date = Carbon::now()->addDay();
             $n = new BasicNotification(
                 __('membership_library.deletion_notice.title'),
                 __('membership_library.deletion_notice.message', ['date' => $date->format('d.m.Y H:i')]),
