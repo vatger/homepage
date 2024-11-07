@@ -35,7 +35,7 @@ class MembershipLibrary
             $data['delete_at'] = null;
             if ($user->vatgerDetails->delete_at != null) {
                 $n = new BasicNotification(
-                    __('membership_library.welcome_back.title.title'),
+                    __('membership_library.welcome_back.title'),
                     __('membership_library.welcome_back.message'),
                     'VATGER Membership System',
                     valid_till: Carbon::now()->addDays(180),
