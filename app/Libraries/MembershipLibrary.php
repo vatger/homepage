@@ -258,7 +258,7 @@ class MembershipLibrary
         if (!$warning_inactive) {
             if ($user->vatgerDetails->warning_inactive_at != null) {
                 $n = new BasicNotification(
-                    __('membership_library.welcome_back.title.title'),
+                    __('membership_library.welcome_back.title'),
                     __('membership_library.welcome_back.message'),
                     'VATGER Membership System',
                     valid_till: Carbon::now()->addDays(180),
