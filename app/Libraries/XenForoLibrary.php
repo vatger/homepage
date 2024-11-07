@@ -101,11 +101,18 @@ class XenForoLibrary extends BaseLibrary
             $dataArray['secondary_group_ids'][] = config('forum.guestGroup');
         }
 
+        // CHECK IF USER IS VATGER INACTIVE
+        if ($user->vatgerDetails->is_inactive) {
+            $dataArray['secondary_group_ids'] = [];
+            $dataArray['secondary_group_ids'][] = config('forum.inactiveGroup');
+        }
+
         // CHECK IF USER IS BANNED
         if ($user->is_currently_forum_banned) {
             $dataArray['secondary_group_ids'] = [];
             $dataArray['secondary_group_ids'][] = config('forum.bannedGroup');
         }
+
 
         $dataArray['custom_title'] = $user->id;
         $result = self::send('POST', 'users/' . $user->settings->forum_id, $dataArray);
