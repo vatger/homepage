@@ -31,7 +31,7 @@ class MembershipLibrary
         $data = ['last_seen_at' => Carbon::now()];
 
         // if we are currently in the removal process, don't set this
-        if (!GdprRemoval::where('user_id', $user->id)->whereNull('completed_at')->exists()) {
+        if (!$user->isCurrentlyInRemoval()) {
             $data['delete_at'] = null;
             if ($user->vatgerDetails->delete_at != null) {
                 $n = new BasicNotification(

@@ -13,8 +13,25 @@
 
     <section class="section">
         <div class="container">
-            Deine VATSIM Germany Daten werden grade gelöscht. <br>
-            Your VATSIM Germany data is being deleted.<br>
+            <h2>Deine VATSIM Germany Daten werden grade gelöscht</h2>
+            <h2>Your VATSIM Germany data is being deleted</h2>
+            <br>
+            Du hast die Löschung deiner VATSIM Germany Daten beantragt oder dich nicht in der in der Satzung genannten Fristen zurückgemeldet.
+            Wir Löschen deshalb zur Zeit alle deine bei VATSIM Germany hinterlegten Daten.
+            Wichtig: Wir können nur Daten auf VATGER-Servern löschen, da wir keinen Zugriff auf die VATSIM weite Datenbank haben.
+            Möchtest du deinen VATSIM Account löschen lassen, musst du dich an den VATSIM Support unter support.vatsim.net melden.
+            Der Löschungsprozess bei uns läuft unabhängig davon und kann einige Zeit in anspruch nehmen.
+            Solltest du wieder einen Account bei uns erstellen wollen, kannst du dies nach Abschluss des Löschprozesses tun.
+
+            <hr>
+
+            You have requested the deletion of your VATSIM Germany data or have not reported back within the deadlines specified in the statutes.
+            We are therefore currently deleting all your data stored with VATSIM Germany.
+            Important: We can only delete data on VATGER servers, as we do not have access to the VATSIM wide database.
+            If you would like to have your VATSIM account deleted, you must contact VATSIM Support at support.vatsim.net.
+            The deletion process with us runs independently of this and can take some time.
+            If you want to create an account with us again, you can do so after the deletion process has been completed.
+
         </div>
         <!--end container-->
     </section>

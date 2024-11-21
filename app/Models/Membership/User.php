@@ -4,6 +4,7 @@ namespace App\Models\Membership;
 
 use App\Models\Membership\Concerns\HasBanConcern;
 use App\Models\Membership\Concerns\HasFirConcern;
+use App\Models\Membership\Concerns\HasGDPRConcern;
 use App\Models\Membership\Concerns\HasTeamConcern;
 use App\Models\TeamspeakRegistration;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,7 +16,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable, HasRoles, HasBanConcern, HasFirConcern, HasTeamConcern;
+    use HasApiTokens, Notifiable, HasRoles, HasBanConcern, HasFirConcern, HasTeamConcern, HasGDPRConcern;
 
     protected $table = 'user_users';
 

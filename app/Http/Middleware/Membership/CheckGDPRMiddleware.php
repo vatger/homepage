@@ -23,7 +23,7 @@ class CheckGDPRMiddleware
         if (Auth::check()) {
             $user = Auth::user();
 
-            if (GdprRemoval::where('user_id', $user->id)->whereNull('completed_at')->exists()) {
+            if ($user->isCurrentlyInRemoval()) {
                 // Account is locally or globally banned
                 return redirect()->route('member.removal-pending');
             }
