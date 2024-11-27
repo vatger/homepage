@@ -9,7 +9,7 @@ trait HasGDPRConcern
 {
     public function isCurrentlyInRemoval(): bool
     {
-        return GdprRemoval::where('user_id', $this->id)->whereNull('completed_at')->exists();
+        return GdprRemoval::where('user_id', $this->id)->whereNull('completed_at')->whereNull('canceled_at')->exists();
     }
 
 

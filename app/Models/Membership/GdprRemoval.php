@@ -39,6 +39,8 @@ class GdprRemoval extends Model
 
     public function getRunningAttribute(): bool
     {
+        if ($this->canceled_at != null) return false;
+
         return $this->completed_at == null || !empty($this->getPendingServicesAttribute());
     }
 }

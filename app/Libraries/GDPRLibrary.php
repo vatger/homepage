@@ -67,8 +67,18 @@ class GDPRLibrary
         }
     }
 
+    public static function cancel_deletion(User $user): void
+    {
+        if (!$user->isCurrentlyInRemoval()) return;
+        $removal = GdprRemoval::where('user_id', $user->id)->whereNull('completed_at')->whereNull('canceled_at')->firstOrFail();
+        $removal->canceled_at = Carbon::now();
+        $removal->save();
+        MembershipLibrary::seen($user);
+    }
+
     public static function work(GdprRemoval $gdprRemoval): void
     {
+        if (!$gdprRemoval->running) return;
         $todos = $gdprRemoval->pending_services;
         foreach ($todos as $todo) {
             self::call_service($gdprRemoval, $todo);
