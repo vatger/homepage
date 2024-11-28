@@ -20,6 +20,11 @@ class GdprRemovalsLogPage extends Component
 
     protected $sortable_fields = ['started_at', 'completed_at', 'canceled_at', 'user_id'];
 
+    public function mount(): void
+    {
+        $this->setInitialSortOrder('started_at', 'desc');
+    }
+
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {

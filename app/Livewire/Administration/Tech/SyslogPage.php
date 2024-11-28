@@ -23,6 +23,11 @@ class SyslogPage extends Component
 
     protected $sortable_fields = ['created_at', 'type', 'path', 'method'];
 
+    public function mount(): void
+    {
+        $this->setInitialSortOrder('created_at', 'desc');
+    }
+    
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {

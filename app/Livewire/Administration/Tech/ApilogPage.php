@@ -19,6 +19,11 @@ class ApilogPage extends Component
 
     protected $sortable_fields = ['id', 'created_at'];
 
+    public function mount(): void
+    {
+        $this->setInitialSortOrder('created_at', 'desc');
+    }
+
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {

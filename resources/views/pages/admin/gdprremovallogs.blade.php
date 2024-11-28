@@ -31,6 +31,10 @@
                             completed_at
                             <i data-feather="{{$this->getSortIconClasses('completed_at')}}"></i>
                         </th>
+                        <th class="border-bottom p-3" style="white-space: nowrap" wire:click="sortBy('canceled_at')">
+                            canceled_at
+                            <i data-feather="{{$this->getSortIconClasses('canceled_at')}}"></i>
+                        </th>
                         <th class="border-bottom p-3" style="white-space: nowrap" wire:click="sortBy('user_id')">
                             user_id
                             <i data-feather="{{$this->getSortIconClasses('user_id')}}"></i>
@@ -44,7 +48,8 @@
                     @foreach ($logs as $log)
                         <tr>
                             <td>{{ $log->started_at }}</td>
-                            <td>{{ $log->canceled_at ? 'c' . $log->canceled_at : $log->completed_at }}</td>
+                            <td>{{ $log->completed_at }}</td>
+                            <td>{{ $log->canceled_at }}</td>
                             <td>{{ $log->user_id }}</td>
                             <td>{{ join(',',$log->pending_services) }}</td>
                             <td>{{ join(',',$log->completed_services) }}</td>
