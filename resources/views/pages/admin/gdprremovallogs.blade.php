@@ -9,6 +9,15 @@
 
             <x-layouts.admin.card-header position="left" title="GDPR Removal Logs" :subtitle="\App\Models\Membership\GdprRemoval::count()" />
 
+            <x-layouts.admin.card-header position="right">
+                <li class="list-inline-item" style="width: 100%">
+                    <div class="form-icon position-relative">
+                        <i data-feather="search" class=" fea icon-sm icons"></i>
+                        <input wire:model.live="search" class="form-control ps-5" type="number" min="0" max="9000000">
+                    </div>
+                </li>
+            </x-layouts.admin.card-header>
+
 
             <div class="p-4 table-responsive">
                 <table class="table table-center bg-white mb-0">
@@ -28,19 +37,17 @@
                         </th>
                         <th class="border-bottom p-3" style="white-space: nowrap">pending_services</th>
                         <th class="border-bottom p-3" style="white-space: nowrap">completed_services</th>
-                        <th class="border-bottom p-3" style="white-space: nowrap">data</th>
+
                     </tr>
                     </thead>
                     <tbody>
                     @foreach ($logs as $log)
                         <tr>
                             <td>{{ $log->started_at }}</td>
-                            <td>{{ $log->completed_at }}</td>
+                            <td>{{ $log->canceled_at ? 'c' . $log->canceled_at : $log->completed_at }}</td>
                             <td>{{ $log->user_id }}</td>
                             <td>{{ join(',',$log->pending_services) }}</td>
                             <td>{{ join(',',$log->completed_services) }}</td>
-                            <td>{{ json_encode($log->service_data) }}</td>
-
                         </tr>
                     @endforeach
                     </tbody>
