@@ -16,7 +16,7 @@ class XenForoLibrary extends BaseLibrary
     /**
      * Send an actual call to the XenForo API.
      */
-    private static function send(string $method, string $endpoint, array $data, bool $bypass = true): false|ResponseInterface
+    private static function send(string $method, string $endpoint, array $data, bool $bypass = true, bool $allow_errors = false): false|ResponseInterface
     {
         $client = self::constructClient([
             'headers' => [
@@ -25,6 +25,7 @@ class XenForoLibrary extends BaseLibrary
                 'XP-Api-User' => 1,
             ],
         ]);
+
         if ($bypass) {
             $data['api_bypass_permissions'] = 1;
             $url = config('forum.url') . '/api/' . $endpoint . '?api_bypass_permissions=1';
@@ -32,7 +33,7 @@ class XenForoLibrary extends BaseLibrary
             $url = config('forum.url') . '/api/' . $endpoint;
         }
         try {
-            return $client->request($method, $url, ['form_params' => $data]);
+            return $client->request($method, $url, ['form_params' => $data, 'http_errors' => !$allow_errors]);
         } catch (ClientException $e) {
             Log::debug($e->getMessage());
         } catch (GuzzleException $e) {
@@ -174,7 +175,7 @@ class XenForoLibrary extends BaseLibrary
         $forumId = $user->settings->forum_id;
         if ($forumId == null) return true;
         $vid = $user->id;
-        $result = self::send('DELETE', 'users/' . $forumId, ['rename_to' => $vid]);
+        $result = self::send('DELETE', 'users/' . $forumId, ['rename_to' => $vid], allow_errors: true);
         if ($result && (200 == $result->getStatusCode() || 404 == $result->getStatusCode())) {
             $user->settings->forum_id = null;
             $user->settings->save();
