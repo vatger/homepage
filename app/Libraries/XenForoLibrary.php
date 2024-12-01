@@ -175,11 +175,11 @@ class XenForoLibrary extends BaseLibrary
         if ($forumId == null) return true;
         $vid = $user->id;
         $result = self::send('DELETE', 'users/' . $forumId, ['rename_to' => $vid]);
-        if ($result && 200 == $result->getStatusCode()) {
+        if ($result && (200 == $result->getStatusCode() || 404 == $result->getStatusCode())) {
+            $user->settings->forum_id = null;
+            $user->settings->save();
             return true;
         }
-        $user->settings->forum_id = null;
-        $user->settings->save();
         return false;
     }
 

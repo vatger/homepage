@@ -19,7 +19,7 @@ class UpdateGDPRRemovalsJob implements ShouldQueue
     public function handle(): void
     {
 
-        UserVatgerDetail::with("user")
+        UserVatgerDetail::with('user')
             ->whereNotNull('delete_at')
             ->where('delete_at', '<', now()->subHours(24))
             ->cursor()
@@ -27,9 +27,12 @@ class UpdateGDPRRemovalsJob implements ShouldQueue
                 GDPRLibrary::start_deletion($vatger_details->user);
             });
 
-        GdprRemoval::cursor()->each(function ($gdpr_removal) {
-            GDPRLibrary::work($gdpr_removal);
-        });
+        GdprRemoval::whereNull('completed_at')
+            ->whereNull('canceled_at')
+            ->cursor()
+            ->each(function ($gdpr_removal) {
+                GDPRLibrary::work($gdpr_removal);
+            });
     }
 
 
