@@ -53,13 +53,13 @@ class GDPRLibrary
 
     public static function start_deletion(User $user): void
     {
-        if (!GdprRemoval::where('user_id', $user->id)->whereNull('completed_at')->exists()) {
-            $gdpr = new GdprRemoval();
-            $gdpr->user_id = $user->id;
-            $gdpr->started_at = Carbon::now();
-            $gdpr->service_data = [];
-            $gdpr->save();
-        }
+        if (GdprRemoval::where('user_id', $user->id)->whereNull('completed_at')->exists()) return;
+        
+        $gdpr = new GdprRemoval();
+        $gdpr->user_id = $user->id;
+        $gdpr->started_at = Carbon::now();
+        $gdpr->service_data = [];
+        $gdpr->save();
 
         // we can safely kick him from all teams
         foreach (Team::all() as $t) {
