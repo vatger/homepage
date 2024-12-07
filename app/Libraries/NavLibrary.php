@@ -51,8 +51,8 @@ class NavLibrary extends BaseGithubLibrary
     static function sync_stations(): void
     {
         $repo = 'VATGER-Nav/datahub';
-        $branch = 'main';
-        $path = 'data.json';
+        $branch = 'production';
+        $path = 'api/stations.json';
 
         $stations = self::github_dl_file($repo, $branch, $path);
         if (empty($stations)) {
