@@ -245,7 +245,7 @@ class MembershipLibrary
         }
 
         // if we are currently in the removal process, don't continue
-        if (GdprRemoval::where('user_id', $user->id)->whereNull('completed_at')->exists()) {
+        if ($user->isCurrentlyInRemoval()) {
             return;
         }
 
