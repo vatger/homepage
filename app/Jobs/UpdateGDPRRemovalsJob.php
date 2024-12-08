@@ -37,7 +37,7 @@ class UpdateGDPRRemovalsJob implements ShouldQueue
         UserVatgerDetail::with('user')
             ->whereNotNull('delete_at')
             ->where('delete_at', '<', now()->subHours(24))
-            ->limit(10000)
+            ->limit(20000)
             ->cursor()
             ->each(function ($vatger_details) {
                 GDPRLibrary::start_deletion($vatger_details->user);

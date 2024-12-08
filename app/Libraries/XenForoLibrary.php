@@ -33,7 +33,11 @@ class XenForoLibrary extends BaseLibrary
             $url = config('forum.url') . '/api/' . $endpoint;
         }
         try {
-            return $client->request($method, $url, ['form_params' => $data, 'http_errors' => !$allow_errors]);
+            if ($allow_errors) {
+                return $client->request($method, $url, ['form_params' => $data, 'http_errors' => false]);
+            } else {
+                return $client->request($method, $url, ['form_params' => $data]);
+            }
         } catch (ClientException $e) {
             Log::debug($e->getMessage());
         } catch (GuzzleException $e) {
