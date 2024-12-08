@@ -18,10 +18,12 @@
                 </li>
                 <li class="list-inline-item" style="width: 100%">
                     <select wire:model.live="type" class="form-select form-control mt-2" aria-label="Type">
+
                         <option value="">-</option>
-                        <option value="http">http</option>
-                        <option value="exception">exception</option>
-                        <option value="log">log</option>
+                        @foreach($log_types as $log_type)
+                            <option value="{{ $log_type }}">{{ $log_type }}</option>
+                        @endforeach
+
                     </select>
                 </li>
             </x-layouts.admin.card-header>

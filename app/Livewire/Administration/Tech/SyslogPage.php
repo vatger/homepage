@@ -21,13 +21,16 @@ class SyslogPage extends Component
     #[Url]
     public ?string $type = null;
 
+    public array $log_types = [];
+
     protected $sortable_fields = ['created_at', 'type', 'path', 'method'];
 
     public function mount(): void
     {
         $this->setInitialSortOrder('created_at', 'desc');
+        $this->log_types = SysLog::select('type')->distinct()->get()->map(fn(object $o) => $o->type)->toArray();
     }
-    
+
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
@@ -41,6 +44,7 @@ class SyslogPage extends Component
         return view('pages.admin.syslogs')->with([
             'logs' => $query->paginate(),
             'sellog' => $log,
+            'log_types' => $this->log_types,
         ]);
     }
 
