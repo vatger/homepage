@@ -53,8 +53,8 @@ class GDPRLibrary
 
     public static function start_deletion(User $user): void
     {
-        if (GdprRemoval::where('user_id', $user->id)->whereNull('completed_at')->exists()) return;
-        
+        if ($user->isCurrentlyInRemoval()) return;
+
         $gdpr = new GdprRemoval();
         $gdpr->user_id = $user->id;
         $gdpr->started_at = Carbon::now();
