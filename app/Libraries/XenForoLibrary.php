@@ -32,16 +32,18 @@ class XenForoLibrary extends BaseLibrary
         } else {
             $url = config('forum.url') . '/api/' . $endpoint;
         }
-        try {
-            if ($allow_errors) {
+        if ($allow_errors) {
+            try {
                 return $client->request($method, $url, ['form_params' => $data, 'http_errors' => false]);
-            } else {
-                return $client->request($method, $url, ['form_params' => $data]);
+            } catch (GuzzleException $e) {
+                Log::error($e->getMessage());
             }
-        } catch (ClientException $e) {
-            Log::debug($e->getMessage());
-        } catch (GuzzleException $e) {
-            Log::debug($e->getMessage());
+        } else {
+            try {
+                return $client->request($method, $url, ['form_params' => $data]);
+            } catch (GuzzleException $e) {
+                Log::debug($e->getMessage());
+            }
         }
         return false;
     }
