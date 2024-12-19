@@ -202,7 +202,7 @@ class BaseGithubLibrary extends BaseLibrary
         return false;
     }
 
-    static function github_repo_contents(string $repo, string $branch, string $filepath): ?object
+    static function github_repo_contents(string $repo, string $branch, string $filepath): object|array|null
     {
         try {
             $client = self::constructClient();
