@@ -23,7 +23,7 @@ class BaseGithubLibrary extends BaseLibrary
 
     private static function getAppJWT(): string
     {
-        $jwt = Cache::remember('github.jwt', 1, function () {
+        $jwt = Cache::remember('github.jwt', 4 * 60, function () {
             $privateKey = file_get_contents(storage_path('app/secret/vatsim-germany-homepage.private-key.pem'));
             $payload = [
                 'iat' => Carbon::now()->timestamp,
@@ -38,7 +38,7 @@ class BaseGithubLibrary extends BaseLibrary
     protected static function getInstallationJWTs(): array
     {
         try {
-            return Cache::remember('github.installations', 5, function () {
+            return Cache::remember('github.installations', 4 * 60, function () {
                 $client = self::constructGithubClient(self::getAppJWT());
                 $api_url = "https://api.github.com/app/installations";
                 $installations = json_decode($client->get($api_url)->getBody(), false, flags: JSON_THROW_ON_ERROR);
@@ -211,7 +211,6 @@ class BaseGithubLibrary extends BaseLibrary
         } catch (JsonException|GuzzleException $e) {
             return null;
         }
-
     }
 
     public static function github_dl_file(string $repo, string $branch, string $filepath, bool $parse_json = true): string|object|array|null
