@@ -54,6 +54,11 @@ class BookstackLibrary extends BaseLibrary
         self::_user_update($user->id, $roles);
     }
 
+    public static function delete_user(User $user): bool
+    {
+        return false;
+    }
+
     public static function get_group_name(int $id): ?string
     {
         $role_list = self::_roles_list();
@@ -92,4 +97,6 @@ class BookstackLibrary extends BaseLibrary
         ];
         return !empty(self::_send('users/' . $user_id, 'PUT', $body));
     }
+
+
 }

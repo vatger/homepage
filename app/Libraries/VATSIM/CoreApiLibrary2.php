@@ -3,6 +3,7 @@
 namespace App\Libraries\VATSIM;
 
 use App\Libraries\BaseLibrary;
+use App\Libraries\GDPRLibrary;
 use App\Libraries\MembershipLibrary;
 use App\Models\Membership\User;
 use Carbon\Carbon;
@@ -107,7 +108,7 @@ class CoreApiLibrary2 extends BaseLibrary
             return;
         }
 
-        if (isset($data->name_first) && isset($data->name_last)) {
+        if (isset($data->name_first) && isset($data->name_last) && !GDPRLibrary::is_currently_locked($user)) {
             $user->update([
                 'firstname' => $data->name_first,
                 'lastname' => $data->name_last,

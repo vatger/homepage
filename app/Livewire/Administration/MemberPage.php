@@ -94,7 +94,7 @@ class MemberPage extends Component
         $details = $this->user->vatgerDetails;
         $details->last_seen_at = Carbon::now();
         $details->save();
-        
+
         MembershipLibrary::update($this->user, cache: false);
         $this->showNoty("Nutzer last_seen gesetzt und aktualisiert");
     }
@@ -112,5 +112,18 @@ class MemberPage extends Component
         GDPRLibrary::mark_for_deletion($this->user);
         $this->showNoty("Nutzer zur direkten Löschung markiert");
         dispatch(new UpdateGDPRRemovalsJob());
+    }
+
+    public function mark_member_second_account(): void
+    {
+        $this->authorize('membership.users.details.edit');
+        $success = GDPRLibrary::lock_deletion($this->user);
+        if (!$success) {
+            $this->showNoty("Fehler", 'error');
+            return;
+        }
+        $this->user->email = 'dupe_' . $this->user->id . '@vatsim.net';
+        $this->user->save();
+        $this->showNoty("Success");
     }
 }

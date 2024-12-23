@@ -67,13 +67,35 @@ class GDPRLibrary
         }
     }
 
-    public static function cancel_deletion(User $user): void
+    public static function get_current_removal(User $user): ?GdprRemoval
     {
-        if (!$user->isCurrentlyInRemoval()) return;
-        $removal = GdprRemoval::where('user_id', $user->id)->whereNull('completed_at')->whereNull('canceled_at')->firstOrFail();
+        return GdprRemoval::where('user_id', $user->id)->whereNull('completed_at')->whereNull('canceled_at')->first();
+    }
+
+    public static function is_currently_locked(?User $user): bool
+    {
+        if (!$user) return false;
+        $removal = self::get_current_removal($user);
+        return $removal ? $removal->locked : false;
+    }
+
+    public static function lock_deletion(User $user): boolean
+    {
+        if (!$user->isCurrentlyInRemoval()) return false;
+        $removal = self::get_current_removal($user);
+        $removal->locked = true;
+        $removal->save();
+        return true;
+    }
+
+    public static function cancel_deletion(User $user): boolean
+    {
+        if (!$user->isCurrentlyInRemoval()) return false;
+        $removal = self::get_current_removal($user);
         $removal->canceled_at = Carbon::now();
         $removal->save();
         MembershipLibrary::seen($user);
+        return true;
     }
 
     public static function work(GdprRemoval $gdprRemoval): void
@@ -102,6 +124,7 @@ class GDPRLibrary
             $result = match ($service) {
                 'board' => XenForoLibrary::deleteForumAccount($gdprRemoval->user),
                 'teamspeak' => TeamSpeakWebQuery::deleteUser($gdprRemoval->user),
+                'knowledgebase' => BookstackLibrary::delete_user($gdprRemoval->user),
                 default => false,
             };
         } catch (\Exception $exception) {

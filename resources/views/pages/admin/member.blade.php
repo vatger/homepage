@@ -273,20 +273,23 @@
                                     <div class="mt-4">
                                         <button class="btn btn-sm btn-primary" wire:click="force_member_update()">Force Member Update</button>
                                         <p class="text-muted mt-2">
-                                            Zieht sich einmal neue Informationen aus der API und stößt update Aktionen an. Kann bedenkenlos ausgeführt werden.
+                                            Zieht sich einmal neue Informationen aus der API und stößt update Aktionen an.
+                                            Kann bedenkenlos ausgeführt werden.
                                         </p>
                                     </div>
                                     <div class="mt-4">
                                         <button class="btn btn-sm btn-primary" wire:click="mark_member_seen()">Member Last Seen Now</button>
+                                        Last seen at {{ $user->vatgerDetails->last_seen_at }}z
                                         <p class="text-muted mt-2">
                                             Der Member ist inaktiv, will seinen Account verlängern. Setzt last_seen_at = now().
                                         </p>
                                     </div>
                                     <hr>
                                     <div class="mt-4">
-                                        <button class="btn btn-sm btn-danger" wire:confirm="ACHTUNG: Soll der Nutzer zur Löschung markiert werden?" wire:click="mark_member_for_removal()">Mark for
+                                        <button class="btn btn-sm btn-warning" wire:confirm="ACHTUNG: Soll der Nutzer zur Löschung markiert werden?" wire:click="mark_member_for_removal()">Mark for
                                             deletion!
                                         </button>
+                                        Delete at {{ $user->vatgerDetails->delete_at?->addDay() ?? '-/-'}}
                                         <p class="text-muted mt-2">
                                             Markiert den Account zur Löschung, wenn der User nicht in 24h auf die E-Mail reagiert, wird der Account gelöscht.
                                         </p>
@@ -295,8 +298,19 @@
                                     <div class="mt-4">
                                         <button class="btn btn-sm btn-danger" wire:confirm="ACHTUNG: Soll der Nutzer gelöscht werden?" wire:click="mark_member_for_removal_now()">Delete now!!!
                                         </button>
+                                        Delete at {{ $user->vatgerDetails->delete_at?->addDay() ?? '-/-'}}
                                         <p class="text-muted mt-2">
                                             Markiert den Account zur Löschung, der Account wird direkt gelöscht.
+                                        </p>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button class="btn btn-sm btn-danger" wire:confirm="ACHTUNG: Zweiten Account Löschen?" wire:click="mark_member_second_account()" {{
+                                        $user->isCurrentlyInRemoval() ? '' : 'disabled' }}> Mark second Account
+                                        </button>
+                                        User {{ \App\Libraries\GDPRLibrary::is_currently_locked($user) ? 'locked' : 'not locked' }}
+                                        <p class="text-muted mt-2">
+                                            Wenn der User einen doppelten Account hat kann hier der zweite Account gesperrt werden und die E-Mail geändert werden.
+                                            Erst muss eine Löschung gestartet werden.
                                         </p>
                                     </div>
                                 </div>

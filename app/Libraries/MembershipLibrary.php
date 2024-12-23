@@ -59,8 +59,10 @@ class MembershipLibrary
             return;
         }
         if ($api_refresh) {
-            CoreApiLibrary2::updateMember($user, $cache ? 60 : 0);
-            $user = $user->fresh();
+            if (!GDPRLibrary::is_currently_locked($user)) {
+                CoreApiLibrary2::updateMember($user, $cache ? 60 : 0);
+                $user = $user->fresh();
+            }
         }
         self::check_bans($user);
         self::check_status($user, $cache);
