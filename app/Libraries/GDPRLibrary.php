@@ -79,7 +79,7 @@ class GDPRLibrary
         return $removal ? $removal->locked : false;
     }
 
-    public static function lock_deletion(User $user): boolean
+    public static function lock_deletion(User $user): bool
     {
         if (!$user->isCurrentlyInRemoval()) return false;
         $removal = self::get_current_removal($user);
@@ -88,7 +88,7 @@ class GDPRLibrary
         return true;
     }
 
-    public static function cancel_deletion(User $user): boolean
+    public static function cancel_deletion(User $user): bool
     {
         if (!$user->isCurrentlyInRemoval()) return false;
         $removal = self::get_current_removal($user);
