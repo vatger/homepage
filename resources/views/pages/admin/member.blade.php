@@ -277,7 +277,7 @@
                                         </p>
                                     </div>
                                     <div class="mt-4">
-                                        <button class="btn btn-sm btn-primary" wire:click="mark_member_seen()">Force Member Update</button>
+                                        <button class="btn btn-sm btn-primary" wire:click="mark_member_seen()">Member Last Seen Now</button>
                                         <p class="text-muted mt-2">
                                             Der Member ist inaktiv, will seinen Account verlängern. Setzt last_seen_at = now().
                                         </p>

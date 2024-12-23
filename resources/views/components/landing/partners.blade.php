@@ -1,5 +1,23 @@
 @props(['partners'])
 
+<section class="py-4 border-bottom border-top">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            @foreach ($partners as $partner)
+                <div class="col-lg-2 col-md-2 col-6 text-center py-4"
+                     data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ $partner->name }}">
+                    <a href="{{ $partner->link_url }}">
+                        <img src="{{ $partner->logo_url }}" width="160px" class="avatar avatar-ex" alt="">
+                    </a>
+                </div><!--end col-->
+            @endforeach
+        </div><!--end row-->
+    </div><!--end container-->
+</section>
+
+
+{{--
 @if ($partners->count() > 0)
     <section class="section mt-0 pt-3 pb-5 mb-0">
         <div class="container">
@@ -17,7 +35,7 @@
             <div class="row">
                 <div class="col-12 mt-0">
                     <div
-                            class="@if ($partners->count() == 1) tiny-one-item @elseif($partners->count() == 2) tiny-two-item @else tiny-three-item @endif">
+                        class="@if ($partners->count() == 1) tiny-one-item @elseif($partners->count() == 2) tiny-two-item @else tiny-three-item @endif">
                         @foreach ($partners as $partner)
                             <a href="https://google.de">
                                 <div class="tiny-slide text-center">
@@ -57,3 +75,4 @@
         }
     </style>
 @endif
+--}}

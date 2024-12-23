@@ -31,12 +31,12 @@
         </div>
     </div>
     <!-- Hero End -->
-
-    <x-landing.partners :partners="\App\Models\Partner::all()"></x-landing.partners>
-
+    
     <x-landing.welcome></x-landing.welcome>
 
     <x-landing.events></x-landing.events>
+
+    <x-landing.partners :partners="\App\Models\Partner::all()"></x-landing.partners>
 @endsection
 
 @push('scripts')

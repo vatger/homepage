@@ -1,6 +1,6 @@
 <section class="section py-0">
     <div class="container my-4">
-        <div class="row align-items-center pb-5 @if (\App\Models\Partner::all()->count() > 0) border-bottom @endif">
+        <div class="row align-items-center pb-5">
             <div class="col-lg-5 col-md-6 col-12">
                 <div class="position-relative">
                     <img class="rounded img-fluid mx-auto d-block bg-light" src="{{ iasset('images/pilots/aerodromes_2.png') }}" alt="">

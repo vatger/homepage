@@ -23,9 +23,11 @@ return [
     ],
 
     'footer' => [
-        'data-protection' => 'Data-protection',
+        'data-protection' => 'Data Protection',
         'imprint' => 'Imprint',
         'helpful-links' => 'Helpful Links',
+        'terms' => 'Terms of Service',
+        'satzung' => 'Satzung',
     ],
 
     'blog' => [

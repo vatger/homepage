@@ -25,7 +25,9 @@ return [
     'footer' => [
         'data-protection' => 'Datenschutz',
         'imprint' => 'Impressum',
-        'helpful-links' => 'Helpful Links',
+        'helpful-links' => 'Nützliche Links',
+        'terms' => 'Nutzungsbedingungen',
+        'satzung' => 'Satzung',
     ],
 
     'blog' => [
