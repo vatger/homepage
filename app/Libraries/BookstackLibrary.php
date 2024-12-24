@@ -43,14 +43,16 @@ class BookstackLibrary extends BaseLibrary
         $roles = $user->service_role_ids(ServiceRoleType::BookstackGroup, true);
         $roles[] = config('bookstack.public_role');
 
-        //$current_roles = collect($user_data->roles)->map(fn($r) => $r->id)->flatten()->toArray();
-
         self::_user_update($user->id, $user->email, $roles);
     }
 
     public static function delete_user(User $user): bool
     {
-        return false;
+        $user_data = self::_users_read($user->id);
+        if (empty($user_data)) {
+            return true;
+        }
+        return !empty(self::_send('users/' . $user->id, 'DELETE'));
     }
 
     public static function get_group_name(int $id): ?string
