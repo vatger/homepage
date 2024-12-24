@@ -45,7 +45,7 @@ class BookstackLibrary extends BaseLibrary
 
         //$current_roles = collect($user_data->roles)->map(fn($r) => $r->id)->flatten()->toArray();
 
-        self::_user_update($user->id, $roles);
+        self::_user_update($user->id, $user->email, $roles);
     }
 
     public static function delete_user(User $user): bool
@@ -83,11 +83,20 @@ class BookstackLibrary extends BaseLibrary
         return self::_send('users/' . $user_id, 'GET');
     }
 
-    static function _user_update(int $user_id, array $role_ids = []): bool
+    /**
+     * @param int $user_id
+     * @param string $email
+     * @param array<int> $role_ids
+     * @return bool
+     */
+    static function _user_update(int $user_id, string $email, array $role_ids = []): bool
     {
         $body = [
+            'name' => strval($user_id),
+            'email' => $email,
+            'external_auth_id' => strval($user_id),
+            'language' => 'de',
             'roles' => $role_ids,
-            'name' => $user_id,
         ];
         return !empty(self::_send('users/' . $user_id, 'PUT', $body));
     }
