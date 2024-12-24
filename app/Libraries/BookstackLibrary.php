@@ -41,15 +41,7 @@ class BookstackLibrary extends BaseLibrary
         $roles = $user->service_role_ids(ServiceRoleType::BookstackGroup, true);
         $roles[] = config('bookstack.public_role');
 
-        $current_roles = collect($user_data->roles)
-            ->map(fn($r) => $r->id)
-            ->flatten()
-            ->toArray();
-
-        if (count(array_diff(array_merge($roles, $current_roles), array_intersect($roles, $current_roles))) === 0) {
-            //they are the same!
-            return;
-        }
+        //$current_roles = collect($user_data->roles)->map(fn($r) => $r->id)->flatten()->toArray();
 
         self::_user_update($user->id, $roles);
     }
