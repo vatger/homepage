@@ -6,6 +6,7 @@ use App\Models\Groups\ServiceRoleType;
 use App\Models\Membership\User;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
+use Log;
 
 class BookstackLibrary extends BaseLibrary
 {
@@ -28,6 +29,7 @@ class BookstackLibrary extends BaseLibrary
                 return json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
             }
         } catch (GuzzleException|\JsonException $e) {
+            Log::error($e->getMessage());
         }
         return false;
     }
