@@ -153,10 +153,12 @@ class GDPRLibrary extends BaseLibrary
             $client = self::constructClient([
                 'headers' => $headers,
             ]);
+            dump($api_url, $expected_code, $method, $token, $headers, $client);
             try {
                 $response = $client->request($method, $api_url, ['http_errors' => false]);
-                dd($response);
+                dump($response);
             } catch (GuzzleException $e) {
+                dd($e);
                 return false;
             }
             $response_code = $response?->getStatusCode();
