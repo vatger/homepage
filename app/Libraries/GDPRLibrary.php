@@ -155,6 +155,7 @@ class GDPRLibrary extends BaseLibrary
             ]);
             try {
                 $response = $client->request($method, $api_url, ['http_errors' => false]);
+                dd($response);
             } catch (GuzzleException $e) {
                 return false;
             }
