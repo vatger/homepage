@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class GDPRLibrary extends BaseLibrary
 {
@@ -153,12 +154,10 @@ class GDPRLibrary extends BaseLibrary
             $client = self::constructClient([
                 'headers' => $headers,
             ]);
-            dump($api_url, $expected_code, $method, $token, $headers, $client);
             try {
                 $response = $client->request($method, $api_url, ['http_errors' => false]);
-                dump($response);
             } catch (GuzzleException $e) {
-                dd($e);
+                Log::error($e->getMessage());
                 return false;
             }
             $response_code = $response?->getStatusCode();
