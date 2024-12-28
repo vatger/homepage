@@ -39,6 +39,11 @@ class OpenIdConnectController
             $userinfo['subdivision_code'] = $user->vatsimDetails->subdivision_code;
             $userinfo['fir_code'] = $user->fir?->slug;
         }
+        if ($user->tokenCan('teams')) {
+            $teams = $user->teams;
+            $userinfo['teams'] = collect($teams)->map(fn($team) => $team->name)->toArray();
+        }
+
         if ($user->tokenCan('legacy')) {
             $userinfo['data']['cid'] = strval($user->id);
             if ($user->tokenCan('name')) {

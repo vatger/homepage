@@ -14,7 +14,7 @@ return [
             'rating' => 'ATC, pilot and military ratings',
             'assignment' => 'Region, division, subdivision and fir',
             'legacy' => 'The information above in legacy format',
-            //'address' => 'Information about your address',
+            'teams' => 'Assigned teams on the VATGER homepage',
             //'login' => 'See your login information',
         ],
     ],
