@@ -15,18 +15,15 @@
     },
     {
         "name": "knowledgebase",
-        "deletion_type": "library"
+        "deletion_type": "library",
+        "prevents_deletion": true
     },
     {
         "name": "atciss",
         "deletion_type": "api_request",
-        "endpoint": "http://docker.vatsim-germany.org:1234/api/delete",
-        "authentication": "Token 1234",
-        "request_method": "GET",
+        "endpoint": "http://docker.vatsim-germany.org:8011/api/admin/userdata/$id",
+        "token_config":"external_services.atciss_gdpr_token",
+        "request_method": "DELETE",
         "request_expected_response_code": 200
-    },
-    {
-        "name": "knowledgebase",
-        "deletion_type": "library"
     }
 ]

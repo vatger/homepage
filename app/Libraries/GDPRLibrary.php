@@ -8,10 +8,11 @@ use App\Models\Membership\GdprRemoval;
 use App\Models\Membership\User;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
-class GDPRLibrary
+class GDPRLibrary extends BaseLibrary
 {
 
     // use this when calling as not the user itself
@@ -125,7 +126,7 @@ class GDPRLibrary
                 'board' => XenForoLibrary::deleteForumAccount($gdprRemoval->user),
                 'teamspeak' => TeamSpeakWebQuery::deleteUser($gdprRemoval->user),
                 'knowledgebase' => BookstackLibrary::delete_user($gdprRemoval->user),
-                default => false,
+                default => self::call_api_service($gdprRemoval->user_id, $service),
             };
         } catch (\Exception $exception) {
         }
@@ -135,10 +136,33 @@ class GDPRLibrary
         }
     }
 
-    private static function call_api_service(GdprRemoval $gdprRemoval, string $service): bool
+    private static function call_api_service(int $user_id, string $service): bool
     {
-        File::get(storage_path("app/configurations/gdpr-removal-services.json"));
-
+        try {
+            $services = json_decode(File::get(storage_path("app/configurations/gdpr-removal-services.json")));
+        } catch (\Exception $exception) {
+            return false;
+        }
+        foreach ($services as $api_service) {
+            if ($api_service->name != $service || $api_service->deletion_type != 'api_request') continue;
+            $api_url = str_replace('$id', $user_id, $api_service->endpoint);
+            $expected_code = $api_service->request_expected_response_code;
+            $method = $api_service->request_method;
+            $token = config($api_service->token_config);
+            $headers = ['Authorization' => $token];
+            $client = self::constructClient([
+                'headers' => $headers,
+            ]);
+            try {
+                $response = $client->request($method, $api_url, ['http_errors' => false]);
+            } catch (GuzzleException $e) {
+                return false;
+            }
+            $response_code = $response?->getStatusCode();
+            if ($response_code == $expected_code)
+                return true;
+            return false;
+        }
         return false;
     }
 
