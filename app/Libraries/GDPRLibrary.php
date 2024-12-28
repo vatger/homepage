@@ -136,7 +136,7 @@ class GDPRLibrary extends BaseLibrary
         }
     }
 
-    private static function call_api_service(int $user_id, string $service): bool
+    static function call_api_service(int $user_id, string $service): bool
     {
         try {
             $services = json_decode(File::get(storage_path("app/configurations/gdpr-removal-services.json")));
