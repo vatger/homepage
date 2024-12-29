@@ -15,7 +15,6 @@ return [
             'assignment' => 'Region, division, subdivision and fir',
             'legacy' => 'The information above in legacy format',
             'teams' => 'Assigned teams on the VATGER homepage',
-            //'login' => 'See your login information',
         ],
     ],
 

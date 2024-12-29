@@ -40,7 +40,7 @@ class OpenIdConnectController
             $userinfo['fir_code'] = $user->fir?->slug;
         }
         if ($user->tokenCan('teams')) {
-            $teams = $user->teams;
+            $teams = $user->teams();
             $userinfo['teams'] = collect($teams)->map(fn($team) => $team->name)->toArray();
         }
 
