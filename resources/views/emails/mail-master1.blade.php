@@ -52,7 +52,8 @@
 
         <tr>
             <td style="padding: 48px 24px 0; color: #8492a6; font-size: 14px; text-align: center;">
-                Bei Fragen erreichst du uns unter <a href="mailto:support@vatger.de" style="color: #2f55d4;">support@vatger.de</a> oder antworte einfach auf diese Nachricht.
+                Bei Fragen erreichst du uns unter <a href="mailto:support@vatger.de" style="color: #2f55d4;">support@vatger.de</a> oder antworte einfach auf diese Nachricht. Deine VATSIM-ID ist {{
+                $user_id }}.
             </td>
         </tr>
 

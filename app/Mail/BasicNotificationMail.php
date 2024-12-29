@@ -17,6 +17,8 @@ class BasicNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    private User $user;
+
     /**
      * Create a new message instance.
      */
@@ -26,6 +28,7 @@ class BasicNotificationMail extends Mailable
 
     public function toUser(User $user): Mailable
     {
+        $this->user = $user;
         return parent::to($user->email, $user->username);
     }
 
@@ -56,6 +59,7 @@ class BasicNotificationMail extends Mailable
                 'link_url' => $this->notification->link_url,
                 'valid_till' => $this->notification->valid_till,
                 'delete_at' => $this->notification->delete_at,
+                'user_id' => $this->user->id,
             ],
         );
     }
