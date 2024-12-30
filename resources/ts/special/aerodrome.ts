@@ -1,9 +1,8 @@
 import mapboxgl from 'mapbox-gl';
-
-import { find, forEach, isEmpty } from 'lodash';
-import { findLivewireComponent } from '@/ts/livewire';
+import { find, forEach, isEmpty, uniq, remove, filter } from 'lodash';
+import { findLivewireComponent } from '../livewire';
 import dayjs from 'dayjs';
-import { getDarkmode } from '@/ts/template';
+import { getDarkmode } from '../template';
 
 document.addEventListener('DOMContentLoaded', () => {
     load_map();
@@ -112,9 +111,15 @@ async function atis() {
     }
     atis_wid.style.display = 'block';
     let string = '';
-    atis_data['text_atis'].forEach((line) => {
-        string += line + ' ';
+    forEach(atis_data, (atis_obj) => {
+        string += '<h6 class="text-center">' + atis_obj['callsign'] + ' ' + atis_obj['frequency'] + ' MHz</h6> ';
+        atis_obj['text_atis'].forEach((line) => {
+            string += line + ' ';
+        });
+        string += '<hr>';
     });
+    string = string.slice(0, -4);
+
     atis_el.innerHTML = string;
 }
 
@@ -146,18 +151,26 @@ async function indicator() {
     let html = '';
 
     forEach(data, (station) => {
+        console.log(station);
+        const primary_name = station['station']['name'];
+        const primary_callsign = station['callsign'];
+        const primary_frequency = station['frequency'];
+
+        var secondary_frequencies = filter(uniq(station['transceivers'].map((obj) => obj.frequencyString)), (str) => str != primary_frequency);
+        console.log(secondary_frequencies);
+
         html +=
-            '<tr>' +
-            '<td><small>' +
-            station['station']['name'] +
-            '</small></td>' +
-            '<td>' +
-            station['callsign'] +
-            ' ' +
-            '<small>' +
-            station['frequency'] +
-            ' MHz</small></td>' +
-            '</tr>';
+            '<tr><td><small><b>' + primary_name + '</b></small></td><td>' + primary_callsign + ' <small><b>' + primary_frequency + '</b> MHz</small>';
+
+        if (!isEmpty(secondary_frequencies)) {
+            html += '<br><small>monitoring ';
+            forEach(secondary_frequencies, (frequency) => {
+                html += frequency + ', ';
+            });
+            html = html.slice(0, -2);
+            html += '</small>';
+        }
+        html += '</td>' + '</tr>';
     });
 
     if (isEmpty(data)) {

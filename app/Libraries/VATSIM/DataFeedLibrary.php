@@ -6,6 +6,7 @@ use App\Models\Navigation\Aerodrome;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use VatsimData\Datafeed;
+use VatsimData\DatafeedClasses\ControllerWithTransceivers;
 
 /**
  * DataFeedLibrary
@@ -26,8 +27,10 @@ class DataFeedLibrary
                 ->where('frequency', '=', floatval($controller?->frequency))
                 ->first();
             if ($aerodrome_station) {
+                $controller = new ControllerWithTransceivers($controller);
                 $controller->station = $aerodrome_station;
                 $matched_controllers[] = $controller;
+
             }
         }
         return $matched_controllers;

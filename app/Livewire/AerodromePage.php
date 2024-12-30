@@ -66,7 +66,7 @@ class AerodromePage extends Component
         return DataFeedLibrary::ControllersAerodrome($this->aerodrome);
     }
 
-    public function load_atis(): ?object
+    public function load_atis(): array
     {
         return Datafeed::AtisAerodrome($this->icao);
     }
