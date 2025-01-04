@@ -7,7 +7,6 @@ use App\Models\Content\ShortLink;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use const Grpc\STATUS_ABORTED;
 
 class ShortLinkController extends Controller
 {
@@ -24,7 +23,7 @@ class ShortLinkController extends Controller
 
     public function getUrlsPaginated(Request $request)
     {
-        if (!$request->ajax()) {
+        if (! $request->ajax()) {
             abort(403, 'Method not supported');
         }
         // TODO AUTH
@@ -39,7 +38,7 @@ class ShortLinkController extends Controller
 
     public function getUrlSearch(Request $request)
     {
-        if (!$request->ajax()) {
+        if (! $request->ajax()) {
             abort(403, 'Method not supported');
         }
 
@@ -48,8 +47,8 @@ class ShortLinkController extends Controller
         return ShortLink::query()
             ->where(function ($query) use ($request) {
                 $query
-                    ->where('shortLink', 'LIKE', '%' . $request->get('search_param') . '%')
-                    ->orWhere('link', 'LIKE', '%' . $request->get('search_param') . '%');
+                    ->where('shortLink', 'LIKE', '%'.$request->get('search_param').'%')
+                    ->orWhere('link', 'LIKE', '%'.$request->get('search_param').'%');
             })
             ->where(function ($query) use ($now) {
                 $query->where('active_until', '>', $now)->orWhere('active_until', null);
@@ -59,7 +58,7 @@ class ShortLinkController extends Controller
 
     public function createShortLink(Request $request)
     {
-        if (!$request->ajax()) {
+        if (! $request->ajax()) {
             abort(403, 'Method not supported');
         }
         // TODO: Auth (on all funcs)
@@ -78,7 +77,7 @@ class ShortLinkController extends Controller
             ->where('shortLink', $request->post('shortLink'))
             ->get();
         foreach ($potConflicts as $conflict) {
-            if ($conflict->active && (Carbon::parse($conflict->active_until)->isFuture() || !$conflict->active_until)) {
+            if ($conflict->active && (Carbon::parse($conflict->active_until)->isFuture() || ! $conflict->active_until)) {
                 return response()->json(['error' => 'Diese gekürzte URL wird bereits verwendet und kann daher nicht erstellt werden.'], 404);
             } else {
                 $conflict->delete();
@@ -96,7 +95,7 @@ class ShortLinkController extends Controller
 
     public function removeShortLink(Request $request)
     {
-        if (!$request->ajax()) {
+        if (! $request->ajax()) {
             abort(403, 'Method not supported');
         }
         // TODO: Auth (on all funcs)
@@ -112,17 +111,17 @@ class ShortLinkController extends Controller
 
     public function toggleActivity(Request $request)
     {
-        if (!$request->ajax()) {
+        if (! $request->ajax()) {
             abort(403, 'Method not supported');
         }
-        //TODO: Auth
+        // TODO: Auth
 
         $sl = ShortLink::query()
             ->where('id', $request->get('link_id'))
             ->firstOrFail();
 
         $sl->update([
-            'active' => !$sl->active,
+            'active' => ! $sl->active,
         ]);
 
         return $sl;
@@ -132,8 +131,6 @@ class ShortLinkController extends Controller
      * Only function that is publically available,
      * shows the result of the link (ie. a redirect)
      *
-     * @param Request $request
-     * @param $shortLink
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function viewLink(Request $request, $shortLink)
@@ -145,8 +142,8 @@ class ShortLinkController extends Controller
 
         if ($redir && $redir->active) {
             $lnk = $redir->link;
-            if ($lnk != null && !str_contains(strtolower($lnk), 'http')) {
-                $lnk = 'https://' . $lnk;
+            if ($lnk != null && ! str_contains(strtolower($lnk), 'http')) {
+                $lnk = 'https://'.$lnk;
             }
 
             if ($redir->active_until && $now > $redir->active_until) {

@@ -2,6 +2,4 @@
 
 namespace App\Libraries\TeamSpeak;
 
-trait ChannelTrait
-{
-}
+trait ChannelTrait {}

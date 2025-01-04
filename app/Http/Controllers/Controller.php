@@ -14,27 +14,27 @@ class Controller extends BaseController
 
     protected ?User $current_user;
 
-    function __construct()
+    public function __construct()
     {
         $this->middleware(function ($request, $next) {
             $this->current_user = null;
             if (Auth::check() && Auth::guard('web')->check()) {
                 $this->current_user = Auth::user();
             }
+
             return $next($request);
         });
     }
 
     /**
-     *
-     * @param string[] $load_missing
-     * @return ?User
+     * @param  string[]  $load_missing
      */
     protected function user(array $load_missing = []): ?User
     {
-        if (!empty($load_missing)) {
+        if (! empty($load_missing)) {
             $this->current_user = $this->current_user->loadMissing($load_missing);
         }
+
         return $this->current_user;
     }
 }

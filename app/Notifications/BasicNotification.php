@@ -20,16 +20,14 @@ class BasicNotification extends Notification
      * @return void
      */
     public function __construct(
-        public string  $title,
-        public string  $message, //supports markdown
-        public string  $source_name,
+        public string $title,
+        public string $message, // supports markdown
+        public string $source_name,
         public ?string $link_text = null,
         public ?string $link_url = null,
         public ?Carbon $valid_till = null,
         public ?Carbon $delete_at = null,
-    )
-    {
-    }
+    ) {}
 
     /**
      * Get the notification's delivery channels.
@@ -61,7 +59,7 @@ class BasicNotification extends Notification
     public function toBoard(object $notifiable): array
     {
         return [
-            'message' => strip_tags($this->title) . $this->link_text ? ': {link}' : '',
+            'message' => strip_tags($this->title).$this->link_text ? ': {link}' : '',
             'link_text' => $this->link_text,
             'link_url' => $this->link_url,
         ];
@@ -73,13 +71,14 @@ class BasicNotification extends Notification
     public function toMail(object $notifiable): ?Mailable
     {
         $mail = new BasicNotificationMail($this);
-        if (!$notifiable instanceof User) {
+        if (! $notifiable instanceof User) {
             return null;
         }
         $user = User::query()->find($notifiable->id);
         if (empty($user)) {
             return null;
         }
+
         return $mail->toUser($user);
     }
 }

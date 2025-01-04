@@ -10,6 +10,7 @@ class Authenticate extends Middleware
 {
     /**
      * Handle an incoming request.
+     *
      * @throws AuthenticationException
      */
     public function handle($request, \Closure $next, ...$guards)
@@ -29,7 +30,7 @@ class Authenticate extends Middleware
      */
     protected function redirectTo(\Illuminate\Http\Request $request): ?string
     {
-        if (!$request->expectsJson()) {
+        if (! $request->expectsJson()) {
             return route('vatsim.authentication.connect.login');
         }
         abort(401);

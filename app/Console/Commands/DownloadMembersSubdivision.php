@@ -26,6 +26,6 @@ class DownloadMembersSubdivision extends Command
      */
     public function handle(): void
     {
-        dispatch(new DownloadMembersSubdivisionJob());
+        dispatch(new DownloadMembersSubdivisionJob);
     }
 }

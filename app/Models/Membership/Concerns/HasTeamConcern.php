@@ -17,9 +17,10 @@ trait HasTeamConcern
 
     public function service_roles(?ServiceRoleType $service_type = null): array|Collection|ServiceRole
     {
-        if (!$service_type) {
+        if (! $service_type) {
             return ServiceRole::whereIntegerInRaw('team_id', $this->team_ids())->get();
         }
+
         return ServiceRole::whereIntegerInRaw('team_id', $this->team_ids())
             ->where('service_type', 'LIKE', $service_type->value)
             ->get();
@@ -27,12 +28,13 @@ trait HasTeamConcern
 
     public function service_role_ids(ServiceRoleType $service_type, bool $cast_to_int = false): array
     {
-        if (!$this->staffDetails || $this->staffDetails?->accepted_data_protection_at || !config('api_sync_active.sdp_enforce')) {
+        if (! $this->staffDetails || $this->staffDetails?->accepted_data_protection_at || ! config('api_sync_active.sdp_enforce')) {
             return $this->service_roles($service_type)
                 ->map(function ($r) use ($cast_to_int) {
                     if ($cast_to_int) {
                         return intval($r->service_role);
                     }
+
                     return $r->service_role;
                 })
                 ->unique()

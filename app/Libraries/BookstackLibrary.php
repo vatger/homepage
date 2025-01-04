@@ -10,18 +10,18 @@ use Log;
 
 class BookstackLibrary extends BaseLibrary
 {
-    # https://demo.bookstackapp.com/api/docs
+    // https://demo.bookstackapp.com/api/docs
 
     protected static function _send(string $endpoint, string $method, array $body = []): object|false
     {
         $token_id = config('bookstack.token_id');
         $token_secret = config('bookstack.token_secret');
 
-        $headers = ['Authorization' => 'Token ' . $token_id . ':' . $token_secret];
+        $headers = ['Authorization' => 'Token '.$token_id.':'.$token_secret];
         $client = self::constructClient([
             'headers' => $headers,
         ]);
-        $uri = config('bookstack.host') . '/api/' . $endpoint;
+        $uri = config('bookstack.host').'/api/'.$endpoint;
         try {
             $response = $client->request($method, $uri, ['json' => $body]);
             $response_code = $response?->getStatusCode();
@@ -31,6 +31,7 @@ class BookstackLibrary extends BaseLibrary
         } catch (GuzzleException|\JsonException $e) {
             Log::error($e->getMessage());
         }
+
         return false;
     }
 
@@ -52,7 +53,8 @@ class BookstackLibrary extends BaseLibrary
         if (empty($user_data)) {
             return true;
         }
-        return !empty(self::_send('users/' . $user->id, 'DELETE'));
+
+        return ! empty(self::_send('users/'.$user->id, 'DELETE'));
     }
 
     public static function get_group_name(int $id): ?string
@@ -66,32 +68,31 @@ class BookstackLibrary extends BaseLibrary
                 return $role->display_name;
             }
         }
+
         return null;
     }
 
-    static function _roles_list(): array|false
+    public static function _roles_list(): array|false
     {
-        return Cache::remember('BookstackLibrary._roles_list', 120, fn() => self::_send('roles', 'GET')?->data ?? false);
+        return Cache::remember('BookstackLibrary._roles_list', 120, fn () => self::_send('roles', 'GET')?->data ?? false);
     }
 
-    static function _users_list(): array|false
+    public static function _users_list(): array|false
     {
         $data = self::_send('users', 'GET');
-        return !$data ? false : $data->data;
+
+        return ! $data ? false : $data->data;
     }
 
-    static function _users_read(int $user_id): object|false
+    public static function _users_read(int $user_id): object|false
     {
-        return self::_send('users/' . $user_id, 'GET');
+        return self::_send('users/'.$user_id, 'GET');
     }
 
     /**
-     * @param int $user_id
-     * @param string $email
-     * @param array<int> $role_ids
-     * @return bool
+     * @param  array<int>  $role_ids
      */
-    static function _user_update(int $user_id, string $email, array $role_ids = []): bool
+    public static function _user_update(int $user_id, string $email, array $role_ids = []): bool
     {
         $body = [
             'name' => strval($user_id),
@@ -100,8 +101,7 @@ class BookstackLibrary extends BaseLibrary
             'language' => 'de',
             'roles' => $role_ids,
         ];
-        return !empty(self::_send('users/' . $user_id, 'PUT', $body));
+
+        return ! empty(self::_send('users/'.$user_id, 'PUT', $body));
     }
-
-
 }

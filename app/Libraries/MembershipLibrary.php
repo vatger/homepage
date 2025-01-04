@@ -5,7 +5,6 @@ namespace App\Libraries;
 use App\Jobs\UpdateAccountJob;
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Libraries\VATSIM\CoreApiLibrary2;
-use App\Models\Membership\GdprRemoval;
 use App\Models\Membership\User;
 use App\Models\Membership\UserBan;
 use App\Models\Membership\UserBanType;
@@ -23,15 +22,13 @@ class MembershipLibrary
     /**
      * The user has been seen on the website.
      * Only call this if we really saw the user.
-     * @param User $user
-     * @return void
      */
     public static function seen(User $user): void
     {
         $data = ['last_seen_at' => Carbon::now()];
 
         // if we are currently in the removal process, don't set this
-        if (!$user->isCurrentlyInRemoval()) {
+        if (! $user->isCurrentlyInRemoval()) {
             $data['delete_at'] = null;
             if ($user->vatgerDetails->delete_at != null) {
                 $n = new BasicNotification(
@@ -45,7 +42,6 @@ class MembershipLibrary
             }
         }
 
-
         $user->vatgerDetails->update($data);
         $user = $user->fresh();
 
@@ -56,10 +52,11 @@ class MembershipLibrary
     {
         if ($async) {
             dispatch(new UpdateAccountJob($user));
+
             return;
         }
         if ($api_refresh) {
-            if (!GDPRLibrary::is_currently_locked($user)) {
+            if (! GDPRLibrary::is_currently_locked($user)) {
                 CoreApiLibrary2::updateMember($user, $cache ? 60 : 0);
                 $user = $user->fresh();
             }
@@ -70,7 +67,7 @@ class MembershipLibrary
 
         $user = $user->fresh();
 
-        # TODO: Handle all changes that might have triggered this function
+        // TODO: Handle all changes that might have triggered this function
 
         // 1. Handle forum permission / role assignment
         if (BaseLibrary::is_active(BaseLibrary::SyncForum)) {
@@ -140,7 +137,7 @@ class MembershipLibrary
             }
         }
 
-        Log::info('[MembershipLibrary::handleMembershipChange]::' . $user->id . '::Membership Update Triggered!');
+        Log::info('[MembershipLibrary::handleMembershipChange]::'.$user->id.'::Membership Update Triggered!');
     }
 
     protected static function check_bans(User $user): void
@@ -158,16 +155,15 @@ class MembershipLibrary
             })
             ->first();
 
-        if ($vatsim_pilot_inactive && !$vatsim_pilot_inactive_ban) {
-            $b = new UserBan();
+        if ($vatsim_pilot_inactive && ! $vatsim_pilot_inactive_ban) {
+            $b = new UserBan;
             $b->user_id = $user->id;
             $b->type = UserBanType::pilot_rating_incomplete;
             $b->save();
         }
-        if (!$vatsim_pilot_inactive && $vatsim_pilot_inactive_ban) {
+        if (! $vatsim_pilot_inactive && $vatsim_pilot_inactive_ban) {
             $vatsim_pilot_inactive_ban->endBanNow();
         }
-
 
         // VATSIM inactivity
         $vatsim_inactive_ban = UserBan::where('user_id', $user->id)
@@ -177,13 +173,13 @@ class MembershipLibrary
             })
             ->first();
 
-        if ($vatsim_inactive && !$vatsim_inactive_ban) {
-            $b = new UserBan();
+        if ($vatsim_inactive && ! $vatsim_inactive_ban) {
+            $b = new UserBan;
             $b->user_id = $user->id;
             $b->type = UserBanType::vatsim_inactivity;
             $b->save();
         }
-        if (!$vatsim_inactive && $vatsim_inactive_ban) {
+        if (! $vatsim_inactive && $vatsim_inactive_ban) {
             $vatsim_inactive_ban->endBanNow();
         }
 
@@ -195,13 +191,13 @@ class MembershipLibrary
             })
             ->first();
 
-        if ($vatsim_suspended && !$vatsim_suspened_ban) {
-            $b = new UserBan();
+        if ($vatsim_suspended && ! $vatsim_suspened_ban) {
+            $b = new UserBan;
             $b->user_id = $user->id;
             $b->type = UserBanType::vatsim_ban;
             $b->save();
         }
-        if (!$vatsim_suspended && $vatsim_suspened_ban) {
+        if (! $vatsim_suspended && $vatsim_suspened_ban) {
             $vatsim_suspened_ban->endBanNow();
         }
     }
@@ -209,8 +205,8 @@ class MembershipLibrary
     protected static function check_staff(User $user): void
     {
         if ($user->staffDetails?->staff_email_created) {
-            if (!$user->can('mail.use')) {
-                if (!$user->staffDetails->delete_staff_email_at) {
+            if (! $user->can('mail.use')) {
+                if (! $user->staffDetails->delete_staff_email_at) {
                     $deldate = $user->staffDetails->delete_staff_email_at = Carbon::now()->addDays(30);
                     $user->staffDetails->save();
 
@@ -234,14 +230,14 @@ class MembershipLibrary
                 }
             }
         }
-        if ($user->staffDetails?->leaving_staff_at < now() && !$user->staffDetails?->staff_email_created) {
+        if ($user->staffDetails?->leaving_staff_at < now() && ! $user->staffDetails?->staff_email_created) {
             $user->staff_details?->delete();
         }
     }
 
     protected static function check_status(User $user, bool $cache = true): void
     {
-        $cache_key = 'membership.checked_status.' . $user->id;
+        $cache_key = 'membership.checked_status.'.$user->id;
         if ($cache && Cache::has($cache_key)) {
             return;
         }
@@ -257,7 +253,7 @@ class MembershipLibrary
         $delete = Carbon::now()->diffInDays($user->vatgerDetails->last_seen_at, true) > 180 * 2;
 
         // user is active clear all flags
-        if (!$warning_inactive) {
+        if (! $warning_inactive) {
             if ($user->vatgerDetails->warning_inactive_at != null) {
                 $n = new BasicNotification(
                     __('membership_library.welcome_back.title'),
@@ -272,14 +268,14 @@ class MembershipLibrary
                 'warning_inactive_at' => null,
                 'inactive_at' => null,
                 'warning_delete_at' => null,
-                //'delete_at' => null,
+                // 'delete_at' => null,
             ];
             $user->vatgerDetails->update($data);
         }
 
         App::setLocale($user->settings->language);
 
-        if ($warning_inactive && !$user->vatgerDetails->warning_inactive_at) {
+        if ($warning_inactive && ! $user->vatgerDetails->warning_inactive_at) {
             $user->vatgerDetails->update(['warning_inactive_at' => Carbon::now()]);
             $date = $user->vatgerDetails->last_seen_at->addDays(180);
             $n = new BasicNotification(
@@ -293,7 +289,7 @@ class MembershipLibrary
             );
             $user->notify($n);
         }
-        if ($inactive && !$user->vatgerDetails->inactive_at) {
+        if ($inactive && ! $user->vatgerDetails->inactive_at) {
             $user->vatgerDetails->update(['inactive_at' => Carbon::now()]);
             $date = $user->vatgerDetails->last_seen_at->addDays(180);
             $n = new BasicNotification(
@@ -307,7 +303,7 @@ class MembershipLibrary
             );
             $user->notify($n);
         }
-        if ($warning_delete && !$user->vatgerDetails->warning_delete_at) {
+        if ($warning_delete && ! $user->vatgerDetails->warning_delete_at) {
             $user->vatgerDetails->update(['warning_delete_at' => Carbon::now()]);
             $date = $user->vatgerDetails->last_seen_at->addDays(180 * 2);
             $n = new BasicNotification(
@@ -321,7 +317,7 @@ class MembershipLibrary
             );
             $user->notify($n);
         }
-        if ($delete && !$user->vatgerDetails->delete_at) {
+        if ($delete && ! $user->vatgerDetails->delete_at) {
             $user->vatgerDetails->update(['delete_at' => Carbon::now()]);
             $date = Carbon::now()->addDay();
             $n = new BasicNotification(
@@ -357,24 +353,24 @@ class MembershipLibrary
             $user = $user->fresh();
         }
         // user is guest member start continuous active times
-        if (!$inactive && $user->vatgerDetails->active_member_at == null) {
+        if (! $inactive && $user->vatgerDetails->active_member_at == null) {
             $user->vatgerDetails->update(['active_member_at' => Carbon::now()]);
             $user = $user->fresh();
         }
         // user is vatger full member start continuous active times
-        if (!$inactive && $user->vatgerDetails->active_vatger_member_at == null && $user->vatsimDetails->subdivision_code == 'GER') {
+        if (! $inactive && $user->vatgerDetails->active_vatger_member_at == null && $user->vatsimDetails->subdivision_code == 'GER') {
             $user->vatgerDetails->update(['active_vatger_member_at' => Carbon::now()]);
             $user = $user->fresh();
         }
-        if (!$inactive && $user->fir?->active_fir_member_at == null && $user->vatsimDetails->subdivision_code == 'GER') {
+        if (! $inactive && $user->fir?->active_fir_member_at == null && $user->vatsimDetails->subdivision_code == 'GER') {
             $user->fir_membership?->update(['active_fir_member_at' => Carbon::now()]);
         }
-        //user has left vatger full member
+        // user has left vatger full member
         if (
             $user->vatsimDetails->subdivision_code != 'GER' &&
             ($user->vatgerDetails->active_member_at || $user->vatgerDetails->active_vatger_member_at)
         ) {
-            //kick from FIRs
+            // kick from FIRs
             $user->fir_membership?->delete();
             $user->vatgerDetails->update(['vatger_member_at' => null, 'active_vatger_member_at' => null]);
             $user = $user->fresh();

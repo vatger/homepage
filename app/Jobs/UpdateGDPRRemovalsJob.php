@@ -11,7 +11,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-
 class UpdateGDPRRemovalsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -29,7 +28,6 @@ class UpdateGDPRRemovalsJob implements ShouldQueue
             $this->start_id = 0;
         }
     }
-
 
     public function handle(): void
     {
@@ -53,6 +51,4 @@ class UpdateGDPRRemovalsJob implements ShouldQueue
                 \Cache::put($this->cache_key, $gdpr_removal->id + 1);
             });
     }
-
-
 }

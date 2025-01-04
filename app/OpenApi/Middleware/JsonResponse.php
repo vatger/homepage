@@ -24,7 +24,7 @@ class JsonResponse
         // Get the response
         $response = $next($request);
         // If the response is not strictly a JsonResponse, we make it
-        if (!$response instanceof HttpJsonResponse) {
+        if (! $response instanceof HttpJsonResponse) {
             $response = $this->responseFactory->json($response->content(), $response->status(), $response->headers->all());
         }
 

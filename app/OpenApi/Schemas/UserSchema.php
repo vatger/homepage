@@ -9,9 +9,6 @@ use Vyuldashev\LaravelOpenApi\Factories\SchemaFactory;
 
 class UserSchema extends SchemaFactory implements Reusable
 {
-    /**
-     * @return SchemaContract
-     */
     public function build(): SchemaContract
     {
         return Schema::object('User')->properties(

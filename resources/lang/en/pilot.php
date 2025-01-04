@@ -17,8 +17,8 @@ return [
             'error-metar-load-text' => 'Error loading METAR.',
             'breadcrumb' => [
                 "<li class='breadcrumb-item'>Pilots</li>
-                <li class='breadcrumb-item'><a href=" .
-                route('pilots.aerodromes.viewall') .
+                <li class='breadcrumb-item'><a href=".
+                route('pilots.aerodromes.viewall').
                 '>Aerodromes</a></li>',
             ],
 

@@ -12,6 +12,7 @@ class UserVatsimDetail extends Model
     protected $table = 'user_vatsim_details';
 
     protected $guarded = [];
+
     protected $appends = [
         'rating_atc_short',
         'rating_pilot_short',

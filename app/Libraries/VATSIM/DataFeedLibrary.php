@@ -3,14 +3,12 @@
 namespace App\Libraries\VATSIM;
 
 use App\Models\Navigation\Aerodrome;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use VatsimData\Datafeed;
 use VatsimData\DatafeedClasses\ControllerWithTransceivers;
 
 /**
  * DataFeedLibrary
- *
  */
 class DataFeedLibrary
 {
@@ -23,7 +21,7 @@ class DataFeedLibrary
         foreach ($all_controllers as $controller) {
             $aerodrome_station = $aerodrome
                 ->stations()
-                ->where('ident', 'LIKE', Str::substr($controller?->callsign, 0, 4) . '%')
+                ->where('ident', 'LIKE', Str::substr($controller?->callsign, 0, 4).'%')
                 ->where('frequency', '=', floatval($controller?->frequency))
                 ->first();
             if ($aerodrome_station) {
@@ -33,6 +31,7 @@ class DataFeedLibrary
 
             }
         }
+
         return $matched_controllers;
     }
 }

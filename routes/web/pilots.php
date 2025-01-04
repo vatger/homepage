@@ -2,8 +2,8 @@
 
 use App\Livewire\AerodromeListPage;
 use App\Livewire\AerodromePage;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('cookie.consent')->group(function () {
     Route::get('aerodrome/{icao}', function (Request $request) {

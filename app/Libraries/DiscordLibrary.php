@@ -11,7 +11,7 @@ class DiscordLibrary extends BaseLibrary
     protected static function _send(string $endpoint, string $method, array $body = []): object|false
     {
         $client = self::constructClient();
-        $uri = 'http://docker.vatsim-germany.org:10000' . '/' . $endpoint;
+        $uri = 'http://docker.vatsim-germany.org:10000'.'/'.$endpoint;
         try {
             $response = $client->request($method, $uri, ['json' => $body]);
             $response_code = $response?->getStatusCode();
@@ -20,20 +20,21 @@ class DiscordLibrary extends BaseLibrary
             }
         } catch (GuzzleException|\JsonException $e) {
         }
+
         return false;
     }
 
     public static function check_user(User $user): void
     {
-        $data = (object)[
+        $data = (object) [
             'cid' => $user?->id,
-            'is_vatger_member' => !empty($user),
+            'is_vatger_member' => ! empty($user),
             'is_vatger_fullmember' => $user?->vatgerDetails?->is_vatger_member,
             'atc_rating' => $user?->vatsimDetails?->rating_atc,
             'pilot_rating' => $user?->vatsimDetails?->rating_pilot,
             'teams' => $user
                 ?->teams()
-                ->map(fn($team) => $team->name)
+                ->map(fn ($team) => $team->name)
                 ->values()
                 ->toArray(),
         ];
@@ -41,7 +42,7 @@ class DiscordLibrary extends BaseLibrary
         if (Cache::get("DiscordLibrary.check_user.hash.$data->cid") == $current_hash) {
             return;
         }
-        self::_send('member/update', 'POST', (array)$data);
-        //Cache::put("DiscordLibrary.check_user.hash.$data->cid", $current_hash);
+        self::_send('member/update', 'POST', (array) $data);
+        // Cache::put("DiscordLibrary.check_user.hash.$data->cid", $current_hash);
     }
 }

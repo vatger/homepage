@@ -11,7 +11,7 @@ use Livewire\Component;
 
 class RestrictedPage extends Component
 {
-    use SortableTrait, SearchTrait;
+    use SearchTrait, SortableTrait;
 
     public string $restriction = '1';
 
@@ -21,8 +21,8 @@ class RestrictedPage extends Component
     public string $search = '';
 
     private array $searchable_fields = ['ident', 'name', 'frequency'];
-    private array $sortable_fields = ['ident', 'name', 'frequency'];
 
+    private array $sortable_fields = ['ident', 'name', 'frequency'];
 
     public function mount(): void
     {
@@ -33,7 +33,7 @@ class RestrictedPage extends Component
 
         foreach ($restrictionsDB as $stations) {
             if ($stations->gcap_class_group != '') {
-                $this->restrictions[] = (object)[
+                $this->restrictions[] = (object) [
                     'id' => $stations->gcap_class_group,
                     'desc' => $stations->gcap_class_group == '1' ? 'Tier 1' : $stations->gcap_class_group,
                 ];

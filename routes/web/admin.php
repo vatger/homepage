@@ -34,7 +34,6 @@ Route::prefix('administration')
         Route::get('/survey', SurveyPage::class)->name('administration.survey');
         Route::get('/email', EmailPage::class)->name('administration.email');
 
-
         Route::prefix('navigation')->group(function () {
             Route::get('', function () {
                 return null;

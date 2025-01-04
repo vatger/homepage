@@ -26,6 +26,6 @@ class Cleanup extends Command
      */
     public function handle(): void
     {
-        dispatch(new CleanupJob());
+        dispatch(new CleanupJob);
     }
 }

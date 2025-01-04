@@ -14,9 +14,6 @@ class VATEUDCoreContoller extends ApiController
 {
     /**
      * Retrieve an array of all CIDs on the roster.
-     *
-     * @param Request $request
-     * @return array
      */
     #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[OpenApi\Response(VateudRosterControllerResponse::class)]
@@ -27,6 +24,4 @@ class VATEUDCoreContoller extends ApiController
 
         return VATEUDCoreLibrary::roster()?->roster_members;
     }
-
-
 }

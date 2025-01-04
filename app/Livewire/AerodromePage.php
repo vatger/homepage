@@ -23,7 +23,6 @@ class AerodromePage extends Component
     #[Locked]
     public Aerodrome $aerodrome;
 
-
     public function mount()
     {
         $this->aerodrome = Aerodrome::icao($this->icao)->firstOrFail();
@@ -35,9 +34,10 @@ class AerodromePage extends Component
     {
         $data = NavLibrary::download_airport_data($this->icao);
         $links = $data ? collect($data->links)->groupBy('category') : [];
+
         return view('pages.aerodrome')->with([
             'aerodrome' => $this->aerodrome,
-            'links' => $links
+            'links' => $links,
         ]);
     }
 

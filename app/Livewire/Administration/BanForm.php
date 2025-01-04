@@ -9,11 +9,17 @@ use Livewire\Form;
 class BanForm extends Form
 {
     public string $endDate = '';
+
     public bool $permanent = false;
+
     public bool $teamspeak = true;
+
     public bool $forum = true;
+
     public bool $homepage = true;
+
     public bool $otherServices = true;
+
     public string $reason = '';
 
     public function __construct(Component $component, $propertyName)

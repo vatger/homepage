@@ -4,8 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Navigation\Fir;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class NavFirSeeder extends Seeder
 {
@@ -19,7 +17,7 @@ class NavFirSeeder extends Seeder
         $data = ['EDWW', 'EDGG', 'EDMM', 'EDUU', 'EDYY'];
         foreach ($data as $d) {
             try {
-                $f = new Fir();
+                $f = new Fir;
                 $f->slug = $d;
                 $f->description = $d;
                 $f->name = $d;

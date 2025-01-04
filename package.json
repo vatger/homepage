@@ -3,7 +3,8 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "prettier:check:php": "npx prettier --check {**/*,*}.php",
+        "laravel:check": "php ./vendor/bin/pint --test",
+        "laravel:write": "php ./vendor/bin/pint -v",
         "prettier:check:js": "npx prettier --check {**/*,*}.{js,ts,jsx,tsx}",
         "prettier:check:html": "npx prettier --check {**/*,*}.{html,htm,css,sass}",
         "prettier:check:other": "npx prettier --check {**/*,*}.{json,yml,csv,md}",
@@ -11,8 +12,8 @@
         "prettier:write:js": "npx prettier --write {**/*,*}.{js,ts,jsx,tsx}",
         "prettier:write:html": "npx prettier --write {**/*,*}.{html,htm,css,sass}",
         "prettier:write:other": "npx prettier --write {**/*,*}.{json,yml,csv,md}",
-        "prettier:check:all": "npx prettier --check {**/*,*}.{php,js,ts,jsx,tsx,html,htm,css,sass,json,yml,csv,md}",
-        "prettier:write:all": "npx prettier --write {**/*,*}.{php,js,ts,jsx,tsx,html,htm,css,sass,json,yml,csv,md}",
+        "prettier:check:all": "npm run laravel:check && npx prettier --check {**/*,*}.{js,ts,jsx,tsx,html,htm,css,sass,json,yml,csv,md}",
+        "prettier:write:all": "npm run laravel:write && npx prettier --write {**/*,*}.{js,ts,jsx,tsx,html,htm,css,sass,json,yml,csv,md}",
         "prettier:check": "npm run prettier:check:all",
         "prettier:write": "npm run prettier:write:all"
     },

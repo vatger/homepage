@@ -1,4 +1,5 @@
 <?php
+
 return [
     'username' => env('VIKUNJA_USER', ''),
     'password' => env('VIKUNJA_PWD', ''),

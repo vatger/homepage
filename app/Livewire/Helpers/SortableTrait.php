@@ -9,7 +9,9 @@ use Illuminate\Database\Query\Builder as QBuilder;
 trait SortableTrait
 {
     public $sort_by = '';
+
     public $sort_order = 'asc';
+
     private array $sortable_fields_internal = [];
 
     private function checkAllowedSortableFiled(string $field): bool
@@ -17,7 +19,8 @@ trait SortableTrait
         if (property_exists($this, 'sortable_fields')) {
             $this->sortable_fields_internal = array_merge_recursive_distinct($this->sortable_fields_internal, $this->sortable_fields);
         }
-        return !in_array($field, $this->sortable_fields_internal, true);
+
+        return ! in_array($field, $this->sortable_fields_internal, true);
     }
 
     public function sortBy($field): void
@@ -51,7 +54,7 @@ trait SortableTrait
         if ($this->checkAllowedSortableFiled($field)) {
             abort(400, "[SortableTrait] Not sortable by $field");
         }
-        if (!in_array($order, ['asc', 'desc'], true)) {
+        if (! in_array($order, ['asc', 'desc'], true)) {
             abort(400, "[SortableTrait] $order not a valid oder");
         }
         $this->sort_by = $field;

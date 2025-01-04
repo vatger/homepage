@@ -9,8 +9,7 @@ return [
     'text-subject' => 'Betreff',
     'text-content' => 'Deine Nachricht',
     'text-send' => 'Anfrage absenden',
-    'text-success' =>
-        'Vielen Dank für deine Anfrage. Sie wurde erfolgreich abgesendet. Jemand aus unerem Team wird sich schnellstmöglich bei dir melden.',
+    'text-success' => 'Vielen Dank für deine Anfrage. Sie wurde erfolgreich abgesendet. Jemand aus unerem Team wird sich schnellstmöglich bei dir melden.',
     'text-fail' => 'Das hat leider nicht geklappt. Bitte stelle deine Anfrage über unser Ticketsystem.',
     'text-missing-name' => 'Bitte Namen eingeben',
     'text-missing-content' => 'Bitte Nachricht eingeben',
@@ -24,11 +23,9 @@ return [
     'text-others' => 'Sonstiges',
     'text-director' => 'Leitung',
     'text-pilot-rep' => 'Pilotenvertretung',
-    'text-no-credentials' =>
-        'Beachte, dass dein Nachrichteninhalt für alle öffentlich sichtbar ist. Bitte schreibe daher keine Zugangsdaten oder andere persönliche Daten in deine Nachricht. Verwende für solche Fälle bitte die Kategorie Zugangsdaten oder Sonstiges',
+    'text-no-credentials' => 'Beachte, dass dein Nachrichteninhalt für alle öffentlich sichtbar ist. Bitte schreibe daher keine Zugangsdaten oder andere persönliche Daten in deine Nachricht. Verwende für solche Fälle bitte die Kategorie Zugangsdaten oder Sonstiges',
     'text-no-reply' => 'Du bekommst keine Benachrichtigungen über den Status deiner Anfrage. Möglicherweise dauert die Bearbeitung länger. Brauchst du eine schnellere Antwort oder eine Rückmeldung wähle eine andere Kategorie.',
-    'text-check-board' =>
-        'Bitte prüfe vor dem Erstellen ob bereits ein Bug-Report oder Feature Request zu deinem Thema existiert. Bereits erstellte Bug Reports und Feature Requests findest du',
+    'text-check-board' => 'Bitte prüfe vor dem Erstellen ob bereits ein Bug-Report oder Feature Request zu deinem Thema existiert. Bereits erstellte Bug Reports und Feature Requests findest du',
     'text-here' => 'hier',
     'text-missing-captcha' => 'Bitte löse das Captcha',
     'text-error-captcha' => 'Du hast das Captcha nicht korrekt gelöst',

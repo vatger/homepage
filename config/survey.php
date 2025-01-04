@@ -1,4 +1,5 @@
 <?php
+
 return [
     'url' => env('LIMESURVEY_URL', 'http://survey.vatsim-germany.org/index.php?r=admin/remotecontrol'),
     'uid' => env('LIMESURVEY_UID', 1),

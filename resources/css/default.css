@@ -34,12 +34,16 @@
 #navmenu-nav li.account-menu.active .navbar-link,
 #navmenu-nav li.account-menu:hover .navbar-link,
 .form-check-input.form-check-input:checked,
-.qs-datepicker-container .qs-squares .qs-square:not(.qs-empty):not(.qs-disabled):not(.qs-day):not(.qs-active):hover,
+.qs-datepicker-container
+    .qs-squares
+    .qs-square:not(.qs-empty):not(.qs-disabled):not(.qs-day):not(
+        .qs-active
+    ):hover,
 .qs-datepicker-container .qs-squares .qs-square.qs-current,
 .carousel-indicators [data-bs-target],
 .carousel-indicators .active,
-.tns-controls button[data-controls='prev']:hover,
-.tns-controls button[data-controls='next']:hover,
+.tns-controls button[data-controls="prev"]:hover,
+.tns-controls button[data-controls="next"]:hover,
 .back-to-top {
     background-color: #2f55d4 !important;
 }
@@ -128,7 +132,13 @@
 .form-check-input:focus,
 .social-icon li a:hover,
 #topnav .has-submenu.active.active .menu-arrow,
-#topnav .has-submenu .submenu .has-submenu .submenu .has-submenu:hover .submenu-arrow,
+#topnav
+    .has-submenu
+    .submenu
+    .has-submenu
+    .submenu
+    .has-submenu:hover
+    .submenu-arrow,
 #topnav .has-submenu .submenu .has-submenu:hover > .submenu-arrow,
 #topnav.scroll .navigation-menu > li:hover > .menu-arrow,
 #topnav.scroll .navigation-menu > li.active > .menu-arrow,
@@ -243,7 +253,13 @@
 }
 
 .home-wrapper:before {
-    background: -webkit-gradient(linear, left top, right top, from(rgba(47, 85, 212, 0.3)), to(transparent));
+    background: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        from(rgba(47, 85, 212, 0.3)),
+        to(transparent)
+    );
     background: linear-gradient(90deg, rgba(47, 85, 212, 0.3), transparent);
 }
 

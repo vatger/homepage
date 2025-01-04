@@ -28,8 +28,9 @@ class ApilogPage extends Component
     public function render()
     {
         $this->authorize('tech.access');
-        $query = ApiLog::where('created_at', 'LIKE', $this->search . '%');
+        $query = ApiLog::where('created_at', 'LIKE', $this->search.'%');
         $this->sortQueryModifier($query);
+
         return view('pages.admin.apilogs')->with(['logs' => $query->paginate(), 'keys' => ApiToken::all()]);
     }
 }

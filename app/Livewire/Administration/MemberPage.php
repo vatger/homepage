@@ -22,6 +22,7 @@ class MemberPage extends Component
     public User $user;
 
     public BanForm $form;
+
     public ?UserBan $banInformation;
 
     public function saveBan(): void
@@ -41,7 +42,7 @@ class MemberPage extends Component
 
         MembershipLibrary::update($this->user, cache: false);
 
-        $this->showNoty("Sperre erfolgreich angelegt");
+        $this->showNoty('Sperre erfolgreich angelegt');
     }
 
     public function showBanInformation(int $id): void
@@ -52,40 +53,43 @@ class MemberPage extends Component
     public function removeBan(): void
     {
         if ($this->banInformation == null) {
-            $this->showNoty("Ein Fehler ist aufgetreten", 'error');
+            $this->showNoty('Ein Fehler ist aufgetreten', 'error');
+
             return;
         }
 
         $this->banInformation->delete();
         MembershipLibrary::update($this->user, cache: false);
 
-        $this->showNoty("Sperre erfolgreich aufgehoben");
+        $this->showNoty('Sperre erfolgreich aufgehoben');
     }
 
     public function endBanNow(): void
     {
         if ($this->banInformation == null) {
-            $this->showNoty("Ein Fehler ist aufgetreten", 'error');
+            $this->showNoty('Ein Fehler ist aufgetreten', 'error');
+
             return;
         }
 
         $this->banInformation->endBanNow();
         MembershipLibrary::update($this->user, cache: false);
 
-        $this->showNoty("Sperre erfolgreich aufgehoben");
+        $this->showNoty('Sperre erfolgreich aufgehoben');
     }
 
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
         $this->authorize('membership.users.details.view');
+
         return view('pages.admin.member')->with(['user' => $this->user, 'acting_user' => Auth::user()]);
     }
 
     public function force_member_update(): void
     {
         MembershipLibrary::update($this->user, cache: false);
-        $this->showNoty("Nutzer aktualisiert");
+        $this->showNoty('Nutzer aktualisiert');
     }
 
     public function mark_member_seen(): void
@@ -96,34 +100,35 @@ class MemberPage extends Component
         $details->save();
 
         MembershipLibrary::update($this->user, cache: false);
-        $this->showNoty("Nutzer last_seen gesetzt und aktualisiert");
+        $this->showNoty('Nutzer last_seen gesetzt und aktualisiert');
     }
 
     public function mark_member_for_removal(): void
     {
         $this->authorize('membership.users.details.edit');
         GDPRLibrary::mark_for_deletion($this->user);
-        $this->showNoty("Nutzer zur Löschung markiert");
+        $this->showNoty('Nutzer zur Löschung markiert');
     }
 
     public function mark_member_for_removal_now(): void
     {
         $this->authorize('membership.users.details.edit');
         GDPRLibrary::mark_for_deletion($this->user);
-        $this->showNoty("Nutzer zur direkten Löschung markiert");
-        dispatch(new UpdateGDPRRemovalsJob());
+        $this->showNoty('Nutzer zur direkten Löschung markiert');
+        dispatch(new UpdateGDPRRemovalsJob);
     }
 
     public function mark_member_second_account(): void
     {
         $this->authorize('membership.users.details.edit');
         $success = GDPRLibrary::lock_deletion($this->user);
-        if (!$success) {
-            $this->showNoty("Fehler", 'error');
+        if (! $success) {
+            $this->showNoty('Fehler', 'error');
+
             return;
         }
-        $this->user->email = 'dupe_' . $this->user->id . '@vatsim.net';
+        $this->user->email = 'dupe_'.$this->user->id.'@vatsim.net';
         $this->user->save();
-        $this->showNoty("Success");
+        $this->showNoty('Success');
     }
 }

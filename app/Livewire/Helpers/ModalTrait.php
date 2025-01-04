@@ -14,7 +14,7 @@ trait ModalTrait
 
     public function openModal(string $dom_id): void
     {
-        if (!in_array($dom_id, $this->modal_ids, true)) {
+        if (! in_array($dom_id, $this->modal_ids, true)) {
             abort(400, "[ModalTrait] No modal by id: $dom_id");
         }
         $this->openModalNoCheck($dom_id);
@@ -27,7 +27,7 @@ trait ModalTrait
 
     public function closeModal(string $dom_id): void
     {
-        if (!in_array($dom_id, $this->modal_ids, true)) {
+        if (! in_array($dom_id, $this->modal_ids, true)) {
             abort(400, "[ModalTrait] No modal by id: $dom_id");
         }
         $this->closeModalNoCheck($dom_id);

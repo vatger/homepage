@@ -15,6 +15,7 @@ class NavigationController extends ApiController
     {
         $station = Station::where('ident', 'LIKE', $ident)->firstOrFail();
         $station?->makeHidden(['created_at', 'updated_at']);
+
         return $station;
     }
 }

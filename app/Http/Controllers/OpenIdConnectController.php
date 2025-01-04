@@ -11,7 +11,7 @@ class OpenIdConnectController
         $user = $request->user('openid_api');
         $user_client_id = $request->user()->token()->client->user_id;
         if ($user_client_id != null && $user_client_id != $user->id) {
-            abort(401, 'This client can only used by ' . $user_client_id);
+            abort(401, 'This client can only used by '.$user_client_id);
         }
 
         $userinfo = [];
@@ -20,7 +20,7 @@ class OpenIdConnectController
         if ($user->tokenCan('name')) {
             $userinfo['firstname'] = $user->firstname;
             $userinfo['lastname'] = $user->lastname;
-            $userinfo['fullname'] = $user->firstname . ' ' . $user->lastname;
+            $userinfo['fullname'] = $user->firstname.' '.$user->lastname;
         }
         if ($user->tokenCan('email')) {
             $userinfo['email'] = $user->email;
@@ -41,7 +41,7 @@ class OpenIdConnectController
         }
         if ($user->tokenCan('teams')) {
             $teams = $user->teams();
-            $userinfo['teams'] = collect($teams)->map(fn($team) => $team->name)->toArray();
+            $userinfo['teams'] = collect($teams)->map(fn ($team) => $team->name)->toArray();
         }
 
         if ($user->tokenCan('legacy')) {
@@ -49,7 +49,7 @@ class OpenIdConnectController
             if ($user->tokenCan('name')) {
                 $userinfo['data']['personal']['name_first'] = $user->firstname;
                 $userinfo['data']['personal']['name_last'] = $user->lastname;
-                $userinfo['data']['personal']['name_full'] = $user->firstname . ' ' . $user->lastname;
+                $userinfo['data']['personal']['name_full'] = $user->firstname.' '.$user->lastname;
                 $userinfo['data']['personal']['country']['id'] = null;
                 $userinfo['data']['personal']['country']['name'] = null;
             }
@@ -75,8 +75,8 @@ class OpenIdConnectController
             $userinfo['data']['oauth']['token_valid'] = 'true';
         }
 
-        $userinfo['openid'] = 'vatger v' . config('app.version');
-        return response()->json((object)$userinfo);
-    }
+        $userinfo['openid'] = 'vatger v'.config('app.version');
 
+        return response()->json((object) $userinfo);
+    }
 }

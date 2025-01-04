@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => 'custom', //env('LOG_CHANNEL', 'stack'),
+    'default' => 'custom', // env('LOG_CHANNEL', 'stack'),
 
     /*
     |--------------------------------------------------------------------------
@@ -115,6 +115,6 @@ return [
         'custom' => [
             'driver' => 'monolog',
             'handler' => \App\Logging\DBLoggingHandler::class,
-        ]
+        ],
     ],
 ];

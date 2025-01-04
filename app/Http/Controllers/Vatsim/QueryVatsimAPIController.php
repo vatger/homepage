@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Libraries\VATSIM\EventLibrary;
 use Illuminate\Http\Request;
 
-
 class QueryVatsimAPIController extends Controller
 {
     public function __construct()
@@ -20,10 +19,6 @@ class QueryVatsimAPIController extends Controller
      * Parsed response ($count number of Airports) data cached for 10 minutes (600s)
      *
      * API Endpoint: https://my.vatsim.net/api/v1/events/all
-     *
-     * @param Request $request
-     * @param int $count
-     * @return string
      */
     public function loadEvents(Request $request, int $count = 9): string
     {
@@ -35,9 +30,6 @@ class QueryVatsimAPIController extends Controller
      * Parsed response (1 Airport) data cached for 10 minutes (600s)
      *
      * API Endpoint: https://my.vatsim.net/api/v1/events/all
-     *
-     * @param Request $request
-     * @return mixed
      */
     public function loadSingleEvent(Request $request): mixed
     {

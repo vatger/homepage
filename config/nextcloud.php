@@ -1,4 +1,5 @@
 <?php
+
 return [
     'username' => env('NEXTCLOUD_USER', ''),
     'password' => env('NEXTCLOUD_PWD', ''),

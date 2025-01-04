@@ -1,15 +1,15 @@
 // Import custom Javascript
 
-import initTemplate from './template';
+import initTemplate from "./template";
 
 initTemplate();
 
-import { loadLivewireExtensions } from './livewire';
+import { loadLivewireExtensions } from "./livewire";
 
 loadLivewireExtensions();
 
-import { laravelFireNoty, showNoty } from './noty';
+import { laravelFireNoty, showNoty } from "./noty";
 
-window['showNoty'] = showNoty;
+window["showNoty"] = showNoty;
 
 laravelFireNoty();

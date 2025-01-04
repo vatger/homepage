@@ -19,7 +19,8 @@ class IdentityEntity implements IdentityEntityInterface
 
     /**
      * The identity repository creates this entity and provides the user id
-     * @param mixed $identifier
+     *
+     * @param  mixed  $identifier
      */
     public function setIdentifier($identifier): void
     {
@@ -29,12 +30,11 @@ class IdentityEntity implements IdentityEntityInterface
 
     /**
      * When building the id_token, this entity's claims are collected
-     * @param array $scopes
      */
     public function getClaims(array $scopes = []): array
     {
         return [
-            'openid' => 'vatger v' . app()->version(),
+            'openid' => 'vatger v'.app()->version(),
             'name' => $this->user->firstname,
             'email' => $this->user->email,
         ];

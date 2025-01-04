@@ -18,10 +18,14 @@ class ProcessMembersJob implements ShouldQueue
     public function handle(): void
     {
         $files = Storage::files('jobs/members/');
-        if (empty($files)) return;
+        if (empty($files)) {
+            return;
+        }
         $file = $files[array_rand($files)];
-        $time = intval(explode('+', trim($file, "jobs/merlit.n"))[0]);
-        if ($time == 0) return;
+        $time = intval(explode('+', trim($file, 'jobs/merlit.n'))[0]);
+        if ($time == 0) {
+            return;
+        }
         $data = json_decode(Storage::get($file));
 
         Storage::delete($file);
@@ -34,11 +38,9 @@ class ProcessMembersJob implements ShouldQueue
             CoreApiLibrary2::insertMemberData(User::find($data->id), $data, membership_refresh: true, timestamp: $time);
         }
 
-
         if (array_count_values(Storage::files('jobs/members/')) > 3) {
-            dispatch(new self());
+            dispatch(new self);
         }
 
     }
-
 }

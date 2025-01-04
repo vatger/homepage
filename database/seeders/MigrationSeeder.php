@@ -9,8 +9,6 @@ use App\Models\Membership\Concerns\FirMembership;
 use App\Models\Membership\User;
 use App\Models\Membership\UserBan;
 use App\Models\TeamspeakRegistration;
-
-
 use Carbon\Carbon;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
@@ -28,20 +26,22 @@ class MigrationSeeder extends Seeder
             DB::connection('mysql_old')->getDatabaseName();
         } catch (\Exception $e) {
             $this->command->getOutput()->error('Cant connect to the old database.');
+
             return;
         }
-        if (!$this->copy_users()) {
+        if (! $this->copy_users()) {
             return;
         }
         $this->copy_teamspeak();
         $this->copy_bans();
     }
 
-    private static function DB_old(string $table = null): Connection|Builder
+    private static function DB_old(?string $table = null): Connection|Builder
     {
         if ($table) {
             return DB::connection('mysql_old')->table($table);
         }
+
         return DB::connection('mysql_old');
     }
 
@@ -64,6 +64,7 @@ class MigrationSeeder extends Seeder
             if ($user) {
                 // we already migrated the user
                 $this->command->getOutput()->progressAdvance();
+
                 continue;
             }
             $user = User::create([
@@ -128,7 +129,7 @@ class MigrationSeeder extends Seeder
 
             if ($row_rg) {
                 FirMembership::where('user_id', $row->id)->delete();
-                $f = new FirMembership();
+                $f = new FirMembership;
                 $f->user_id = $row->id;
                 $old_fir = $rgs[$row_rg->regionalgroup_id];
                 switch ($row_rg->regionalgroup_id) {
@@ -152,22 +153,23 @@ class MigrationSeeder extends Seeder
 
             $this->command
                 ->getOutput()
-                ->comment($row->id . ', ' . $row->firstname . ', ' . $row->lastname . ', ' . $old_fir . '->' . ($new_fir ? $new_fir->name : 'none'));
+                ->comment($row->id.', '.$row->firstname.', '.$row->lastname.', '.$old_fir.'->'.($new_fir ? $new_fir->name : 'none'));
 
             // fetch some data from the API
             $user = User::where('id', $row->id)->first();
-            if (!APILibrary::MemberUpdate($user, true)) {
-                $this->command->error('VATSIM API Fail: User ' . $user->id);
+            if (! APILibrary::MemberUpdate($user, true)) {
+                $this->command->error('VATSIM API Fail: User '.$user->id);
             } else {
                 MembershipLibrary::update($user, cache: false, api_refresh: false);
             }
 
             //
-            //sleep(3);
+            // sleep(3);
 
             $this->command->getOutput()->progressAdvance();
         }
         $this->command->getOutput()->progressFinish();
+
         return true;
     }
 
@@ -179,10 +181,10 @@ class MigrationSeeder extends Seeder
             ->get();
         $this->command->getOutput()->progressStart($rows->count());
         foreach ($rows as $row) {
-            if (!User::where('id', $row->account_id)->exists()) {
+            if (! User::where('id', $row->account_id)->exists()) {
                 continue;
             }
-            $t = new TeamspeakRegistration();
+            $t = new TeamspeakRegistration;
             $t->user_id = $row->account_id;
             $t->dbid = $row->dbid;
             $t->uid = $row->uid;
@@ -201,11 +203,11 @@ class MigrationSeeder extends Seeder
         $rows = self::DB_old('membership_bans')->get();
         $this->command->getOutput()->progressStart($rows->count());
         foreach ($rows as $row) {
-            if (!User::where('id', $row->account_id)->exists()) {
+            if (! User::where('id', $row->account_id)->exists()) {
                 continue;
             }
 
-            $b = new UserBan();
+            $b = new UserBan;
             $b->user_id = $row->account_id;
             $b->author_id = $row->author_id;
             $b->reason = $row->reason;

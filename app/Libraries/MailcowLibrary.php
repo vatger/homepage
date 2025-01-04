@@ -16,12 +16,13 @@ class MailcowLibrary extends BaseLibrary
             ],
         ]);
 
-        $uri = config('mailcow.url') . '/' . $endpoint;
+        $uri = config('mailcow.url').'/'.$endpoint;
 
         try {
             return $client->request($method, $uri, ['json' => $data]);
         } catch (GuzzleException $e) {
             Log::info($e->getMessage());
+
             return false;
         }
     }
@@ -45,12 +46,14 @@ class MailcowLibrary extends BaseLibrary
             'tls_enforce_out' => '1',
             'tags' => [],
         ]);
+
         return $result?->getStatusCode() == 200;
     }
 
     public static function delete_email(string $email): bool
     {
         $result = self::send('POST', 'delete/mailbox', ["$email"]);
+
         return $result?->getStatusCode() == 200;
     }
 }

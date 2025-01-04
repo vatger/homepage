@@ -25,7 +25,7 @@ class UserBan extends Model
         'homepage',
         'forum',
         'teamspeak',
-        'reason'
+        'reason',
     ];
 
     public function user(): BelongsTo

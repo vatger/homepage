@@ -90,14 +90,13 @@ class MetarLibrary
      * Filter a given atis array to find active runways
      *
      * @param array
-     *
      * @return string
      */
     public static function decodeAtis($atis)
     {
         $combinedAtis = '';
         foreach ($atis->text_atis as $key => $value) {
-            $combinedAtis .= $value . ' ';
+            $combinedAtis .= $value.' ';
         }
         $combinedAtis = trim($combinedAtis);
 

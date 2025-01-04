@@ -11,7 +11,7 @@ trait BanTrait
     {
         $allbans = self::_banlist();
         $registrationbans = [];
-        if (!$allbans) {
+        if (! $allbans) {
             return $registrationbans;
         }
 
@@ -20,6 +20,7 @@ trait BanTrait
                 $registrationbans[] = $ban;
             }
         }
+
         return $registrationbans;
     }
 
@@ -43,6 +44,7 @@ trait BanTrait
     private static function _bandel(int $banID): bool
     {
         Cache::forget('teamspeak.banlist');
+
         return self::_sendWebQuery('bandel', [
             'banid' => $banID,
         ]);

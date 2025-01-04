@@ -11,12 +11,8 @@ use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 #[OpenApi\PathItem]
 class VatsimWebhookController extends ApiController
 {
-
-
     /**
      * Process a VATSIM webhook post request
-     *
-     * @param Request $request
      */
     #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('vatsim-webhook.post')]
@@ -32,5 +28,4 @@ class VatsimWebhookController extends ApiController
             // nothing
         }
     }
-
 }

@@ -6,10 +6,8 @@ use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SearchTrait;
 use App\Models\Navigation\Aerodrome;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\Locked;
 use Livewire\Attributes\Url;
 use Livewire\Component;
-use Livewire\Features\SupportRedirects\Redirector;
 
 class AerodromeListPage extends Component
 {

@@ -8,15 +8,13 @@ use App\OpenApi\Helpers\ApiPathfinder;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
-/**
- *
- */
 #[OpenApi\PathItem]
 class SolosApiController extends ApiController
 {
     /**
      * Solo endorsements member endpoint
-     * @param int $cid the users VATSIM ID
+     *
+     * @param  int  $cid  the users VATSIM ID
      */
     #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('solos.find_member')]
@@ -30,8 +28,8 @@ class SolosApiController extends ApiController
         $team_m = Team::where('name', 'LIKE', 'EDMM Mentor')->firstOrFail()?->role;
 
         $user = User::find($cid);
-        $data = new \stdClass();
-        $data->is_vatger_member = !empty($user);
+        $data = new \stdClass;
+        $data->is_vatger_member = ! empty($user);
         $data->is_vatger_atd_lead = $user?->hasRole($team_a);
         $data->is_vatger_atd_examiner = $user?->hasRole($team_p);
         $data->is_vatger_mentor = $user?->hasAnyRole($team_w, $team_g, $team_m);

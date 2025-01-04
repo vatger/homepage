@@ -13,8 +13,7 @@ class CheckHomepageBanned
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
-     * @param Closure(Request): (Response|RedirectResponse) $next
+     * @param  Closure(Request): (Response|RedirectResponse)  $next
      * @return Response|RedirectResponse
      */
     public function handle(Request $request, Closure $next)
@@ -27,6 +26,7 @@ class CheckHomepageBanned
                 return redirect()->route('member.banned');
             }
         }
+
         return $next($request);
     }
 }

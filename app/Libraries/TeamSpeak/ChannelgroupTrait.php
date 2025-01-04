@@ -11,9 +11,9 @@ trait ChannelgroupTrait
      */
     private static function getChannelgroupId(string $name): int|false
     {
-        return Cache::remember('teamspeak.channelgroupid.' . $name, 60, function () use ($name) {
+        return Cache::remember('teamspeak.channelgroupid.'.$name, 60, function () use ($name) {
             $list = self::_channelgrouplist();
-            if (!$list) {
+            if (! $list) {
                 return false;
             }
             foreach ($list as $group) {
@@ -21,6 +21,7 @@ trait ChannelgroupTrait
                     return $group->cgid;
                 }
             }
+
             return false;
         });
     }

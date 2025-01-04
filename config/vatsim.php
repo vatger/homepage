@@ -22,5 +22,5 @@ return [
     'vateud' => [
         'base' => rtrim(env('VATSIM_VATEUD_API_BASE', 'https://core.vateud.net/api'), '/'),
         'token' => env('VATSIM_VATEUD_API_TOKEN'),
-    ]
+    ],
 ];

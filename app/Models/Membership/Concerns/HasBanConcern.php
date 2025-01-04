@@ -23,6 +23,7 @@ trait HasBanConcern
     public function getIsCurrentlyBannedAttribute(): bool
     {
         $now = Carbon::now()->utc();
+
         return $this->bans()
             ->where(function (QBuilder|EBuilder $query) use ($now) {
                 $query->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
@@ -33,6 +34,7 @@ trait HasBanConcern
     public function getIsCurrentlyForumBannedAttribute(): bool
     {
         $now = Carbon::now()->utc();
+
         return $this->bans()
             ->where(function (QBuilder|EBuilder $query) use ($now) {
                 $query->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
@@ -44,6 +46,7 @@ trait HasBanConcern
     public function getIsCurrentlyTSBannedAttribute(): bool
     {
         $now = Carbon::now()->utc();
+
         return $this->bans()
             ->where(function (QBuilder|EBuilder $query) use ($now) {
                 $query->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
@@ -55,6 +58,7 @@ trait HasBanConcern
     public function getIsCurrentlyHomepageBannedAttribute(): bool
     {
         $now = Carbon::now()->utc();
+
         return $this->bans()
             ->where(function (QBuilder|EBuilder $query) use ($now) {
                 $query->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
@@ -66,6 +70,7 @@ trait HasBanConcern
     public function getCurrentBanAttribute(): ?UserBan
     {
         $now = Carbon::now()->utc();
+
         return $this->bans()
             ->where(function (QBuilder|EBuilder $query) use ($now) {
                 $query->whereNull('ends_at')->orWhere('ends_at', '>=', $now);

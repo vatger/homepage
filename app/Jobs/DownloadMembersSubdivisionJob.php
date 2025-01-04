@@ -14,7 +14,9 @@ class DownloadMembersSubdivisionJob implements ShouldQueue
     use Queueable;
 
     public ?int $start_time = null;
+
     public readonly int $limit;
+
     public readonly int $chunk_size;
 
     /**
@@ -39,8 +41,12 @@ class DownloadMembersSubdivisionJob implements ShouldQueue
             $pos = $this->offset + $chunk_key * $this->chunk_size;
             Storage::put("jobs/members/list.$this->start_time+$pos.json", json_encode($chunk));
         }
-        if ($offset == 0) return;
-        if (\App\Models\Tech\Job::count() > 64) return;
+        if ($offset == 0) {
+            return;
+        }
+        if (\App\Models\Tech\Job::count() > 64) {
+            return;
+        }
         $job = new self($offset);
         dispatch($job);
     }

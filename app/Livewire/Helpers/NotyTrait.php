@@ -6,8 +6,8 @@ trait NotyTrait
 {
     public function showNoty(string $message, string $type = 'success', int $timeout = 5000): void
     {
-        //$type = 'alert' | 'success' | 'warning' | 'error' | 'info' | 'information'
-        //['message' => $message, 'type' => $type, 'timeout' => $timeout]
+        // $type = 'alert' | 'success' | 'warning' | 'error' | 'info' | 'information'
+        // ['message' => $message, 'type' => $type, 'timeout' => $timeout]
         $this->dispatch('livewire_showNoty', message: $message, type: $type, timeout: $timeout);
     }
 }

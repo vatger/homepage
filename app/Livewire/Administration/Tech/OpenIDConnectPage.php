@@ -23,6 +23,7 @@ class OpenIDConnectPage extends Component
     {
         $this->authorize('tech.access');
         $query = Client::query();
+
         return view('pages.admin.openidconnect')->with(['clients' => $query->paginate()]);
     }
 }

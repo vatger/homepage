@@ -5,7 +5,6 @@ namespace App\Libraries;
 use App\Models\Groups\ServiceRoleType;
 use App\Models\Membership\User;
 use App\Models\Membership\UserVatsimDetail;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -28,9 +27,9 @@ class XenForoLibrary extends BaseLibrary
 
         if ($bypass) {
             $data['api_bypass_permissions'] = 1;
-            $url = config('forum.url') . '/api/' . $endpoint . '?api_bypass_permissions=1';
+            $url = config('forum.url').'/api/'.$endpoint.'?api_bypass_permissions=1';
         } else {
-            $url = config('forum.url') . '/api/' . $endpoint;
+            $url = config('forum.url').'/api/'.$endpoint;
         }
         if ($allow_errors) {
             try {
@@ -45,6 +44,7 @@ class XenForoLibrary extends BaseLibrary
                 Log::debug($e->getMessage());
             }
         }
+
         return false;
     }
 
@@ -65,8 +65,8 @@ class XenForoLibrary extends BaseLibrary
          * 2. Compare the names
          * 3. If mismatched: set new name //todo new name already exists
          */
-        $result = self::send('GET', 'users/' . $user->settings->forum_id, []);
-        if (!$result) {
+        $result = self::send('GET', 'users/'.$user->settings->forum_id, []);
+        if (! $result) {
             return false;
         }
 
@@ -84,11 +84,10 @@ class XenForoLibrary extends BaseLibrary
         }
 
         // Fetch back the current email set in the forum and save as backup
-        if (isset($forumUserObject->email) && !$resetEmail) {
+        if (isset($forumUserObject->email) && ! $resetEmail) {
             $user->email_backup = $forumUserObject->email;
             $user->save();
         }
-
 
         /**
          * Array to store forum groups that must be assigned to the user.
@@ -98,11 +97,10 @@ class XenForoLibrary extends BaseLibrary
         // Get all forum groups the user has through assigned groups
         $secondaryGroups = array_merge($secondaryGroups, $user->service_role_ids(ServiceRoleType::ForumGroup, true));
 
-
         $secondaryGroups = array_merge($secondaryGroups, self::map_vatsim_ratings($user->vatsimDetails));
 
-        //Assign forum groups based upon vatger status
-        if (!empty($secondaryGroups)) {
+        // Assign forum groups based upon vatger status
+        if (! empty($secondaryGroups)) {
             $dataArray['secondary_group_ids'] = $secondaryGroups;
         } else {
             $dataArray['secondary_group_ids'][] = config('forum.guestGroup');
@@ -120,16 +118,14 @@ class XenForoLibrary extends BaseLibrary
             $dataArray['secondary_group_ids'][] = config('forum.bannedGroup');
         }
 
-
         $dataArray['custom_title'] = $user->id;
-        $result = self::send('POST', 'users/' . $user->settings->forum_id, $dataArray);
-        if (!$result) {
+        $result = self::send('POST', 'users/'.$user->settings->forum_id, $dataArray);
+        if (! $result) {
             return false;
         }
         $response = json_decode($result->getBody()->getContents());
 
-
-        return (bool)$response->success;
+        return (bool) $response->success;
     }
 
     /**
@@ -144,13 +140,14 @@ class XenForoLibrary extends BaseLibrary
         $dataArray = [];
         $dataArray['to_user_id'] = $forum_user_id;
         $dataArray['alert'] = $message;
-        $dataArray['from_user_id'] = 0; //anonymous
+        $dataArray['from_user_id'] = 0; // anonymous
         $dataArray['link_url'] = $link_url ?? '';
         $dataArray['link_title'] = $link_text ?? '';
         $res = self::send('POST', 'alerts/', $dataArray);
-        if (!$res) {
+        if (! $res) {
             return false;
         }
+
         return true;
     }
 
@@ -159,7 +156,7 @@ class XenForoLibrary extends BaseLibrary
      */
     public static function sendAccountNotification(User $user, string $title, string $message): bool
     {
-        if (null == $user->settings->forum_id) {
+        if ($user->settings->forum_id == null) {
             return false;
         }
 
@@ -170,23 +167,28 @@ class XenForoLibrary extends BaseLibrary
         $dataArray['open_invite'] = false;
 
         $result = self::send('POST', 'conversations', $dataArray);
-        if ($result && 200 == $result->getStatusCode()) {
+        if ($result && $result->getStatusCode() == 200) {
             return true;
         }
+
         return false;
     }
 
     public static function deleteForumAccount(User $user): bool
     {
         $forumId = $user->settings->forum_id;
-        if ($forumId == null) return true;
-        $vid = $user->id;
-        $result = self::send('DELETE', 'users/' . $forumId, ['rename_to' => $vid], allow_errors: true);
-        if ($result && (200 == $result->getStatusCode() || 404 == $result->getStatusCode())) {
-            $user->settings->forum_id = null;
-            $user->settings->save();
+        if ($forumId == null) {
             return true;
         }
+        $vid = $user->id;
+        $result = self::send('DELETE', 'users/'.$forumId, ['rename_to' => $vid], allow_errors: true);
+        if ($result && ($result->getStatusCode() == 200 || $result->getStatusCode() == 404)) {
+            $user->settings->forum_id = null;
+            $user->settings->save();
+
+            return true;
+        }
+
         return false;
     }
 
@@ -198,14 +200,16 @@ class XenForoLibrary extends BaseLibrary
         if (empty($user->settings->forum_id)) {
             return false;
         }
-        return \Cache::remember('xenforo.username.' . $user->id, 120, function () use ($user) {
-            $result = self::send('GET', 'users/' . $user->settings->forum_id, []);
-            if (!$result) {
+
+        return \Cache::remember('xenforo.username.'.$user->id, 120, function () use ($user) {
+            $result = self::send('GET', 'users/'.$user->settings->forum_id, []);
+            if (! $result) {
                 return false;
             }
 
             $response = json_decode($result->getBody()->getContents());
             $forumUserObject = $response->user;
+
             return $forumUserObject->username;
         });
     }
@@ -215,8 +219,8 @@ class XenForoLibrary extends BaseLibrary
      */
     public static function getPost(int|string $postId)
     {
-        $result = self::send('GET', 'posts/' . $postId, []);
-        if ($result && 200 == $result->getStatusCode()) {
+        $result = self::send('GET', 'posts/'.$postId, []);
+        if ($result && $result->getStatusCode() == 200) {
             return json_decode($result->getBody()->getContents());
         }
 
@@ -231,19 +235,20 @@ class XenForoLibrary extends BaseLibrary
         sleep(3);
         $response = self::send('GET', 'usergroups', []);
         sleep(3);
-        if (!$response || $response->getStatusCode() != 200) {
+        if (! $response || $response->getStatusCode() != 200) {
             return [];
         }
         $result = json_decode($response->getBody()->getContents());
         $groups = [];
         foreach ($result as $group) {
-            $groups[] = (object)['id' => $group->user_group_id, 'name' => $group->title];
+            $groups[] = (object) ['id' => $group->user_group_id, 'name' => $group->title];
         }
-        if (!empty($groups)) {
+        if (! empty($groups)) {
             Cache::forget('XenforoLibrary.Groups');
             Cache::forever('XenforoLibrary.Groups', $groups);
             Cache::put('XenforoLibrary.Groups.cache_valid', true, 60 * 10);
         }
+
         return $groups;
     }
 
@@ -255,6 +260,7 @@ class XenForoLibrary extends BaseLibrary
                 return $team->name;
             }
         }
+
         return null;
     }
 
@@ -266,6 +272,7 @@ class XenForoLibrary extends BaseLibrary
                 return $team->id;
             }
         }
+
         return null;
     }
 
@@ -306,7 +313,7 @@ class XenForoLibrary extends BaseLibrary
                 $groups[] = self::find_group('_rating_pilot_p4');
                 break;
         }
+
         return $groups;
     }
-
 }

@@ -3,7 +3,6 @@
 namespace App\Libraries;
 
 use App\Models\Groups\ServiceRoleType;
-
 use App\Models\Membership\User;
 use App\Models\Navigation\Aerodrome;
 use App\Models\Navigation\Station;
@@ -17,21 +16,22 @@ class NavLibrary extends BaseGithubLibrary
     {
         $roles = $user->service_role_ids(ServiceRoleType::GitHubGroup, cast_to_int: false);
 
-        $roles = collect($roles)->map(fn($role) => str_replace('vatger-nav.', '', $role))->toArray();
+        $roles = collect($roles)->map(fn ($role) => str_replace('vatger-nav.', '', $role))->toArray();
 
         $orga_member = self::github_is_in_organization($user, 'vatger-nav');
 
         if (empty($roles) && $orga_member) {
             self::github_remove_from_organization($user, 'vatger-nav');
+
             return true;
         }
-        if (!empty($roles) && !$orga_member) {
+        if (! empty($roles) && ! $orga_member) {
             self::github_add_to_organization($user, 'vatger-nav');
+
             return true;
         }
 
         $current_teams = self::github_get_member_teams($user, 'vatger-nav');
-
 
         $to_delete = array_diff($current_teams, $roles);
         $to_add = array_diff($roles, $current_teams);
@@ -47,8 +47,7 @@ class NavLibrary extends BaseGithubLibrary
         return true;
     }
 
-
-    static function sync_stations(): void
+    public static function sync_stations(): void
     {
         $repo = 'VATGER-Nav/datahub';
         $branch = 'production';
@@ -61,7 +60,7 @@ class NavLibrary extends BaseGithubLibrary
         Station::query()->update(['active' => false]);
         foreach ($stations as $s) {
             try {
-                if (!isset($s->logon) || !isset($s->description)) {
+                if (! isset($s->logon) || ! isset($s->description)) {
                     continue;
                 }
 
@@ -93,7 +92,7 @@ class NavLibrary extends BaseGithubLibrary
                 }
                 foreach ($aerodromes as $a) {
                     $aerodrome = Aerodrome::where('icao', 'LIKE', $a)->first();
-                    if (!$aerodrome) {
+                    if (! $aerodrome) {
                         continue;
                     }
                     $d->aerodromes()->attach($aerodrome->id);
@@ -114,8 +113,9 @@ class NavLibrary extends BaseGithubLibrary
         $files = self::github_get_file_list($repo, $branch, $path);
 
         foreach ($files as $file) {
-            if (!str_ends_with($file->name, ".csv"))
+            if (! str_ends_with($file->name, '.csv')) {
                 continue;
+            }
             $content = $client->get($file->download_url)->getBody()->getContents();
             $filename = Str::lower($file->name);
             $filePath = "navigation/stands/$filename";
@@ -134,11 +134,16 @@ class NavLibrary extends BaseGithubLibrary
             return self::github_dl_file($repo, $branch, $path)?->airports;
         });
 
-        if (empty($airports)) return null;
+        if (empty($airports)) {
+            return null;
+        }
 
         foreach ($airports as $airport) {
-            if ($airport?->icao && strtolower($airport?->icao) == strtolower($icao)) return $airport;
+            if ($airport?->icao && strtolower($airport?->icao) == strtolower($icao)) {
+                return $airport;
+            }
         }
+
         return null;
     }
 }

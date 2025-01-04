@@ -11,9 +11,7 @@ class VatsimWebhookJob
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(public object $data)
-    {
-    }
+    public function __construct(public object $data) {}
 
     public function handle(): void
     {

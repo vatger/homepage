@@ -14,7 +14,7 @@ use Livewire\Component;
 
 class TeamListPage extends Component
 {
-    use PaginationTrait, NotyTrait;
+    use NotyTrait, PaginationTrait;
 
     #[Url]
     public string $search = '';
@@ -29,15 +29,16 @@ class TeamListPage extends Component
     #[Layout('layouts.admin.admin-master')]
     public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        //todo improve
+        // todo improve
         $limitedselection = false;
-        $teams = Team::where('name', 'LIKE', '%' . Str::of($this->search)->trim() . '%')->get();
-        if (!Auth::user()->hasPermissionTo('membership.teams.view')) {
+        $teams = Team::where('name', 'LIKE', '%'.Str::of($this->search)->trim().'%')->get();
+        if (! Auth::user()->hasPermissionTo('membership.teams.view')) {
             $teams = $teams->filter(function ($team) {
                 return Gate::allows('membership.teams.edit.members.subteam-check', $team);
             });
             $limitedselection = true;
         }
+
         return view('pages.admin.teams')->with([
             'teams' => $teams->paginate(100),
             'limited_selection' => $limitedselection,
@@ -48,7 +49,7 @@ class TeamListPage extends Component
     {
         $this->authorize('membership.teams.edit');
         try {
-            $t = new Team();
+            $t = new Team;
             $t->name = $this->new_name;
             $t->save();
         } catch (\Exception $e) {

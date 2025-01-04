@@ -16,7 +16,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable, HasRoles, HasBanConcern, HasFirConcern, HasTeamConcern, HasGDPRConcern;
+    use HasApiTokens, HasBanConcern, HasFirConcern, HasGDPRConcern, HasRoles, HasTeamConcern, Notifiable;
 
     protected $table = 'user_users';
 
@@ -78,12 +78,12 @@ class User extends Authenticatable
 
     public function getUsernameAttribute(): string
     {
-        return $this->firstname . ' ' . $this->lastname;
+        return $this->firstname.' '.$this->lastname;
     }
 
     public function getUsernameShortAttribute(): string
     {
-        return $this->firstname . ' ' . \Str::substr($this->lastname, 0, 1) . '.';
+        return $this->firstname.' '.\Str::substr($this->lastname, 0, 1).'.';
     }
 
     public function passwords(): HasOne

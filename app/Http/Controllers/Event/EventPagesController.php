@@ -7,7 +7,7 @@ use App\Libraries\VATSIM\EventLibrary;
 
 class EventPagesController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -15,7 +15,10 @@ class EventPagesController extends Controller
     public function view(int $id)
     {
         $event = EventLibrary::getEvent($id);
-        if (!$event) abort(404);
+        if (! $event) {
+            abort(404);
+        }
+
         return view('pages.event')->with(['event' => $event]);
     }
 }

@@ -23,7 +23,7 @@ class NextcloudLibrary extends BaseLibrary
             'headers' => ['OCS-APIRequest' => 'true'],
         ]);
 
-        $uri = config('nextcloud.url') . '/' . $endpoint;
+        $uri = config('nextcloud.url').'/'.$endpoint;
 
         try {
             if (empty($data)) {
@@ -34,6 +34,7 @@ class NextcloudLibrary extends BaseLibrary
         } catch (GuzzleException $e) {
             echo $e->getMessage();
             Log::info($e->getMessage());
+
             return false;
         }
     }
@@ -44,7 +45,7 @@ class NextcloudLibrary extends BaseLibrary
         if (is_object($data) && empty(get_object_vars($data))) {
             return null;
         }
-        if (!is_object($data)) {
+        if (! is_object($data)) {
             return $data;
         } else {
             foreach ($data as $key => $value) {
@@ -57,26 +58,29 @@ class NextcloudLibrary extends BaseLibrary
                 }
             }
         }
+
         return $data;
     }
 
     private static function sendAndDecode(string $method, string $endpoint, array $data = []): ?object
     {
         $response = self::send($method, $endpoint, $data);
-        if (!$response) {
+        if (! $response) {
             return null;
         }
         $response_content = json_decode(json_encode(simplexml_load_string($response->getBody()->getContents())));
-        $obj = (object)[
+        $obj = (object) [
             'meta' => $response_content->meta,
             'data' => self::mergeElementAboveLevel($response_content->data),
         ];
+
         return $obj;
     }
 
     public static function get_all_groups(): array
     {
-        $result = Cache::remember('NextcloudLibrary.get_all_groups', 60, fn() => self::sendAndDecode('GET', 'groups'));
+        $result = Cache::remember('NextcloudLibrary.get_all_groups', 60, fn () => self::sendAndDecode('GET', 'groups'));
+
         return $result?->data?->groups ?? [];
     }
 
@@ -86,6 +90,7 @@ class NextcloudLibrary extends BaseLibrary
         if (in_array($id, $groups)) {
             return 'ok';
         }
+
         return null;
     }
 
@@ -94,10 +99,10 @@ class NextcloudLibrary extends BaseLibrary
         // Neue Benutzergruppen ermitteln
         $newgroups = $user->service_role_ids(ServiceRoleType::NextcloudGroup);
 
-        //Existiert User?
+        // Existiert User?
         $username = "$user->id";
         $result_data = self::sendAndDecode('GET', "users/$username");
-        if (!$result_data->data) {
+        if (! $result_data->data) {
             if (empty($newgroups)) {
                 return true;
             } else {
@@ -122,22 +127,25 @@ class NextcloudLibrary extends BaseLibrary
 
         if (empty($newgroups)) {
             self::delete_user($username);
+
             return true;
         }
 
         self::sync_groups($newgroups, $username);
+
         return true;
     }
 
     private static function create_user(string $username, string $email, string $displayname): string
     {
         $userid = '';
-        $result = self::sendAndDecode('POST', 'users', ['userid' => $username, 'password' => 'V' . Str::random() . '!']);
+        $result = self::sendAndDecode('POST', 'users', ['userid' => $username, 'password' => 'V'.Str::random().'!']);
         if ($result->data->id) {
             $userid = $result->data->id;
             self::send('PUT', "users/$userid", ['key' => 'email', 'value' => $email]);
             self::send('PUT', "users/$userid", ['key' => 'displayname', 'value' => $displayname]);
         }
+
         return $userid;
     }
 
@@ -156,7 +164,7 @@ class NextcloudLibrary extends BaseLibrary
         $result = self::sendAndDecode('GET', "users/$username/groups");
         $currentgroups = $result?->data?->groups ?? [];
 
-        if (!empty($currentgroups)) {
+        if (! empty($currentgroups)) {
             $to_delete = array_diff($currentgroups, $newgroups);
             $to_add = array_diff($newgroups, $currentgroups);
         } else {

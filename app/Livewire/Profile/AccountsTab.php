@@ -14,6 +14,7 @@ class AccountsTab extends Component
     use NotyTrait;
 
     public string $password = '';
+
     public string $teamspeak = '';
 
     public function render(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
@@ -21,6 +22,7 @@ class AccountsTab extends Component
         $user = Auth::user();
         $username = XenForoLibrary::getForumUsername($user);
         $tsids = $user->teamspeakRegistrations;
+
         return view('components.profile.accountstab')->with([
             'username' => $username,
             'teamspeakids' => $tsids,
@@ -31,8 +33,9 @@ class AccountsTab extends Component
     {
         $user = Auth::user();
         $result = TeamSpeakWebQuery::registerViaUid($user, '0.0.0.0', $this->teamspeak);
-        if (!$result) {
+        if (! $result) {
             $this->showNoty('TeamSpeak ID konnte nicht verknüpft werden', 'error');
+
             return;
         }
     }
@@ -42,11 +45,13 @@ class AccountsTab extends Component
         $ts = TeamspeakRegistration::find($id);
         if ($ts->user_id != Auth::user()->id) {
             $this->showNoty('TeamSpeak ID konnte nicht gelöscht werden', 'error');
+
             return;
         }
         $result = TeamSpeakWebQuery::removeRegistation($ts);
-        if (!$result) {
+        if (! $result) {
             $this->showNoty('TeamSpeak ID konnte nicht gelöscht werden', 'error');
+
             return;
         }
     }

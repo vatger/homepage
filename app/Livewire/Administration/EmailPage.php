@@ -18,7 +18,9 @@ class EmailPage extends Component
     use NotyTrait;
 
     protected array $emails = [];
+
     public string $newmail = '';
+
     public string $cid = '';
 
     public function boot(): void
@@ -30,7 +32,7 @@ class EmailPage extends Component
             ->whereNotIn(
                 'user_id',
                 collect($users)
-                    ->map(fn($u) => $u->id)
+                    ->map(fn ($u) => $u->id)
                     ->flatten()
                     ->toArray(),
             )
@@ -43,7 +45,7 @@ class EmailPage extends Component
         foreach ($users as $user) {
             if ($user->staffDetails) {
                 $mail = strtolower("$user->firstname.$user->lastname@vatger.de");
-                $this->emails[] = (object)[
+                $this->emails[] = (object) [
                     'id' => $user->id,
                     'username' => $user->username,
                     'email' => $user->staffDetails->staff_email_created ? $user->staffDetails->staff_email : $mail,
@@ -59,6 +61,7 @@ class EmailPage extends Component
     public function render()
     {
         $this->authorize('mail.manage');
+
         return view('pages.admin.email')->with(['emails' => $this->emails]);
     }
 
@@ -70,12 +73,13 @@ class EmailPage extends Component
 
     public function save(): void
     {
-        if (!filter_var($this->newmail, FILTER_VALIDATE_EMAIL)) {
+        if (! filter_var($this->newmail, FILTER_VALIDATE_EMAIL)) {
             $this->showNoty('Bitte gültige E-Mail Adresse erfassen.', 'error');
+
             return;
         }
 
-        $this->newmail = explode('@', $this->newmail)[0] . '@vatger.de';
+        $this->newmail = explode('@', $this->newmail)[0].'@vatger.de';
 
         foreach ($this->emails as $email) {
             if ($email->id == $this->cid) {
@@ -117,10 +121,10 @@ class EmailPage extends Component
             if ($email->id == $id) {
                 $user = User::find($id);
 
-                $pwd = 'V' . Str::random(24) . '!';
+                $pwd = 'V'.Str::random(24).'!';
 
                 $mailcreated = MailcowLibrary::create_email("$email->email", "$user->username", $pwd);
-                if (!$mailcreated) {
+                if (! $mailcreated) {
                     $this->showNoty('Email konnte nicht angelegt werden');
                 } else {
                     $this->showNoty('Email erfolgreich angelegt');

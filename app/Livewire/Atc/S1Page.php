@@ -10,11 +10,12 @@ use Livewire\Component;
 
 class S1Page extends Component
 {
-    use SortableTrait, SearchTrait;
+    use SearchTrait, SortableTrait;
 
     public string $search = '';
 
     private array $searchable_fields = ['ident', 'name', 'frequency'];
+
     private array $sortable_fields = ['ident', 'name', 'frequency'];
 
     #[Layout('layouts.master')]

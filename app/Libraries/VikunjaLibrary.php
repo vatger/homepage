@@ -14,8 +14,6 @@ use Illuminate\Support\Str;
 
 class VikunjaLibrary extends BaseLibrary
 {
-
-
     const array CATEGORIES = [];
 
     private $jwt_token;
@@ -41,11 +39,11 @@ class VikunjaLibrary extends BaseLibrary
         $client = self::constructClient([
             'headers' => [
                 'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . $this->jwt_token,
+                'Authorization' => 'Bearer '.$this->jwt_token,
             ],
         ]);
 
-        $uri = config('vikunja.url') . '/' . $endpoint;
+        $uri = config('vikunja.url').'/'.$endpoint;
 
         try {
             if (empty($data)) {
@@ -55,6 +53,7 @@ class VikunjaLibrary extends BaseLibrary
             }
         } catch (GuzzleException $e) {
             Log::info($e->getMessage());
+
             return false;
         }
     }
@@ -66,13 +65,13 @@ class VikunjaLibrary extends BaseLibrary
         $result_data = json_decode($result?->getBody()?->getContents());
         if ($result_data == null) {
             // no user exists
-            if (!$new_teams) {
+            if (! $new_teams) {
                 // no roles should be assigned => everything's fine
                 return true;
             } else {
                 // else create new user
-                //Create user
-                if (!$this->create_user($user)) {
+                // Create user
+                if (! $this->create_user($user)) {
                     return false;
                 }
             }
@@ -94,7 +93,7 @@ class VikunjaLibrary extends BaseLibrary
             }
         }
 
-        if (!empty($old_teams)) {
+        if (! empty($old_teams)) {
             $to_delete = array_diff($old_teams, $new_teams);
             $to_add = array_diff($new_teams, $old_teams);
         } else {
@@ -104,17 +103,18 @@ class VikunjaLibrary extends BaseLibrary
 
         foreach ($to_delete as $teamdel) {
             $result = $this->send('DELETE', "teams/$teamdel/members/$user->id");
-            if (!$result || $result->getStatusCode() != 200) {
+            if (! $result || $result->getStatusCode() != 200) {
                 Log::info("Error member $user->id could not be deleted from team $teamdel");
             }
         }
 
         foreach ($to_add as $teamadd) {
             $result = $this->send('PUT', "teams/$teamadd/members", ['admin' => false, 'id' => 0, 'username' => strval($user->id)]);
-            if (!$result || $result->getStatusCode() != 201) {
+            if (! $result || $result->getStatusCode() != 201) {
                 Log::info("Error member $user->id could not be added to team $teamadd");
             }
         }
+
         return true;
     }
 
@@ -144,6 +144,7 @@ class VikunjaLibrary extends BaseLibrary
         $this->jwt_token = $this->login($user->id, $pwd);
         if (empty($this->jwt_token)) {
             $this->jwt_token = $jwt_save;
+
             return false;
         }
         $result = $this->send('POST', 'user/settings/general', [
@@ -163,6 +164,7 @@ class VikunjaLibrary extends BaseLibrary
             Log::info("Error updating vikunja username for $user->id");
         }
         $this->jwt_token = $jwt_save;
+
         return true;
     }
 
@@ -171,6 +173,7 @@ class VikunjaLibrary extends BaseLibrary
         $result = $this->send('POST', 'login', ['long_token' => true, 'username' => $username, 'password' => $pwd]);
 
         $result_data = json_decode($result->getBody()->getContents());
+
         return $result_data?->token;
     }
 
@@ -180,19 +183,21 @@ class VikunjaLibrary extends BaseLibrary
         $result_data = json_decode($result->getBody()->getContents());
 
         foreach ($result_data as $team) {
-            $teams[] = (object)['team' => $team->id, 'name' => $team->name];
+            $teams[] = (object) ['team' => $team->id, 'name' => $team->name];
         }
+
         return $teams;
     }
 
     public static function get_group_name(int $id): ?string
     {
-        $teams = Cache::remember('VikunjaLibrary.Teams', 120, fn() => (new self())->get_groups());
+        $teams = Cache::remember('VikunjaLibrary.Teams', 120, fn () => (new self)->get_groups());
         foreach ($teams as $team) {
             if ($team->team == $id) {
                 return $team->name;
             }
         }
+
         return null;
     }
 
@@ -202,9 +207,10 @@ class VikunjaLibrary extends BaseLibrary
         if ($jwt) {
             $lib = new self($jwt);
         } else {
-            $lib = new self();
+            $lib = new self;
             Cache::put('VikunjaLibrary.Jwt', $lib->jwt_token, 360);
         }
+
         return $lib;
     }
 
@@ -228,6 +234,7 @@ class VikunjaLibrary extends BaseLibrary
                 $result_data = json_decode($result->getBody()->getContents());
                 $result = $this->send('PUT', "tasks/$result_data->id/labels", ['label_id' => $label]);
             }
+
             return true;
         } else {
             return false;

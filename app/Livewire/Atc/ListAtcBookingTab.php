@@ -14,12 +14,16 @@ use Livewire\Component;
 
 class ListAtcBookingTab extends Component
 {
-    use SearchTrait, SortableTrait, PaginationTrait, NotyTrait;
+    use NotyTrait, PaginationTrait, SearchTrait, SortableTrait;
 
     public string $selected_search = '';
+
     public string $selected_start_at = '';
+
     public string $selected_end_at = '';
+
     public bool $selected_my_bookings = false;
+
     protected array $searchable_fields = ['station.ident', 'station.name', 'station.frequency'];
 
     public function mount(): void
@@ -53,6 +57,7 @@ class ListAtcBookingTab extends Component
             $this->searchQueryModifier($bookings_filtered_query, $this->selected_search);
             $this->sortQueryModifier($bookings_filtered_query);
         }
+
         return view('components.atcbooking.allbookingstab')->with([
             'filtered_bookings' => $bookings_filtered_query->get()->paginate(),
         ]);

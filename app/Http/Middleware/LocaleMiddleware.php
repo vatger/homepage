@@ -13,8 +13,6 @@ class LocaleMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -27,13 +25,14 @@ class LocaleMiddleware
             app()->setLocale($locale);
             setlocale(LC_TIME, $locale);
             Carbon::setLocale($locale);
+
             return $next($request);
         }
 
-        if (!Session::has('language') && !Auth::check()) {
+        if (! Session::has('language') && ! Auth::check()) {
             Session::put('language', app()->getLocale());
         }
-        if (!Session::has('language') && Auth::check()) {
+        if (! Session::has('language') && Auth::check()) {
             Session::put('language', Auth::user()->settings->language);
         }
 

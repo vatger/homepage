@@ -1,4 +1,5 @@
 <?php
+
 return [
     'token' => env('MAILCOW_TOKEN', ''),
     'url' => rtrim(env('MAILCOW_URL', 'http://mail.vatsim-germany.org/api/v1'), '/'),

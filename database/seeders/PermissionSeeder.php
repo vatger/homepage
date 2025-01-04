@@ -44,24 +44,25 @@ class PermissionSeeder extends Seeder
 
     /**
      * Run the database seeds.
+     *
      * @throws Throwable
      */
     public function run(): void
     {
         // Remove all roles and permissions
-        //$tableNames = config('permission.table_names');
-        //DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        //DB::statement('DELETE FROM ' . $tableNames['model_has_permissions']);
-        //DB::statement('DELETE FROM ' . $tableNames['model_has_roles']);
-        //DB::statement('DELETE FROM ' . $tableNames['role_has_permissions']);
-        //$this->command->getOutput()->writeln('Truncated relations tables.');
-        //DB::statement('DELETE FROM ' . $tableNames['permissions']);
-        //$this->command->getOutput()->writeln('Truncated permissions table.');
-        //DB::statement('DELETE FROM ' . $tableNames['roles']);
-        //$this->command->getOutput()->writeln('Truncated roles table.');
-        //Team::truncate();
-        //$this->command->getOutput()->writeln('Truncated teams table.');
-        //DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        // $tableNames = config('permission.table_names');
+        // DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        // DB::statement('DELETE FROM ' . $tableNames['model_has_permissions']);
+        // DB::statement('DELETE FROM ' . $tableNames['model_has_roles']);
+        // DB::statement('DELETE FROM ' . $tableNames['role_has_permissions']);
+        // $this->command->getOutput()->writeln('Truncated relations tables.');
+        // DB::statement('DELETE FROM ' . $tableNames['permissions']);
+        // $this->command->getOutput()->writeln('Truncated permissions table.');
+        // DB::statement('DELETE FROM ' . $tableNames['roles']);
+        // $this->command->getOutput()->writeln('Truncated roles table.');
+        // Team::truncate();
+        // $this->command->getOutput()->writeln('Truncated teams table.');
+        // DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
         $this->command->getOutput()->writeln('Starting seeding of permissions...');
 
@@ -95,8 +96,8 @@ class PermissionSeeder extends Seeder
 
         // Create administration role with all permissions
         $team = Team::where('name', 'LIKE', 'Tech Leitung')->first();
-        if (!$team) {
-            $team = new Team();
+        if (! $team) {
+            $team = new Team;
         }
         $team->name = 'Tech Leitung';
         $team->save();

@@ -12,7 +12,7 @@ class SysLog extends Model
 
     public static function Log($params)
     {
-        $log = new self();
+        $log = new self;
         $log->account_id = $params['user_id'];
         $log->path = $params['path'];
         $log->method = $params['method'];
@@ -21,7 +21,7 @@ class SysLog extends Model
 
     public static function LogException($params)
     {
-        $log = new self();
+        $log = new self;
         $log->user_id = $params['user_id'];
         $log->type = $params['type'] ?? 'log';
         $log->path = $params['path'];

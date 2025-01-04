@@ -13,9 +13,6 @@ class BoardController extends ApiController
 {
     /**
      * Create a forum user
-     *
-     * @param Request $request
-     * @return bool
      */
     #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('board.create')]
@@ -27,10 +24,18 @@ class BoardController extends ApiController
 
         $u = User::find($vatsim_id);
 
-        if (empty($vatsim_id)) abort(400, 'No vatsim_id provided');
-        if (empty($forum_id)) abort(400, 'No forum_id provided');
-        if (empty($u)) abort(400, 'User not found');
-        if ($u->settings->forum_id) abort(400, 'User already has an account');
+        if (empty($vatsim_id)) {
+            abort(400, 'No vatsim_id provided');
+        }
+        if (empty($forum_id)) {
+            abort(400, 'No forum_id provided');
+        }
+        if (empty($u)) {
+            abort(400, 'User not found');
+        }
+        if ($u->settings->forum_id) {
+            abort(400, 'User already has an account');
+        }
 
         $u->settings->forum_id = $forum_id;
 

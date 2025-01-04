@@ -10,7 +10,7 @@ class AdministrationPagesController extends Controller
 {
     use AuthorizesRequests;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -18,6 +18,7 @@ class AdministrationPagesController extends Controller
     public function index(Request $request)
     {
         $this->authorize('administration.access');
+
         return view('pages.admin.landing');
     }
 }

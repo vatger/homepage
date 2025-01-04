@@ -16,14 +16,14 @@ class MembershipFirSeeder extends Seeder
         $data = ['EDWW', 'EDGG', 'EDMM'];
         foreach ($data as $d) {
             try {
-                $f = new Fir();
+                $f = new Fir;
                 $f->name = $d;
                 $f->slug = $d;
                 $f->description = $d;
-                $f->mail = $d . '@vatger.de';
+                $f->mail = $d.'@vatger.de';
 
-                $t = new Team();
-                $t->name = $d . ' Leitung';
+                $t = new Team;
+                $t->name = $d.' Leitung';
                 $t->save();
 
                 $f->team_id = $t->id;

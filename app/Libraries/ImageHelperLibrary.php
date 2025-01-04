@@ -21,24 +21,25 @@ class ImageHelperLibrary extends BaseLibrary
                 'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0', // Spoof the User-Agent Header
                 'Referer' => config('app.url'),
                 'Host' => parse_url(config('app.url'), PHP_URL_HOST),
-            ]
+            ],
         ]);
-        $this->manager = new ImageManager(new Driver());
+        $this->manager = new ImageManager(new Driver);
     }
 
     public function get(string $filename, string $url, int $width = 1920): string
     {
-        $filepath = "public/image_cache/" . $filename . ".webp";
+        $filepath = 'public/image_cache/'.$filename.'.webp';
         if (Storage::exists($filepath)) {
             return Storage::url($filepath);
         }
         try {
             $response = $this->client->get($url);
-            throw_if($response->getStatusCode() != 200, new \Exception());
+            throw_if($response->getStatusCode() != 200, new \Exception);
             $data = $response->getBody()->getContents();
             $image = $this->manager->read($data);
             $image->scale(width: $width);
             Storage::put($filepath, $image->toWebp()->toString());
+
             return Storage::url($filepath);
         } catch (\Throwable $e) {
             return $url;
@@ -50,20 +51,22 @@ class ImageHelperLibrary extends BaseLibrary
         $filename = str_replace(' ', '-', $url);
         $filename = preg_replace('/[^A-Za-z0-9\-]/', '', $filename);
 
-        $filepath = "public/image_cache/get/" . $filename . ".webp";
+        $filepath = 'public/image_cache/get/'.$filename.'.webp';
         if (Storage::exists($filepath)) {
             return Storage::url($filepath);
         }
-        $lib = new self();
+        $lib = new self;
 
         try {
             $response = $lib->client->get($url);
-            throw_if($response->getStatusCode() != 200, new \Exception());
+            throw_if($response->getStatusCode() != 200, new \Exception);
             $data = $response->getBody()->getContents();
             $image = $lib->manager->read($data);
-            if ($width != null)
+            if ($width != null) {
                 $image->scale(width: $width);
+            }
             Storage::put($filepath, $image->toWebp()->toString());
+
             return Storage::url($filepath);
         } catch (\Throwable $e) {
             return $url;
@@ -74,28 +77,31 @@ class ImageHelperLibrary extends BaseLibrary
     {
         $filename = str_replace(' ', '-', $url);
         $filename = preg_replace('/[^A-Za-z0-9\-\/.]/', '', $filename);
-        if ($width != null) $filename .= '-w' . $width . "px";
+        if ($width != null) {
+            $filename .= '-w'.$width.'px';
+        }
 
-        $filepath = "public/image_cache/asset/" . $filename . ".webp";
+        $filepath = 'public/image_cache/asset/'.$filename.'.webp';
         if (Storage::exists($filepath)) {
             return Storage::url($filepath);
         }
-        $lib = new self();
+        $lib = new self;
 
         try {
             $image = $lib->manager->read(File::get(public_path($url)));
 
-            if ($width == null && $image->width() > 1920)
+            if ($width == null && $image->width() > 1920) {
                 $image->scale(1920);
-            if ($width != null)
+            }
+            if ($width != null) {
                 $image->scale(width: $width);
+            }
 
             Storage::put($filepath, $image->toWebp()->toString());
+
             return Storage::url($filepath);
         } catch (\Throwable $e) {
             return $url;
         }
     }
-
-
 }

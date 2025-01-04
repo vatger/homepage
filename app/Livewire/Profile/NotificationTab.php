@@ -4,7 +4,6 @@ namespace App\Livewire\Profile;
 
 use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SearchTrait;
-use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -17,11 +16,12 @@ class NotificationTab extends Component
     public function render()
     {
         $user = auth()->user();
-        if (!$this->unread) {
+        if (! $this->unread) {
             $notifications = $user?->notifications;
         } else {
             $notifications = $user?->unreadNotifications;
         }
+
         return view('components.profile.notificationtab')->with(['notifications' => $notifications?->paginate(), 'user' => $user]);
     }
 

@@ -19,8 +19,7 @@ return [
             'toFarFuture' => 'Der ausgewählte Zeitraum liegt zu weit in der Zukunft.',
             'notController' => 'Du bist nicht der Lotse dieser Session.',
             'notEligable' => 'Du benötigst mindestens ein S1 Rating um eine Buchung vornehmen zu können.',
-            'timeframeLimits' =>
-                'Die zeitlichen Beschränkungen einer Buchung wurden nicht eingehalten. Es muss für mindestens 60 Minuten gebucht werden. Eine Buchung darf einen Zeitraum von 24 Stunden nicht überschreiten.',
+            'timeframeLimits' => 'Die zeitlichen Beschränkungen einer Buchung wurden nicht eingehalten. Es muss für mindestens 60 Minuten gebucht werden. Eine Buchung darf einen Zeitraum von 24 Stunden nicht überschreiten.',
             'timeframePast' => 'Die Buchung darf maximal 2 Stunden in der Vergangenheit beginnen.',
             'timeframeSense' => 'Bitte stelle sicher, dass der Beginn zeitlich vor dem geplanten Ende der Buchung liegt.',
         ],

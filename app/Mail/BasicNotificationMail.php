@@ -22,13 +22,12 @@ class BasicNotificationMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public BasicNotification $notification)
-    {
-    }
+    public function __construct(public BasicNotification $notification) {}
 
     public function toUser(User $user): Mailable
     {
         $this->user = $user;
+
         return parent::to($user->email, $user->username);
     }
 
@@ -38,7 +37,7 @@ class BasicNotificationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address(config('mail.from.address'), $this->notification->source_name . ' via VATSIM Germany'),
+            from: new Address(config('mail.from.address'), $this->notification->source_name.' via VATSIM Germany'),
             replyTo: [new Address('support@vatger.de', 'VATSIM Germany Support')],
             subject: $this->notification->title,
         );

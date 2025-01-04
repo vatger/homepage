@@ -16,6 +16,7 @@ class UpdateSubdivisionMembersJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public static string $offset_key = 'UpdateSubdivisionMembersJob.offset';
+
     protected int $offset;
 
     /**
@@ -31,8 +32,6 @@ class UpdateSubdivisionMembersJob implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
     public function handle(): void
     {

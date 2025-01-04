@@ -1,27 +1,27 @@
-import { replace as featherReplace } from 'feather-icons';
+import { replace as featherReplace } from "feather-icons";
 
 export function getDarkmode(): boolean {
     const metaTag = document.querySelector('meta[name="color-scheme"]');
     if (metaTag) {
-        const content = metaTag.getAttribute('content');
-        if (content && content.includes('dark')) {
+        const content = metaTag.getAttribute("content");
+        if (content && content.includes("dark")) {
             return true;
         }
     }
     return false;
 }
 
-export function getLanguage(): 'de' | 'en' {
+export function getLanguage(): "de" | "en" {
     const metaElement = document.querySelector('meta[name="lang"]');
-    const language = metaElement?.getAttribute('content');
-    if (language == 'de') return 'de';
-    else return 'en';
+    const language = metaElement?.getAttribute("content");
+    if (language == "de") return "de";
+    else return "en";
 }
 
 export default function initTemplate() {
-    window.addEventListener('load', loadPreloader, false);
+    window.addEventListener("load", loadPreloader, false);
     clickablemenu();
-    window.addEventListener('scroll', (ev) => {
+    window.addEventListener("scroll", (ev) => {
         ev.preventDefault();
         windowScroll();
     });
@@ -42,7 +42,9 @@ export default function initTemplate() {
         loadTooltips();
         loadSmallMenu();
         featherReplace();
-        window.addEventListener('featherReplace', (ev) => asyncFeatherReplace());
+        window.addEventListener("featherReplace", (ev) =>
+            asyncFeatherReplace()
+        );
     } catch (e) {
         console.error(e);
     }
@@ -50,49 +52,55 @@ export default function initTemplate() {
 
 function loadPreloader() {
     // Preloader
-    const preloader = document.getElementById('preloader');
+    const preloader = document.getElementById("preloader");
     if (preloader) {
-        if (preloader.getAttribute('data-nohide') == null) {
+        if (preloader.getAttribute("data-nohide") == null) {
             setTimeout(() => {
-                preloader.style.visibility = 'hidden';
-                preloader.style.opacity = '0';
+                preloader.style.visibility = "hidden";
+                preloader.style.opacity = "0";
             }, 150);
         }
     }
 }
 
 function activateMenu() {
-    let menuItems = document.getElementsByClassName('sub-menu-item');
+    let menuItems = document.getElementsByClassName("sub-menu-item");
     if (menuItems) {
         var matchingMenuItem: HTMLElement | null = null;
         for (let idx = 0; idx < menuItems.length; idx++) {
             let testItem = menuItems[idx];
-            if (testItem['href'] === window.location.href) {
+            if (testItem["href"] === window.location.href) {
                 matchingMenuItem = testItem as HTMLElement;
             }
         }
         if (matchingMenuItem) {
-            matchingMenuItem.classList.add('active');
-            let immediateParent = getClosest(matchingMenuItem, 'li');
+            matchingMenuItem.classList.add("active");
+            let immediateParent = getClosest(matchingMenuItem, "li");
             if (immediateParent) {
-                immediateParent.classList.add('active');
+                immediateParent.classList.add("active");
             }
 
-            let parent = getClosest(matchingMenuItem, '.parent-menu-item');
+            let parent = getClosest(matchingMenuItem, ".parent-menu-item");
             if (parent) {
-                parent.classList.add('active');
-                let parentMenuitem = parent.querySelector('.menu-item');
+                parent.classList.add("active");
+                let parentMenuitem = parent.querySelector(".menu-item");
                 if (parentMenuitem) {
-                    parentMenuitem.classList.add('active');
+                    parentMenuitem.classList.add("active");
                 }
-                let parentOfParent = getClosest(parent, '.parent-parent-menu-item');
+                let parentOfParent = getClosest(
+                    parent,
+                    ".parent-parent-menu-item"
+                );
                 if (parentOfParent) {
-                    parentOfParent.classList.add('active');
+                    parentOfParent.classList.add("active");
                 }
             } else {
-                let parentOfParent = getClosest(matchingMenuItem, '.parent-parent-menu-item');
+                let parentOfParent = getClosest(
+                    matchingMenuItem,
+                    ".parent-parent-menu-item"
+                );
                 if (parentOfParent) {
-                    parentOfParent.classList.add('active');
+                    parentOfParent.classList.add("active");
                 }
             }
         }
@@ -101,13 +109,13 @@ function activateMenu() {
 
 //Menu
 // Toggle menu
-window['toggleMenu'] = function toggleMenu() {
-    document.getElementById('isToggle')?.classList.toggle('open');
-    const isOpen = document.getElementById('navigation');
-    if (isOpen?.style.display === 'block') {
-        isOpen.style.display = 'none';
+window["toggleMenu"] = function toggleMenu() {
+    document.getElementById("isToggle")?.classList.toggle("open");
+    const isOpen = document.getElementById("navigation");
+    if (isOpen?.style.display === "block") {
+        isOpen.style.display = "none";
     } else if (isOpen) {
-        isOpen.style.display = 'block';
+        isOpen.style.display = "block";
     }
 };
 
@@ -122,15 +130,15 @@ function getClosest(elem, selector) {
 
 // Clickable Menu
 function clickablemenu() {
-    const navigation = document.getElementById('navigation');
+    const navigation = document.getElementById("navigation");
     if (navigation) {
-        const elements = navigation.getElementsByTagName('a');
+        const elements = navigation.getElementsByTagName("a");
         for (let i = 0, len = elements.length; i < len; i++) {
             elements[i].onclick = function (event) {
                 let elem = event.target as HTMLElement;
-                if (elem.getAttribute('href') === 'javascript:void(0)') {
+                if (elem.getAttribute("href") === "javascript:void(0)") {
                     let submenu = elem?.nextElementSibling?.nextElementSibling;
-                    submenu?.classList.toggle('open');
+                    submenu?.classList.toggle("open");
                 }
             };
         }
@@ -139,23 +147,29 @@ function clickablemenu() {
 
 // Menu sticky
 function windowScroll() {
-    const navbar = document.getElementById('topnav');
+    const navbar = document.getElementById("topnav");
     if (navbar) {
-        if (document.body.scrollTop >= 50 || document.documentElement.scrollTop >= 50) {
-            navbar.classList.add('nav-sticky');
+        if (
+            document.body.scrollTop >= 50 ||
+            document.documentElement.scrollTop >= 50
+        ) {
+            navbar.classList.add("nav-sticky");
         } else {
-            navbar.classList.remove('nav-sticky');
+            navbar.classList.remove("nav-sticky");
         }
     }
 }
 
 function scrollFunction() {
-    let mybutton = document.getElementById('back-to-top');
+    let mybutton = document.getElementById("back-to-top");
     if (mybutton) {
-        if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
-            mybutton.style.display = 'block';
+        if (
+            document.body.scrollTop > 500 ||
+            document.documentElement.scrollTop > 500
+        ) {
+            mybutton.style.display = "block";
         } else {
-            mybutton.style.display = 'none';
+            mybutton.style.display = "none";
         }
     }
 }
@@ -167,53 +181,69 @@ function topFunction() {
 
 //Active Sidebar
 function loadSidebar() {
-    var current = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
-    if (current === '') return;
-    const menuItems = document.querySelectorAll('.sidebar-nav a');
+    var current = location.pathname.substring(
+        location.pathname.lastIndexOf("/") + 1
+    );
+    if (current === "") return;
+    const menuItems = document.querySelectorAll(".sidebar-nav a");
     for (let i = 0, len = menuItems.length; i < len; i++) {
         let item = menuItems[i];
-        if (item.parentElement && item.getAttribute('href')?.indexOf(current) !== -1) {
-            item.parentElement.className += ' active';
+        if (
+            item.parentElement &&
+            item.getAttribute("href")?.indexOf(current) !== -1
+        ) {
+            item.parentElement.className += " active";
         }
     }
 
-    Array.prototype.forEach.call(document.querySelectorAll('#sidebar'), (el) => new SimpleBar(el));
+    Array.prototype.forEach.call(
+        document.querySelectorAll("#sidebar"),
+        (el) => new SimpleBar(el)
+    );
 }
 
 //Admin Menu
 function activateSidebarMenu() {
-    const current = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
-    if (current !== '' && document.getElementById('sidebar')) {
-        const menuItems = document.querySelectorAll('#sidebar a');
+    const current = location.pathname.substring(
+        location.pathname.lastIndexOf("/") + 1
+    );
+    if (current !== "" && document.getElementById("sidebar")) {
+        const menuItems = document.querySelectorAll("#sidebar a");
         for (let i = 0, len = menuItems.length; i < len; i++) {
             //TODO Implement proper fix :)
             let item = menuItems[i];
-            if (item && item.getAttribute('href') === location.origin + location.pathname) {
+            if (
+                item &&
+                item.getAttribute("href") ===
+                    location.origin + location.pathname
+            ) {
                 if (item.parentElement) {
-                    item.parentElement.className += ' active';
+                    item.parentElement.className += " active";
                 }
-                let closest_menu = item.closest('.sidebar-submenu');
+                let closest_menu = item.closest(".sidebar-submenu");
                 if (closest_menu) {
-                    closest_menu.classList.add('d-block');
+                    closest_menu.classList.add("d-block");
                 }
-                let closest_dropdown = item.closest('.sidebar-dropdown');
+                let closest_dropdown = item.closest(".sidebar-dropdown");
                 if (closest_dropdown) {
-                    closest_dropdown.classList.add('active');
+                    closest_dropdown.classList.add("active");
                 }
             }
         }
     }
-    let closebar = document.getElementById('close-sidebar');
+    let closebar = document.getElementById("close-sidebar");
     if (closebar) {
-        closebar.addEventListener('click', function () {
-            document.getElementsByClassName('page-wrapper')[0].classList.toggle('toggled');
+        closebar.addEventListener("click", function () {
+            document
+                .getElementsByClassName("page-wrapper")[0]
+                .classList.toggle("toggled");
         });
     }
 }
 
 // dd-menu
 function loadDDMenu() {
-    const ddmenu = document.getElementsByClassName('dd-menu');
+    const ddmenu = document.getElementsByClassName("dd-menu");
     for (let i = 0, len = ddmenu.length; i < len; i++) {
         let ddelem = ddmenu[i] as HTMLElement;
         ddelem.onclick = function (elem) {
@@ -222,18 +252,20 @@ function loadDDMenu() {
     }
 }
 
-import * as bootstrap from 'bootstrap';
+import * as bootstrap from "bootstrap";
 
 //Tooltip
 function loadTooltips() {
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    );
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 }
 
 //import { Gumshoe } from 'gumshoejs';
-import SimpleBar from 'simplebar';
+import SimpleBar from "simplebar";
 
 //small menu
 function loadSmallMenu() {

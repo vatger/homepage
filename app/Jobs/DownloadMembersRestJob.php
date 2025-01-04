@@ -21,6 +21,7 @@ class DownloadMembersRestJob implements ShouldQueue
     public Collection $collection;
 
     public int $total_to_update = 0;
+
     public int $really_updating = 0;
 
     public static int $refresh_time = 60 * 60 * 12;
@@ -36,10 +37,10 @@ class DownloadMembersRestJob implements ShouldQueue
         User::select('id')
             ->lazy()
             ->each(function (object $user) {
-                $cache_key = CoreApiLibrary2::$cache_key_user . $user->id;
+                $cache_key = CoreApiLibrary2::$cache_key_user.$user->id;
                 $cache_exists = Cache::has($cache_key);
                 $cached_val = $cache_exists ? Carbon::createFromTimestamp(intval(Cache::get($cache_key))) : Carbon::now()->subDay();
-                if (!$cache_exists || $cached_val->diffInSeconds(Carbon::now(), true) > self::$refresh_time) {
+                if (! $cache_exists || $cached_val->diffInSeconds(Carbon::now(), true) > self::$refresh_time) {
                     $this->collection->add(['id' => $user->id, 'time' => $cached_val->timestamp]);
                 }
             });
@@ -50,7 +51,6 @@ class DownloadMembersRestJob implements ShouldQueue
 
     /**
      * Execute the job.
-     *
      */
     public function handle(): void
     {
@@ -59,15 +59,17 @@ class DownloadMembersRestJob implements ShouldQueue
         Log::info("[UpdateRestMembersJob]::Completed  $this->really_updating of $this->total_to_update updated");
     }
 
-    static function handle_user($obj): void
+    public static function handle_user($obj): void
     {
         $user = User::find($obj['id']);
-        if (!$user) {
+        if (! $user) {
             return;
         }
         $start_time = Carbon::now()->timestamp;
         $data = CoreApiLibrary2::downloadMember($user);
-        if (!$data) return;
+        if (! $data) {
+            return;
+        }
         \Storage::put("jobs/members/member.$start_time+$user->id.json", json_encode($data));
     }
 }

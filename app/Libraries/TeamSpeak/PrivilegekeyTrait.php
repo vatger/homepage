@@ -14,6 +14,7 @@ trait PrivilegekeyTrait
         array $tokencustomset = [],
     ): mixed {
         Cache::forget('teamspeak.privilegekeylist');
+
         return self::_sendWebQuery(
             'privilegekeyadd',
             ['tokentype' => $tokentype],
@@ -27,6 +28,7 @@ trait PrivilegekeyTrait
     private static function _privilegekeydelete(string $token): bool
     {
         Cache::forget('teamspeak.privilegekeylist');
+
         return self::_sendWebQuery('privilegekeydelete', ['token' => $token]);
     }
 

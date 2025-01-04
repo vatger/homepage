@@ -26,6 +26,6 @@ class UpdateTeamspeak extends Command
      */
     public function handle()
     {
-        dispatch(new UpdateTeamspeakJob());
+        dispatch(new UpdateTeamspeakJob);
     }
 }

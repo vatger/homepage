@@ -24,9 +24,11 @@ class TeamPage extends Component
     public Team $team;
 
     public int $user_id;
+
     public int $selected_superteam;
 
     public string $selected_service_role_type = ServiceRoleType::ForumGroup->value;
+
     public string $selected_service_role = '';
 
     public function mount()
@@ -92,16 +94,17 @@ class TeamPage extends Component
     {
         $this->authorize('membership.teams.edit.members.subteam-check', $this->team);
         $user = User::find($this->user_id ?? null);
-        if (!$user) {
+        if (! $user) {
             $this->showNoty('CID nicht gefunden', 'error');
+
             return;
         }
 
-        if (!$user->staffDetails) {
-            $sd = new UserStaffDetail();
+        if (! $user->staffDetails) {
+            $sd = new UserStaffDetail;
             $sd->user_id = $user->id;
             $sd->joined_staff_at = now();
-            $sd->staff_email = strtolower(substr($user->firstname, 0, 1) . '.' . $user->lastname . '@vatger.de');
+            $sd->staff_email = strtolower(substr($user->firstname, 0, 1).'.'.$user->lastname.'@vatger.de');
             $sd->save();
         } else {
             if ($user->staffDetails->leaving_staff_at) {
@@ -118,6 +121,7 @@ class TeamPage extends Component
     {
         $this->authorize('membership.teams.edit');
         $this->team->delete();
+
         return Redirect::route('administration.teams')->with('success', 'Team gelöscht');
     }
 
@@ -131,7 +135,7 @@ class TeamPage extends Component
     {
         $this->authorize('membership.teams.edit');
         try {
-            $r = new ServiceRole();
+            $r = new ServiceRole;
             $r->team_id = $this->team->id;
             $r->service_type = $this->selected_service_role_type;
             $r->service_role = $this->selected_service_role;

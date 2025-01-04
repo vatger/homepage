@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class SurveyKey extends Model
 {
     protected $table = 'user_surveykeys';
+
     protected $casts = [
         'valid_till' => 'datetime',
     ];

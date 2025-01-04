@@ -15,7 +15,7 @@ trait ServergroupTrait
     public static function getServergroupId(string $name): int|false
     {
         $list = self::_servergrouplist();
-        if (!$list) {
+        if (! $list) {
             return false;
         }
         foreach ($list as $group) {
@@ -23,13 +23,14 @@ trait ServergroupTrait
                 return $group->sgid;
             }
         }
+
         return false;
     }
 
     public static function getServergroupName(int $id): ?string
     {
         $list = self::_servergrouplist();
-        if (!$list) {
+        if (! $list) {
             return null;
         }
         foreach ($list as $group) {
@@ -37,6 +38,7 @@ trait ServergroupTrait
                 return $group->name;
             }
         }
+
         return null;
     }
 
@@ -44,6 +46,7 @@ trait ServergroupTrait
     {
         $clientdbid = $registration->dbid;
         $serverGroupId = $id;
+
         return self::_servergroupaddclient($clientdbid, $serverGroupId);
     }
 
@@ -51,6 +54,7 @@ trait ServergroupTrait
     {
         $clientdbid = $registration->dbid;
         $serverGroupId = $id;
+
         return self::_servergroupdelclient($clientdbid, $serverGroupId);
     }
 
@@ -60,7 +64,7 @@ trait ServergroupTrait
             ->where('service_type', 'LIKE', ServiceRoleType::TeamspeakServergroup)
             ->select('service_role')
             ->get()
-            ->map(fn($sr) => intval($sr->service_role))
+            ->map(fn ($sr) => intval($sr->service_role))
             ->unique()
             ->values()
             ->toArray();
@@ -69,18 +73,19 @@ trait ServergroupTrait
     public static function listServerGroupIds(bool $with_standard_groups = true, bool $only_webside_groups = false): array|false
     {
         $list = self::_servergrouplist();
-        if (!$list) {
+        if (! $list) {
             return false;
         }
         $groups = [];
         foreach ($list as $group) {
-            if (!$with_standard_groups && $group->sgid == self::getServergroupId(config('teamspeak.default_group'))) {
+            if (! $with_standard_groups && $group->sgid == self::getServergroupId(config('teamspeak.default_group'))) {
                 continue;
             }
             if (strcmp($group->type, 1) == 0) {
                 $groups[] = $group->sgid;
             }
         }
+
         return $groups;
     }
 

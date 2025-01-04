@@ -32,11 +32,12 @@ class UpdateToursDatabase implements ShouldQueue
             });
     }
 
-    private static function DB_old(string $table = null): Connection|Builder
+    private static function DB_old(?string $table = null): Connection|Builder
     {
         if ($table) {
             return DB::connection('mysql_old')->table($table);
         }
+
         return DB::connection('mysql_old');
     }
 }

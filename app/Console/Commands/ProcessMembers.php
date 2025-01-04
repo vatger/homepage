@@ -26,6 +26,6 @@ class ProcessMembers extends Command
      */
     public function handle(): void
     {
-        dispatch(new ProcessMembersJob());
+        dispatch(new ProcessMembersJob);
     }
 }

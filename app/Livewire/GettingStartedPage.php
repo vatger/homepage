@@ -9,7 +9,6 @@ use Livewire\Component;
 
 class GettingStartedPage extends Component
 {
-
     #[Url]
     public int $step = 1;
 
@@ -33,10 +32,9 @@ class GettingStartedPage extends Component
             'completed3' => $completed3,
             'completed4' => $completed4,
             'steps_completed' => $steps_completed,
-            'steps_total' => 9
+            'steps_total' => 9,
         ]);
     }
-
 
     public function setStep(int $step): void
     {

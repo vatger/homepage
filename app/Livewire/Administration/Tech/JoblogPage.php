@@ -27,7 +27,7 @@ class JoblogPage extends Component
     public function render()
     {
         $this->authorize('tech.access');
-        $query = FailedJob::where('failed_at', 'LIKE', $this->search . '%');
+        $query = FailedJob::where('failed_at', 'LIKE', $this->search.'%');
         $this->sortQueryModifier($query);
 
         $log = $this->log_id ? FailedJob::find($this->log_id) : null;

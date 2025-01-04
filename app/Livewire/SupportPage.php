@@ -12,33 +12,37 @@ use Illuminate\Support\Facades\Http;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
-use function Symfony\Component\Translation\t;
-
 
 class SupportPage extends Component
 {
     use NotyTrait;
 
     public string $token = '';
+
     #[Url]
     public int $chosen_area = 0;
+
     #[Url]
     public int $chosen_sup_type = 0;
 
     public ?object $selected_area = null;
+
     public ?object $selected_type = null;
 
     public string $name = '';
-    public string $mail = '';
-    public string $cid = '';
-    public string $subject = '';
-    public string $content = '';
 
+    public string $mail = '';
+
+    public string $cid = '';
+
+    public string $subject = '';
+
+    public string $content = '';
 
     public static function getData(?int $area_id = null, ?int $type_id = null): array|object
     {
         try {
-            $data = File::get(storage_path("app/configurations/support.json"));
+            $data = File::get(storage_path('app/configurations/support.json'));
         } catch (FileNotFoundException $e) {
             return [];
         }
@@ -63,9 +67,9 @@ class SupportPage extends Component
                 return $area;
             }
         }
+
         return $json;
     }
-
 
     public function mount(bool $success = false)
     {
@@ -100,7 +104,6 @@ class SupportPage extends Component
 
         $this->test();
 
-
         return view('pages.support')->with([
             'areas' => $areas,
             'selected_area' => $this->selected_area,
@@ -113,53 +116,62 @@ class SupportPage extends Component
     {
         if (empty($this->token)) {
             $this->showNoty(__('support.text-missing-captcha'), 'error');
+
             return;
         }
 
         $captchaResp = Http::asForm()
             ->post('https://hcaptcha.com/siteverify', [
                 'response' => $this->token,
-                'secret' => config('hcaptcha.secret')
+                'secret' => config('hcaptcha.secret'),
             ])
             ->object();
 
-        if (!$captchaResp->success) {
+        if (! $captchaResp->success) {
             $this->showNoty(__('support.text-error-captcha'), 'error');
+
             return;
         }
 
         if ($this->chosen_sup_type == 0) {
             $this->showNoty(__('support.text-missing-supporttype'), 'error');
+
             return;
         }
 
         if ($this->chosen_area == 0) {
             $this->showNoty(__('support.text-missing-area'), 'error');
+
             return;
         }
 
         if (empty($this->mail)) {
             $this->showNoty(__('support.text-missing-mail'), 'error');
+
             return;
         } else {
-            if (!filter_var($this->mail, FILTER_VALIDATE_EMAIL)) {
+            if (! filter_var($this->mail, FILTER_VALIDATE_EMAIL)) {
                 $this->showNoty(__('support.text-wrong-mail'), 'error');
+
                 return;
             }
         }
 
         if (empty($this->subject)) {
             $this->showNoty(__('support.missing-subject'), 'error');
+
             return;
         }
 
         if (empty($this->content)) {
             $this->showNoty(__('support.missing-content'), 'error');
+
             return;
         }
 
         if (empty($this->name)) {
             $this->showNoty(__('support.text-missing-name'), 'error');
+
             return;
         }
 

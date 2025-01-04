@@ -1,4 +1,5 @@
 <?php
+
 return [
     'token' => env('OSTICKET_TOKEN', ''),
     'token_official' => env('OSTICKET_TOKEN_OFFICIAL', ''),

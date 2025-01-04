@@ -14,8 +14,10 @@ class SettingsTab extends Component
 {
     #[Rule('required')]
     public bool $darkmode;
+
     #[Rule('required')]
     public string $color;
+
     #[Rule('required|in:de,en')]
     public string $language;
 
@@ -32,18 +34,16 @@ class SettingsTab extends Component
 
         $ical = $user->passwords->ical_token ? route('api.booking.ical', [
             'id' => $user->id,
-            'token' => $user->passwords->ical_token
+            'token' => $user->passwords->ical_token,
         ]) : null;
 
-
         $board_username = XenForoLibrary::getForumUsername($user);
-
 
         return view('components.profile.settingstab')->with(
             [
                 'user' => $user,
                 'board_username' => $board_username,
-                'ical' => $ical
+                'ical' => $ical,
             ]);
     }
 

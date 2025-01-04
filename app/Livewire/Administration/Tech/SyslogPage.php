@@ -15,6 +15,7 @@ class SyslogPage extends Component
 
     #[Url]
     public $search;
+
     #[Url]
     public ?int $log_id = null;
 
@@ -28,19 +29,20 @@ class SyslogPage extends Component
     public function mount(): void
     {
         $this->setInitialSortOrder('created_at', 'desc');
-        $this->log_types = SysLog::select('type')->distinct()->get()->map(fn(object $o) => $o->type)->toArray();
+        $this->log_types = SysLog::select('type')->distinct()->get()->map(fn (object $o) => $o->type)->toArray();
     }
 
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
         $this->authorize('tech.access');
-        $query = SysLog::where('created_at', 'LIKE', $this->search . '%');
+        $query = SysLog::where('created_at', 'LIKE', $this->search.'%');
         if ($this->type) {
-            $query->where('type', 'LIKE', $this->type . '%');
+            $query->where('type', 'LIKE', $this->type.'%');
         }
         $this->sortQueryModifier($query);
         $log = $this->log_id ? SysLog::find($this->log_id) : null;
+
         return view('pages.admin.syslogs')->with([
             'logs' => $query->paginate(),
             'sellog' => $log,

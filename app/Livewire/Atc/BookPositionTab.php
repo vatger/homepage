@@ -14,16 +14,23 @@ use Livewire\Component;
 
 class BookPositionTab extends Component
 {
-    use SearchTrait, NotyTrait;
+    use NotyTrait, SearchTrait;
 
     public string $station_search = '';
+
     #[Locked]
     public ?Station $selected_station = null;
+
     public string $selected_date;
+
     public string $selected_start_at;
+
     public string $selected_end_at;
+
     public bool $selected_voice = true;
+
     public bool $selected_event = false;
+
     public bool $selected_training = false;
 
     protected array $searchable_fields = ['ident', 'name', 'frequency'];
@@ -51,6 +58,7 @@ class BookPositionTab extends Component
     {
         if ($id == -1) {
             $this->selected_station = null;
+
             return;
         }
         $s = Station::findOrFail($id);
@@ -74,16 +82,16 @@ class BookPositionTab extends Component
         ]);
         $this->val = 1;
 
-        $b = new AtcBooking();
+        $b = new AtcBooking;
         $b->station_id = $validated['selected_station']['id'];
         $b->controller_id = Auth::user()->id;
         $day = Carbon::createFromFormat('Y-m-d', $validated['selected_date']);
         $b->starts_at = $day
             ->copy()
-            ->setTimeFromTimeString(substr($validated['selected_start_at'], 0, 2) . ':' . substr($validated['selected_start_at'], 2, 2));
+            ->setTimeFromTimeString(substr($validated['selected_start_at'], 0, 2).':'.substr($validated['selected_start_at'], 2, 2));
         $b->ends_at = $day
             ->copy()
-            ->setTimeFromTimeString(substr($validated['selected_end_at'], 0, 2) . ':' . substr($validated['selected_end_at'], 2, 2));
+            ->setTimeFromTimeString(substr($validated['selected_end_at'], 0, 2).':'.substr($validated['selected_end_at'], 2, 2));
         $b->voice = $validated['selected_voice'];
         $b->event = $validated['selected_event'];
         $b->training = $validated['selected_training'];

@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Atc;
 
-
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
@@ -19,8 +18,9 @@ class RequiredCoursesPage extends Component
         });
         $courses = collect($data);
 
-        if ($courses->count() < 2) return Redirect::back()->withErrors('Error');
-
+        if ($courses->count() < 2) {
+            return Redirect::back()->withErrors('Error');
+        }
 
         return view('pages.required-courses')->with(['courses' => $courses]);
     }

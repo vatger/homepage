@@ -7,9 +7,6 @@ use App\OpenApi\Helpers\ApiPathfinder;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
-/**
- *
- */
 #[OpenApi\PathItem]
 class TeamspeakApiController extends ApiController
 {
@@ -17,7 +14,8 @@ class TeamspeakApiController extends ApiController
      * Teamspeak DBIDs
      *
      * Generate a list of Teamspeak DBIDs for a given CID.
-     * @param int $cid the users VATSIM ID
+     *
+     * @param  int  $cid  the users VATSIM ID
      */
     #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('teamspeak.ids')]
@@ -29,6 +27,7 @@ class TeamspeakApiController extends ApiController
             ->select('dbid')
             ->get()
             ->collect();
+
         return $regs
             ->map(function ($obj) {
                 return $obj?->dbid;

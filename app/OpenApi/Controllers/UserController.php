@@ -20,9 +20,7 @@ class UserController extends ApiController
      */
     #[OpenApi\Operation]
     #[OpenApi\Response(ListUsersResponse::class)]
-    public function membership(User $cid)
-    {
-    }
+    public function membership(User $cid) {}
 
     /**
      * User Notification

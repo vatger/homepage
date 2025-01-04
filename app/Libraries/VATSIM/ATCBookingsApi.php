@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 
 class ATCBookingsApi
 {
-    # https://atc-bookings.vatsim.net/api-doc
+    // https://atc-bookings.vatsim.net/api-doc
 
     /**
      * If the booking is added successfully the vatsimbooking_id gets set and $booking is saved to the database.
@@ -29,9 +29,9 @@ class ATCBookingsApi
         if ($booking->training) {
             $type = 'training';
         }
-        //if ($booking->exam) {
+        // if ($booking->exam) {
         //    $type = 'exam';
-        //}
+        // }
 
         $booking->loadMissing('station');
 
@@ -52,6 +52,7 @@ class ATCBookingsApi
         if ($res['code'] != 201) {
             $booking->vatsim_booking_id = null;
             $booking->save();
+
             return [
                 'ok' => false,
                 'message' => 'Error in synchronisation!',
@@ -59,6 +60,7 @@ class ATCBookingsApi
         }
         $booking->vatsim_booking_id = $res['data']->id;
         $booking->save();
+
         return [
             'ok' => true,
             'message' => 'Booked.',
@@ -71,7 +73,7 @@ class ATCBookingsApi
      */
     public static function editBooking(AtcBooking $booking): array
     {
-        if (!$booking->vatsim_booking_id) {
+        if (! $booking->vatsim_booking_id) {
             return self::createAndSaveBooking($booking);
         }
         $type = 'booking';
@@ -81,9 +83,9 @@ class ATCBookingsApi
         if ($booking->training) {
             $type = 'mentoring';
         }
-        //if ($booking->exam) {
+        // if ($booking->exam) {
         //    $type = 'exam';
-        //}
+        // }
 
         $booking->loadMissing('station');
 
@@ -98,6 +100,7 @@ class ATCBookingsApi
         if ($res['code'] == 404) {
             $booking->vatsim_booking_id = null;
             $booking->save();
+
             return [
                 'ok' => false,
                 'message' => 'Booking updated but VATSIM sync failed.',
@@ -105,6 +108,7 @@ class ATCBookingsApi
         }
         if ($res['code'] == 422) {
             $booking->refresh();
+
             return [
                 'ok' => false,
                 'message' => 'Station already booked!',
@@ -112,12 +116,14 @@ class ATCBookingsApi
         }
         if ($res['code'] != 200) {
             $booking->refresh();
+
             return [
                 'ok' => false,
                 'message' => 'Error in synchronisation!',
             ];
         }
         $booking->save();
+
         return [
             'ok' => true,
             'message' => 'Booking updated!',
@@ -126,8 +132,9 @@ class ATCBookingsApi
 
     public static function deleteBooking(AtcBooking $booking): array
     {
-        if (!$booking->vatsim_booking_id) {
+        if (! $booking->vatsim_booking_id) {
             $booking->delete();
+
             return [
                 'ok' => true,
                 'message' => 'Local booking deleted!',
@@ -138,6 +145,7 @@ class ATCBookingsApi
 
         if ($res['code'] == 404) {
             $booking->delete();
+
             return [
                 'ok' => true,
                 'message' => 'Local booking deleted!',
@@ -150,6 +158,7 @@ class ATCBookingsApi
             ];
         }
         $booking->delete();
+
         return [
             'ok' => true,
             'message' => 'Booking deleted!',
@@ -162,14 +171,15 @@ class ATCBookingsApi
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
-                'Authorization' => 'Bearer ' . config('vatsim.booking.token'),
+                'Authorization' => 'Bearer '.config('vatsim.booking.token'),
             ],
             'connect_timeout' => 25,
         ]);
 
-        $url = config('vatsim.booking.base') . '/' . $endpoint;
+        $url = config('vatsim.booking.base').'/'.$endpoint;
 
         $res = $client->request($method, $url, ['form_params' => $form_params, 'http_errors' => false]);
+
         return ['code' => $res->getStatusCode(), 'data' => json_decode($res->getBody())];
     }
 }

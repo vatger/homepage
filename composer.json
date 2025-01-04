@@ -44,6 +44,7 @@
         "barryvdh/laravel-debugbar": "^v3.13.5",
         "barryvdh/laravel-ide-helper": "^v3.1.0",
         "fakerphp/faker": "^1.20.0",
+        "laravel/pint": "^1.19",
         "laravel/sail": "^1.16",
         "laravel/tinker": "^2.7",
         "mockery/mockery": "^1.5.0",

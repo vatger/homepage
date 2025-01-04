@@ -13,6 +13,7 @@ class FirMembership extends Pivot
     use SoftDeletes;
 
     public $table = 'user_firs';
+
     public $incrementing = true;
 
     protected $fillable = ['joined_at', 'active_fir_member_at'];

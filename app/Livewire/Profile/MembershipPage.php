@@ -16,6 +16,7 @@ class MembershipPage extends Component
     public function render(): View
     {
         $user = auth()->user();
+
         return view('pages.membership')->with(['user' => $user, 'tab' => $this->tab]);
     }
 

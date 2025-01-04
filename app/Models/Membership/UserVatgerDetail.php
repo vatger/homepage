@@ -56,27 +56,27 @@ class UserVatgerDetail extends Model
 
     public function getIsInactiveAttribute(): bool
     {
-        return !!$this->inactive_at;
+        return (bool) $this->inactive_at;
     }
 
     public function getIsVatgerMemberAttribute(): bool
     {
-        return !!$this->vatger_member_at;
+        return (bool) $this->vatger_member_at;
     }
 
     public function getIsFirMemberAttribute(): bool
     {
-        return !!$this->user->fir;
+        return (bool) $this->user->fir;
     }
 
     public function getIsVatgerActiveMemberAttribute(): bool
     {
-        return !!$this->active_vatger_member_at;
+        return (bool) $this->active_vatger_member_at;
     }
 
     public function getIsFirActiveMemberAttribute(): bool
     {
-        return !!$this->user->fir?->active_fir_member_at;
+        return (bool) $this->user->fir?->active_fir_member_at;
     }
 
     public function getIsVatgerVoterAttribute(): bool
@@ -96,8 +96,8 @@ class UserVatgerDetail extends Model
 
     public function getCanChangeFirReasonAttribute(): ?string
     {
-        //dd($this->user->settings->language);
-        if (!$this->getIsVatgerMemberAttribute()) {
+        // dd($this->user->settings->language);
+        if (! $this->getIsVatgerMemberAttribute()) {
             return __('vatger-details.nomember', locale: $this->user->settings->language);
         }
 

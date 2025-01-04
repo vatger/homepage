@@ -4,15 +4,20 @@ namespace App\Libraries;
 
 use GuzzleHttp\Client;
 
-
 class BaseLibrary
 {
     public const SyncForum = 'forum';
+
     public const SyncTeamspeak = 'ts';
+
     public const SyncKnowledgebase = 'bookstack';
+
     public const SyncDMS = 'nextcloud';
+
     public const SyncVikunja = 'vikunja';
+
     public const SyncOSTicket = 'osticket';
+
     public const SyncMailcow = 'mailcow';
 
     public const SyncDiscord = 'discord';

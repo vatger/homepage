@@ -26,6 +26,6 @@ class UpdateGDPRRemovals extends Command
      */
     public function handle()
     {
-        dispatch(new UpdateGDPRRemovalsJob());
+        dispatch(new UpdateGDPRRemovalsJob);
     }
 }

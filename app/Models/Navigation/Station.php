@@ -4,11 +4,11 @@ namespace App\Models\Navigation;
 
 use App\Models\AtcBooking;
 use App\Models\Feedback\ControllerFeedback;
+use Illuminate\Contracts\Database\Eloquent\Builder as DBuilder;
+use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Contracts\Database\Eloquent\Builder as DBuilder;
-use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Query\Builder as QBuilder;
 
 class Station extends Model

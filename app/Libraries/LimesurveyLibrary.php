@@ -13,6 +13,7 @@ use org\jsonrpcphp\JsonRPCClient;
 class LimesurveyLibrary
 {
     private string $sessionKey;
+
     private jsonRPCClient $lsJSONRPCClient;
 
     /**
@@ -51,7 +52,7 @@ class LimesurveyLibrary
         return $data;
     }
 
-    //[
+    // [
     //  {
     //      +"sid": 833398,
     //      +"surveyls_title": "Wahl Leiter FIR München",
@@ -59,13 +60,13 @@ class LimesurveyLibrary
     //      +"expires": null,
     //      +"active": "N",
     //    }
-    //]
+    // ]
     public function list_surveys(): array
     {
         return Cache::remember(
             'LimesurveyLibrary.list_surveys',
             10,
-            fn() => json_decode(json_encode($this->lsJSONRPCClient->list_surveys($this->sessionKey, null))),
+            fn () => json_decode(json_encode($this->lsJSONRPCClient->list_surveys($this->sessionKey, null))),
         );
     }
 
@@ -77,11 +78,12 @@ class LimesurveyLibrary
                 return $s;
             }
         }
+
         return null;
     }
 
     /**
-     * @param array<User>|Collection<User> $users
+     * @param  array<User>|Collection<User>  $users
      * @return array<SurveyKey>
      */
 
@@ -115,7 +117,7 @@ class LimesurveyLibrary
     {
         $users_data = collect($users)
             ->map(
-                fn(User $u) => (object)[
+                fn (User $u) => (object) [
                     'email' => $u->email,
                     'lastname' => $u->lastname,
                     'firstname' => $u->firstname,
@@ -125,22 +127,23 @@ class LimesurveyLibrary
 
         $response_data = $this->lsJSONRPCClient->add_participants($this->sessionKey, $survey_id, $users_data, true);
 
-        if (!empty($response_data['status'])) {
+        if (! empty($response_data['status'])) {
             return $response_data['status'];
         }
         $survey = $this->list_survey($survey_id);
 
         $res = [];
         foreach ($response_data as $index => $response_data_elem) {
-            $s = new SurveyKey();
+            $s = new SurveyKey;
             $s->user_id = $users[$index]->id;
-            $s->name = $survey->surveyls_title . '#' . $survey_id;
+            $s->name = $survey->surveyls_title.'#'.$survey_id;
             $s->token = $response_data_elem['token'];
             $s->url = "https://survey.vatsim-germany.org/index.php?r=survey/index&token=$s->token&sid=$survey_id&lang=de-informal";
 
             $s->save();
             $res[] = $s;
         }
+
         return $res;
     }
 }

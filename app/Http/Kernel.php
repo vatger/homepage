@@ -17,8 +17,6 @@ use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\OpenApi\Middleware\JsonResponse;
 use App\OpenApi\Middleware\OptionalAuthenticate;
-
-use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
@@ -26,6 +24,7 @@ use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 use Illuminate\Foundation\Http\Middleware\ValidatePostSize;
+use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Http\Middleware\SetCacheHeaders;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Routing\Middleware\ThrottleRequests;
@@ -76,7 +75,7 @@ class Kernel extends HttpKernel
         'web_api' => [
             'throttle:api',
             SubstituteBindings::class,
-            PreventRequestsDuringMaintenance::class
+            PreventRequestsDuringMaintenance::class,
         ],
 
         'api' => [
@@ -102,7 +101,7 @@ class Kernel extends HttpKernel
         'cache.headers' => SetCacheHeaders::class,
         'can' => Authorize::class,
         'guest' => RedirectIfAuthenticated::class,
-        //'password.confirm' => RequirePassword::class,
+        // 'password.confirm' => RequirePassword::class,
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,

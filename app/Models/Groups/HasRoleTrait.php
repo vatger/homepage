@@ -19,13 +19,14 @@ trait HasRoleTrait
     public function members(): BelongsToMany|User
     {
         $g = $this->role()->first();
+
         return $g->belongsToMany(User::class, 'model_has_roles', 'role_id', 'model_id');
     }
 
     protected static function booted(): void
     {
         static::saving(function (self $team) {
-            if (!$team->role_id) {
+            if (! $team->role_id) {
                 $role = Role::create(['name' => Str::slug($team->name), 'type' => self::class]);
                 $team->role_id = $role->id;
             }

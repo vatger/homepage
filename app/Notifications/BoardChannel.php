@@ -15,7 +15,7 @@ class BoardChannel
     {
         // Send notification to the $notifiable instance...
 
-        if (!$notifiable instanceof User) {
+        if (! $notifiable instanceof User) {
             return;
         }
         $user = User::find($notifiable->id);
@@ -32,7 +32,7 @@ class BoardChannel
         }
 
         // call the board library to generate a new notification :)
-        if (!array_key_exists('message', $data)) {
+        if (! array_key_exists('message', $data)) {
             return;
         }
         $message = $data['message'];

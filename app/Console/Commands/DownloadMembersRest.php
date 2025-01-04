@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Jobs\DownloadMembersRestJob;
-use App\Jobs\UpdateSubdivisionMembersJob;
 use Illuminate\Console\Command;
 
 class DownloadMembersRest extends Command
@@ -27,6 +26,6 @@ class DownloadMembersRest extends Command
      */
     public function handle()
     {
-        dispatch(new DownloadMembersRestJob());
+        dispatch(new DownloadMembersRestJob);
     }
 }

@@ -7,12 +7,10 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class VATEUDCoreLibrary extends BaseLibrary
 {
-
-
     public static function send(string $type, string $endpoint, array $data = []): array|object|null
     {
         $apikey = config('vatsim.vateud.token');
-        $uri = config('vatsim.vateud.base') . '/' . ltrim($endpoint, '/');
+        $uri = config('vatsim.vateud.base').'/'.ltrim($endpoint, '/');
         $type = strtoupper($type);
         $client = self::constructClient([
             'headers' => [
@@ -33,12 +31,12 @@ class VATEUDCoreLibrary extends BaseLibrary
             return null;
         }
         $json = json_decode($res?->getBody()?->getContents());
+
         return $json;
     }
 
-    public static function roster(): object|null
+    public static function roster(): ?object
     {
-        return self::send("GET", "facility/roster")?->data;
+        return self::send('GET', 'facility/roster')?->data;
     }
-
 }

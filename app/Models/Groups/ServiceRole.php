@@ -16,6 +16,7 @@ class ServiceRole extends Model
     protected $table = 'team_service_roles';
 
     protected $fillable = ['team_id', 'service_role'];
+
     protected $appends = ['service_role_name'];
 
     protected $casts = [
@@ -41,6 +42,7 @@ class ServiceRole extends Model
             };
         } catch (Exception $e) {
         }
+
         return null;
     }
 
@@ -53,7 +55,7 @@ class ServiceRole extends Model
                     ->where('service_role', 'LIKE', $serviceRole->service_role)
                     ->exists()
             ) {
-                throw new \InvalidArgumentException($serviceRole->service_type->value . ' already set.');
+                throw new \InvalidArgumentException($serviceRole->service_type->value.' already set.');
             }
         });
     }

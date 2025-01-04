@@ -42,8 +42,6 @@ class AtcBooking extends Model
 
     /**
      * Get the station that owns the AtcSessionBooking
-     *
-     * @return BelongsTo
      */
     public function station(): BelongsTo
     {
@@ -52,8 +50,6 @@ class AtcBooking extends Model
 
     /**
      * The controller that made the booking
-     *
-     * @return BelongsTo
      */
     public function controller(): BelongsTo
     {
@@ -83,8 +79,8 @@ class AtcBooking extends Model
     /**
      * Get all bookings for a given event
      *
-     * @param Builder $query
-     * @param Integer $id The id of the event
+     * @param  Builder  $query
+     * @param  int  $id  The id of the event
      * @return Builder
      */
     public function scopeForEvent($query, $id)
@@ -95,8 +91,8 @@ class AtcBooking extends Model
     /**
      * All bookings an account has made
      *
-     * @param Builder $query
-     * @param Integer $id The id of the account
+     * @param  Builder  $query
+     * @param  int  $id  The id of the account
      * @return Builder
      */
     public function scopeForAccountId($query, $id)
@@ -107,8 +103,8 @@ class AtcBooking extends Model
     /**
      * All bookings for a given station id
      *
-     * @param Builder $query
-     * @param Integer $id The id of the station
+     * @param  Builder  $query
+     * @param  int  $id  The id of the station
      * @return Builder
      */
     public function scopeForStation($query, $id)

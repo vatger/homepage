@@ -16,13 +16,13 @@ trait TeamSpeakWebQueryTrait
     /**
      * _sendWebQuery
      *
-     * @param string $command
-     * @param array $queryparams
+     * @param  string  $command
+     * @param  array  $queryparams
      * @return mixed
      */
     protected static function _sendWebQuery($command, $queryparams = [])
     {
-        $uri = 'http://' . config('teamspeak.host') . ':' . config('teamspeak.webquery_port') . '/' . config('teamspeak.server_number') . '/';
+        $uri = 'http://'.config('teamspeak.host').':'.config('teamspeak.webquery_port').'/'.config('teamspeak.server_number').'/';
 
         $_httpClient = new Client([
             'base_uri' => $uri,
@@ -34,7 +34,7 @@ trait TeamSpeakWebQueryTrait
             ],
         ]);
 
-        //$queryparams['api-key'] = config('teamspeak.apikey');
+        // $queryparams['api-key'] = config('teamspeak.apikey');
         $params = [
             'query' => $queryparams,
         ];
@@ -42,7 +42,8 @@ trait TeamSpeakWebQueryTrait
         try {
             $response = $_httpClient->get($command, $params);
         } catch (GuzzleException $e) {
-            Log::error('[TeamSpeakWebQuery] GuzzleException (Code ' . $e->getCode() . '): ' . $e->getMessage());
+            Log::error('[TeamSpeakWebQuery] GuzzleException (Code '.$e->getCode().'): '.$e->getMessage());
+
             return false;
         }
 
@@ -58,6 +59,7 @@ trait TeamSpeakWebQueryTrait
 
             return $body->body;
         }
+
         return false;
     }
 }

@@ -35,20 +35,20 @@ class AddApiToken extends Command
         $this->info(json_encode(ApiController::collect_paths()));
         do {
             $var = $this->ask('allowed route_id [enter one or leave empty]?');
-            if (!empty($var)) {
+            if (! empty($var)) {
                 $route_ids[] = $var;
             }
-        } while (!empty($var));
+        } while (! empty($var));
 
         $expiration = $this->ask('expiration date [needed]?');
 
-        $t = new ApiToken();
+        $t = new ApiToken;
         $t->token = Str::random(16);
         $t->description = $description;
         $t->valid_till = Carbon::parse($expiration);
         $t->save();
         foreach ($route_ids as $route_id) {
-            $rt = new ApiRouteToken();
+            $rt = new ApiRouteToken;
             $rt->token_id = $t->id;
             $rt->route_id = $route_id;
             $rt->save();

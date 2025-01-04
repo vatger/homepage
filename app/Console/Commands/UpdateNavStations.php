@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\UpdateSubdivisionMembersJob;
 use App\Libraries\NavLibrary;
 use Illuminate\Console\Command;
 

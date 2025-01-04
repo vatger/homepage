@@ -3,7 +3,6 @@
 use App\Http\Controllers\Vatsim\QueryVatsimAPIController;
 use Illuminate\Support\Facades\Route;
 
-
 /*
 |--------------------------------------------------------------------------
 |  WEB API Routes

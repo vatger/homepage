@@ -15,6 +15,7 @@ use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 class ApiController extends Controller
 {
     protected ?ApiToken $token = null;
+
     protected ?User $token_user = null;
 
     public function __construct()
@@ -41,30 +42,32 @@ class ApiController extends Controller
 
     public function authorizeApiRequest(string $route_id): void
     {
-        if (!$this->token) {
+        if (! $this->token) {
             abort(401, 'Unauthenticated or token invalid.');
         }
-        if (!$this->token->check_allowed($route_id)) {
+        if (! $this->token->check_allowed($route_id)) {
             abort(401, 'Token not valid for this endpoint.');
         }
     }
 
     public function canApiRequest(string $route_id): bool
     {
-        if (!$this->token) {
+        if (! $this->token) {
             return false;
         }
-        if (!$this->token->check_allowed($route_id)) {
+        if (! $this->token->check_allowed($route_id)) {
             return false;
         }
+
         return true;
     }
 
-    #
+    //
     private static function collect_classes(): array
     {
         $files = collect(scandir(__DIR__));
-        $classes = $files->map(fn($file) => str_replace('.php', '', $file))->filter(fn($file) => strlen($file) > 3);
+        $classes = $files->map(fn ($file) => str_replace('.php', '', $file))->filter(fn ($file) => strlen($file) > 3);
+
         return $classes->toArray();
     }
 
@@ -75,7 +78,7 @@ class ApiController extends Controller
         return \Cache::remember('openapi.collect_paths', 10, function () use ($prefix) {
             $paths = [];
             foreach (self::collect_classes() as $class) {
-                $reflect = new ReflectionClass($prefix . $class);
+                $reflect = new ReflectionClass($prefix.$class);
                 foreach ($reflect->getMethods() ?? [] as $method) {
                     foreach ($method->getAttributes() ?? [] as $attr) {
                         if ($attr->getName() == 'App\OpenApi\Helpers\ApiPathfinder') {
@@ -84,6 +87,7 @@ class ApiController extends Controller
                     }
                 }
             }
+
             return $paths;
         });
     }

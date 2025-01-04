@@ -21,6 +21,7 @@ class UserSetting extends Model
         'termsofuse_agreed_at' => 'date',
         'satzung_agreed_at' => 'date',
     ];
+
     protected $appends = ['gdpr_agreed', 'imprint_agreed', 'termsofuse_agreed', 'satzung_agreed', 'agreed'];
 
     public $timestamps = false;

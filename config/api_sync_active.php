@@ -1,4 +1,5 @@
 <?php
+
 return [
     'forum' => env('ACTIVE_SYNC_FORUM', false),
     'ts' => env('ACTIVE_SYNC_TS', false),

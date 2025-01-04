@@ -14,6 +14,7 @@ class SurveyPage extends Component
     use NotyTrait;
 
     public $selected_survey;
+
     public $selected_selection;
 
     private $selections = [
@@ -49,7 +50,7 @@ class SurveyPage extends Component
     public function boot()
     {
         try {
-            $this->ls = new LimesurveyLibrary();
+            $this->ls = new LimesurveyLibrary;
         } catch (\Exception $e) {
             session()->flash('status', 'Survey failed');
             $this->redirect(route('administration.dashboard'));
@@ -60,6 +61,7 @@ class SurveyPage extends Component
     public function render()
     {
         $this->authorize('survey');
+
         return view('pages.admin.survey')->with([
             'surveys' => $this->ls->list_surveys(),
             'keys' => SurveyKey::all(),
@@ -79,31 +81,31 @@ class SurveyPage extends Component
             case 2:
                 $users = User::with(['vatgerDetails', 'fir'])
                     ->lazy()
-                    ->filter(fn(User $u) => $u->fir?->slug == 'EDWW' && $u->vatgerDetails->is_fir_voter)
+                    ->filter(fn (User $u) => $u->fir?->slug == 'EDWW' && $u->vatgerDetails->is_fir_voter)
                     ->collect();
                 break;
             case 3:
                 $users = User::with(['vatgerDetails', 'fir'])
                     ->lazy()
-                    ->filter(fn(User $u) => $u->fir?->slug == 'EDGG' && $u->vatgerDetails->is_fir_voter)
+                    ->filter(fn (User $u) => $u->fir?->slug == 'EDGG' && $u->vatgerDetails->is_fir_voter)
                     ->collect();
                 break;
             case 4:
                 $users = User::with(['vatgerDetails', 'fir'])
                     ->lazy()
-                    ->filter(fn(User $u) => $u->fir?->slug == 'EDMM' && $u->vatgerDetails->is_fir_voter)
+                    ->filter(fn (User $u) => $u->fir?->slug == 'EDMM' && $u->vatgerDetails->is_fir_voter)
                     ->collect();
                 break;
             case 5:
                 $users = User::with(['vatgerDetails'])
                     ->lazy()
-                    ->filter(fn(User $u) => $u->vatgerDetails?->active_vatger_member_at != null)
+                    ->filter(fn (User $u) => $u->vatgerDetails?->active_vatger_member_at != null)
                     ->collect();
                 break;
             case 6:
                 $users = User::with(['vatgerDetails', 'vatsimDetails'])
                     ->lazy()
-                    ->filter(fn(User $u) => $u->vatgerDetails?->active_vatger_member_at != null && $u->vatsimDetails?->rating_atc > 0)
+                    ->filter(fn (User $u) => $u->vatgerDetails?->active_vatger_member_at != null && $u->vatsimDetails?->rating_atc > 0)
                     ->collect();
                 break;
             default:

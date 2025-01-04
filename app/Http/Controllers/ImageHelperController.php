@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 
@@ -13,19 +11,20 @@ class ImageHelperController extends Controller
 
     private static function manager(): ImageManager
     {
-        if (!self::$manager) {
+        if (! self::$manager) {
             try {
                 self::$manager = ImageManager::imagick();
             } catch (\Exception $e) {
                 self::$manager = ImageManager::gd();
             }
         }
+
         return self::$manager;
     }
 
     private static function getKey(string $img, int $sizeX = 0, int $sizeY = 0): string
     {
-        return str_replace('=', '_', base64_encode(urlencode($img) . '//' . $sizeX . '//' . $sizeY));
+        return str_replace('=', '_', base64_encode(urlencode($img).'//'.$sizeX.'//'.$sizeY));
     }
 
     private static function getKeyValues(string $key): array
@@ -33,6 +32,7 @@ class ImageHelperController extends Controller
         $key = explode('.', $key)[0];
         $decoded = base64_decode(str_replace('_', '=', $key));
         $data = explode('//', $decoded);
+
         return ['img' => urldecode($data[0]), 'sizeX' => $data[1], 'sizeY' => $data[2]];
     }
 
@@ -43,7 +43,7 @@ class ImageHelperController extends Controller
         // Use basename() function to return the base name of file
         $file_name = basename($url);
 
-        file_put_contents(Storage::path('public/images/' . $file_name), file_get_contents($url));
+        file_put_contents(Storage::path('public/images/'.$file_name), file_get_contents($url));
 
         $image = self::manager()->read($img);
 
@@ -60,11 +60,12 @@ class ImageHelperController extends Controller
 
         $image->resize($sizeX, $sizeY);
         $encoded = $image->encode();
-        $key = self::getKey($img, $sizeX, $sizeY) . '.' . ltrim($encoded->mimetype(), 'image/');
+        $key = self::getKey($img, $sizeX, $sizeY).'.'.ltrim($encoded->mimetype(), 'image/');
 
-        $path = Storage::path('public/images/' . $key);
-        //dd(self::getKeyValues($key));
+        $path = Storage::path('public/images/'.$key);
+        // dd(self::getKeyValues($key));
         $encoded->save($path);
+
         return $path;
     }
 }

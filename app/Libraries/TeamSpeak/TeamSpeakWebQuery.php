@@ -5,12 +5,11 @@ namespace App\Libraries\TeamSpeak;
 use App\Models\Groups\ServiceRoleType;
 use App\Models\Membership\User;
 use App\Models\TeamspeakRegistration;
-
 use Carbon\Carbon;
 
 class TeamSpeakWebQuery
 {
-    use TeamSpeakWebQueryTrait, ServergroupTrait, ChannelgroupTrait, ChannelTrait, ClientTrait, PrivilegekeyTrait, BanTrait;
+    use BanTrait, ChannelgroupTrait, ChannelTrait, ClientTrait, PrivilegekeyTrait, ServergroupTrait, TeamSpeakWebQueryTrait;
 
     // =======================================================================
     //  Registration handling
@@ -25,7 +24,7 @@ class TeamSpeakWebQuery
 
         $clientdbid = $search[0]->cldbid;
 
-        $registration = new TeamspeakRegistration();
+        $registration = new TeamspeakRegistration;
         $registration->User_id = $User->id;
         $registration->registration_ip = $registration_ip;
         $registration->uid = $uid;
@@ -33,14 +32,15 @@ class TeamSpeakWebQuery
 
         $serverGroupId = self::getServergroupId(config('teamspeak.default_group'));
 
-        $description = $User->username . ' (' . $User->id . ')';
-        if (!self::_clientdbedit($clientdbid, $description)) {
+        $description = $User->username.' ('.$User->id.')';
+        if (! self::_clientdbedit($clientdbid, $description)) {
             return false;
         }
-        if (!self::_servergroupaddclient($clientdbid, $serverGroupId)) {
+        if (! self::_servergroupaddclient($clientdbid, $serverGroupId)) {
             return false;
         }
         $registration->save();
+
         return true;
     }
 
@@ -49,13 +49,14 @@ class TeamSpeakWebQuery
         $servergroupId = self::getServergroupId(config('teamspeak.default_group'));
         $clientDBid = $registration->dbid;
 
-        if (!self::_servergroupdelclient($clientDBid, $servergroupId)) {
+        if (! self::_servergroupdelclient($clientDBid, $servergroupId)) {
             return false;
         }
 
         self::_clientdbedit($clientDBid, '');
 
         $registration->delete();
+
         return true;
     }
 
@@ -71,6 +72,7 @@ class TeamSpeakWebQuery
         if ($registration == null) {
             // client has no Registration
             self::_servergroupdelclient($client->cldbid, $servergroupId);
+
             return;
         }
         self::checkRegistration($registration, $client);
@@ -85,7 +87,7 @@ class TeamSpeakWebQuery
         if ($user == null) {
             return;
         }
-        $description = $user->username . ' (' . $user->id . ')';
+        $description = $user->username.' ('.$user->id.')';
         if (strcmp($client->client_description, $description) != 0) {
             self::_clientdbedit($client->cldbid, $description);
         }
@@ -102,21 +104,21 @@ class TeamSpeakWebQuery
             $existingTSBans = self::getBansFromRegistration($registration);
             if ($has_active_ban && empty($existingTSBans)) {
                 $ban = $user->currentBan;
-                self::_banadd($registration->uid, Carbon::now()->diffInSeconds($ban->banned_till, true), '[User ' . $user->id . ']' . $ban->reason);
+                self::_banadd($registration->uid, Carbon::now()->diffInSeconds($ban->banned_till, true), '[User '.$user->id.']'.$ban->reason);
             }
 
-            if (!$has_active_ban && !empty($existingTSBans)) {
+            if (! $has_active_ban && ! empty($existingTSBans)) {
                 foreach ($existingTSBans as $ban) {
                     self::_bandel($ban->banid);
                 }
             }
         }
 
-        //group assignment
+        // group assignment
         $service_role_ids = $user->service_role_ids(ServiceRoleType::TeamspeakServergroup, true);
 
         $all_server_groups = self::listAvailServiceRoleId();
-        //so we don't remove the default role
+        // so we don't remove the default role
 
         $del_server_groups = array_diff($all_server_groups, $service_role_ids);
         foreach ($registrations as $registration) {

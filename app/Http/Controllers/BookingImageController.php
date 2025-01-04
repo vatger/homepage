@@ -13,28 +13,29 @@ use Symfony\Component\HttpFoundation\Response as ResponseCodes;
 
 class BookingImageController extends Controller
 {
-    private static string $BOOKING_COOKIE_NAME = "vatsim_germany_booking_theme";
+    private static string $BOOKING_COOKIE_NAME = 'vatsim_germany_booking_theme';
+
     private static array $HEADERS = [
         'Expires' => 0,
         'Pragma' => 'no-cache',
         'Cache-Control' => 'no-store, max-age=0',
         'Cache-directive' => 'no-cache',
         'Pragma-directive' => 'no-cache',
-        'Content-Type' => 'image/png'
+        'Content-Type' => 'image/png',
     ];
 
     public function serveBookingImage(Request $request, string $image_id): Response|JsonResponse|BinaryFileResponse
     {
-        if (!Auth::check()) {
-            if ($this->_getDisplayMode($request) == "dark") {
+        if (! Auth::check()) {
+            if ($this->_getDisplayMode($request) == 'dark') {
                 return response()->file(storage_path('app/public/booking_image/error_dark.png'), self::$HEADERS);
             }
 
-            return response()->file(storage_path("app/public/booking_image/error.png"), self::$HEADERS);
+            return response()->file(storage_path('app/public/booking_image/error.png'), self::$HEADERS);
         }
 
         // http required for internal traffic
-        $url = "http://bookings.vatsim-germany.org/" . $image_id . "/?theme=" . $this->_getDisplayMode($request) . "&" . $request->getQueryString();
+        $url = 'http://bookings.vatsim-germany.org/'.$image_id.'/?theme='.$this->_getDisplayMode($request).'&'.$request->getQueryString();
 
         $response = Http::get($url);
 
@@ -48,12 +49,14 @@ class BookingImageController extends Controller
     public function setDarkMode(Request $request): JsonResponse
     {
         $cookie = cookie(self::$BOOKING_COOKIE_NAME, 'dark', Carbon::now()->addYear()->diffInMinutes(Carbon::now(), true));
+
         return response()->json(['message' => 'Dark Mode Set!'])->withCookie($cookie);
     }
 
     public function setLightMode(Request $request): JsonResponse
     {
         $cookie = cookie(self::$BOOKING_COOKIE_NAME, 'light', Carbon::now()->addYear()->diffInMinutes(Carbon::now(), true));
+
         return response()->json(['message' => 'Light Mode Set!'])->withCookie($cookie);
     }
 

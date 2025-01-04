@@ -23,8 +23,7 @@ return [
             'toFarFuture' => 'The selected time slot is too far in the future.',
             'notController' => 'You are not the controller for that session.',
             'notEligable' => 'You must at least hold the S1 rating to be eligable to book any session.',
-            'timeframeLimits' =>
-                'The timeframe limits have not been met. A session must be at least 60 minutes in duration while not exceeding 24 hours.',
+            'timeframeLimits' => 'The timeframe limits have not been met. A session must be at least 60 minutes in duration while not exceeding 24 hours.',
             'timeframePast' => 'Please ensure that the begin is not more than 2 hours in the past.',
             'timeframeSense' => 'Please make sure that the begin is prior to the end.',
             'deleteFailed' => 'Error deleting requested booking. Please try again.',

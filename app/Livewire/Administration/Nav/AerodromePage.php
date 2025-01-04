@@ -15,7 +15,7 @@ use Livewire\WithFileUploads;
 
 class AerodromePage extends Component
 {
-    use SearchTrait, NotyTrait, WithFileUploads;
+    use NotyTrait, SearchTrait, WithFileUploads;
 
     #[Locked]
     public Aerodrome $aerodrome;
@@ -24,6 +24,7 @@ class AerodromePage extends Component
     public ?TemporaryUploadedFile $photo = null; // 4MB Max
 
     protected array $searchable_fields = ['name', 'ident', 'frequency'];
+
     public string $station_search = '';
 
     public function boot(): void
@@ -36,6 +37,7 @@ class AerodromePage extends Component
     {
         $stations = empty($this->station_search) ? null : Station::query();
         $this->searchQueryModifier($stations, $this->station_search);
+
         return view('pages.admin.aerodrome')->with([
             'aerodrome' => $this->aerodrome,
             'station_search_results' => $stations?->limit(3)->get(),
@@ -44,20 +46,23 @@ class AerodromePage extends Component
 
     public function save(): void
     {
-        if (!$this->photo) {
+        if (! $this->photo) {
             $this->showNoty('Kein Bild ausgewählt', 'error');
+
             return;
         }
-        if (!in_array($this->photo->extension(), ['jpeg', 'jpg', 'JPEG', 'JPG'])) {
+        if (! in_array($this->photo->extension(), ['jpeg', 'jpg', 'JPEG', 'JPG'])) {
             $this->showNoty('Nur .jpeg erlaubt', 'error');
+
             return;
         }
 
         if ($this->photo->dimensions()[0] <= 1080 && $this->photo->dimensions()[1] <= 720) {
             $this->showNoty('Bild max. 1080 x 720 px', 'error');
+
             return;
         }
-        $this->photo->storePubliclyAs('public/aerodromes', \Str::upper($this->aerodrome->icao) . '.jpeg');
+        $this->photo->storePubliclyAs('public/aerodromes', \Str::upper($this->aerodrome->icao).'.jpeg');
         $this->showNoty('Bild gespeichert', 'success');
     }
 }

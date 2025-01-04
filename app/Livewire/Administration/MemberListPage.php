@@ -12,14 +12,17 @@ use Livewire\Component;
 
 class MemberListPage extends Component
 {
-    use PaginationTrait, SortableTrait, SearchTrait;
+    use PaginationTrait, SearchTrait, SortableTrait;
 
     // query params
     protected array $queryString = ['membersearch', 'filter_ger', 'sort_by', 'sort_order'];
+
     public string $membersearch = '';
+
     public bool $filter_ger = false;
 
     public bool $filter_active = true;
+
     public bool $filter_inactive = true;
 
     public function mount(): void
@@ -41,7 +44,7 @@ class MemberListPage extends Component
         $this->authorize('membership.users.view');
         // build sql query
         $query = User::with(['vatsimDetails', 'vatgerDetails']);
-        $search_str = strtolower($this->membersearch . '');
+        $search_str = strtolower($this->membersearch.'');
         $search_str = trim($search_str);
 
         $this->searchQueryModifier($query, $search_str);
@@ -52,13 +55,13 @@ class MemberListPage extends Component
             });
         }
 
-        if ($this->filter_active && !$this->filter_inactive) {
+        if ($this->filter_active && ! $this->filter_inactive) {
             $query = $query->whereHas('vatgerDetails', function ($query) {
                 $query->whereNotNull('active_member_at');
             });
         }
 
-        if ($this->filter_inactive && !$this->filter_active) {
+        if ($this->filter_inactive && ! $this->filter_active) {
             $query = $query->whereHas('vatgerDetails', function ($query) {
                 $query->whereNull('active_member_at');
             });

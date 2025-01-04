@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware\Membership;
 
-use App\Models\Membership\GdprRemoval;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,8 +13,7 @@ class CheckGDPRMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
-     * @param Closure(Request): (Response|RedirectResponse) $next
+     * @param  Closure(Request): (Response|RedirectResponse)  $next
      * @return Response|RedirectResponse
      */
     public function handle(Request $request, Closure $next)
@@ -28,6 +26,7 @@ class CheckGDPRMiddleware
                 return redirect()->route('member.removal-pending');
             }
         }
+
         return $next($request);
     }
 }

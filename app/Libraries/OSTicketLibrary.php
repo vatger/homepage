@@ -25,21 +25,22 @@ class OSTicketLibrary extends BaseLibrary
             $client = self::constructClient([
                 'headers' => [
                     'Accept' => 'application/json',
-                    'Authorization' => 'Token ' . config('osticket.token'),
+                    'Authorization' => 'Token '.config('osticket.token'),
                 ],
             ]);
         }
 
         if ($official) {
-            $uri = config('osticket.url_official') . '/' . $endpoint;
+            $uri = config('osticket.url_official').'/'.$endpoint;
         } else {
-            $uri = config('osticket.url') . '/' . $endpoint;
+            $uri = config('osticket.url').'/'.$endpoint;
         }
 
         try {
             return $client->request($method, $uri, ['json' => $data]);
         } catch (GuzzleException $e) {
             Log::info($e->getMessage());
+
             return false;
         }
     }
@@ -47,7 +48,7 @@ class OSTicketLibrary extends BaseLibrary
     public static function get_group_name(int $id): ?string
     {
         $result = self::send('GET', 'dept/getDepartments');
-        if (!$result) {
+        if (! $result) {
             return null;
         }
         $result_data = json_decode($result->getBody()->getContents());
@@ -56,6 +57,7 @@ class OSTicketLibrary extends BaseLibrary
                 return $d?->name;
             }
         }
+
         return null;
     }
 
@@ -70,7 +72,7 @@ class OSTicketLibrary extends BaseLibrary
             'lastname' => $user->lastname,
             'email' => $user->email,
         ]);
-        if (!$result) {
+        if (! $result) {
             return false;
         }
         $result_data = json_decode($result->getBody()->getContents());
@@ -94,6 +96,7 @@ class OSTicketLibrary extends BaseLibrary
                 ),
             );
         }
+
         return true;
     }
 

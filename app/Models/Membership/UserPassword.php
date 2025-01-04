@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class UserPassword extends Model
 {
     protected $table = 'user_passwords';
+
     protected $primaryKey = 'user_id';
 
     public $timestamps = false;
@@ -18,8 +19,6 @@ class UserPassword extends Model
 
     /**
      * Returns the user belonging to these credentials
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {

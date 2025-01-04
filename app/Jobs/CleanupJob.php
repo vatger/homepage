@@ -15,9 +15,7 @@ class CleanupJob
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(): void
     {
@@ -29,7 +27,6 @@ class CleanupJob
 
         self::cleanup_cached_images();
     }
-
 
     public static function cleanup_cached_images(int $days = 30): void
     {
@@ -47,7 +44,7 @@ class CleanupJob
         self::cleanup_empty_directories($directory);
     }
 
-    static function cleanup_empty_directories(string $directory): void
+    public static function cleanup_empty_directories(string $directory): void
     {
         $directories = File::directories($directory);
         foreach ($directories as $subDirectory) {
@@ -57,5 +54,4 @@ class CleanupJob
             }
         }
     }
-
 }

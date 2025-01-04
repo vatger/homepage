@@ -6,17 +6,17 @@ use Illuminate\Contracts\Database\Eloquent\Builder as DBuilder;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Query\Builder as QBuilder;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 /**
  * @private array $searchable_fields
+ *
  * @internal array $searchable_fields
  * @internal bool $custom_name_filtering
- *
  */
 trait SearchTrait
 {
     private array $searchable_fields_internal = [];
+
     private bool $custom_name_filtering_internal = false;
 
     private function getSearchableFields(): array
@@ -24,6 +24,7 @@ trait SearchTrait
         if (property_exists($this, 'searchable_fields')) {
             return array_merge_recursive_distinct($this->searchable_fields_internal, $this->searchable_fields);
         }
+
         return $this->searchable_fields_internal;
     }
 
@@ -32,6 +33,7 @@ trait SearchTrait
         if (property_exists($this, 'custom_name_filtering')) {
             return $this->custom_name_filtering;
         }
+
         return $this->custom_name_filtering_internal;
     }
 
@@ -52,7 +54,7 @@ trait SearchTrait
         if (empty($query)) {
             return;
         }
-        if (empty($this->getSearchableFields()) && !$this->getCustomNameFiltering()) {
+        if (empty($this->getSearchableFields()) && ! $this->getCustomNameFiltering()) {
             return;
         }
         $query = $query->where(function ($query) use ($search_str) {
@@ -60,23 +62,23 @@ trait SearchTrait
                 if ($i == 0) {
                     if (str_contains($sf, '.')) {
                         $sfp = explode('.', $sf);
-                        $query = $query->whereRelation($sfp[0], $sfp[1], 'LIKE', '%' . $search_str . '%');
+                        $query = $query->whereRelation($sfp[0], $sfp[1], 'LIKE', '%'.$search_str.'%');
                     } else {
-                        $query = $query->where($sf, 'LIKE', '%' . $search_str . '%');
+                        $query = $query->where($sf, 'LIKE', '%'.$search_str.'%');
                     }
                 } else {
                     if (str_contains($sf, '.')) {
                         $sfp = explode('.', $sf);
-                        $query = $query->orWhereRelation($sfp[0], $sfp[1], 'LIKE', '%' . $search_str . '%');
+                        $query = $query->orWhereRelation($sfp[0], $sfp[1], 'LIKE', '%'.$search_str.'%');
                     } else {
-                        $query = $query->orWhere($sf, 'LIKE', '%' . $search_str . '%');
+                        $query = $query->orWhere($sf, 'LIKE', '%'.$search_str.'%');
                     }
                 }
             }
             if ($this->getCustomNameFiltering()) {
                 foreach (explode(' ', $search_str) as $str) {
-                    $query = $query->orWhere('firstname', 'LIKE', '%' . $str . '%');
-                    $query = $query->orWhere('lastname', 'LIKE', '%' . $str . '%');
+                    $query = $query->orWhere('firstname', 'LIKE', '%'.$str.'%');
+                    $query = $query->orWhere('lastname', 'LIKE', '%'.$str.'%');
                 }
             }
         });

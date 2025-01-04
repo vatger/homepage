@@ -11,25 +11,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
-use Statikbe\CookieConsent\CookieConsentServiceProvider;
 
 class ConnectController extends Controller
 {
-
     protected ConnectProvider $provider;
 
     private string $state_session_key = 'vatsim.authentication.connect.state';
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
-        $this->provider = new ConnectProvider();
+        $this->provider = new ConnectProvider;
     }
 
     public function login(Request $request): RedirectResponse
     {
         $authenticationUrl = $this->provider->getAuthorizationUrl();
         $request->session()->put($this->state_session_key, $this->provider->getState());
+
         return redirect()->away($authenticationUrl);
     }
 
@@ -37,6 +36,7 @@ class ConnectController extends Controller
     {
         if ($request->input('state') != session()->pull($this->state_session_key)) {
             $request->session()->invalidate();
+
             return redirect()->route('vatsim.authentication.connect.login');
         }
         try {
@@ -46,11 +46,13 @@ class ConnectController extends Controller
                 ->route('landing')
                 ->withErrors('Error processing login');
         }
+
         return $response;
     }
 
     /**
      * Check that all required data is received from the VATSIM Connect authentication system
+     *
      * @throws IdentityProviderException
      * @throws Exception
      */
@@ -61,11 +63,11 @@ class ConnectController extends Controller
         ]);
         $resourceOwner = json_decode(json_encode($this->provider->getResourceOwner($accessToken)->toArray()));
         if (
-            !isset($resourceOwner->data) ||
-            !isset($resourceOwner->data->cid) ||
-            !isset($resourceOwner->data->personal->name_first) ||
-            !isset($resourceOwner->data->personal->name_last) ||
-            !isset($resourceOwner->data->personal->email) ||
+            ! isset($resourceOwner->data) ||
+            ! isset($resourceOwner->data->cid) ||
+            ! isset($resourceOwner->data->personal->name_first) ||
+            ! isset($resourceOwner->data->personal->name_last) ||
+            ! isset($resourceOwner->data->personal->email) ||
             $resourceOwner->data->oauth->token_valid !== 'true'
         ) {
             throw new Exception('missing data');
@@ -86,7 +88,7 @@ class ConnectController extends Controller
 
         Auth::login($user, true);
 
-        if (!$user->settings->agreed) {
+        if (! $user->settings->agreed) {
             return redirect()->route('check-terms');
         }
 

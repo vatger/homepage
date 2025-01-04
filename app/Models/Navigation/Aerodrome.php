@@ -2,12 +2,12 @@
 
 namespace App\Models\Navigation;
 
+use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder as DBuilder;
-use Illuminate\Database\Eloquent\Builder as EBuilder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -44,13 +44,15 @@ class Aerodrome extends Model
 
     public function getBackgroundImagePathAttribute(): ?string
     {
-        $path = 'public/aerodromes/' . Str::upper($this->icao) . '.jpeg';
+        $path = 'public/aerodromes/'.Str::upper($this->icao).'.jpeg';
+
         return Storage::exists($path) ? $path : null;
     }
 
     public function getBackgroundImageUrlAttribute(): ?string
     {
-        $path = 'public/aerodromes/' . Str::upper($this->icao) . '.jpeg';
+        $path = 'public/aerodromes/'.Str::upper($this->icao).'.jpeg';
+
         return Storage::exists($path) ? Storage::url($path) : null;
     }
 

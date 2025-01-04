@@ -3,7 +3,6 @@
 use App\Http\Controllers\MembershipController;
 use App\Livewire\Administration\StaffDataProtection;
 use App\Livewire\Profile\MembershipPage;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('members')

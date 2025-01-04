@@ -12,12 +12,13 @@ use JsonException;
 
 class BaseGithubLibrary extends BaseLibrary
 {
-    protected static function constructGithubClient(string $jwt = "", array $config = []): Client
+    protected static function constructGithubClient(string $jwt = '', array $config = []): Client
     {
         $config['headers'] = array_merge($config['headers'] ?? [], [
-            'Authorization' => 'Bearer ' . $jwt,
+            'Authorization' => 'Bearer '.$jwt,
             'Accept' => 'application/vnd.github.v3+json',
         ]);
+
         return parent::constructClient($config);
     }
 
@@ -28,10 +29,12 @@ class BaseGithubLibrary extends BaseLibrary
             $payload = [
                 'iat' => Carbon::now()->timestamp,
                 'exp' => Carbon::now()->addMinutes(5)->timestamp,
-                'iss' => config('github.app.id')
+                'iss' => config('github.app.id'),
             ];
+
             return JWT::encode($payload, $privateKey, 'RS256');
         });
+
         return $jwt;
     }
 
@@ -40,14 +43,14 @@ class BaseGithubLibrary extends BaseLibrary
         try {
             return Cache::remember('github.installations', 4 * 60, function () {
                 $client = self::constructGithubClient(self::getAppJWT());
-                $api_url = "https://api.github.com/app/installations";
+                $api_url = 'https://api.github.com/app/installations';
                 $installations = json_decode($client->get($api_url)->getBody(), false, flags: JSON_THROW_ON_ERROR);
                 $tokens = [];
                 foreach ($installations as $installation) {
                     $api_url = $installation->access_tokens_url;
                     $token = json_decode($client->post($api_url)->getBody(), false, flags: JSON_THROW_ON_ERROR);
                     if ($installation->target_type == 'Organization') {
-                        $tokens[] = (object)[
+                        $tokens[] = (object) [
                             'id' => $installation->id,
                             'organization_login' => $installation->account->login,
                             'organization_id' => $installation->account->id,
@@ -55,6 +58,7 @@ class BaseGithubLibrary extends BaseLibrary
                         ];
                     }
                 }
+
                 return $tokens;
             });
         } catch (JsonException|GuzzleException $e) {
@@ -62,39 +66,51 @@ class BaseGithubLibrary extends BaseLibrary
         }
     }
 
-    static function getInstallationJWT(string $organization_login): ?object
+    public static function getInstallationJWT(string $organization_login): ?object
     {
         $installations = self::getInstallationJWTs();
         foreach ($installations as $installation) {
-            if (strtolower($organization_login) != strtolower($installation->organization_login)) continue;
+            if (strtolower($organization_login) != strtolower($installation->organization_login)) {
+                continue;
+            }
+
             return $installation;
         }
+
         return null;
     }
 
-    static function github_get_teams_in_organization(string $organization_login): array
+    public static function github_get_teams_in_organization(string $organization_login): array
     {
         $installation = self::getInstallationJWT($organization_login);
-        if (!$installation) return [];
+        if (! $installation) {
+            return [];
+        }
 
         try {
             return Cache::remember("github.teams.$organization_login", 60 * 5, function () use ($installation, $organization_login) {
                 $client = self::constructGithubClient($installation->token);
                 $api_url = "https://api.github.com/orgs/$organization_login/teams";
                 $data = json_decode($client->get($api_url)->getBody(), false, flags: JSON_THROW_ON_ERROR);
-                return collect($data)->map(fn($team) => $team->slug)->toArray();
+
+                return collect($data)->map(fn ($team) => $team->slug)->toArray();
             });
         } catch (JsonException|GuzzleException $e) {
         }
+
         return [];
     }
 
-    static function github_get_member_teams(User $user, string $organization_login): array
+    public static function github_get_member_teams(User $user, string $organization_login): array
     {
         $github_name = $user->settings->github_username;
-        if (!$github_name) return [];
+        if (! $github_name) {
+            return [];
+        }
         $installation = self::getInstallationJWT($organization_login);
-        if (!$installation) return [];
+        if (! $installation) {
+            return [];
+        }
 
         $all_teams = self::github_get_teams_in_organization($organization_login);
         $member_teams = [];
@@ -110,103 +126,134 @@ class BaseGithubLibrary extends BaseLibrary
             } catch (JsonException|GuzzleException $e) {
             }
         }
+
         return $member_teams;
     }
 
-    static function github_team_add_member(User $user, string $organization_login, $team_slug): bool
+    public static function github_team_add_member(User $user, string $organization_login, $team_slug): bool
     {
         $github_name = $user->settings->github_username;
-        if (!$github_name) return false;
+        if (! $github_name) {
+            return false;
+        }
         $installation = self::getInstallationJWT($organization_login);
-        if (!$installation) return false;
+        if (! $installation) {
+            return false;
+        }
 
         try {
             $client = self::constructGithubClient($installation->token);
             $api_url = "https://api.github.com/orgs/$organization_login/teams/$team_slug/memberships/$github_name";
             $client->put($api_url);
+
             return true;
         } catch (JsonException|GuzzleException $e) {
         }
+
         return false;
     }
 
-    static function github_team_remove_member(User $user, string $organization_login, $team_slug): bool
+    public static function github_team_remove_member(User $user, string $organization_login, $team_slug): bool
     {
         $github_name = $user->settings->github_username;
-        if (!$github_name) return false;
+        if (! $github_name) {
+            return false;
+        }
         $installation = self::getInstallationJWT($organization_login);
-        if (!$installation) return false;
+        if (! $installation) {
+            return false;
+        }
 
         try {
             $client = self::constructGithubClient($installation->token);
             $api_url = "https://api.github.com/orgs/$organization_login/teams/$team_slug/memberships/$github_name";
             $client->delete($api_url);
+
             return true;
         } catch (JsonException|GuzzleException $e) {
         }
+
         return false;
     }
 
-
-    static function github_is_in_organization(User $user, string $organization_login): bool
+    public static function github_is_in_organization(User $user, string $organization_login): bool
     {
         $github_name = $user->settings->github_username;
-        if (!$github_name) return false;
+        if (! $github_name) {
+            return false;
+        }
         $installation = self::getInstallationJWT($organization_login);
-        if (!$installation) return false;
+        if (! $installation) {
+            return false;
+        }
 
         try {
             $client = self::constructGithubClient($installation->token);
             $api_url = "https://api.github.com/orgs/$installation->organization_login/members/$github_name";
             $response = $client->get($api_url);
+
             return $response->getStatusCode() == 204;
         } catch (JsonException|GuzzleException $e) {
         }
+
         return false;
     }
 
-    static function github_add_to_organization(User $user, string $organization_login): bool
+    public static function github_add_to_organization(User $user, string $organization_login): bool
     {
         $github_id = $user->settings->github_userid;
-        if (!$github_id) return false;
+        if (! $github_id) {
+            return false;
+        }
         $installation = self::getInstallationJWT($organization_login);
-        if (!$installation) return false;
+        if (! $installation) {
+            return false;
+        }
 
         try {
             $client = self::constructGithubClient($installation->token);
             $api_url = "https://api.github.com/orgs/$installation->organization_login/invitations";
-            $client->post($api_url, ["json" => [
+            $client->post($api_url, ['json' => [
                 'invitee_id' => $github_id,
-                'role' => 'direct_member'
+                'role' => 'direct_member',
             ]]);
+
             return true;
         } catch (JsonException|GuzzleException $e) {
         }
+
         return false;
     }
 
-    static function github_remove_from_organization(User $user, string $organization_login): bool
+    public static function github_remove_from_organization(User $user, string $organization_login): bool
     {
         $github_name = $user->settings->github_username;
-        if (!$github_name) return false;
+        if (! $github_name) {
+            return false;
+        }
         $installation = self::getInstallationJWT($organization_login);
-        if (!$installation) return false;
+        if (! $installation) {
+            return false;
+        }
 
         try {
             $client = self::constructGithubClient($installation->token);
             $api_url = "https://api.github.com/orgs/$organization_login/memberships/$github_name";
             $client->delete($api_url);
+
             return true;
         } catch (JsonException|GuzzleException $e) {
         }
+
         return false;
     }
 
-    static function github_repo_contents(string $repo, string $branch, string $filepath): object|array|null
+    public static function github_repo_contents(string $repo, string $branch, string $filepath): object|array|null
     {
         try {
             $client = self::constructClient();
             $api_url = "https://api.github.com/repos/$repo/contents/$filepath?ref=$branch";
+
             return json_decode($client->get($api_url)->getBody(), false, flags: JSON_THROW_ON_ERROR);
         } catch (JsonException|GuzzleException $e) {
             return null;
@@ -226,6 +273,7 @@ class BaseGithubLibrary extends BaseLibrary
         } catch (JsonException|GuzzleException $e) {
             return null;
         }
+
         return $contents;
     }
 
@@ -236,8 +284,8 @@ class BaseGithubLibrary extends BaseLibrary
             $files = [];
             foreach ($info as $file) {
                 if ($file->type == 'file'
-                    && !empty($file->download_url)
-                    && !empty($file->name)
+                    && ! empty($file->download_url)
+                    && ! empty($file->name)
                 ) {
                     $files[] = $file;
                 }
@@ -245,7 +293,7 @@ class BaseGithubLibrary extends BaseLibrary
         } catch (\Exception $e) {
             return [];
         }
+
         return $files;
     }
-
 }

@@ -12,10 +12,10 @@ return [
 
         'text-title' => 'Introduction to VATSIM Germany',
         'text-content' => [
-            "VATSIM Germany is part of the <a>VATSIM Europe Division</a>, which together with other divisions forms the VATSIM Europe, Middle East and Africa Region. Altogether they are a part of the global VATSIM network,
+            'VATSIM Germany is part of the <a>VATSIM Europe Division</a>, which together with other divisions forms the VATSIM Europe, Middle East and Africa Region. Altogether they are a part of the global VATSIM network,
         which provides ATC services over the internet free of charge to pilots connected to this network using their flight simulator. Please take a couple of minutes to read the following information, as it will significantly simplify your initial experience making it more enjoyable.
         <br><br>
-        Enjoy your stay in German airspace!",
+        Enjoy your stay in German airspace!',
         ],
 
         'newbieday' => [
@@ -33,9 +33,9 @@ return [
             'pilot' => [
                 'how-to-become' => 'How to become a virtual pilot?',
                 'how-to-become-content' => [
-                    "Our world of flight simulation enthusiasts consists of many groups: from the beginner who has just decided to dedicate himself to this hobby to the well-trained expert who uses the VATSIM network to indulge in his hobby almost like in real flight operations.
+                    'Our world of flight simulation enthusiasts consists of many groups: from the beginner who has just decided to dedicate himself to this hobby to the well-trained expert who uses the VATSIM network to indulge in his hobby almost like in real flight operations.
                     <br><br>
-                    In between, there are many shades and forms. One of them is the pilot who controls his simulator well but essentially flies with simulator generated traffic as well as ATC radio. His goal is actually to fly in a simulation network but sees a big hurdle and lack of knowledge for himself. Also, the new environment - ATC, radio, traffic, airfield, airspace structure - may be frightening and he may be worried about doing something wrong and embarrassing himself.",
+                    In between, there are many shades and forms. One of them is the pilot who controls his simulator well but essentially flies with simulator generated traffic as well as ATC radio. His goal is actually to fly in a simulation network but sees a big hurdle and lack of knowledge for himself. Also, the new environment - ATC, radio, traffic, airfield, airspace structure - may be frightening and he may be worried about doing something wrong and embarrassing himself.',
                 ],
 
                 'button-content' => 'First Steps as a pilot',
@@ -44,15 +44,15 @@ return [
             'atco' => [
                 'how-to-become' => 'How to become a virtual air traffic controller?',
                 'how-to-become-content' => [
-                    "Even for a virtual air traffic controller, a lot of knowledge and skills are required. The following pages should give you an overview of what you are getting into and at the same time show you what the first steps are to start your training.
+                    'Even for a virtual air traffic controller, a lot of knowledge and skills are required. The following pages should give you an overview of what you are getting into and at the same time show you what the first steps are to start your training.
                     <br><br>
-                    To be clear, this is not something you can do on the side. You have to invest a bit of time and will to learn in order to offer fun and professionalism for yourself and others.",
+                    To be clear, this is not something you can do on the side. You have to invest a bit of time and will to learn in order to offer fun and professionalism for yourself and others.',
                 ],
                 'previous-knowledge' => 'Is previous knowledge necessary?',
                 'previous-knowledge-content' => [
-                    "Apart from a reasonable command of the English language: no.
+                    'Apart from a reasonable command of the English language: no.
                     <br><br>
-                    However, good spatial awareness, ability to concentrate and patience are an advantage.",
+                    However, good spatial awareness, ability to concentrate and patience are an advantage.',
                 ],
 
                 'button-content' => 'First Steps as an Air Traffic Controller',

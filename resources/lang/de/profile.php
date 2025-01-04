@@ -90,11 +90,10 @@ return [
         ],
 
         'error' => [
-            'account-inactive-text' =>
-                'Dein VATSIM Account ist derzeit nicht aktiv. Es ist daher aktuell nicht möglich ein Foren-/Teamspeak Konto bei VATSIM Germany anzulegen. 
+            'account-inactive-text' => 'Dein VATSIM Account ist derzeit nicht aktiv. Es ist daher aktuell nicht möglich ein Foren-/Teamspeak Konto bei VATSIM Germany anzulegen. 
                 Besuche die folgende Webseite, um dort dein Konto zu aktivieren:
                 <a href="https://my.vatsim.net" target="_blank" class="text-dark" style="text-decoration: underline !important;">https://my.vatsim.net</a>.',
-            'contact-support-text' => 'Sollte dies nicht funktionieren, oder treten während des Prozesses weitere Fragen auf, wende dich bitte an den VATSIM Support: <a href="https://support.vatsim.net" target="_blank" class="text-muted" style="text-decoration: underline !important;">https://support.vatsim.net</a>'
+            'contact-support-text' => 'Sollte dies nicht funktionieren, oder treten während des Prozesses weitere Fragen auf, wende dich bitte an den VATSIM Support: <a href="https://support.vatsim.net" target="_blank" class="text-muted" style="text-decoration: underline !important;">https://support.vatsim.net</a>',
         ],
 
         'languages' => [

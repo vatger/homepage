@@ -16,6 +16,7 @@ trait ClientTrait
         if ($clients == false) {
             return [];
         }
+
         return $clients;
     }
 
@@ -29,7 +30,7 @@ trait ClientTrait
 
     private static function _clientdblist(int $start = 0): mixed
     {
-        return Cache::remember('teamspeak.clientdblist.' . $start, 30, function () use ($start) {
+        return Cache::remember('teamspeak.clientdblist.'.$start, 30, function () use ($start) {
             return self::_sendWebQuery('clientdblist', ['start' => $start]);
         });
     }

@@ -12,7 +12,7 @@ class DBLogger
     public function __invoke(array $config): Logger
     {
         return new Logger('Database', [
-            new DBLoggingHandler(),
+            new DBLoggingHandler,
         ]);
     }
 }

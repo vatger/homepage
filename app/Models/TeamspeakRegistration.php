@@ -21,7 +21,6 @@ class TeamspeakRegistration extends Model
 
     /**
      * The associated account.
-     *
      */
     public function user(): BelongsTo|User
     {

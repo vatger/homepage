@@ -9,19 +9,20 @@ use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 class GithubOauthController extends Controller
 {
     protected GithubOauthProvider $provider;
+
     private string $state_session_key = 'github.oauth.state';
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
-        $this->provider = new GithubOauthProvider();
+        $this->provider = new GithubOauthProvider;
     }
-
 
     public function link(Request $request)
     {
         $authenticationUrl = $this->provider->getAuthorizationUrl();
         $request->session()->put($this->state_session_key, $this->provider->getState());
+
         return redirect()->away($authenticationUrl);
     }
 
@@ -35,13 +36,14 @@ class GithubOauthController extends Controller
         } catch (\Throwable $exception) {
             return redirect()->route('member.profile')->withErrors('Github profile could not be linked');
         }
-        return redirect()->route('member.profile')->with('success', 'Github profile ' . $name . ' linked');
+
+        return redirect()->route('member.profile')->with('success', 'Github profile '.$name.' linked');
     }
 
     /**
      * @throws IdentityProviderException
      */
-    function processCallback(Request $request)
+    public function processCallback(Request $request)
     {
         $accessToken = $this->provider->getAccessToken('authorization_code', [
             'code' => $request->input('code'),
@@ -51,7 +53,6 @@ class GithubOauthController extends Controller
         $this->current_user->settings->github_userid = $resourceOwner->id;
         $this->current_user->settings->save();
     }
-
 
     /*
         {

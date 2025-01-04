@@ -36,11 +36,12 @@ class ApiToken extends Authenticatable
             ->firstOrFail();
     }
 
-    public static function tokenExists(string|null $token): bool
+    public static function tokenExists(?string $token): bool
     {
         if (is_null($token)) {
             return false;
         }
+
         return self::query()
             ->valid()
             ->where('token', $token)
@@ -55,9 +56,9 @@ class ApiToken extends Authenticatable
     public function check_allowed(string $route_id): bool
     {
         return Cache::remember(
-            'apitoken.check_allowed.' . $this->id . '.' . $route_id,
+            'apitoken.check_allowed.'.$this->id.'.'.$route_id,
             60,
-            fn() => $this->routes()
+            fn () => $this->routes()
                 ->where('route_id', 'LIKE', $route_id)
                 ->exists(),
             60,

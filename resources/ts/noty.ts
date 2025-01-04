@@ -1,27 +1,27 @@
-import Toastify from 'toastify-js';
+import Toastify from "toastify-js";
 
 /**
  * Show new noty message with custom (or default) parameters
  */
 export const showNoty = function (
     message: string,
-    type = 'success',
+    type = "success",
     timeout = 2500,
     destination: string | undefined = undefined,
     onclick: (() => void) | undefined = undefined
 ) {
     let style = {
-        background: 'linear-gradient(to right, #00b09b, #96c93d)',
+        background: "linear-gradient(to right, #00b09b, #96c93d)",
     };
     switch (type) {
-        case 'error':
+        case "error":
             style = {
-                background: 'linear-gradient(to right, #C93D3D, #Bb1f1f)',
+                background: "linear-gradient(to right, #C93D3D, #Bb1f1f)",
             };
             break;
-        case '':
+        case "":
             style = {
-                background: 'linear-gradient(to right, #C93D3D, #Bb1f1f)',
+                background: "linear-gradient(to right, #C93D3D, #Bb1f1f)",
             };
             break;
     }
@@ -31,8 +31,8 @@ export const showNoty = function (
         destination: destination,
         newWindow: true,
         close: true,
-        gravity: 'top', // `top` or `bottom`
-        position: 'right', // `left`, `center` or `right`
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
         stopOnFocus: true, // Prevents dismissing of toast on hover
         style: style,
         onClick: onclick, // Callback after click
@@ -40,5 +40,5 @@ export const showNoty = function (
 };
 
 export function laravelFireNoty() {
-    window.dispatchEvent(new Event('laravel_showNoty'));
+    window.dispatchEvent(new Event("laravel_showNoty"));
 }

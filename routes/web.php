@@ -18,78 +18,78 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
-####################
-# Main Website     #
-####################
+// ###################
+// Main Website     #
+// ###################
 
-##############
-# SHORT LINK #
-##############
+// #############
+// SHORT LINK #
+// #############
 Route::get('/r/{shortLink}', [ShortLinkController::class, 'viewLink']);
 
-##################
-# AUTHENTICATION #
-##################
+// #################
+// AUTHENTICATION #
+// #################
 require_once 'web/authentication.php';
 
-##########
-# PILOTS #
-##########
+// #########
+// PILOTS #
+// #########
 require_once 'web/pilots.php';
 
-###############
-# CONTROLLERS #
-###############
+// ##############
+// CONTROLLERS #
+// ##############
 require_once 'web/controllers.php';
 
-##############
-# MEMBERSHIP #
-##############
+// #############
+// MEMBERSHIP #
+// #############
 require_once 'web/membership.php';
 
-##############
-# EVENTS     #
-##############
+// #############
+// EVENTS     #
+// #############
 require_once 'web/events.php';
 
-##################
-# BOOKING IMAGES #
-##################
+// #################
+// BOOKING IMAGES #
+// #################
 require_once 'web/booking_images.php';
 
-###################
-# GETTING STARTED #
-###################
+// ##################
+// GETTING STARTED #
+// ##################
 require_once 'web/getting-started.php';
 
-###################
-# LEGAL STUFF     #
-###################
+// ##################
+// LEGAL STUFF     #
+// ##################
 require_once 'web/legal.php';
 
-##################
-# ADMINISTRATION #
-##################
+// #################
+// ADMINISTRATION #
+// #################
 require_once 'web/admin.php';
 
-##################
-# SPECIAL ROUTES #
-##################
+// #################
+// SPECIAL ROUTES #
+// #################
 require_once 'web/static_routes.php';
 
-##################
-# OIDC ROUTES    #
-##################
+// #################
+// OIDC ROUTES    #
+// #################
 Route::get('/oauth/userinfo', [OpenIdConnectController::class, 'userinfo'])->middleware('auth:openid_api')->name('openid.userinfo');
 
-##################
-# MEDIA ROUTES   #
-##################
+// #################
+// MEDIA ROUTES   #
+// #################
 Route::get('resources/media/{mediaFilePath}', [MediaController::class, 'showPublic']);
 
-###################
-# CHANGE LANGUAGE #
-###################
+// ##################
+// CHANGE LANGUAGE #
+// ##################
 Route::get('language/{lang?}', function ($lang = 'de') {
     Session::put('language', $lang);
     if (Auth::check()) {
@@ -97,21 +97,22 @@ Route::get('language/{lang?}', function ($lang = 'de') {
         $settings->language = $lang;
         $settings->save();
     }
+
     return redirect()
         ->back()
         ->withInput();
 })->name('language.change');
 
-############################
-# LANDING & COVER ALL PAGE #
-############################
+// ###########################
+// LANDING & COVER ALL PAGE #
+// ###########################
 Route::get('/', function () {
     return view('pages.landing');
 })->middleware('cookie.consent')->name('landing');
 
-############
-# API DOKU #
-############
+// ###########
+// API DOKU #
+// ###########
 Route::get('documentation', function () {
     return view('pages.admin.apidoku');
 });

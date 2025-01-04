@@ -4,6 +4,7 @@ use App\OpenApi\Controllers\BoardController;
 use App\OpenApi\Controllers\BookingController;
 use App\OpenApi\Controllers\BookstackApiController;
 use App\OpenApi\Controllers\DiscordApiController;
+use App\OpenApi\Controllers\MoodleController;
 use App\OpenApi\Controllers\SolosApiController;
 use App\OpenApi\Controllers\TeamspeakApiController;
 use App\OpenApi\Controllers\TestApiController;
@@ -24,21 +25,28 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('booking/ical/{id}/{token}/calendar.ics', [BookingController::class, 'ical'])->withoutMiddleware(JsonResponse::class)->name('api.booking.ical');
 Route::get('booking/{start?}/{end?}', [BookingController::class, 'index']);
+
 Route::get('teamspeak/{cid}', [TeamspeakApiController::class, 'ids']);
+
 Route::get('discord/{cid}', [DiscordApiController::class, 'find_member']);
+
 Route::get('solos/{cid}', [SolosApiController::class, 'find_member']);
+
 Route::get('vateud/roster', [VATEUDCoreContoller::class, 'roster_controller']);
+
 Route::post('board', [BoardController::class, 'create']);
+
 Route::post('vatsim/webhook', [VatsimWebhookController::class, 'post']);
 
+Route::get('moodle/user/{cid}', [MoodleController::class, 'find_user']);
+Route::get('moodle/quiz/{cmid}/user/{cid}/results', [MoodleController::class, 'find_quiz_results']);
+Route::get('moodle/course/{course_id}/user/{cid}/completion', [MoodleController::class, 'find_course_completion']);
 
 Route::get('test', [TestApiController::class, 'test']);
 
 Route::post('user/{cid}/send_notification', [UserController::class, 'send_notification']);
 
-
-
-//Route::get('bookstack', [BookstackApiController::class, 'bookstack']);
+// Route::get('bookstack', [BookstackApiController::class, 'bookstack']);
 
 /*
 //Route::middleware('api_auth')->group(function () {
