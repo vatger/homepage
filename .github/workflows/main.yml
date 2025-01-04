@@ -1,0 +1,26 @@
+on: [push, pull_request]
+name: CI
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [22.x]
+        php-versions: ['8.3']
+        os: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Setup PHP Action
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          ini-values: short_open_tag=On, error_reporting=E_ALL & ~E_NOTICE
+          tools: composer
+          extensions: curl, ctype, json, mbstring, xml, fileinfo, dom, ctype
+      - run: npm install
+      - run: composer install
+      - run: npm run format:check
