@@ -4,10 +4,10 @@ import route from "~vendor/tightenco/ziggy/dist/index.m.js";
 import { Config } from "ziggy-js";
 
 export const zroute = function (
-    name: string,
-    params: any,
-    absolute?: boolean,
-    config?: Config
+  name: string,
+  params: any,
+  absolute?: boolean,
+  config?: Config,
 ): string {
-    return route(name, params, absolute, Ziggy);
+  return route(name, params, absolute, Ziggy);
 };

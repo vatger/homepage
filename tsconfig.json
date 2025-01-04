@@ -1,21 +1,21 @@
 {
-    "compilerOptions": {
-        "target": "ES2022",
-        "module": "ESNext",
-        "moduleResolution": "nodenext",
-        "baseUrl": "./public",
-        "strict": true,
-        // Enable strict type-checking options
-        "skipLibCheck": true,
-        // Skip type checking of declaration files
-        "noImplicitAny": false,
-        // Bypass raising errors on `any` type
-        "allowSyntheticDefaultImports": true,
-        "paths": {
-            "@/*": ["./resources/*"],
-            "~bootstrap": ["./node_modules/bootstrap/*"],
-            "~vendor": ["./vendor/*"]
-        }
-    },
-    "$schema": "https://json.schemastore.org/tsconfig"
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "nodenext",
+    "baseUrl": "./public",
+    "strict": true,
+    // Enable strict type-checking options
+    "skipLibCheck": true,
+    // Skip type checking of declaration files
+    "noImplicitAny": false,
+    // Bypass raising errors on `any` type
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": ["./resources/*"],
+      "~bootstrap": ["./node_modules/bootstrap/*"],
+      "~vendor": ["./vendor/*"]
+    }
+  },
+  "$schema": "https://json.schemastore.org/tsconfig"
 }
