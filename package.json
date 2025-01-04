@@ -14,8 +14,8 @@
         "prettier:write:other": "npx prettier --write {**/*,*}.{json,yml,csv,md}",
         "prettier:check:all": "npm run laravel:check && npx prettier --check {**/*,*}.{js,ts,jsx,tsx,html,htm,css,sass,json,yml,csv,md}",
         "prettier:write:all": "npm run laravel:write && npx prettier --write {**/*,*}.{js,ts,jsx,tsx,html,htm,css,sass,json,yml,csv,md}",
-        "prettier:check": "npm run prettier:check:all",
-        "prettier:write": "npm run prettier:write:all"
+        "format:check": "npm run prettier:check:all",
+        "format:write": "npm run prettier:write:all"
     },
     "devDependencies": {
         "@shufo/prettier-plugin-blade": "^1.6.3",
