@@ -39,8 +39,13 @@ Route::post('board', [BoardController::class, 'create']);
 Route::post('vatsim/webhook', [VatsimWebhookController::class, 'post']);
 
 Route::get('moodle/user/{cid}', [MoodleController::class, 'find_user']);
-Route::get('moodle/quiz/{cmid}/user/{cid}/results', [MoodleController::class, 'find_quiz_results']);
+Route::get('moodle/quiz/{cmid}/user/{cid}/attempts', [MoodleController::class, 'find_quiz_attempts']);
+Route::get('moodle/quiz/{cmid}/user/{cid}/override/attempts/{attempts}', [MoodleController::class, 'set_overrides']);
+
 Route::get('moodle/course/{course_id}/user/{cid}/completion', [MoodleController::class, 'find_course_completion']);
+Route::get('moodle/course/{course_id}/user/{cid}/enrol', [MoodleController::class, 'enrol_user']);
+
+Route::get('moodle/activity/{cmid}/user/{cid}/completion', [MoodleController::class, 'find_activity_completion']);
 
 Route::get('test', [TestApiController::class, 'test']);
 

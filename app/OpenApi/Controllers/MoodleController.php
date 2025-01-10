@@ -25,19 +25,36 @@ class MoodleController extends ApiController
     }
 
     /**
-     * Moodle quiz results endpoint
+     * Moodle quiz attempts endpoint (only finished attempts)
      *
      * @param  int  $cid  the users VATSIM ID
      * @param  int  $cmid  the course module id of the quiz (see the URL)
      */
     #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('moodle.api')]
-    public function find_quiz_results(int $cid, int $cmid): ?array
+    public function find_quiz_attempts(int $cid, int $cmid): ?array
     {
         $this->authorizeApiRequest('moodle.api');
 
-        return MoodleLibrary::findQuizResults($cmid, $cid);
+        return MoodleLibrary::findQuizAttempts($cmid, $cid);
     }
+
+    /**
+     * Moodle course completion endpoint
+     *
+     * @param  int  $cid  the users VATSIM ID
+     * @param  int  $cmid  the course module id of the quiz (see the URL)
+     * @param  int  $attempts
+     */
+    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
+    #[ApiPathfinder('moodle.api')]
+    public function set_overrides(int $cid, int $cmid, int $attempts): bool
+    {
+        $this->authorizeApiRequest('moodle.api');
+
+        return MoodleLibrary::setQuizOverrides($cmid, $cid, $attempts);
+    }
+
 
     /**
      * Moodle course completion endpoint
@@ -52,5 +69,36 @@ class MoodleController extends ApiController
         $this->authorizeApiRequest('moodle.api');
 
         return MoodleLibrary::findCourseCompletion($course_id, $cid);
+    }
+
+    /**
+     * Moodle course completion endpoint
+     *
+     * @param  int  $cid  the users VATSIM ID
+     * @param  int  $course_id  the id of the course
+     */
+    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
+    #[ApiPathfinder('moodle.api')]
+    public function enrol_user(int $cid, int $course_id): bool
+    {
+        $this->authorizeApiRequest('moodle.api');
+
+        return MoodleLibrary::enrolUser($course_id, $cid);
+    }
+
+
+    /**
+     * Moodle activity completion endpoint
+     *
+     * @param  int  $cid  the users VATSIM ID
+     * @param  int  $cmid  the course module id of the quiz/activity etc. (see the URL)
+     */
+    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
+    #[ApiPathfinder('moodle.api')]
+    public function find_activity_completion(int $cid, int $cmid): ?object
+    {
+        $this->authorizeApiRequest('moodle.api');
+
+        return MoodleLibrary::findActivityCompletion($cmid, $cid);
     }
 }

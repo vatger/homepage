@@ -7,7 +7,7 @@ use GuzzleHttp\RequestOptions;
 
 class MoodleLibrary extends BaseLibrary
 {
-    public static function send(string $function, array $data): object|array|null
+    static function send(string $function, array $data, bool $debug = false): object|array|null
     {
         $base = config('moodle.base_url');
         $token = config('moodle.token');
@@ -22,7 +22,11 @@ class MoodleLibrary extends BaseLibrary
 
             return null;
         }
+
         $result = json_decode($res->getBody());
+        if ($debug) {
+            dump($result);
+        }
         if (is_object($result) && ! empty($result->exception)) {
             return null;
         }
@@ -47,7 +51,50 @@ class MoodleLibrary extends BaseLibrary
         return $results?->cm;
     }
 
-    public static function findQuizResults(int $course_module_id, int $vatsim_id, bool $only_finished = true, bool $include_previews = false): ?array
+    public static function findActivityCompletion(int $course_module_id, int $vatsim_id): ?object
+    {
+        $user = static::findUser($vatsim_id);
+        if (! $user) {
+            return null;
+        }
+        $cm = static::findCourseModule($course_module_id);
+        if (! $cm) {
+            return null;
+        }
+
+        $results = static::send('core_completion_get_activities_completion_status', [
+            'courseid' => $cm->course,
+            'userid' => $user->id,
+        ]);
+        foreach ($results->statuses as $status) {
+            if ($status->cmid == $cm->id) {
+                return $status;
+            }
+        }
+
+        return null;
+    }
+
+    public static function enrolUser(int $course_id, int $vatsim_id): bool
+    {
+        $user = static::findUser($vatsim_id);
+        if (! $user) {
+            return false;
+        }
+        $results = static::send('enrol_manual_enrol_users', [
+            'enrolments' => [
+                [
+                    'roleid' => 5, // Trainee
+                    'userid' => $user->id,
+                    'courseid' => $course_id,
+                ],
+            ],
+        ]);
+
+        return true;
+    }
+
+    public static function findQuizAttempts(int $course_module_id, int $vatsim_id, bool $only_finished = true, bool $include_previews = false): ?array
     {
         $user = static::findUser($vatsim_id);
         if (! $user) {
@@ -105,4 +152,40 @@ class MoodleLibrary extends BaseLibrary
 
         return null;
     }
+
+    public static function setQuizOverrides(int $course_module_id, int $vatsim_id, int $attempts): ?bool
+    {
+        $user = static::findUser($vatsim_id);
+        if (! $user) {
+            return null;
+        }
+        $cm = static::findCourseModule($course_module_id);
+        if (! $cm || $cm->modname != 'quiz') {
+            return null;
+        }
+        $override = static::findQuizOverrides($course_module_id, $vatsim_id);
+        if (! $override) {
+            return null;
+        }
+        $results = static::send('mod_quiz_save_overrides', [
+            'data' => [
+                'quizid' => $override->quiz,
+                'overrides' => [
+                    [
+                        'id' => $override->id,
+                        'groupid' => $override->groupid,
+                        'userid' => $override->userid,
+                        'timeopen' => $override->timeopen,
+                        'timeclose' => $override->timeclose,
+                        'timelimit' => $override->timelimit,
+                        'attempts' => $attempts,
+                        'password' => $override->password,
+                    ],
+                ],
+            ],
+        ]);
+
+        return $results?->ids[0] == $override->id;
+    }
+
 }
