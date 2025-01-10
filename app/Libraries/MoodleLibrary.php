@@ -83,7 +83,7 @@ class MoodleLibrary extends BaseLibrary
         }
         $results = static::send('enrol_manual_enrol_users', [
             'enrolments' => [
-                [
+                (object) [
                     'roleid' => 5, // Trainee
                     'userid' => $user->id,
                     'courseid' => $course_id,
