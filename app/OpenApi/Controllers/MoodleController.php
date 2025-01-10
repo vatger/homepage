@@ -44,7 +44,7 @@ class MoodleController extends ApiController
      *
      * @param  int  $cid  the users VATSIM ID
      * @param  int  $cmid  the course module id of the quiz (see the URL)
-     * @param  int  $attempts
+     * @param  int  $attempts  number of allowed attempts
      */
     #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('moodle.api')]
@@ -54,7 +54,6 @@ class MoodleController extends ApiController
 
         return MoodleLibrary::setQuizOverrides($cmid, $cid, $attempts);
     }
-
 
     /**
      * Moodle course completion endpoint
@@ -85,7 +84,6 @@ class MoodleController extends ApiController
 
         return MoodleLibrary::enrolUser($course_id, $cid);
     }
-
 
     /**
      * Moodle activity completion endpoint

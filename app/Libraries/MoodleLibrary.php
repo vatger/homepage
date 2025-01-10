@@ -7,7 +7,7 @@ use GuzzleHttp\RequestOptions;
 
 class MoodleLibrary extends BaseLibrary
 {
-    static function send(string $function, array $data, bool $debug = false): object|array|null
+    public static function send(string $function, array $data, bool $debug = false): object|array|null
     {
         $base = config('moodle.base_url');
         $token = config('moodle.token');
@@ -153,19 +153,19 @@ class MoodleLibrary extends BaseLibrary
         return null;
     }
 
-    public static function setQuizOverrides(int $course_module_id, int $vatsim_id, int $attempts): ?bool
+    public static function setQuizOverrides(int $course_module_id, int $vatsim_id, int $attempts): bool
     {
         $user = static::findUser($vatsim_id);
         if (! $user) {
-            return null;
+            return false;
         }
         $cm = static::findCourseModule($course_module_id);
         if (! $cm || $cm->modname != 'quiz') {
-            return null;
+            return false;
         }
         $override = static::findQuizOverrides($course_module_id, $vatsim_id);
         if (! $override) {
-            return null;
+            return false;
         }
         $results = static::send('mod_quiz_save_overrides', [
             'data' => [
@@ -187,5 +187,4 @@ class MoodleLibrary extends BaseLibrary
 
         return $results?->ids[0] == $override->id;
     }
-
 }
