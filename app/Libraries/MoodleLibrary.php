@@ -17,7 +17,6 @@ class MoodleLibrary extends BaseLibrary
 
         try {
             $res = $client->post($url, [RequestOptions::FORM_PARAMS => $data]);
-            sleep(1);
         } catch (GuzzleException $e) {
             \Log::error($e->getMessage());
 
@@ -41,7 +40,7 @@ class MoodleLibrary extends BaseLibrary
             'field' => 'username',
             'values' => [$vatsim_id],
         ]);
-
+        sleep(1);
         return $results ? $results[0] : null;
     }
 
