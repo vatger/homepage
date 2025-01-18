@@ -31,10 +31,10 @@ class BoardController extends ApiController
             abort(400, 'No forum_id provided');
         }
         if (empty($u)) {
-            abort(400, 'User not found');
+            abort(400, "User $vatsim_id not found");
         }
         if ($u->settings->forum_id) {
-            abort(400, 'User already has an account');
+            abort(400, "User $vatsim_id already has an account");
         }
 
         $u->settings->forum_id = $forum_id;
