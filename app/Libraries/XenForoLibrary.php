@@ -300,16 +300,18 @@ class XenForoLibrary extends BaseLibrary
         }
 
         switch ($detail->rating_pilot_short) {
-            case 'P1':
+            case 'PPL':
                 $groups[] = self::find_group('_rating_pilot_p1');
                 break;
-            case 'P2':
+            case 'IR':
                 $groups[] = self::find_group('_rating_pilot_p2');
                 break;
-            case 'P3':
+            case 'CMEL':
                 $groups[] = self::find_group('_rating_pilot_p3');
                 break;
-            case 'P4':
+            case 'ATPL':
+            case 'FI':
+            case 'FE':
                 $groups[] = self::find_group('_rating_pilot_p4');
                 break;
         }
