@@ -4,16 +4,13 @@ namespace App\Libraries\VATSIM;
 
 use App\Libraries\BaseLibrary;
 use App\Libraries\GDPRLibrary;
-use App\Libraries\MembershipLibrary;
 use App\Models\Membership\User;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class CoreApiLibrary2 extends BaseLibrary
 {
-    public static string $cache_key_user = 'CoreApiLibrary2.last_member_refresh.';
-
     public static function send(string $type, string $endpoint, array $data = []): array|object|null
     {
         $apikey = config('vatsim.api.token2');
@@ -42,50 +39,17 @@ class CoreApiLibrary2 extends BaseLibrary
         return $json;
     }
 
-    private static function cache_expired(string $key, int $max_cache_time): bool
+    public static function downloadMember(User $user): void
     {
-        if (! Cache::has($key) || $max_cache_time <= 0) {
-            return true;
-        }
-        $saved_timestamp = Cache::get($key);
-        $diff = Carbon::now()->timestamp - $saved_timestamp;
-
-        return $diff > $max_cache_time;
-    }
-
-    public static function updateMember(User $user, int $max_cache_time = 60 * 60 * 12, bool $update_vatger_membership = false): void
-    {
-        $obj = self::downloadMember($user, $max_cache_time);
-        if (! $obj) {
+        $result = self::send('GET', "members/$user->id");
+        if (empty($result)) {
             return;
         }
-        self::insertMemberData($user, $obj, $update_vatger_membership);
+        $start_time = Carbon::now()->timestamp;
+        Storage::put("jobs/members/$start_time+$result->id.json", json_encode($result));
     }
 
-    public static function downloadMember(User $user, int $max_cache_time = 60 * 60 * 12): ?object
-    {
-        $cache_key = self::$cache_key_user.$user->id;
-        if (! self::cache_expired($cache_key, $max_cache_time)) {
-            return null;
-        }
-
-        return self::send('GET', "members/$user->id");
-    }
-
-    public static function updateSubdivisionMembers(int $offset, int $limit = 100): int
-    {
-        $items = self::downloadSubdivisionMembers($offset, $limit);
-        foreach ($items as $data) {
-            $user = User::find($data->id);
-            if ($user) {
-                self::insertMemberData($user, $data, membership_refresh: true);
-            }
-        }
-
-        return $offset;
-    }
-
-    public static function downloadSubdivisionMembers(int &$offset, int $limit = 100): array
+    public static function downloadSubdivisionMembers(int &$offset, int $limit = 100): void
     {
         $result = self::send('GET', 'orgs/subdivision/GER', [
             'include_inactive' => true,
@@ -93,25 +57,24 @@ class CoreApiLibrary2 extends BaseLibrary
             'offset' => $offset,
         ]);
         if (empty($result)) {
-            return [];
-        }
-        $offset = $offset + $limit;
-        if ($result->count <= $offset) {
-            $offset = 0;
-        }
-
-        return $result->items;
-    }
-
-    public static function insertMemberData(?User $user, ?object $data, bool $membership_refresh = false, ?int $timestamp = null): void
-    {
-        if (empty($data) || empty($user)) {
             return;
         }
 
-        $cache_key = self::$cache_key_user.$user->id;
+        $start_time = Carbon::now()->timestamp;
 
-        if (Cache::has($cache_key) && Cache::has($cache_key) > $timestamp) {
+        $offset = $offset + $limit;
+
+        if ($result->count <= $offset) {
+            $offset = 0;
+        }
+        foreach ($result->item as $member) {
+            Storage::put("jobs/members/$start_time+$member->id.json", json_encode($member));
+        }
+    }
+
+    public static function insertMemberData(?User $user, ?object $data, int $timestamp): void
+    {
+        if (empty($data) || empty($user)) {
             return;
         }
 
@@ -135,11 +98,7 @@ class CoreApiLibrary2 extends BaseLibrary
             'last_rating_change_at' => $data->lastratingchange ? Carbon::parse($data->lastratingchange) : $user->vatsimDetails->last_rating_change_at,
             'registered_at' => $data->reg_date ? Carbon::parse($data->reg_date) : $user->vatsimDetails->registered_at,
             'updated_at' => Carbon::now(),
+            'timestamp' => $timestamp,
         ]);
-
-        Cache::put($cache_key, $timestamp ?? Carbon::now()->timestamp);
-        if ($membership_refresh) {
-            MembershipLibrary::update($user, api_refresh: false);
-        }
     }
 }

@@ -41,6 +41,7 @@ class MoodleLibrary extends BaseLibrary
             'values' => [$vatsim_id],
         ]);
         sleep(1);
+
         return $results ? $results[0] : null;
     }
 

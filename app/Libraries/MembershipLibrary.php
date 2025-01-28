@@ -2,9 +2,8 @@
 
 namespace App\Libraries;
 
-use App\Jobs\UpdateAccountJob;
+
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
-use App\Libraries\VATSIM\CoreApiLibrary2;
 use App\Models\Membership\User;
 use App\Models\Membership\UserBan;
 use App\Models\Membership\UserBanType;
@@ -48,21 +47,10 @@ class MembershipLibrary
         self::check_status($user);
     }
 
-    public static function update(User $user, bool $async = false, bool $cache = true, bool $api_refresh = true): void
+    public static function update(User $user): void
     {
-        if ($async) {
-            dispatch(new UpdateAccountJob($user));
-
-            return;
-        }
-        if ($api_refresh) {
-            if (! GDPRLibrary::is_currently_locked($user)) {
-                CoreApiLibrary2::updateMember($user, $cache ? 60 : 0);
-                $user = $user->fresh();
-            }
-        }
         self::check_bans($user);
-        self::check_status($user, $cache);
+        self::check_status($user);
         self::check_staff($user);
 
         $user = $user->fresh();
@@ -235,10 +223,10 @@ class MembershipLibrary
         }
     }
 
-    protected static function check_status(User $user, bool $cache = true): void
+    protected static function check_status(User $user): void
     {
         $cache_key = 'membership.checked_status.'.$user->id;
-        if ($cache && Cache::has($cache_key)) {
+        if (Cache::has($cache_key)) {
             return;
         }
 
@@ -347,7 +335,7 @@ class MembershipLibrary
             $user = $user->fresh();
         }
 
-        // user became vatger full member start time (independent from inactive status)
+        // user became vatger full member start time (independent of inactive status)
         if ($user->vatgerDetails->vatger_member_at == null && $user->vatsimDetails->subdivision_code == 'GER') {
             $user->vatgerDetails->update(['vatger_member_at' => Carbon::now()]);
             $user = $user->fresh();
@@ -376,6 +364,6 @@ class MembershipLibrary
             $user = $user->fresh();
         }
 
-        Cache::put($cache_key, Carbon::now(), 60 * 10);
+        Cache::put($cache_key, Carbon::now(), 60);
     }
 }

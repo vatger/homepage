@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Libraries\MembershipLibrary;
 use App\Libraries\VATSIM\CoreApiLibrary2;
 use App\Models\Membership\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,27 +19,21 @@ class ProcessMembersJob implements ShouldQueue
     public function handle(): void
     {
         $files = Storage::files('jobs/members/');
-        if (empty($files)) {
-            return;
-        }
-        $file = $files[array_rand($files)];
+        $file = $files[rand(0, min([count($files), 10]))];
+
         $time = intval(explode('+', trim($file, 'jobs/merlit.n'))[0]);
         if ($time == 0) {
             return;
         }
-        $data = json_decode(Storage::get($file));
 
+        $data = json_decode(Storage::get($file));
         Storage::delete($file);
 
-        if (is_array($data)) {
-            foreach ($data as $d) {
-                CoreApiLibrary2::insertMemberData(User::find($d->id), $d, membership_refresh: true, timestamp: $time);
-            }
-        } elseif (is_object($data)) {
-            CoreApiLibrary2::insertMemberData(User::find($data->id), $data, membership_refresh: true, timestamp: $time);
-        }
+        $user = User::find($data->id);
+        CoreApiLibrary2::insertMemberData($user, $data, $time);
+        MembershipLibrary::update($user);
 
-        if (array_count_values(Storage::files('jobs/members/')) > 3) {
+        if (count($files) > 3) {
             dispatch(new self);
         }
 
