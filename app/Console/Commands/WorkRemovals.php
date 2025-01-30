@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\WorkRemovalJob;
+use App\Models\Job;
 use App\Models\Membership\GdprRemoval;
 use Illuminate\Console\Command;
 
@@ -29,6 +30,10 @@ class WorkRemovals extends Command
      */
     public function handle(): void
     {
+        if (Job::count() > self::$count) {
+            return;
+        }
+
         GdprRemoval::whereNull('completed_at')
             ->whereNull('canceled_at')
             ->limit(static::$count)

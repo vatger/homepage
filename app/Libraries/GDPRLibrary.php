@@ -149,7 +149,7 @@ class GDPRLibrary extends BaseLibrary
         }
     }
 
-    public static function call_api_service(int $user_id, string $service, bool $debug = false): mixed
+    public static function call_api_service(int $user_id, string $service, bool $debug = false): bool
     {
         try {
             $services = json_decode(File::get(storage_path('app/configurations/gdpr-removal-services.json')));
@@ -168,6 +168,7 @@ class GDPRLibrary extends BaseLibrary
             $client = self::constructClient([
                 'headers' => $headers,
             ]);
+            dump($api_url, $expected_code, $method, $token, $headers, $client);
             try {
                 $response = $client->request($method, $api_url, ['http_errors' => false]);
             } catch (GuzzleException $e) {
@@ -178,7 +179,6 @@ class GDPRLibrary extends BaseLibrary
             if ($debug) {
                 dump($response->getStatusCode());
                 dump($response->getBody()->getContents());
-                return  $response;
             }
             $response_code = $response?->getStatusCode();
             if ($response_code == $expected_code) {
