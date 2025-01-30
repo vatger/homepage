@@ -32,6 +32,11 @@
         "request_expected_response_code": 200
     },
     {
-        "name": "s1-signup"
+        "name": "s1-signup",
+        "deletion_type": "api_request",
+        "endpoint": "http://docker.vatsim-germany.org:8016/api/gdpr-removal/$id",
+        "token_config":"external_services.s1-signup_gdpr_token",
+        "request_method": "DELETE",
+        "request_expected_response_code": 200
     }
 ]
