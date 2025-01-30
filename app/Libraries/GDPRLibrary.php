@@ -177,7 +177,7 @@ class GDPRLibrary extends BaseLibrary
             }
             if ($debug) {
                 dump($response->getStatusCode());
-                dump($response->getBody());
+                dump($response->getBody()->getContents());
             }
             $response_code = $response?->getStatusCode();
             if ($response_code == $expected_code) {
