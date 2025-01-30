@@ -45,6 +45,20 @@ class MoodleLibrary extends BaseLibrary
         return $results ? $results[0] : null;
     }
 
+    public static function deleteUser(int $vatsim_id): bool
+    {
+        $user = static::findUser($vatsim_id);
+        if (! $user) {
+            return true;
+        }
+
+        static::send('core_user_delete_users', [
+            'userids' => [$user->id],
+        ]);
+
+        return true;
+    }
+
     public static function findCourseModule(string $course_module_id): ?object
     {
         $results = static::send('core_course_get_course_module', ['cmid' => $course_module_id]);

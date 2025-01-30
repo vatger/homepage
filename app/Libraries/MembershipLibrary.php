@@ -2,7 +2,6 @@
 
 namespace App\Libraries;
 
-
 use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Models\Membership\User;
 use App\Models\Membership\UserBan;

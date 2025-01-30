@@ -138,6 +138,7 @@ class GDPRLibrary extends BaseLibrary
                 'board' => XenForoLibrary::deleteForumAccount($gdprRemoval->user),
                 'teamspeak' => TeamSpeakWebQuery::deleteUser($gdprRemoval->user),
                 'knowledgebase' => BookstackLibrary::delete_user($gdprRemoval->user),
+                'moodle' => MoodleLibrary::deleteUser($gdprRemoval->user_id),
                 default => self::call_api_service($gdprRemoval->user_id, $service),
             };
         } catch (\Exception $exception) {

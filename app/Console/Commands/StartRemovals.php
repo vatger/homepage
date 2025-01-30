@@ -2,17 +2,17 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\UpdateGDPRRemovalsJob;
+use App\Jobs\StartRemovalsJob;
 use Illuminate\Console\Command;
 
-class UpdateGDPRRemovals extends Command
+class StartRemovals extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'vatger:update-removals';
+    protected $signature = 'vatger:start-removals';
 
     /**
      * The console command description.
@@ -24,8 +24,8 @@ class UpdateGDPRRemovals extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
-        dispatch(new UpdateGDPRRemovalsJob);
+        dispatch(new StartRemovalsJob);
     }
 }

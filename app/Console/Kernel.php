@@ -19,7 +19,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('vatger:update-nav-stations')->everyFourHours();
         $schedule->command('vatger:update-teamspeak')->everyFifteenMinutes();
         $schedule->command('vatger:cleanup')->daily();
-        $schedule->command('vatger:update-removals')->everyTenMinutes();
+        $schedule->command('vatger:start-removals')->everySixHours();
+        $schedule->command('vatger:work-removals')->everyTenMinutes();
     }
 
     /**
