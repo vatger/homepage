@@ -149,7 +149,7 @@ class GDPRLibrary extends BaseLibrary
         }
     }
 
-    public static function call_api_service(int $user_id, string $service): bool
+    public static function call_api_service(int $user_id, string $service, bool $debug = false): bool
     {
         try {
             $services = json_decode(File::get(storage_path('app/configurations/gdpr-removal-services.json')));
@@ -174,6 +174,10 @@ class GDPRLibrary extends BaseLibrary
                 Log::error($e->getMessage());
 
                 return false;
+            }
+            if ($debug) {
+                dump($response->getStatusCode());
+                dump($response->getBody());
             }
             $response_code = $response?->getStatusCode();
             if ($response_code == $expected_code) {
