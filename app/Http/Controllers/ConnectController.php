@@ -93,7 +93,7 @@ class ConnectController extends Controller
         }
 
         try {
-            MembershipLibrary::update($user, cache: false, api_refresh: true);
+            MembershipLibrary::update($user);
         } catch (Exception $e) {
         }
 

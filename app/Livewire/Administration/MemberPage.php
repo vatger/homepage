@@ -39,7 +39,7 @@ class MemberPage extends Component
             'reason' => $this->form->reason,
         ]);
 
-        MembershipLibrary::update($this->user, cache: false);
+        MembershipLibrary::update($this->user);
 
         $this->showNoty('Sperre erfolgreich angelegt');
     }
@@ -58,7 +58,7 @@ class MemberPage extends Component
         }
 
         $this->banInformation->delete();
-        MembershipLibrary::update($this->user, cache: false);
+        MembershipLibrary::update($this->user);
 
         $this->showNoty('Sperre erfolgreich aufgehoben');
     }
@@ -72,7 +72,7 @@ class MemberPage extends Component
         }
 
         $this->banInformation->endBanNow();
-        MembershipLibrary::update($this->user, cache: false);
+        MembershipLibrary::update($this->user);
 
         $this->showNoty('Sperre erfolgreich aufgehoben');
     }
@@ -87,7 +87,7 @@ class MemberPage extends Component
 
     public function force_member_update(): void
     {
-        MembershipLibrary::update($this->user, cache: false);
+        MembershipLibrary::update($this->user);
         $this->showNoty('Nutzer aktualisiert');
     }
 
@@ -98,7 +98,7 @@ class MemberPage extends Component
         $details->last_seen_at = Carbon::now();
         $details->save();
 
-        MembershipLibrary::update($this->user, cache: false);
+        MembershipLibrary::update($this->user);
         $this->showNoty('Nutzer last_seen gesetzt und aktualisiert');
     }
 

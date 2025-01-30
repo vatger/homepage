@@ -17,7 +17,7 @@ class MembershipController extends Controller
         }
         $cache_key = 'MembershipController.ban_checked.'.Auth::user()->id;
         if (! Cache::has($cache_key)) {
-            MembershipLibrary::update(Auth::user(), cache: false, api_refresh: true);
+            MembershipLibrary::update(Auth::user());
             Cache::put($cache_key, true, 120);
         }
         if (Auth::user()->current_ban == null) {
@@ -57,7 +57,7 @@ class MembershipController extends Controller
 
     public function refresh(Request $request)
     {
-        MembershipLibrary::update(Auth::user(), cache: false);
+        MembershipLibrary::update(Auth::user());
         sleep(10);
 
         return redirect()->back(fallback: route('member.profile'));

@@ -160,7 +160,7 @@ class MigrationSeeder extends Seeder
             if (! APILibrary::MemberUpdate($user, true)) {
                 $this->command->error('VATSIM API Fail: User '.$user->id);
             } else {
-                MembershipLibrary::update($user, cache: false, api_refresh: false);
+                MembershipLibrary::update($user);
             }
 
             //
