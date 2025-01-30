@@ -19,7 +19,7 @@ class ProcessMembersJob implements ShouldQueue
     public function handle(): void
     {
         $files = Storage::files('jobs/members/');
-        $file = $files[rand(0, min([count($files), 10]))];
+        $file = $files[rand(0, min([count($files) - 1, 10]))];
 
         $time = intval(explode('+', trim($file, 'jobs/merlit.n'))[0]);
         if ($time == 0) {
