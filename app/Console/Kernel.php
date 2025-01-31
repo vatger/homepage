@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('vatger:download-members-subdivision')->everyTwoHours();
-        $schedule->command('vatger:download-members-rest')->everyFiveMinutes();
+        $schedule->command('vatger:download-members-rest')->hourly();
         $schedule->command('vatger:process-members')->everyMinute();
 
         $schedule->command('vatger:update-nav-stations')->everyFourHours();
