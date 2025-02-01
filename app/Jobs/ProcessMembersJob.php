@@ -35,8 +35,10 @@ class ProcessMembersJob implements ShouldQueue
         Storage::delete($file);
 
         $user = User::find($data->id);
-        CoreApiLibrary2::insertMemberData($user, $data, $time);
-        MembershipLibrary::update($user);
+        if (! empty($user)) {
+            CoreApiLibrary2::insertMemberData($user, $data, $time);
+            MembershipLibrary::update($user);
+        }
 
         if (count($files) > 3) {
             dispatch(new self);
