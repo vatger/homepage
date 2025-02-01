@@ -12,7 +12,7 @@ class DownloadMembersRestJob implements ShouldQueue
 {
     use Queueable;
 
-    public int $count = 20;
+    public int $count = 1;
 
     public int $refresh_time = 60 * 60 * 24 * 7;
 
