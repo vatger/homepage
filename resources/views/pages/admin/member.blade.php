@@ -27,7 +27,7 @@
                             ['Regionszuweisung', $user->vatsimDetails->region_name . ' (' . $user->vatsimDetails->region_code . ')','globe'],
                             ['Divisionszuordnung', $user->vatsimDetails->division_name . ' (' . $user->vatsimDetails->division_code . ')','globe'],
                             ['vACC Zuordnung', $user->vatsimDetails->subdivision_name . ' (' . $user->vatsimDetails->subdivision_code . ')','globe'],
-
+                            ['Last API Update', $this->last_api_update, 'clock']
                         ]"
                 ></x-layouts.admin.sidebar-col>
 

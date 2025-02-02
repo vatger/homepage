@@ -23,6 +23,8 @@ class MemberPage extends Component
 
     public BanForm $form;
 
+    public string $last_api_update = '?';
+
     public ?UserBan $banInformation;
 
     public function saveBan(): void
@@ -82,6 +84,8 @@ class MemberPage extends Component
     public function render()
     {
         $this->authorize('membership.users.details.view');
+
+        $this->last_api_update = Carbon::createFromTimestamp($this->user->vatsimDetails->last_download)->diffForHumans();
 
         return view('pages.admin.member')->with(['user' => $this->user, 'acting_user' => Auth::user()]);
     }
