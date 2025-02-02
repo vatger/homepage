@@ -2,25 +2,25 @@
     <div class="container-fluid">
         <div class="layout-specing">
             <x-layouts.admin.content
-                :header="$user->username"
-                :links="[
+                    :header="$user->username"
+                    :links="[
                         route('administration.dashboard') => 'Administration',
                         route('administration.members') => 'Mitgliederverwaltung'
                     ]"
             ></x-layouts.admin.content>
 
             <x-layouts.admin.card-image-bar
-                :bg_img="iasset('images/profile/profile_1.png')"
-                :m_img="iasset('/images/profile/avatar_placeholder.png')"
-                :title="$user->username"
-                :subtitle="$user->id"
+                    :bg_img="iasset('images/profile/profile_1.png')"
+                    :m_img="iasset('/images/profile/avatar_placeholder.png')"
+                    :title="$user->username"
+                    :subtitle="$user->id"
             ></x-layouts.admin.card-image-bar>
 
             <div class="row">
                 <x-layouts.admin.sidebar-col
-                    position="left"
-                    title="Persönliche Daten"
-                    :items="[
+                        position="left"
+                        title="Persönliche Daten"
+                        :items="[
                             $user->isCurrentlyInRemoval() ? ['Removal', 'PENDING' ,'user-x'] : [],
                             $acting_user?->can('membership.users.details.view.email') ? ['Email', $user->email ,'mail'] : [],
                             ['Ausbildung', $user->vatsimDetails->rating_atc_short . ' | ' .$user->vatsimDetails->rating_pilot_short . ' | ' . $user->vatsimDetails->rating_military_short,'book-open'],
@@ -32,7 +32,7 @@
                 ></x-layouts.admin.sidebar-col>
 
                 <x-layouts.admin.sidebar-col
-                    position="right">
+                        position="right">
                     <x-layouts.admin.card>
                         <div class="col-lg-12">
                             <ul class="nav nav-pills nav-justified flex-column flex-sm-row" id="pills-tab" role="tablist">
@@ -271,9 +271,16 @@
 
                                 <div wire:ignore class="tab-pane fade" id="danger-pill" role="tabpanel" aria-labelledby="danger-pill">
                                     <div class="mt-4">
+                                        <button class="btn btn-sm btn-primary" wire:click="pull_member_api()">Download via API</button>
+                                        <p class="text-muted mt-2">
+                                            Läd einmal die Daten neu aus der VATSIM API.
+                                            Kann bedenkenlos ausgeführt werden.
+                                        </p>
+                                    </div>
+                                    <div class="mt-4">
                                         <button class="btn btn-sm btn-primary" wire:click="force_member_update()">Force Member Update</button>
                                         <p class="text-muted mt-2">
-                                            Zieht sich einmal neue Informationen aus der API und stößt update Aktionen an.
+                                            Stößt update Aktionen an.
                                             Kann bedenkenlos ausgeführt werden.
                                         </p>
                                     </div>

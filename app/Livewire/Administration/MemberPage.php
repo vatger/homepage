@@ -4,6 +4,7 @@ namespace App\Livewire\Administration;
 
 use App\Libraries\GDPRLibrary;
 use App\Libraries\MembershipLibrary;
+use App\Libraries\VATSIM\CoreApiLibrary2;
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\Membership\User;
 use App\Models\Membership\UserBan;
@@ -89,6 +90,12 @@ class MemberPage extends Component
     {
         MembershipLibrary::update($this->user);
         $this->showNoty('Nutzer aktualisiert');
+    }
+
+    public function pull_member_api(): void
+    {
+        CoreApiLibrary2::downloadMember($this->user);
+        $this->showNoty('Nutzerdaten heruntergeladen. Warten auf Verarbeitung...');
     }
 
     public function mark_member_seen(): void
