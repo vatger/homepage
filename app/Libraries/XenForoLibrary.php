@@ -135,10 +135,12 @@ class XenForoLibrary extends BaseLibrary
     {
         $forum_user_id = $user->settings?->forum_id;
         $is_moderator = ! empty($user->service_role_ids(ServiceRoleType::ForumModerator));
-        self::send('DELETE', "moderators/$forum_user_id", []);
+
         if ($is_moderator) {
             $data = json_decode(File::get(storage_path('app/configurations/board_moderator_permissions.json')));
             self::send('POST', "moderators/$forum_user_id", $data);
+        } else {
+            self::send('DELETE', "moderators/$forum_user_id", []);
         }
 
         return true;

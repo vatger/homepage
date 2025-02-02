@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Profile;
 
+use App\Libraries\GDPRLibrary;
 use App\Libraries\XenForoLibrary;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -65,5 +66,14 @@ class SettingsTab extends Component
         $user = Auth::user();
         $user->passwords->ical_token = Str::random(32);
         $user->passwords->save();
+    }
+
+    public function call_delete_me(): \Illuminate\Http\RedirectResponse
+    {
+        $user = Auth::user();
+        GDPRLibrary::mark_for_deletion($user);
+        Auth::logout();
+
+        return redirect()->route('landing');
     }
 }
