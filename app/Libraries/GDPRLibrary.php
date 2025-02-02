@@ -30,7 +30,9 @@ class GDPRLibrary extends BaseLibrary
         $current_user = Auth::user();
         Auth::setUser($user);
         Auth::logout();
-        Auth::setUser($current_user);
+        if (! empty($current_user)) {
+            Auth::setUser($current_user);
+        }
 
         if ($now) {
             $user->vatgerDetails->update(['delete_at' => Carbon::now()->subHours(25)]);

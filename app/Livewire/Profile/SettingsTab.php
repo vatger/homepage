@@ -68,11 +68,10 @@ class SettingsTab extends Component
         $user->passwords->save();
     }
 
-    public function call_delete_me(): \Illuminate\Http\RedirectResponse
+    public function call_delete_me()
     {
         $user = Auth::user();
         GDPRLibrary::mark_for_deletion($user);
-        Auth::logout();
 
         return redirect()->route('landing');
     }
