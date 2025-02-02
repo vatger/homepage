@@ -92,10 +92,7 @@ class ConnectController extends Controller
             return redirect()->route('check-terms');
         }
 
-        try {
-            MembershipLibrary::update($user);
-        } catch (Exception $e) {
-        }
+        MembershipLibrary::update($user);
 
         return redirect()->intended(route('member.profile'))->with('success', 'Logged in successfully');
     }

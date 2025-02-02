@@ -7,6 +7,7 @@ use App\Models\Membership\User;
 use App\Models\Membership\UserVatsimDetail;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\ResponseInterface;
 
@@ -125,7 +126,22 @@ class XenForoLibrary extends BaseLibrary
         }
         $response = json_decode($result->getBody()->getContents());
 
+        static::updateModerators($user);
+
         return (bool) $response->success;
+    }
+
+    public static function updateModerators(User $user): bool
+    {
+        $forum_user_id = $user->settings?->forum_id;
+        $is_moderator = ! empty($user->service_role_ids(ServiceRoleType::ForumModerator));
+        self::send('DELETE', 'moderators/$forum_user_id', []);
+        if ($is_moderator) {
+            $data = json_decode(File::get(storage_path('app/configurations/board_moderator_permissions.json')));
+            self::send('POST', 'moderators/$forum_user_id', []);
+        }
+
+        return true;
     }
 
     /**
