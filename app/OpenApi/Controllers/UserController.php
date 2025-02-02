@@ -39,7 +39,7 @@ class UserController extends ApiController
             'message' => 'required|string',
             'source_name' => 'required|string',
             'link_text' => 'nullable|string',
-            'link_url' => 'nullable|url',
+            'link_url' => 'nullable|string',
         ]);
 
         $title = $request->input('title');

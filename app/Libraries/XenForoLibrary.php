@@ -158,7 +158,7 @@ class XenForoLibrary extends BaseLibrary
         $dataArray = [];
         $dataArray['to_user_id'] = $forum_user_id;
         $dataArray['alert'] = $message;
-        $dataArray['from_user_id'] = 0; // anonymous
+        $dataArray['from_user_id'] = 1; // admin
         $dataArray['link_url'] = $link_url ?? '';
         $dataArray['link_title'] = $link_text ?? '';
         $res = self::send('POST', 'alerts/', $dataArray);
