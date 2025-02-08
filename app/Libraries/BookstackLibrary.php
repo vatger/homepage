@@ -94,11 +94,12 @@ class BookstackLibrary extends BaseLibrary
      */
     public static function _user_update(int $user_id, string $email, array $role_ids = []): bool
     {
+        $user_lang = User::find($user_id)->settings->language != 'de' ? 'en' : 'de';
         $body = [
             'name' => strval($user_id),
             'email' => $email,
             'external_auth_id' => strval($user_id),
-            'language' => 'de',
+            'language' => $user_lang,
             'roles' => $role_ids,
         ];
 
