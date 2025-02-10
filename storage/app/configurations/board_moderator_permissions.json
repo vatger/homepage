@@ -12,6 +12,10 @@
     "permission_id": "warn"
   },
   {
+    "permission_group_id": "general",
+    "permission_id": "editBasicProfile"
+  },
+  {
     "permission_group_id": "forum",
     "permission_id": "inlineMod"
   },
