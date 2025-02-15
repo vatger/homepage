@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Libraries\VATSIM\CoreApiLibrary2;
+use App\Models\Membership\GdprRemoval;
 use App\Models\Membership\UserVatsimDetail;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -12,7 +13,7 @@ class DownloadMembersRestJob implements ShouldQueue
 {
     use Queueable;
 
-    public int $count = 1;
+    public int $count = 10;
 
     public int $refresh_time = 60 * 60 * 24 * 7;
 
@@ -21,8 +22,15 @@ class DownloadMembersRestJob implements ShouldQueue
      */
     public function handle(): void
     {
+        $gdpr_user_ids = GdprRemoval::whereNull(['canceled_at', 'completed_at'])
+            ->get(['user_id'])
+            ->select('user_id')
+            ->flatten()
+            ->values()
+            ->toArray();
         $time = Carbon::now()->timestamp - $this->refresh_time;
         UserVatsimDetail::where('last_download', '<', $time)
+            ->whereIntegerNotInRaw('user_id', $gdpr_user_ids)
             ->orderBy('last_download')
             ->take($this->count)
             ->each(function (UserVatsimDetail $userVatsimDetail) {
