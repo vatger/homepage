@@ -23,7 +23,7 @@ class BookstackLibrary extends BaseLibrary
         ]);
         $uri = config('bookstack.host').'/api/'.$endpoint;
         try {
-            $response = $client->request($method, $uri, ['json' => $body]);
+            $response = $client->request($method, $uri, ['json' => $body, 'http_errors' => false]);
             $response_code = $response?->getStatusCode();
             if ($response_code == 200 || $response_code == 204) {
                 return json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
