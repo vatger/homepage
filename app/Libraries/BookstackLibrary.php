@@ -12,7 +12,7 @@ class BookstackLibrary extends BaseLibrary
 {
     // https://demo.bookstackapp.com/api/docs
 
-    protected static function _send(string $endpoint, string $method, array $body = []): object|false
+    protected static function _send(string $endpoint, string $method, array $body = [], array $expected_errors = []): object|false
     {
         $token_id = config('bookstack.token_id');
         $token_secret = config('bookstack.token_secret');
@@ -29,7 +29,9 @@ class BookstackLibrary extends BaseLibrary
                 return json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
             }
         } catch (GuzzleException|\JsonException $e) {
-            Log::error($e->getMessage());
+            if (empty($response_code) || ! in_array($response_code, $expected_errors)) {
+                Log::error($e->getMessage());
+            }
         }
 
         return false;
@@ -86,7 +88,7 @@ class BookstackLibrary extends BaseLibrary
 
     public static function _users_read(int $user_id): object|false
     {
-        return self::_send('users/'.$user_id, 'GET');
+        return self::_send('users/'.$user_id, 'GET', expected_errors: [404]);
     }
 
     /**

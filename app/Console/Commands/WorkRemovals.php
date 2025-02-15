@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Jobs\WorkRemovalJob;
-use App\Models\Job;
 use App\Models\Membership\GdprRemoval;
+use App\Models\Tech\Job;
 use Illuminate\Console\Command;
 
 class WorkRemovals extends Command
@@ -23,20 +23,22 @@ class WorkRemovals extends Command
      */
     protected $description = 'Command to trigger GDPR removals';
 
-    public static int $count = 1000;
+    public static int $count_do = 10000;
+
+    public static int $count_start = 100;
 
     /**
      * Execute the console command.
      */
     public function handle(): void
     {
-        if (Job::count() > self::$count) {
+        if (Job::count() > self::$count_start) {
             return;
         }
 
         GdprRemoval::whereNull('completed_at')
             ->whereNull('canceled_at')
-            ->limit(static::$count)
+            ->limit(static::$count_do)
             ->cursor()
             ->each(function (GdprRemoval $gdpr_removal) {
                 dispatch(new WorkRemovalJob($gdpr_removal));
