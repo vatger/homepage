@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 
@@ -72,12 +73,18 @@ class ConnectController extends Controller
         ) {
             throw new Exception('missing data');
         }
+        $dupe_user = User::where('email', $resourceOwner->data->personal->email)
+            ->where('id', '!=', $resourceOwner->data->cid)
+            ->first();
 
-        if (
-            User::where('email', $resourceOwner->data->personal->email)
-                ->where('id', '!=', $resourceOwner->data->cid)
-                ->exists()
-        ) {
+        if ($dupe_user) {
+            $dupe_email = $resourceOwner->data->personal->email;
+            $new_id = $resourceOwner->data->cid;
+            $old_id = $dupe_user->id;
+            Mail::raw("$new_id tried to log in but email ($dupe_email) is already given to $old_id", function ($message) {
+                $message->to('support@vatger.de');
+            });
+
             return redirect()
                 ->route('landing')
                 ->withErrors('Login Error: Wende dich an den VATSIM Germany Support.');
