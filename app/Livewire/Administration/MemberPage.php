@@ -123,7 +123,7 @@ class MemberPage extends Component
     public function mark_member_for_removal_now(): void
     {
         $this->authorize('membership.users.details.edit');
-        GDPRLibrary::mark_for_deletion($this->user);
+        GDPRLibrary::mark_for_deletion($this->user, true);
         $this->showNoty('Nutzer zur direkten Löschung markiert');
     }
 

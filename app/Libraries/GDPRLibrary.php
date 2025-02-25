@@ -39,6 +39,7 @@ class GDPRLibrary extends BaseLibrary
 
             return;
         }
+
         $user->vatgerDetails->update(['delete_at' => Carbon::now()]);
         $date = Carbon::now()->addHours(24);
         $n = new BasicNotification(
@@ -51,6 +52,7 @@ class GDPRLibrary extends BaseLibrary
             delete_at: $date->addDay(),
         );
         $user->notify($n);
+
     }
 
     public static function start_deletion(User $user): void
