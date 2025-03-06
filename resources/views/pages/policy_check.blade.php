@@ -20,13 +20,19 @@
                             <h5 class="card-title">Policies:</h5>
 
                             <div class="accordion pt-2">
-                                <x-terms-tab ident="gdpr" caption="GDPR" :date="$gdpr_date" :text="$gdpr" :agreed_date="$user_settings?->gdpr_agreed_at" />
-                                <x-terms-tab ident="imprint" caption="Imprint" :date="$imprint_date" :text="$imprint" :agreed_date="$user_settings?->imprint_agreed_at" />
-                                <x-terms-tab ident="termsofuse" caption="Nutzungsbedingungen" :date="$termsofuse_date" :text="$termsofuse" :agreed_date="$user_settings?->termsofuse_agreed_at" />
-                                <x-terms-tab ident="satzung" caption="Satzung" :date="$satzung_date" :text="$satzung" :agreed_date="$user_settings?->satzung_agreed_at" pdf_type="true" />
+                                @foreach($polices as $policy)
+                                    <x-terms-tab
+                                            :ident="$policy->id"
+                                            :caption="$policy->name_de"
+                                            :date="$policy->last_update"
+                                            :text="$gdpr"
+                                            :agreed_date="$user_settings?->gdpr_agreed_at"
+                                            :type="$policy->type"
+                                    />
+                                @endforeach
                             </div>
 
-                            @if(Auth::user()?->settings?->agreed)
+                            @if($user_settings->agreed)
                                 <div class="accordion pt-2">
                                     <a href="{{ route('landing') }}" class="btn btn-success mt-2 me-2">Weiter</a>
                                 </div>

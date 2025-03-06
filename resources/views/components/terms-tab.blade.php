@@ -4,11 +4,12 @@
     'date',
     'agreed_date' => null,
     'text',
-    'pdf_type' =>false,
+    'type',
 ])
 
 @php
     $agreed_date = $agreed_date ? \Carbon\Carbon::create($agreed_date) : null;
+    $pdf_type = $type == "pdf";
 @endphp
 
 <div class="accordion-item rounded mt-2">

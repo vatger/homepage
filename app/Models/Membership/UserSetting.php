@@ -3,10 +3,11 @@
 namespace App\Models\Membership;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
+use JsonException;
 
 class UserSetting extends Model
 {
@@ -27,16 +28,49 @@ class UserSetting extends Model
 
     public function getAgreedAttribute(): bool
     {
-        $policies = Cache::remember('usersetting.policies.toaggree', 60 * 10, function () {
+        $policies = self::getPolicies(true);
+        foreach ($policies as $policy) {
+            $user_agreed = $this->getAgreedAt($policy->id);
+            if ($user_agreed == null) {
+                return false;
+            }
+            if (! $user_agreed->isPast()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function agreeTo(string $policy_id): void
+    {
+        $policies = self::getPolicies(true);
+        if (! array_any($policies, fn ($policy) => $policy->id == $policy_id)) {
+            return;
+        }
+        $agreed_policies = json_decode($this->policies);
+        $agreed_policies = array_filter($agreed_policies, fn ($item) => $item != $policy_id);
+        $agreed_policies[] = (object) ['id' => $policy_id, 'date' => Carbon::now()->toISO8601String()];
+        $this->policies = json_encode($agreed_policies);
+        $this->save();
+    }
+
+    public static function getPolicies(bool $needs_approval = false, bool $id_only = false): array
+    {
+        try {
             $data = File::get(storage_path('app/configurations/policies.json'));
-            $json = json_decode($data, false);
-            $array = array_filter($json, fn ($item) => $item->needs_approval == true);
+            $policies = json_decode($data, false, flags: JSON_THROW_ON_ERROR);
+        } catch (FileNotFoundException|JsonException $e) {
+            return [];
+        }
+        if ($needs_approval) {
+            $policies = array_filter($policies, fn ($policy) => $policy->needs_approval == true);
+        }
+        if ($id_only) {
+            $policies = array_map(fn ($policy) => $policy->id, $policies);
+        }
 
-            return array_map(fn ($item) => $item->id, $array);
-        });
-
-        // todo
-        return false;
+        return $policies;
     }
 
     private function getAgreedAt(string $id): ?Carbon
@@ -45,8 +79,11 @@ class UserSetting extends Model
         if (empty($json) || ! is_array($json)) {
             return null;
         }
+        $item = array_find($json, fn ($item) => $item->id == $id);
+        if ($item == null || $item->date == null) {
+            return null;
+        }
 
-
-        return null;
+        return Carbon::create($item->date);
     }
 }

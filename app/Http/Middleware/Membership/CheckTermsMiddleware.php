@@ -16,7 +16,7 @@ class CheckTermsMiddleware
             $user = Auth::user();
 
             if (! $user->settings->agreed) {
-                // Account is locally or globally banned
+                // Account has not agreed to all necessary polices
                 return redirect()->route('check-terms');
             }
         }
