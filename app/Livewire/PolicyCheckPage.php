@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-class TermsPage extends Component
+class PolicyCheckPage extends Component
 {
     private array $policies = [];
 
