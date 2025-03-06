@@ -3,13 +3,13 @@
     'caption',
     'date',
     'agreed_date' => null,
-    'text',
+    'path',
     'type',
 ])
 
 @php
     $agreed_date = $agreed_date ? \Carbon\Carbon::create($agreed_date) : null;
-    $pdf_type = $type == "pdf";
+
 @endphp
 
 <div class="accordion-item rounded mt-2">
@@ -23,11 +23,12 @@
     </h2>
     <div id="{{ $ident }}-d" class="accordion-collapse border-0 collapse" aria-labelledby="{{ $ident }}-h" data-bs-parent="#{{ $ident }}-h" style="">
         <div class="accordion-body">
-            @if(!$pdf_type)
-                {!! $text !!}
-            @else
-                <object data="{{ $text }}" type="application/pdf" width="100%" height="800px">
-                    <p>Unable to display PDF file. <a href="{{ $text }}">Download</a> instead.</p>
+            @if($type == "html")
+                {!! Storage::get($path) !!}
+            @endif
+            @if($type == "pdf")
+                <object data="{{ $path }}" type="application/pdf" width="100%" height="800px">
+                    <p>Unable to display PDF file. <a href="{{ $path }}">Download</a> instead.</p>
                 </object>
             @endif
         </div>

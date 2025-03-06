@@ -24,9 +24,9 @@
                                     <x-terms-tab
                                             :ident="$policy->id"
                                             :caption="$policy->name_de"
-                                            :date="$policy->last_update"
-                                            :text="$gdpr"
-                                            :agreed_date="$user_settings?->gdpr_agreed_at"
+                                            :date="\Carbon\Carbon::create($policy->last_update)"
+                                            :path="$policy->path_de"
+                                            :agreed_date="$user_settings->getAgreedAt($policy->id)"
                                             :type="$policy->type"
                                     />
                                 @endforeach

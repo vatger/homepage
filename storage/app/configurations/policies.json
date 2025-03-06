@@ -6,8 +6,9 @@
     "type": "html",
     "needs_approval": true,
     "last_update": "2023-08-31",
-    "path_de": "storage/public/policies/gdpr.html",
-    "path_en": null
+    "path_de": "public/policies/gdpr.html",
+    "path_en": null,
+    "path_changelog": null
   },
   {
     "id": "imprint",
@@ -16,8 +17,9 @@
     "type": "html",
     "needs_approval": true,
     "last_update": "2025-03-01",
-    "path_de": "storage/public/policies/imprint.html",
-    "path_en": null
+    "path_de": "public/policies/imprint.html",
+    "path_en": null,
+    "path_changelog": null
   },
   {
     "id": "satzung",
@@ -26,8 +28,9 @@
     "type": "pdf",
     "needs_approval": true,
     "last_update": "2023-08-31",
-    "url_de": "",
-    "url_en": null
+    "path_de": "/storage/policies/satzung.pdf",
+    "path_en": null,
+    "path_changelog": null
   },
   {
     "id": "termsofuse",
@@ -36,7 +39,8 @@
     "type": "html",
     "needs_approval": true,
     "last_update": "2025-03-06",
-    "path_de": "storage/public/policies/termsofuse-de-2025-03-06.html",
-    "path_en": null
+    "path_de": "public/policies/termsofuse-de-2025-03-06.html",
+    "path_en": null,
+    "path_changelog": null
   }
 ]

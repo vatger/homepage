@@ -34,7 +34,7 @@ class UserSetting extends Model
             if ($user_agreed == null) {
                 return false;
             }
-            if (! $user_agreed->isPast()) {
+            if (! $user_agreed->isAfter(Carbon::create($policy->last_update))) {
                 return false;
             }
         }
@@ -42,15 +42,19 @@ class UserSetting extends Model
         return true;
     }
 
-    public function agreeTo(string $policy_id): void
+    public function agreeTo(string $policy_id, bool $decline = false): void
     {
         $policies = self::getPolicies(true);
         if (! array_any($policies, fn ($policy) => $policy->id == $policy_id)) {
             return;
         }
-        $agreed_policies = json_decode($this->policies);
-        $agreed_policies = array_filter($agreed_policies, fn ($item) => $item != $policy_id);
-        $agreed_policies[] = (object) ['id' => $policy_id, 'date' => Carbon::now()->toISO8601String()];
+        $agreed_policies = $this->getMyPolices();
+        $agreed_policies = array_filter($agreed_policies, fn ($item) => $item->id != $policy_id);
+
+        if (! $decline) {
+            $agreed_policies[] = (object) ['id' => $policy_id, 'date' => Carbon::now()->toISO8601String()];
+        }
+
         $this->policies = json_encode($agreed_policies);
         $this->save();
     }
@@ -73,17 +77,24 @@ class UserSetting extends Model
         return $policies;
     }
 
-    private function getAgreedAt(string $id): ?Carbon
+    public function getAgreedAt(string $id): ?Carbon
     {
-        $json = json_decode($this->policies);
-        if (empty($json) || ! is_array($json)) {
-            return null;
-        }
+        $json = $this->getMyPolices();
         $item = array_find($json, fn ($item) => $item->id == $id);
         if ($item == null || $item->date == null) {
             return null;
         }
 
         return Carbon::create($item->date);
+    }
+
+    private function getMyPolices(): array
+    {
+        $json = json_decode($this->policies);
+        if (empty($json) || ! is_array($json)) {
+            return [];
+        }
+
+        return $json;
     }
 }

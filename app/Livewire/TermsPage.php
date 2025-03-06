@@ -3,20 +3,20 @@
 namespace App\Livewire;
 
 use App\Models\Membership\UserSetting;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class TermsPage extends Component
 {
     private array $policies = [];
+
     private ?UserSetting $userSetting;
+
     public function boot(): void
     {
         $this->policies = UserSetting::getPolicies(true);
-        $this->userSetting =  Auth::user()?->settings;
+        $this->userSetting = Auth::user()?->settings;
     }
 
     #[Layout('layouts.master')]
@@ -28,13 +28,13 @@ class TermsPage extends Component
         ]);
     }
 
-    public function accept(string $type): void
+    public function accept(string $policy_id): void
     {
-
+        $this->userSetting->agreeTo($policy_id);
     }
 
-    public function decline(string $type): void
+    public function decline(string $policy_id): void
     {
-
+        $this->userSetting->agreeTo($policy_id, true);
     }
 }
