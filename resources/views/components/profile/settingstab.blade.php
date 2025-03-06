@@ -115,8 +115,26 @@
                 </div>
             </div>
 
+
         </div>
     </div>
     <!--end row-->
+
+    <h5 class="text-md-start text-center mt-4">My Account:</h5>
+
+    <div class="row mt-4">
+        <div class="col-lg-12">
+
+            <div class="d-flex justify-content-between p-4 pb-0">
+                <h6 class="mb-0">VATSIM GERMANY Account</h6>
+                <div class="form-check" style="min-width: 30%;">
+                    <button wire:click="call_delete_me()" wire:confirm="I want to delete my VATSIM Germany account!" class="btn btn-danger"><i data-feather="danger" class="fea icon-sm"></i> DELETE MY
+                        VATSIM GERMANY
+                        ACCOUNT
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>

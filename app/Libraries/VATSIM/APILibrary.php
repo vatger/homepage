@@ -48,7 +48,7 @@ class APILibrary
             }
             Cache::put($cache_key, Carbon::now(), 60 * 60 * 24);
             if ($update_vatger_membership) {
-                MembershipLibrary::update($user, api_refresh: false);
+                MembershipLibrary::update($user);
             }
         }
 
@@ -89,7 +89,7 @@ class APILibrary
         self::MemberInsertData($user, $data);
         Cache::put($cache_key, Carbon::now(), 60 * 60 * 24 * 7);
         if ($update_vatger_membership) {
-            MembershipLibrary::update($user, api_refresh: false);
+            MembershipLibrary::update($user);
         }
 
         return true;

@@ -83,7 +83,7 @@ class TeamPage extends Component
         $this->authorize('membership.teams.edit.members.subteam-check', $this->team);
         $user = User::findOrFail($user_id);
         $user->removeRole($this->team->role);
-        MembershipLibrary::update($user, async: true);
+        MembershipLibrary::update($user);
         if (count($user->roles) == 0) {
             $user->staffDetails->leaving_staff_at = Carbon::now()->addDays(30);
             $user->staffDetails->save();
@@ -114,7 +114,7 @@ class TeamPage extends Component
         }
 
         $user->assignRole($this->team->role);
-        MembershipLibrary::update($user, async: true);
+        MembershipLibrary::update($user);
     }
 
     public function deleteTeam()

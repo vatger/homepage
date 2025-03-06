@@ -67,7 +67,7 @@ class CoreApiLibrary2 extends BaseLibrary
         if ($result->count <= $offset) {
             $offset = 0;
         }
-        foreach ($result->item as $member) {
+        foreach ($result->items as $member) {
             Storage::put("jobs/members/$start_time+$member->id.json", json_encode($member));
         }
     }

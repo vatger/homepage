@@ -4,6 +4,7 @@ namespace App\Livewire\Administration;
 
 use App\Libraries\GDPRLibrary;
 use App\Libraries\MembershipLibrary;
+use App\Libraries\VATSIM\CoreApiLibrary2;
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\Membership\User;
 use App\Models\Membership\UserBan;
@@ -22,6 +23,8 @@ class MemberPage extends Component
 
     public BanForm $form;
 
+    public string $last_api_update = '?';
+
     public ?UserBan $banInformation;
 
     public function saveBan(): void
@@ -39,7 +42,7 @@ class MemberPage extends Component
             'reason' => $this->form->reason,
         ]);
 
-        MembershipLibrary::update($this->user, cache: false);
+        MembershipLibrary::update($this->user);
 
         $this->showNoty('Sperre erfolgreich angelegt');
     }
@@ -58,7 +61,7 @@ class MemberPage extends Component
         }
 
         $this->banInformation->delete();
-        MembershipLibrary::update($this->user, cache: false);
+        MembershipLibrary::update($this->user);
 
         $this->showNoty('Sperre erfolgreich aufgehoben');
     }
@@ -72,7 +75,7 @@ class MemberPage extends Component
         }
 
         $this->banInformation->endBanNow();
-        MembershipLibrary::update($this->user, cache: false);
+        MembershipLibrary::update($this->user);
 
         $this->showNoty('Sperre erfolgreich aufgehoben');
     }
@@ -82,13 +85,21 @@ class MemberPage extends Component
     {
         $this->authorize('membership.users.details.view');
 
+        $this->last_api_update = Carbon::createFromTimestamp($this->user->vatsimDetails->last_download)->diffForHumans();
+
         return view('pages.admin.member')->with(['user' => $this->user, 'acting_user' => Auth::user()]);
     }
 
     public function force_member_update(): void
     {
-        MembershipLibrary::update($this->user, cache: false);
+        MembershipLibrary::update($this->user);
         $this->showNoty('Nutzer aktualisiert');
+    }
+
+    public function pull_member_api(): void
+    {
+        CoreApiLibrary2::downloadMember($this->user);
+        $this->showNoty('Nutzerdaten heruntergeladen. Warten auf Verarbeitung...');
     }
 
     public function mark_member_seen(): void
@@ -98,7 +109,7 @@ class MemberPage extends Component
         $details->last_seen_at = Carbon::now();
         $details->save();
 
-        MembershipLibrary::update($this->user, cache: false);
+        MembershipLibrary::update($this->user);
         $this->showNoty('Nutzer last_seen gesetzt und aktualisiert');
     }
 
@@ -112,7 +123,7 @@ class MemberPage extends Component
     public function mark_member_for_removal_now(): void
     {
         $this->authorize('membership.users.details.edit');
-        GDPRLibrary::mark_for_deletion($this->user);
+        GDPRLibrary::mark_for_deletion($this->user, true);
         $this->showNoty('Nutzer zur direkten Löschung markiert');
     }
 

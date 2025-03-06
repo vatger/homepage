@@ -17,6 +17,6 @@ class UpdateAccountJob
 
     public function handle(): void
     {
-        MembershipLibrary::update($this->user, false, false);
+        MembershipLibrary::update($this->user);
     }
 }

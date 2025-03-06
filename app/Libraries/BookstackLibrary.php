@@ -12,7 +12,7 @@ class BookstackLibrary extends BaseLibrary
 {
     // https://demo.bookstackapp.com/api/docs
 
-    protected static function _send(string $endpoint, string $method, array $body = []): object|false
+    protected static function _send(string $endpoint, string $method, array $body = [], array $expected_errors = []): object|false
     {
         $token_id = config('bookstack.token_id');
         $token_secret = config('bookstack.token_secret');
@@ -23,13 +23,15 @@ class BookstackLibrary extends BaseLibrary
         ]);
         $uri = config('bookstack.host').'/api/'.$endpoint;
         try {
-            $response = $client->request($method, $uri, ['json' => $body]);
+            $response = $client->request($method, $uri, ['json' => $body, 'http_errors' => false]);
             $response_code = $response?->getStatusCode();
             if ($response_code == 200 || $response_code == 204) {
                 return json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
             }
         } catch (GuzzleException|\JsonException $e) {
-            Log::error($e->getMessage());
+            if (empty($response_code) || ! in_array($response_code, $expected_errors)) {
+                Log::error($e->getMessage());
+            }
         }
 
         return false;
@@ -86,7 +88,7 @@ class BookstackLibrary extends BaseLibrary
 
     public static function _users_read(int $user_id): object|false
     {
-        return self::_send('users/'.$user_id, 'GET');
+        return self::_send('users/'.$user_id, 'GET', expected_errors: [404]);
     }
 
     /**
@@ -94,11 +96,12 @@ class BookstackLibrary extends BaseLibrary
      */
     public static function _user_update(int $user_id, string $email, array $role_ids = []): bool
     {
+        $user_lang = User::find($user_id)->settings->language != 'de' ? 'en' : 'de';
         $body = [
             'name' => strval($user_id),
             'email' => $email,
             'external_auth_id' => strval($user_id),
-            'language' => 'de',
+            'language' => $user_lang,
             'roles' => $role_ids,
         ];
 

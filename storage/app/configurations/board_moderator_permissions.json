@@ -1,0 +1,138 @@
+[
+  {
+    "permission_group_id": "general",
+    "permission_id": "bypassUserPrivacy"
+  },
+  {
+    "permission_group_id": "general",
+    "permission_id": "viewWarning"
+  },
+  {
+    "permission_group_id": "general",
+    "permission_id": "warn"
+  },
+  {
+    "permission_group_id": "general",
+    "permission_id": "editBasicProfile"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "inlineMod"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "stickUnstickThread"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "lockUnlockThread"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "featureUnfeatureThread"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "manageAnyThread"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "deleteAnyThread"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "hardDeleteAnyThread"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "threadReplyBan"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "editAnyPost"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "deleteAnyPost"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "hardDeleteAnyPost"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "warn"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "manageAnyTag"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "viewDeleted"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "viewModerated"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "undelete"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "approveUnapprove"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "markSolutionAnyThread"
+  },
+  {
+    "permission_group_id": "forum",
+    "permission_id": "manageIndexing"
+  },
+  {
+    "permission_group_id": "conversation",
+    "permission_id": "editAnyMessage"
+  },
+  {
+    "permission_group_id": "conversation",
+    "permission_id": "alwaysInvite"
+  },
+  {
+    "permission_group_id": "profilePost",
+    "permission_id": "inlineMod"
+  },
+  {
+    "permission_group_id": "profilePost",
+    "permission_id": "editAny"
+  },
+  {
+    "permission_group_id": "profilePost",
+    "permission_id": "deleteAny"
+  },
+  {
+    "permission_group_id": "profilePost",
+    "permission_id": "hardDeleteAny"
+  },
+  {
+    "permission_group_id": "profilePost",
+    "permission_id": "warn"
+  },
+  {
+    "permission_group_id": "profilePost",
+    "permission_id": "viewDeleted"
+  },
+  {
+    "permission_group_id": "profilePost",
+    "permission_id": "viewModerated"
+  },
+  {
+    "permission_group_id": "profilePost",
+    "permission_id": "undelete"
+  },
+  {
+    "permission_group_id": "profilePost",
+    "permission_id": "approveUnapprove"
+  }
+]

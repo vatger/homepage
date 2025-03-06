@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="layout-specing">
         <x-layouts.admin.content
-            header="SYS Logs"
+                header="SYS Logs"
         ></x-layouts.admin.content>
 
 
@@ -59,7 +59,7 @@
                             <td>{{ $log->type }}</td>
                             <td>{{ $log->path }}</td>
                             <td>{{ $log->method }}</td>
-                            <td>{{ \Illuminate\Support\Str::words($log->message, words: 10) }}</td>
+                            <td><small>{{ \Illuminate\Support\Str::words($log->message, words: 8) }}</small></td>
                             <td>
                                 <div class="btn-group btn-group-sm">
                                     <button class="btn btn-sm btn-soft-info" wire:click="view_log({{ $log->id }})">Info</button>
@@ -90,6 +90,8 @@
                                 <p><strong>User:</strong> <span>{{ $sellog->user_id }}</span></p>
                                 <p><strong>Method:</strong> <span>{{ $sellog->method }}</span></p>
                                 <p><strong>Time:</strong> <span>{{ $sellog->created_at }}</span></p>
+                                <p><strong>Stacktrace:</strong>
+                                <p>{{ $log->message }}</p>
                                 <p><strong>Stacktrace:</strong>
                                 <p>{!! str_replace('#','<hr>#',$sellog->stack_trace) !!}</p>
                             </div>

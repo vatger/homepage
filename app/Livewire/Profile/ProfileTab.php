@@ -61,7 +61,7 @@ class ProfileTab extends Component
             $f->save();
             $this->showNoty('FIR beigetreten.', 'success');
         }
-        MembershipLibrary::update(Auth::user(), true);
+        MembershipLibrary::update(Auth::user());
         $this->fir_selection_checkbox = false;
     }
 }

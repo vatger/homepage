@@ -30,13 +30,17 @@ class GDPRLibrary extends BaseLibrary
         $current_user = Auth::user();
         Auth::setUser($user);
         Auth::logout();
-        Auth::setUser($current_user);
+        if (! empty($current_user)) {
+            Auth::setUser($current_user);
+        }
 
         if ($now) {
             $user->vatgerDetails->update(['delete_at' => Carbon::now()->subHours(25)]);
-
+            sleep(1);
+            self::start_deletion($user);
             return;
         }
+
         $user->vatgerDetails->update(['delete_at' => Carbon::now()]);
         $date = Carbon::now()->addHours(24);
         $n = new BasicNotification(
@@ -49,6 +53,7 @@ class GDPRLibrary extends BaseLibrary
             delete_at: $date->addDay(),
         );
         $user->notify($n);
+
     }
 
     public static function start_deletion(User $user): void
@@ -149,7 +154,7 @@ class GDPRLibrary extends BaseLibrary
         }
     }
 
-    public static function call_api_service(int $user_id, string $service): bool
+    public static function call_api_service(int $user_id, string $service, bool $debug = false): bool
     {
         try {
             $services = json_decode(File::get(storage_path('app/configurations/gdpr-removal-services.json')));
@@ -168,12 +173,17 @@ class GDPRLibrary extends BaseLibrary
             $client = self::constructClient([
                 'headers' => $headers,
             ]);
+            dump($api_url, $expected_code, $method, $token, $headers, $client);
             try {
                 $response = $client->request($method, $api_url, ['http_errors' => false]);
             } catch (GuzzleException $e) {
                 Log::error($e->getMessage());
 
                 return false;
+            }
+            if ($debug) {
+                dump($response->getStatusCode());
+                dump($response->getBody()->getContents());
             }
             $response_code = $response?->getStatusCode();
             if ($response_code == $expected_code) {
