@@ -10,21 +10,7 @@ use Livewire\Component;
 
 class TermsPage extends Component
 {
-    private string $gdpr;
 
-    private string $imprint;
-
-    private string $termsofuse;
-
-    private string $satzung;
-
-    private Carbon $gdpr_date;
-
-    private Carbon $imprint_date;
-
-    private Carbon $termsofuse_date;
-
-    private Carbon $satzung_date;
 
     public function boot(): void
     {

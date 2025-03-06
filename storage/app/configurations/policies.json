@@ -1,0 +1,42 @@
+[
+  {
+    "id": "gdpr",
+    "name_de": "Datenschutzerklärung",
+    "name_en": null,
+    "type": "html",
+    "needs_approval": true,
+    "last_update": "2023-08-31",
+    "path_de": "storage/public/policies/gdpr.html",
+    "path_en": null
+  },
+  {
+    "id": "imprint",
+    "name_de": "Impressum",
+    "name_en": "Imprint",
+    "type": "html",
+    "needs_approval": true,
+    "last_update": "2025-03-01",
+    "path_de": "storage/public/policies/imprint.html",
+    "path_en": null
+  },
+  {
+    "id": "satzung",
+    "name_de": "Satzung",
+    "name_en": null,
+    "type": "pdf",
+    "needs_approval": true,
+    "last_update": "2023-08-31",
+    "url_de": "",
+    "url_en": null
+  },
+  {
+    "id": "termsofuse",
+    "name_de": "Nutzungsbedingungen",
+    "name_en": "Terms of Use",
+    "type": "html",
+    "needs_approval": true,
+    "last_update": "2025-03-06",
+    "path_de": "storage/public/policies/termsofuse-de-2025-03-06.html",
+    "path_en": null
+  }
+]
