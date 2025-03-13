@@ -16,6 +16,7 @@ Route::group([
         'uses' => 'AuthorizationController@authorize',
         'as' => 'authorizations.authorize',
         'middleware' => 'web',
+        'excluded_middleware' => ['csrf'],
     ]);
 
     $guard = config('passport.guard', null);

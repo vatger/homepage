@@ -105,7 +105,7 @@ class Kernel extends HttpKernel
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
-
+        'csrf' => VerifyCsrfToken::class,
         'pending_removal' => CheckGDPRMiddleware::class,
         'banned' => CheckHomepageBanned::class,
         'check-terms' => CheckTermsMiddleware::class,
