@@ -27,6 +27,7 @@ return [
         'helpful-links' => 'Helpful Links',
         'terms' => 'Terms of Service',
         'satzung' => 'Satzung',
+        'further' => 'further policies...',
     ],
 
     'blog' => [

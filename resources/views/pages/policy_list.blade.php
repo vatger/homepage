@@ -1,6 +1,6 @@
 <div>
     @component('components.layouts.content',[
-        //'header' => '',
+        'header' => 'Policies',
         'links' => [
             route('landing') => config('app.name'),
             'Policies',

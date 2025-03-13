@@ -27,6 +27,7 @@ return [
         'helpful-links' => 'Nützliche Links',
         'terms' => 'Nutzungsbedingungen',
         'satzung' => 'Satzung',
+        'further' => 'weitere Richtlinien...',
     ],
 
     'blog' => [
