@@ -46,8 +46,8 @@
 </div>
 
 <div class="mt-3 mb-4">
-    <a wire:click="accept('{{ $ident }}')" class="btn btn-primary mt-2 me-2">Accept</a>
-    <a wire:click="decline('{{ $ident }}')" class="btn btn-outline-primary mt-2">Decline</a>
+    <button wire:click="accept('{{ $ident }}')" class="btn btn-primary mt-2 me-2">Accept</button>
+    <button wire:click="decline('{{ $ident }}')" class="btn btn-outline-primary mt-2">Decline</button>
 
     @if($agreed_date && $agreed_date->isAfter($date))
         <div class="text-success mt-1">Zugestimmt am {{ $agreed_date->format('jS F Y H:i') }}</div>

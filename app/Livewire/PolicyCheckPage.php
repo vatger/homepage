@@ -39,4 +39,9 @@ class PolicyCheckPage extends Component
     {
         $this->userSetting->agreeTo($policy_id, true);
     }
+
+    public function continue()
+    {
+        return redirect()->intended(route('landing'));
+    }
 }

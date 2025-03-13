@@ -32,7 +32,7 @@
 
                                 @if($user_settings->agreed)
                                     <div class="accordion pt-2">
-                                        <a href="{{ route('landing') }}" class="btn btn-success mt-2 me-2">Weiter</a>
+                                        <button wire:click="continue" class="btn btn-success mt-2 me-2">Weiter</button>
                                     </div>
                                 @endif
                             </div>

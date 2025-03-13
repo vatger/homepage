@@ -4,17 +4,13 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
-        // Passport::ignoreRoutes();
-    }
+    public function register(): void {}
 
     /**
      * Bootstrap any application services.
@@ -28,5 +24,6 @@ class AppServiceProvider extends ServiceProvider
 
         // Set default timezone to UTC
         date_default_timezone_set(config('app.timezone', 'UTC'));
+
     }
 }

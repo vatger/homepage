@@ -70,7 +70,7 @@ class Kernel extends HttpKernel
             CookieConsentMiddleware::class,
             PreventRequestsDuringMaintenance::class,
             SysLogMiddleware::class,
-            CheckTermsMiddleware::class,
+            'check-terms',
         ],
 
         'web_api' => [
@@ -83,7 +83,6 @@ class Kernel extends HttpKernel
             JsonResponse::class,
             SubstituteBindings::class,
             'throttle:api',
-            PreventRequestsDuringMaintenance::class,
             OptionalAuthenticate::class,
         ],
     ];
