@@ -86,6 +86,7 @@ class ConnectController extends Controller
                 Mail::raw("$new_id tried to log in but email ($dupe_email) is already given to $old_id", function ($message) {
                     $message->to('support@vatger.de');
                 });
+
                 return $dupe_email;
             });
 
