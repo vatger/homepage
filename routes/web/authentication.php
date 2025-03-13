@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ConnectController;
 use App\Http\Controllers\GithubOauthController;
+use App\Livewire\PolicyCheckPage;
 use Illuminate\Support\Facades\Route;
 
 Route::get('login', function () {
@@ -25,7 +26,7 @@ Route::group([
             ->name('vatsim.authentication.connect.logout');
     });
 
-    Route::get('check_terms', \App\Livewire\PolicyCheckPage::class)
+    Route::get('check_terms', PolicyCheckPage::class)
         ->name('check-terms')
         ->middleware('auth');
 
