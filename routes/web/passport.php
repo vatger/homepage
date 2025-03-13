@@ -9,12 +9,12 @@ Route::group([
     Route::post('/token', [
         'uses' => 'AccessTokenController@issueToken',
         'as' => 'token',
-        'middleware' => ['throttle'],
+        'middleware' => 'throttle',
     ]);
 
     Route::get('/authorize', [
         'uses' => 'AuthorizationController@authorize',
         'as' => 'authorizations.authorize',
-        'middleware' => ['web'],
+        'middleware' => 'web',
     ]);
 });
