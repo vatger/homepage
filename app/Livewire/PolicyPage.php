@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Membership\UserSetting;
+use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -30,6 +31,7 @@ class PolicyPage extends Component
     {
         return view('pages.policy')->with([
             'policy' => $this->policy,
+            'en' => Session::get('language', 'de') == 'en',
         ]);
     }
 }

@@ -5,6 +5,7 @@
     'agreed_date' => null,
     'path',
     'type',
+    'changelog' => null
 ])
 
 @php
@@ -23,6 +24,15 @@
     </h2>
     <div id="{{ $ident }}-d" class="accordion-collapse border-0 collapse" aria-labelledby="{{ $ident }}-h" data-bs-parent="#{{ $ident }}-h" style="">
         <div class="accordion-body">
+            @if(!empty($changelog))
+                <div class="container">
+                    <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                        <h4 class="alert-heading">Änderungsprotokoll:</h4>
+                        {!! Storage::get($changelog) !!}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            @endif
             @if($type == "html")
                 {!! Storage::get($path) !!}
             @endif
@@ -35,7 +45,7 @@
     </div>
 </div>
 
-<div class="mb-4">
+<div class="mt-3 mb-4">
     <a wire:click="accept('{{ $ident }}')" class="btn btn-primary mt-2 me-2">Accept</a>
     <a wire:click="decline('{{ $ident }}')" class="btn btn-outline-primary mt-2">Decline</a>
 

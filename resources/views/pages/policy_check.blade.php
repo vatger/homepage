@@ -12,33 +12,32 @@
     </section>
 
     <section class="section">
-        <div class="container">
+        <div class="">
             <div class="row justify-content-center">
                 <div class="col-lg-9">
-                    <div class="card shadow border-0 rounded">
-                        <div class="card-body">
-                            <h5 class="card-title">Policies:</h5>
-
-                            <div class="accordion pt-2">
-                                @foreach($polices as $policy)
+                    @foreach($polices as $policy)
+                        <div class="card shadow border-0 rounded mb-4">
+                            <div class="card-body">
+                                <div class="accordion pt-2">
                                     <x-terms-tab
                                             :ident="$policy->id"
-                                            :caption="$policy->name_de"
+                                            :caption="$en && !empty($policy->name_en) ? $policy->name_en : $policy->name_de"
                                             :date="\Carbon\Carbon::create($policy->last_update)"
-                                            :path="$policy->path_de"
+                                            :path="$en && !empty($policy->path_en) ? $policy->path_en : $policy->path_de"
                                             :agreed_date="$user_settings->getAgreedAt($policy->id)"
                                             :type="$policy->type"
+                                            :changelog="$en && !empty($policy->path_changelog_en) ? $policy->path_changelog_en : $policy->path_changelog_de"
                                     />
-                                @endforeach
-                            </div>
-
-                            @if($user_settings->agreed)
-                                <div class="accordion pt-2">
-                                    <a href="{{ route('landing') }}" class="btn btn-success mt-2 me-2">Weiter</a>
                                 </div>
-                            @endif
+
+                                @if($user_settings->agreed)
+                                    <div class="accordion pt-2">
+                                        <a href="{{ route('landing') }}" class="btn btn-success mt-2 me-2">Weiter</a>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div><!--end col-->
             </div><!--end row-->
         </div><!--end container-->
