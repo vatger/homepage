@@ -5,7 +5,7 @@
         'subheader' => $policy->last_update,
         'links' => [
             route('landing') => config('app.name'),
-            'Policies',
+            route('policy-list') => 'Policies',
             $en && !empty($policy->name_en) ? $policy->name_en : $policy->name_de
             ]
     ])

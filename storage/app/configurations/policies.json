@@ -2,13 +2,11 @@
   {
     "id": "gdpr",
     "name_de": "Datenschutzerklärung",
-    "name_en": null,
+    "name_en": "Privacy Policy",
     "type": "html",
     "needs_approval": true,
     "last_update": "2023-08-31",
-    "path_de": "public/policies/gdpr.html",
-    "path_en": null,
-    "path_changelog_de": null
+    "path_de": "public/policies/gdpr.html"
   },
   {
     "id": "imprint",
@@ -17,9 +15,7 @@
     "type": "html",
     "needs_approval": true,
     "last_update": "2025-03-01",
-    "path_de": "public/policies/imprint.html",
-    "path_en": null,
-    "path_changelog_de": null
+    "path_de": "public/policies/imprint.html"
   },
   {
     "id": "satzung",
@@ -28,9 +24,8 @@
     "type": "pdf",
     "needs_approval": true,
     "last_update": "2023-08-31",
-    "path_de": "/storage/policies/satzung.pdf",
-    "path_en": null,
-    "path_changelog_de": null
+    "path_de": "/storage/policies/satzung_de.pdf",
+    "path_en": "/storage/policies/satzung_en.pdf"
   },
   {
     "id": "termsofuse",
@@ -43,5 +38,78 @@
     "path_en": "public/policies/termsofuse-en.html",
     "path_changelog_de": "public/policies/termsofuse-de-changelog.html",
     "path_changelog_en": "public/policies/termsofuse-en-changelog.html"
+  },
+  {
+    "id": "pol.atd",
+    "name_de": "ATC Trainings Department",
+    "name_en": null,
+    "type": "pdf",
+    "needs_approval": false,
+    "last_update": "2024-03-11",
+    "path_de": "/storage/policies/atd.pdf"
+  },
+  {
+    "id": "pol.atd.a",
+    "name_de": "ATC Trainings Department - Annex A",
+    "name_en": null,
+    "type": "pdf",
+    "needs_approval": false,
+    "last_update": "2024-06-21",
+    "path_de": "/storage/policies/atd-a.pdf"
+  },
+  {
+    "id": "pol.atd.b",
+    "name_de": "ATC Trainings Department - Annex B",
+    "name_en": null,
+    "type": "pdf",
+    "needs_approval": false,
+    "last_update": "2024-03-01",
+    "path_de": "/storage/policies/atd-b.pdf"
+  },
+  {
+    "id": "pol.atd.c",
+    "name_de": "ATC Trainings Department - Annex C",
+    "name_en": null,
+    "type": "pdf",
+    "needs_approval": false,
+    "last_update": "2024-03-11",
+    "path_de": "/storage/policies/atd-c.pdf"
+  },
+  {
+    "id": "pol.tech",
+    "name_de": "Tech Department",
+    "name_en": null,
+    "type": "pdf",
+    "needs_approval": false,
+    "last_update": "2024-10-08",
+    "path_de": "/storage/policies/tech.pdf",
+    "path_changelog_de": "public/policies/tech_change.html"
+  },
+  {
+    "id": "pol.event",
+    "name_de": "Event Department",
+    "name_en": null,
+    "type": "pdf",
+    "needs_approval": false,
+    "last_update": "2023-12-15",
+    "path_de": "/storage/policies/event.pdf"
+  },
+  {
+    "id": "pol.nav",
+    "name_de": "NAV Department",
+    "name_en": null,
+    "type": "pdf",
+    "needs_approval": false,
+    "last_update": "2023-07-19",
+    "path_de": "/storage/policies/nav.pdf"
+  },
+  {
+    "id": "pol.ptd",
+    "name_de": "Pilots Training Department",
+    "name_en": null,
+    "type": "pdf",
+    "needs_approval": false,
+    "last_update": "2023-07-12",
+    "path_de": "/storage/policies/nav.pdf"
   }
 ]

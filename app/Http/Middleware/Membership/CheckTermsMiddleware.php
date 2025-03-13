@@ -17,7 +17,7 @@ class CheckTermsMiddleware
             $user = Auth::user();
             $lw = ($request->route()->uri() == 'livewire/update');
             if (! $lw && ! $user->settings->agreed) {
-                // Account has not agreed to all necessary polices
+                // Account has not agreed to all necessary policies
                 return redirect()->route('check-terms', ['url' => urlencode($request->uri())]);
             }
         }

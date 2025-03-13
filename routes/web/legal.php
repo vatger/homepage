@@ -1,7 +1,9 @@
 <?php
 
+use App\Livewire\PolicyListPage;
 use App\Livewire\PolicyPage;
 
+Route::get('/policies', PolicyListPage::class)->name('policy-list');
 Route::get('/policies/{policy_id}', PolicyPage::class)->name('policies');
 
 Route::redirect('/gdpr', '/policies/gdpr')->name('gdpr');
