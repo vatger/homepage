@@ -32,6 +32,11 @@ Route::get('/r/{shortLink}', [ShortLinkController::class, 'viewLink']);
 // #################
 require_once 'web/authentication.php';
 
+// ###########
+// PASSPORT #
+// ###########
+require_once 'web/passport.php';
+
 // #########
 // PILOTS #
 // #########
