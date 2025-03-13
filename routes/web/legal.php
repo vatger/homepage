@@ -1,15 +1,12 @@
 <?php
 
-use App\Http\Controllers\PagesController;
+use App\Livewire\PolicyPage;
 
-Route::get('/gdpr', [PagesController::class, 'gdpr'])->name('gdpr');
+Route::get('/policies/{policy_id}', PolicyPage::class)->name('policies');
 
-Route::get('/datenschutz', [PagesController::class, 'gdpr']);
-
-Route::get('/imprint', [PagesController::class, 'imprint'])->name('imprint');
-
-Route::get('/impressum', [PagesController::class, 'imprint']);
-
-Route::get('/terms', [PagesController::class, 'terms'])->name('terms');
-
-Route::get('/satzung', [PagesController::class, 'satzung'])->name('satzung');
+Route::redirect('/gdpr', '/policies/gdpr')->name('gdpr');
+Route::redirect('/datenschutz', '/policies/gdpr');
+Route::redirect('/imprint', '/policies/imprint')->name('imprint');
+Route::redirect('/impressum', '/policies/imprint');
+Route::redirect('/terms', '/policies/termsofuse')->name('terms');
+Route::redirect('/satzung', '/policies/satzung')->name('satzung');

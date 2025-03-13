@@ -3,12 +3,14 @@
     'caption',
     'date',
     'agreed_date' => null,
-    'text',
-    'pdf_type' =>false,
+    'path',
+    'type',
+    'changelog' => null
 ])
 
 @php
     $agreed_date = $agreed_date ? \Carbon\Carbon::create($agreed_date) : null;
+
 @endphp
 
 <div class="accordion-item rounded mt-2">
@@ -22,18 +24,28 @@
     </h2>
     <div id="{{ $ident }}-d" class="accordion-collapse border-0 collapse" aria-labelledby="{{ $ident }}-h" data-bs-parent="#{{ $ident }}-h" style="">
         <div class="accordion-body">
-            @if(!$pdf_type)
-                {!! $text !!}
-            @else
-                <object data="{{ $text }}" type="application/pdf" width="100%" height="800px">
-                    <p>Unable to display PDF file. <a href="{{ $text }}">Download</a> instead.</p>
+            @if(!empty($changelog))
+                <div class="container">
+                    <div class="alert alert-secondary alert-dismissible fade show" role="alert">
+                        <h4 class="alert-heading">Änderungsprotokoll:</h4>
+                        {!! Storage::get($changelog) !!}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            @endif
+            @if($type == "html")
+                {!! Storage::get($path) !!}
+            @endif
+            @if($type == "pdf")
+                <object data="{{ $path }}" type="application/pdf" width="100%" height="800px">
+                    <p>Unable to display PDF file. <a href="{{ $path }}">Download</a> instead.</p>
                 </object>
             @endif
         </div>
     </div>
 </div>
 
-<div class="mb-4">
+<div class="mt-3 mb-4">
     <a wire:click="accept('{{ $ident }}')" class="btn btn-primary mt-2 me-2">Accept</a>
     <a wire:click="decline('{{ $ident }}')" class="btn btn-outline-primary mt-2">Decline</a>
 

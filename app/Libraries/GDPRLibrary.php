@@ -38,6 +38,7 @@ class GDPRLibrary extends BaseLibrary
             $user->vatgerDetails->update(['delete_at' => Carbon::now()->subHours(25)]);
             sleep(1);
             self::start_deletion($user);
+
             return;
         }
 

@@ -12,27 +12,32 @@
     </section>
 
     <section class="section">
-        <div class="container">
+        <div class="">
             <div class="row justify-content-center">
                 <div class="col-lg-9">
-                    <div class="card shadow border-0 rounded">
-                        <div class="card-body">
-                            <h5 class="card-title">Policies:</h5>
-
-                            <div class="accordion pt-2">
-                                <x-terms-tab ident="gdpr" caption="GDPR" :date="$gdpr_date" :text="$gdpr" :agreed_date="$user_settings?->gdpr_agreed_at" />
-                                <x-terms-tab ident="imprint" caption="Imprint" :date="$imprint_date" :text="$imprint" :agreed_date="$user_settings?->imprint_agreed_at" />
-                                <x-terms-tab ident="termsofuse" caption="Nutzungsbedingungen" :date="$termsofuse_date" :text="$termsofuse" :agreed_date="$user_settings?->termsofuse_agreed_at" />
-                                <x-terms-tab ident="satzung" caption="Satzung" :date="$satzung_date" :text="$satzung" :agreed_date="$user_settings?->satzung_agreed_at" pdf_type="true" />
-                            </div>
-
-                            @if(Auth::user()?->settings?->agreed)
+                    @foreach($polices as $policy)
+                        <div class="card shadow border-0 rounded mb-4">
+                            <div class="card-body">
                                 <div class="accordion pt-2">
-                                    <a href="{{ route('landing') }}" class="btn btn-success mt-2 me-2">Weiter</a>
+                                    <x-terms-tab
+                                            :ident="$policy->id"
+                                            :caption="$en && !empty($policy->name_en) ? $policy->name_en : $policy->name_de"
+                                            :date="\Carbon\Carbon::create($policy->last_update)"
+                                            :path="$en && !empty($policy->path_en) ? $policy->path_en : $policy->path_de"
+                                            :agreed_date="$user_settings->getAgreedAt($policy->id)"
+                                            :type="$policy->type"
+                                            :changelog="$en && !empty($policy->path_changelog_en) ? $policy->path_changelog_en : $policy->path_changelog_de"
+                                    />
                                 </div>
-                            @endif
+
+                                @if($user_settings->agreed)
+                                    <div class="accordion pt-2">
+                                        <a href="{{ route('landing') }}" class="btn btn-success mt-2 me-2">Weiter</a>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div><!--end col-->
             </div><!--end row-->
         </div><!--end container-->

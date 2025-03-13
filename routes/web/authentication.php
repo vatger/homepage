@@ -23,7 +23,7 @@ Route::prefix('authentication')
                 ->name('vatsim.authentication.connect.logout');
         });
 
-        Route::get('check_terms', \App\Livewire\TermsPage::class)
+        Route::get('check_terms', \App\Livewire\PolicyCheckPage::class)
             ->name('check-terms')
             ->middleware('auth');
 
