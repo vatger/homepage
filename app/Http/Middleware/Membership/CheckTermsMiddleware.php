@@ -12,8 +12,10 @@ class CheckTermsMiddleware
      */
     public function handle(Request $request, $next)
     {
+
         if (Auth::check()) {
             $user = Auth::user();
+            dd($user->settings->agreed);
 
             if (! $user->settings->agreed) {
                 // Account has not agreed to all necessary polices

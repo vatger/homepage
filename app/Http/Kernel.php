@@ -70,6 +70,7 @@ class Kernel extends HttpKernel
             CookieConsentMiddleware::class,
             PreventRequestsDuringMaintenance::class,
             SysLogMiddleware::class,
+            CheckTermsMiddleware::class,
         ],
 
         'web_api' => [
