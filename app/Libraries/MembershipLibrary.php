@@ -124,7 +124,7 @@ class MembershipLibrary
             }
         }
 
-        Log::info('[MembershipLibrary::handleMembershipChange]::'.$user->id.'::Membership Update Triggered!');
+        // Log::info('[MembershipLibrary::handleMembershipChange]::'.$user->id.'::Membership Update Triggered!');
     }
 
     protected static function check_bans(User $user): void

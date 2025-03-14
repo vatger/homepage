@@ -42,13 +42,13 @@ class UpdateTeamspeakJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('[UpdateTeamspeakJob]::Starting. First ID '.$this->_lastUpdatedListNr);
+        // Log::info('[UpdateTeamspeakJob]::Starting. First ID '.$this->_lastUpdatedListNr);
 
         for ($i = 0; $i < $this->_chunckNumber; $i++) {
             $this->_clientDBlist = TeamSpeakWebquery::getClientDB($this->_lastUpdatedListNr);
             if (count($this->_clientDBlist) == 0) {
                 Cache::put('teamspeak.updater.lastUpdatedListNr', 0);
-                \Log::info('[TS]::Finished update. Checked '.$this->_lastUpdatedListNr);
+                // \Log::info('[TS]::Finished update. Checked '.$this->_lastUpdatedListNr);
                 $this->_lastUpdatedListNr = 0;
 
                 return;
@@ -59,6 +59,6 @@ class UpdateTeamspeakJob implements ShouldQueue
             }
         }
         Cache::put('teamspeak.updater.lastUpdatedListNr', $this->_lastUpdatedListNr);
-        Log::info('[UpdateTeamspeakJob]::Completed. Last ID '.($this->_lastUpdatedListNr - 1));
+        // Log::info('[UpdateTeamspeakJob]::Completed. Last ID '.($this->_lastUpdatedListNr - 1));
     }
 }
