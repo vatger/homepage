@@ -91,8 +91,9 @@
     "name_en": null,
     "type": "pdf",
     "needs_approval": false,
-    "last_update": "2023-12-15",
-    "path_de": "/storage/policies/event.pdf"
+    "last_update": "2025-03-05",
+    "path_de": "/storage/policies/event.pdf",
+    "path_changelog_de": "public/policies/event_change.html"
   },
   {
     "id": "pol.nav",
