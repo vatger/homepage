@@ -51,6 +51,8 @@ class UserController extends ApiController
         $notification = new BasicNotification($title, $message, $source_name, $link_text, $link_url);
         $cid->notify($notification);
 
+        \Log::info(json_encode($notification));
+
         return response()->json(['status' => 'Notification sent successfully']);
     }
 }
