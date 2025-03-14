@@ -26,7 +26,7 @@
                                             :path="$en && !empty($policy->path_en) ? $policy->path_en : $policy->path_de"
                                             :agreed_date="$user_settings->getAgreedAt($policy->id)"
                                             :type="$policy->type"
-                                            :changelog="$en && !empty($policy->path_changelog_en) ? $policy->path_changelog_en : $policy?->path_changelog_de"
+                                            :changelog="$en && !empty($policy->path_changelog_en) ? $policy->path_changelog_en : $policy->path_changelog_de ?? null"
                                     />
                                 </div>
 
