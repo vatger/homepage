@@ -50,8 +50,8 @@
 
                         <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                             <h5 class="footer-head"></h5>
-                            <a href="https://vatsim.net"><img class="mb-4" src="{{ iasset('images/vatsim/VATSIM_Logo_White_500px.png', 300) }}" width="80%"></a>
-                            <a href="https://vateud.net"><img src="{{ iasset('images/vateud.png',300) }}" width="80%"></a>
+                            <a href="https://vatsim.net"><img class="mb-4" src="{{ iasset('images/vatsim/VATSIM_Logo_White_500px.png', 300) }}" width="80%" alt="vatsim"></a>
+                            <a href="https://vateud.net"><img src="{{ iasset('images/vateud.png',300) }}" width="80%" alt="vateud"></a>
                         </div>
                         <!--end col-->
                     </div>
