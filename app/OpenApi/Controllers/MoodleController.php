@@ -71,7 +71,7 @@ class MoodleController extends ApiController
     }
 
     /**
-     * Moodle course completion endpoint
+     * Moodle enrol user endpoint
      *
      * @param  int  $course_id  the id of the course
      * @param  int  $cid  the users VATSIM ID

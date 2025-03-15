@@ -19,7 +19,7 @@ class CleanupJob
 
     public function handle(): void
     {
-        $cutoff_date = Carbon::now()->subDays(28);
+        $cutoff_date = Carbon::now()->subDays(14);
 
         SysLog::where('created_at', '<', $cutoff_date)->delete();
 
