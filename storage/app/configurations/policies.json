@@ -41,7 +41,7 @@
   },
   {
     "id": "pol.atd",
-    "name_de": "ATC Trainings Department",
+    "name_de": "ATC Training Department",
     "name_en": null,
     "type": "pdf",
     "needs_approval": false,
@@ -50,7 +50,7 @@
   },
   {
     "id": "pol.atd.a",
-    "name_de": "ATC Trainings Department - Annex A",
+    "name_de": "ATC Training Department - Annex A",
     "name_en": null,
     "type": "pdf",
     "needs_approval": false,
@@ -59,7 +59,7 @@
   },
   {
     "id": "pol.atd.b",
-    "name_de": "ATC Trainings Department - Annex B",
+    "name_de": "ATC Training Department - Annex B",
     "name_en": null,
     "type": "pdf",
     "needs_approval": false,
@@ -68,7 +68,7 @@
   },
   {
     "id": "pol.atd.c",
-    "name_de": "ATC Trainings Department - Annex C",
+    "name_de": "ATC Training Department - Annex C",
     "name_en": null,
     "type": "pdf",
     "needs_approval": false,
@@ -101,8 +101,9 @@
     "name_en": null,
     "type": "pdf",
     "needs_approval": false,
-    "last_update": "2023-07-19",
-    "path_de": "/storage/policies/nav.pdf"
+    "last_update": "2025-03-17",
+    "path_de": "/storage/policies/nav.pdf",
+    "path_changelog_de": "public/policies/nav_change.html"
   },
   {
     "id": "pol.ptd",
