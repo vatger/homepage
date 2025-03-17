@@ -16,7 +16,7 @@ class PolicyCheckPage extends Component
     private ?UserSetting $userSetting;
 
     #[Url]
-    public ?string $url;
+    public ?string $url = null;
 
     public function boot(): void
     {
@@ -46,7 +46,7 @@ class PolicyCheckPage extends Component
 
     public function continue()
     {
-        if ($this->url) {
+        if ($this?->url) {
             return redirect()->intended(urldecode($this->url));
         }
 
