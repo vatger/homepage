@@ -21,13 +21,15 @@ class CleanupJob
     {
         $sub_days = 7;
 
-        $cutoff_date = Carbon::now()->subDays($sub_days);
+        $cutoff_date_7 = Carbon::now()->subDays($sub_days);
+        $cutoff_date_1 = Carbon::now()->subDays(1);
 
-        SysLog::where('created_at', '<', $cutoff_date)->delete();
+        SysLog::where('created_at', '<', $cutoff_date_7)->delete();
+        SysLog::where('type', 'LIKE', 'http')->where('created_at', '<', $cutoff_date_1)->delete();
 
-        ApiLog::where('created_at', '<', $cutoff_date)->delete();
+        ApiLog::where('created_at', '<', $cutoff_date_7)->delete();
 
-        self::cleanup_cached_images($sub_days);
+        self::cleanup_cached_images();
     }
 
     public static function cleanup_cached_images(int $days = 30): void
