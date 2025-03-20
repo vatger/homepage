@@ -40,10 +40,10 @@ class BookPositionTab extends Component
     {
         $this->selected_date = Carbon::now()->format('Y-m-d');
         $this->selected_start_at = Carbon::now()
-            ->addHours(0.99)
+            ->addHours(0.6)
             ->format('H00');
         $this->selected_end_at = Carbon::now()
-            ->addHours(2.99)
+            ->addHours(2.6)
             ->format('H00');
     }
 
@@ -124,7 +124,7 @@ class BookPositionTab extends Component
         }
 
         $already_controller = DataFeedLibrary::Controller($b->station);
-        $allowed_start = Carbon::now()->addHours(2.5);
+        $allowed_start = Carbon::now()->addHours(1.5);
         if ($already_controller && $b->starts_at->isBefore($allowed_start)) {
             return "You can't book this station. There is someone already connected to this station.";
         }
