@@ -3,6 +3,7 @@
 namespace App\Libraries\VATSIM;
 
 use App\Models\Navigation\Aerodrome;
+use App\Models\Navigation\Station;
 use Illuminate\Support\Str;
 use VatsimData\Datafeed;
 use VatsimData\DatafeedClasses\ControllerWithTransceivers;
@@ -33,5 +34,16 @@ class DataFeedLibrary
         }
 
         return $matched_controllers;
+    }
+
+    public static function Controller(Station $station): ?object
+    {
+        $all_controllers = Datafeed::ControllersLocal();
+
+        $callable = fn ($controller) => Str::substr($controller->callsign, 0, 4) == Str::substr($station->ident, 0, 4) &&
+            Str::substr($controller->callsign, -3, 3) == Str::substr($station->ident, -3, 3) &&
+            floatval($controller->frequency) == $station->frequency;
+
+        return array_find($all_controllers, $callable);
     }
 }
