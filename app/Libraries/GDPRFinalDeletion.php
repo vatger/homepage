@@ -13,25 +13,40 @@ use App\Models\Membership\UserSetting;
 use App\Models\Membership\UserStaffDetail;
 use App\Models\Membership\UserVatgerDetail;
 use App\Models\Membership\UserVatsimDetail;
+
 use ReflectionClass;
 use ReflectionException;
+use Illuminate\Support\Facades\DB;
 use ReflectionMethod;
 
 class GDPRFinalDeletion
 {
-    public User $user;
+    protected ?User $user;
 
-    /**
-     * @throws ReflectionException
-     */
+    protected int $user_id;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+        $this->user_id = $user->id;
+    }
+
     public function run(): bool
     {
-        $reflection = new ReflectionClass(self::class);
-        $methods = $reflection->getMethods(ReflectionMethod::IS_PRIVATE);
-        foreach ($methods as $method) {
-            $method->setAccessible(true);
-            // Allow access to private methods
-            $method->invoke($this, $this->user); // Call the private method on the current instance
+        try {
+            DB::beginTransaction();
+            $reflection = new ReflectionClass(self::class);
+            $methods = $reflection->getMethods(ReflectionMethod::IS_PRIVATE);
+            foreach ($methods as $method) {
+                $method->setAccessible(true);
+                // Allow access to private methods
+                $method->invoke($this, $this->user); // Call the private method on the current instance
+            }
+        } catch (\Throwable $e) {
+            try {
+                DB::rollBack();
+            } catch (\Throwable $e) {
+            }
         }
 
         return false;
