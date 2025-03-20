@@ -39,9 +39,11 @@ class BookPositionTab extends Component
     public function mount(): void
     {
         $this->selected_date = Carbon::now()->format('Y-m-d');
-        $this->selected_start_at = Carbon::now()->addHours(0.99)->format('H00');
+        $this->selected_start_at = Carbon::now()
+            ->addHours(0.99)
+            ->format('H00');
         $this->selected_end_at = Carbon::now()
-            ->addHours(2)
+            ->addHours(2.99)
             ->format('H00');
     }
 
