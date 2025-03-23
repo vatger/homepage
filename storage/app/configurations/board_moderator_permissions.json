@@ -53,10 +53,6 @@
   },
   {
     "permission_group_id": "forum",
-    "permission_id": "hardDeleteAnyPost"
-  },
-  {
-    "permission_group_id": "forum",
     "permission_id": "warn"
   },
   {
