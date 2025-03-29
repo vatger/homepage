@@ -1,13 +1,13 @@
 <?php
 
-namespace App\OpenApi\Middleware;
+namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\JsonResponse as HttpJsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\ResponseFactory;
 
-class JsonResponse
+class ApiJsonResponse
 {
     protected ResponseFactory $responseFactory;
 
@@ -23,7 +23,7 @@ class JsonResponse
         $request->headers->set('Accept', 'application/json');
         // Get the response
         $response = $next($request);
-        // If the response is not strictly a JsonResponse, we make it
+        // If the response is not strictly a ApiJsonResponse, we make it
         if (! $response instanceof HttpJsonResponse) {
             $response = $this->responseFactory->json($response->content(), $response->status(), $response->headers->all());
         }

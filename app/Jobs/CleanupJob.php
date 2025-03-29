@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Models\Api\ApiLog;
 use App\Models\Tech\SysLog;
-use App\OpenApi\Models\ApiLog;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;

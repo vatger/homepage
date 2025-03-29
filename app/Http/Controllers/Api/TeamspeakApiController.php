@@ -1,9 +1,9 @@
 <?php
 
-namespace App\OpenApi\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Decorators\ApiPathfinder;
 use App\Models\TeamspeakRegistration;
-use App\OpenApi\Helpers\ApiPathfinder;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 

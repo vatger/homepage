@@ -1,20 +1,17 @@
 <?php
 
-namespace App\OpenApi\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Decorators\ApiPathfinder;
 use App\Models\AtcBooking;
 use App\Models\Membership\User;
-use App\OpenApi\Helpers\ApiPathfinder;
-use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Response;
 use Spatie\IcalendarGenerator\Components\Calendar;
 use Spatie\IcalendarGenerator\Components\Event;
-use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
-#[OpenApi\PathItem]
 class BookingController extends ApiController
 {
     /**
@@ -24,7 +21,6 @@ class BookingController extends ApiController
      * @param  string  $start  The start date in format Y-m-d
      * @param  string  $end  The end date in format Y-m-d
      */
-    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('booking.index')]
     public function index(Request $request, string $start = '', string $end = ''): array
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\OpenApi\Models;
+namespace App\Models\Api;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

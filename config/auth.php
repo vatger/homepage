@@ -78,7 +78,7 @@ return [
 
         'api_tokens' => [
             'driver' => 'eloquent',
-            'model' => App\OpenApi\Models\ApiToken::class,
+            'model' => \App\Models\Api\ApiToken::class,
         ],
 
         // 'users' => [

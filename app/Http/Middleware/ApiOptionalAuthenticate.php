@@ -1,13 +1,13 @@
 <?php
 
-namespace App\OpenApi\Middleware;
+namespace App\Http\Middleware;
 
-use App\OpenApi\Models\ApiToken;
+use App\Models\Api\ApiToken;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class OptionalAuthenticate
+class ApiOptionalAuthenticate
 {
     /**
      * Handle an incoming request.
@@ -15,8 +15,9 @@ class OptionalAuthenticate
     public function handle(Request $request, Closure $next)
     {
         $header = $request->header('Authorization', '');
-        $token = str_replace('Token ', '', $header);
-
+        $token = str_replace('Token', '', $header);
+        $token = str_replace('Bearer', '', $token);
+        $token = ltrim($token);
         if (ApiToken::tokenExists($token)) {
             try {
                 $api_token = ApiToken::tokenFind($token);

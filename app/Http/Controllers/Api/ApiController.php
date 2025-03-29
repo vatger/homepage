@@ -1,17 +1,15 @@
 <?php
 
-namespace App\OpenApi\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Models\Api\ApiLog;
+use App\Models\Api\ApiToken;
 use App\Models\Membership\User;
-use App\OpenApi\Models\ApiLog;
-use App\OpenApi\Models\ApiToken;
 use Carbon\Carbon;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use ReflectionClass;
-use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
-#[OpenApi\PathItem]
 class ApiController extends Controller
 {
     protected ?ApiToken $token = null;
@@ -81,7 +79,7 @@ class ApiController extends Controller
                 $reflect = new ReflectionClass($prefix.$class);
                 foreach ($reflect->getMethods() ?? [] as $method) {
                     foreach ($method->getAttributes() ?? [] as $attr) {
-                        if ($attr->getName() == 'App\OpenApi\Helpers\ApiPathfinder') {
+                        if ($attr->getName() == 'App\Decorators\ApiPathfinder') {
                             $paths[] = $attr->getArguments()[0];
                         }
                     }

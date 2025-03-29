@@ -1,10 +1,10 @@
 <?php
 
-namespace App\OpenApi\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Decorators\ApiPathfinder;
 use App\Models\Membership\User;
 use App\Notifications\BasicNotification;
-use App\OpenApi\Helpers\ApiPathfinder;
 use App\OpenApi\Parameters\SendNotificationsParameters;
 use App\OpenApi\Responses\ListUsersResponse;
 use Illuminate\Http\Request;

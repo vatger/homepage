@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\OpenApi\Controllers\ApiController;
-use App\OpenApi\Models\ApiRouteToken;
-use App\OpenApi\Models\ApiToken;
+use App\Http\Controllers\Api\ApiController;
+use App\Models\Api\ApiRouteToken;
+use App\Models\Api\ApiToken;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;

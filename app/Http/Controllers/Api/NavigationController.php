@@ -1,6 +1,6 @@
 <?php
 
-namespace App\OpenApi\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Navigation\Station;
 

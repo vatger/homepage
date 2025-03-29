@@ -1,6 +1,6 @@
 <?php
 
-namespace App\OpenApi\Models;
+namespace App\Models\Api;
 
 use App\Models\Membership\User;
 use Cache;

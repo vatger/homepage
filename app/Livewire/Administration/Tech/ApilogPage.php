@@ -4,8 +4,8 @@ namespace App\Livewire\Administration\Tech;
 
 use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SortableTrait;
-use App\OpenApi\Models\ApiLog;
-use App\OpenApi\Models\ApiToken;
+use App\Models\Api\ApiLog;
+use App\Models\Api\ApiToken;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;

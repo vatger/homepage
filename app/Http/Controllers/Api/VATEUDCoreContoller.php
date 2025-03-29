@@ -1,9 +1,9 @@
 <?php
 
-namespace App\OpenApi\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Decorators\ApiPathfinder;
 use App\Libraries\VATSIM\VATEUDCoreLibrary;
-use App\OpenApi\Helpers\ApiPathfinder;
 use App\OpenApi\Responses\VateudRosterControllerResponse;
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Illuminate\Http\Request;

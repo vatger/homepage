@@ -1,6 +1,6 @@
 <?php
 
-namespace App\OpenApi\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;

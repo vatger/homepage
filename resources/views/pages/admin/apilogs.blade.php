@@ -7,7 +7,7 @@
 
         <x-layouts.admin.card>
 
-            <x-layouts.admin.card-header position="left" title="API Logs" :subtitle="\App\OpenApi\Models\ApiLog::count()" />
+            <x-layouts.admin.card-header position="left" title="API Logs" :subtitle="\App\Models\Api\ApiLog::count()" />
 
             <x-layouts.admin.card-header position="right">
                 <li class="list-inline-item" style="width: 100%">
@@ -55,7 +55,7 @@
 
         <x-layouts.admin.card>
 
-            <x-layouts.admin.card-header position="left" title="API Keys" :subtitle="\App\OpenApi\Models\ApiToken::count()" />
+            <x-layouts.admin.card-header position="left" title="API Keys" :subtitle="\App\Models\Api\ApiToken::count()" />
 
             <x-layouts.admin.card-header position="right">
                 <li class="list-inline-item" style="width: 100%">

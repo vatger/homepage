@@ -13,10 +13,8 @@ use App\Models\Membership\UserSetting;
 use App\Models\Membership\UserStaffDetail;
 use App\Models\Membership\UserVatgerDetail;
 use App\Models\Membership\UserVatsimDetail;
-
-use ReflectionClass;
-use ReflectionException;
 use Illuminate\Support\Facades\DB;
+use ReflectionClass;
 use ReflectionMethod;
 
 class GDPRFinalDeletion

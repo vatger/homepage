@@ -1,6 +1,6 @@
 <?php
 
-namespace App\OpenApi\Helpers;
+namespace App\Decorators;
 
 use Attribute;
 

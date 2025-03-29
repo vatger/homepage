@@ -2,6 +2,8 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\ApiJsonResponse;
+use App\Http\Middleware\ApiOptionalAuthenticate;
 use App\Http\Middleware\CookieChecker;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\LocaleMiddleware;
@@ -15,8 +17,6 @@ use App\Http\Middleware\SysLogMiddleware;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\VerifyCsrfToken;
-use App\OpenApi\Middleware\JsonResponse;
-use App\OpenApi\Middleware\OptionalAuthenticate;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
@@ -80,10 +80,10 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            JsonResponse::class,
+            ApiJsonResponse::class,
             SubstituteBindings::class,
             'throttle:api',
-            OptionalAuthenticate::class,
+            ApiOptionalAuthenticate::class,
         ],
     ];
 
@@ -97,7 +97,7 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => Middleware\Authenticate::class,
         'auth.basic' => AuthenticateWithBasicAuth::class,
-        'api_auth.optional' => OptionalAuthenticate::class,
+        'api_auth.optional' => ApiOptionalAuthenticate::class,
         'cache.headers' => SetCacheHeaders::class,
         'can' => Authorize::class,
         'guest' => RedirectIfAuthenticated::class,

@@ -1,37 +1,32 @@
 <?php
 
-namespace App\OpenApi\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Decorators\ApiPathfinder;
 use App\Models\Membership\User;
-use App\OpenApi\Helpers\ApiPathfinder;
-use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
 use Illuminate\Http\Request;
-use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
-#[OpenApi\PathItem]
 class BoardController extends ApiController
 {
     /**
      * Create a forum user
      */
-    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('board.create')]
     public function create(Request $request): bool
     {
         $this->authorizeApiRequest('board.create');
-        $vatsim_id = $request->get('vatsim_id');
-        $forum_id = $request->get('forum_id');
+        $validated = $request->validate([
+            'vatsim_id' => ['required', 'integer'],
+            'forum_id' => ['required', 'integer'],
+        ]);
+
+        $vatsim_id = $validated['vatsim_id'];
+        $forum_id = $validated['forum_id'];
 
         $u = User::find($vatsim_id);
 
-        if (empty($vatsim_id)) {
-            abort(400, 'No vatsim_id provided');
-        }
-        if (empty($forum_id)) {
-            abort(400, 'No forum_id provided');
-        }
         if (empty($u)) {
-            abort(400, "User $vatsim_id not found");
+            abort(404, "User $vatsim_id not found");
         }
         if ($u->settings->forum_id) {
             abort(400, "User $vatsim_id already has an account");

@@ -1,17 +1,16 @@
 <?php
 
-use App\OpenApi\Controllers\BoardController;
-use App\OpenApi\Controllers\BookingController;
-use App\OpenApi\Controllers\BookstackApiController;
-use App\OpenApi\Controllers\DiscordApiController;
-use App\OpenApi\Controllers\MoodleController;
-use App\OpenApi\Controllers\SolosApiController;
-use App\OpenApi\Controllers\TeamspeakApiController;
-use App\OpenApi\Controllers\TestApiController;
-use App\OpenApi\Controllers\UserController;
-use App\OpenApi\Controllers\VATEUDCoreContoller;
-use App\OpenApi\Controllers\VatsimWebhookController;
-use App\OpenApi\Middleware\JsonResponse;
+use App\Http\Controllers\Api\BoardController;
+use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\Api\DiscordApiController;
+use App\Http\Controllers\Api\MoodleController;
+use App\Http\Controllers\Api\SolosApiController;
+use App\Http\Controllers\Api\TeamspeakApiController;
+use App\Http\Controllers\Api\TestApiController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\VATEUDCoreContoller;
+use App\Http\Controllers\Api\VatsimWebhookController;
+use App\Http\Middleware\ApiJsonResponse;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 | non-web API routes.
 |
 */
-Route::get('booking/ical/{id}/{token}/calendar.ics', [BookingController::class, 'ical'])->withoutMiddleware(JsonResponse::class)->name('api.booking.ical');
+Route::get('booking/ical/{id}/{token}/calendar.ics', [BookingController::class, 'ical'])->withoutMiddleware(ApiJsonResponse::class)->name('api.booking.ical');
 Route::get('booking/{start?}/{end?}', [BookingController::class, 'index']);
 
 Route::get('teamspeak/{cid}', [TeamspeakApiController::class, 'ids']);
