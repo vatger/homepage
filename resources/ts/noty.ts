@@ -19,6 +19,11 @@ export const showNoty = function (
         background: "linear-gradient(to right, #C93D3D, #Bb1f1f)",
       };
       break;
+    case "warning":
+      style = {
+        background: "linear-gradient(to right, #bb9e1f, #b8a658)",
+      };
+      break;
     case "":
       style = {
         background: "linear-gradient(to right, #C93D3D, #Bb1f1f)",

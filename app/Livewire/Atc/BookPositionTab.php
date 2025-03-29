@@ -3,6 +3,7 @@
 namespace App\Livewire\Atc;
 
 use App\Libraries\VATSIM\ATCBookingsApi;
+use App\Libraries\VATSIM\DataFeedLibrary;
 use App\Livewire\Helpers\NotyTrait;
 use App\Livewire\Helpers\SearchTrait;
 use App\Models\AtcBooking;
@@ -38,9 +39,11 @@ class BookPositionTab extends Component
     public function mount(): void
     {
         $this->selected_date = Carbon::now()->format('Y-m-d');
-        $this->selected_start_at = Carbon::now()->format('H00');
+        $this->selected_start_at = Carbon::now()
+            ->addHours(0.6)
+            ->format('H00');
         $this->selected_end_at = Carbon::now()
-            ->addHours(2)
+            ->addHours(2.6)
             ->format('H00');
     }
 
@@ -95,6 +98,14 @@ class BookPositionTab extends Component
         $b->voice = $validated['selected_voice'];
         $b->event = $validated['selected_event'];
         $b->training = $validated['selected_training'];
+
+        $check = $this->checkBooking($b);
+        if ($check) {
+            $this->showNoty($check, 'warning');
+
+            return;
+        }
+
         $res = ATCBookingsApi::createAndSaveBooking($b);
 
         $this->showNoty($res['message'], $res['ok'] ? 'success' : 'warning');
@@ -103,5 +114,21 @@ class BookPositionTab extends Component
             $this->selected_station = null;
             $this->station_search = '';
         }
+    }
+
+    private function checkBooking(AtcBooking $b): ?string
+    {
+        $allowed_start = Carbon::now()->addHours(0.5);
+        if ($b->starts_at->isBefore($allowed_start)) {
+            return "You can't book a station this close to the start.";
+        }
+
+        $already_controller = DataFeedLibrary::Controller($b->station);
+        $allowed_start = Carbon::now()->addHours(1.5);
+        if ($already_controller && $b->starts_at->isBefore($allowed_start)) {
+            return "You can't book this station. There is someone already connected to this station.";
+        }
+
+        return null;
     }
 }

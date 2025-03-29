@@ -70,6 +70,7 @@ class Kernel extends HttpKernel
             CookieConsentMiddleware::class,
             PreventRequestsDuringMaintenance::class,
             SysLogMiddleware::class,
+            'check-terms',
         ],
 
         'web_api' => [
@@ -82,7 +83,6 @@ class Kernel extends HttpKernel
             JsonResponse::class,
             SubstituteBindings::class,
             'throttle:api',
-            PreventRequestsDuringMaintenance::class,
             OptionalAuthenticate::class,
         ],
     ];
@@ -105,7 +105,7 @@ class Kernel extends HttpKernel
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
-
+        'csrf' => VerifyCsrfToken::class,
         'pending_removal' => CheckGDPRMiddleware::class,
         'banned' => CheckHomepageBanned::class,
         'check-terms' => CheckTermsMiddleware::class,

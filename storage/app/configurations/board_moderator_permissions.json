@@ -41,10 +41,6 @@
   },
   {
     "permission_group_id": "forum",
-    "permission_id": "hardDeleteAnyThread"
-  },
-  {
-    "permission_group_id": "forum",
     "permission_id": "threadReplyBan"
   },
   {
@@ -54,10 +50,6 @@
   {
     "permission_group_id": "forum",
     "permission_id": "deleteAnyPost"
-  },
-  {
-    "permission_group_id": "forum",
-    "permission_id": "hardDeleteAnyPost"
   },
   {
     "permission_group_id": "forum",

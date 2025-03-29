@@ -12,16 +12,16 @@
 
                             <ul class="list-unstyled social-icon foot-social-icon mb-0 mt-4">
                                 <li class="list-inline-item"><a href="https://www.facebook.com/vatger/" class="rounded" target="_blank"><i
-                                            data-feather="facebook" class="fea icon-sm fea-social"></i></a></li>
+                                                data-feather="facebook" class="fea icon-sm fea-social"></i></a></li>
                                 <li class="list-inline-item"><a href="https://twitter.com/vatger" class="rounded" target="_blank"><i
-                                            data-feather="twitter" class="fea icon-sm fea-social"></i></a>
+                                                data-feather="twitter" class="fea icon-sm fea-social"></i></a>
                                 </li>
                                 <li class="list-inline-item"><a href="https://www.instagram.com/vatger/" class="rounded" target="_blank"><i
-                                            data-feather="instagram" class="fea icon-sm fea-social"></i></a></li>
+                                                data-feather="instagram" class="fea icon-sm fea-social"></i></a></li>
                                 <li class="list-inline-item"><a href="https://www.twitch.tv/vatsimgermany" class="rounded" target="_blank"><i
-                                            data-feather="twitch" class="fea icon-sm fea-social"></i></a></li>
+                                                data-feather="twitch" class="fea icon-sm fea-social"></i></a></li>
                                 <li class="list-inline-item"><a href="https://www.youtube.com/user/vatsimgermany" class="rounded" target="_blank"><i
-                                            data-feather="youtube" class="fea icon-sm fea-social"></i></a></li>
+                                                data-feather="youtube" class="fea icon-sm fea-social"></i></a></li>
                             </ul>
                             <!--end icon-->
                         </div>
@@ -34,6 +34,7 @@
                                 <li><a href="{{ route('imprint') }}" class="text-foot">@lang('general.footer.imprint')</a></li>
                                 <li><a href="{{ route('terms') }}" class="text-foot">@lang('general.footer.terms')</a></li>
                                 <li><a href="{{ route('satzung') }}" class="text-foot">@lang('general.footer.satzung')</a></li>
+                                <li><a href="{{ route('policy-list') }}" class="text-foot">@lang('general.footer.further')</a></li>
                             </ul>
                         </div>
                         <!--end col-->
@@ -49,8 +50,8 @@
 
                         <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                             <h5 class="footer-head"></h5>
-                            <a href="https://vatsim.net"><img class="mb-4" src="{{ iasset('images/vatsim/VATSIM_Logo_White_500px.png', 300) }}" width="80%"></a>
-                            <a href="https://vateud.net"><img src="{{ iasset('images/vateud.png',300) }}" width="80%"></a>
+                            <a href="https://vatsim.net"><img class="mb-4" src="{{ iasset('images/vatsim/VATSIM_Logo_White_500px.png', 300) }}" width="80%" alt="vatsim"></a>
+                            <a href="https://vateud.net"><img src="{{ iasset('images/vateud.png',300) }}" width="80%" alt="vateud"></a>
                         </div>
                         <!--end col-->
                     </div>

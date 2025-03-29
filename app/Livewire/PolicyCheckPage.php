@@ -6,6 +6,7 @@ use App\Models\Membership\UserSetting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class PolicyCheckPage extends Component
@@ -13,6 +14,9 @@ class PolicyCheckPage extends Component
     private array $policies = [];
 
     private ?UserSetting $userSetting;
+
+    #[Url]
+    public ?string $url = null;
 
     public function boot(): void
     {
@@ -38,5 +42,14 @@ class PolicyCheckPage extends Component
     public function decline(string $policy_id): void
     {
         $this->userSetting->agreeTo($policy_id, true);
+    }
+
+    public function continue()
+    {
+        if ($this?->url) {
+            return redirect()->intended(urldecode($this->url));
+        }
+
+        return redirect()->intended(route('landing'));
     }
 }

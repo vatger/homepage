@@ -26,13 +26,13 @@
                                             :path="$en && !empty($policy->path_en) ? $policy->path_en : $policy->path_de"
                                             :agreed_date="$user_settings->getAgreedAt($policy->id)"
                                             :type="$policy->type"
-                                            :changelog="$en && !empty($policy->path_changelog_en) ? $policy->path_changelog_en : $policy->path_changelog_de"
+                                            :changelog="$en && !empty($policy->path_changelog_en) ? $policy->path_changelog_en : $policy->path_changelog_de ?? null"
                                     />
                                 </div>
 
                                 @if($user_settings->agreed)
                                     <div class="accordion pt-2">
-                                        <a href="{{ route('landing') }}" class="btn btn-success mt-2 me-2">Weiter</a>
+                                        <button wire:click="continue" class="btn btn-success mt-2 me-2">Weiter</button>
                                     </div>
                                 @endif
                             </div>

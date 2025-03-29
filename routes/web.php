@@ -32,11 +32,6 @@ Route::get('/r/{shortLink}', [ShortLinkController::class, 'viewLink']);
 // #################
 require_once 'web/authentication.php';
 
-// ###########
-// PASSPORT #
-// ###########
-require_once 'web/passport.php';
-
 // #########
 // PILOTS #
 // #########
@@ -111,9 +106,16 @@ Route::get('language/{lang?}', function ($lang = 'de') {
 // ###########################
 // LANDING & COVER ALL PAGE #
 // ###########################
-Route::get('/', function () {
-    return view('pages.landing');
-})->middleware('cookie.consent')->name('landing');
+
+Route::group([
+    'middleware' => ['cookie.consent'],
+    'excluded_middleware' => ['check-terms'],
+], function () {
+    Route::get(
+        '/', function () {
+            return view('pages.landing');
+        })->name('landing');
+});
 
 // ###########
 // API DOKU #

@@ -55,7 +55,7 @@ class UserSetting extends Model
             $agreed_policies[] = (object) ['id' => $policy_id, 'date' => Carbon::now()->toISO8601String()];
         }
 
-        $this->policies = json_encode($agreed_policies);
+        $this->policies = json_encode(array_values($agreed_policies));
         $this->save();
     }
 
@@ -95,6 +95,6 @@ class UserSetting extends Model
             return [];
         }
 
-        return $json;
+        return array_values($json);
     }
 }
