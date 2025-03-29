@@ -12,7 +12,6 @@ class TestApiController extends ApiController
      *
      * Displays information about the connection, like used token etc.
      */
-    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     public function test()
     {
         // $this->authorizeApiRequest('nudel');

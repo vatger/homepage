@@ -17,16 +17,15 @@
     "format:write": "npm run prettier:write:all"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.4",
     "@shufo/prettier-plugin-blade": "^1.15.1",
     "@types/alpinejs": "^3.13.11",
+    "@types/axios": "^0.14.4",
     "@types/bootstrap": "^5.2.10",
     "@types/feather-icons": "^4.29.4",
     "@types/jquery": "^3.5.32",
     "@types/lodash": "^4.17.14",
     "@types/mapbox-gl": "^3.4.1",
     "@types/toastify-js": "^1.12.3",
-    "@types/ziggy-js": "^1.8.0",
     "laravel-vite-plugin": "^1.1.1",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
@@ -55,7 +54,8 @@
     "toastify-js": "^1.12.0",
     "tobii": "^2.0.0-alpha",
     "typewriter-effect": "^2.21.0",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "ziggy-js": "^2.5.2"
   },
   "name": "vacc-germany-website",
   "description": "vACC Germany Website",

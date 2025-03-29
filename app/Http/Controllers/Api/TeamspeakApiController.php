@@ -4,10 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Decorators\ApiPathfinder;
 use App\Models\TeamspeakRegistration;
-use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
-use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
-
-#[OpenApi\PathItem]
 class TeamspeakApiController extends ApiController
 {
     /**
@@ -17,7 +13,6 @@ class TeamspeakApiController extends ApiController
      *
      * @param  int  $cid  the users VATSIM ID
      */
-    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('teamspeak.ids')]
     public function ids(int $cid): array
     {

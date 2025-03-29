@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
-
-#[OpenApi\PathItem]
 class BookstackApiController extends ApiController
 {
     /**

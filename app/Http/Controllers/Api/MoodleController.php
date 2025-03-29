@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Decorators\ApiPathfinder;
 use App\Libraries\MoodleLibrary;
-use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
-use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
-#[OpenApi\PathItem]
 class MoodleController extends ApiController
 {
     /**
@@ -15,7 +12,6 @@ class MoodleController extends ApiController
      *
      * @param  int  $cid  the users VATSIM ID
      */
-    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('moodle.api')]
     public function find_user(int $cid): ?object
     {
@@ -30,7 +26,6 @@ class MoodleController extends ApiController
      * @param  int  $cmid  the course module id of the quiz (see the URL)
      * @param  int  $cid  the users VATSIM ID
      */
-    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('moodle.api')]
     public function find_quiz_attempts(int $cmid, int $cid): ?array
     {
@@ -46,7 +41,6 @@ class MoodleController extends ApiController
      * @param  int  $cid  the users VATSIM ID
      * @param  int  $attempts  number of allowed attempts
      */
-    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('moodle.api')]
     public function set_overrides(int $cmid, int $cid, int $attempts): bool
     {
@@ -61,7 +55,6 @@ class MoodleController extends ApiController
      * @param  int  $course_id  the id of the course
      * @param  int  $cid  the users VATSIM ID
      */
-    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('moodle.api')]
     public function find_course_completion(int $course_id, int $cid): ?object
     {
@@ -76,7 +69,6 @@ class MoodleController extends ApiController
      * @param  int  $course_id  the id of the course
      * @param  int  $cid  the users VATSIM ID
      */
-    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('moodle.api')]
     public function enrol_user(int $course_id, int $cid): bool
     {
@@ -91,7 +83,6 @@ class MoodleController extends ApiController
      * @param  int  $cmid  the course module id of the quiz/activity etc. (see the URL)
      * @param  int  $cid  the users VATSIM ID
      */
-    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('moodle.api')]
     public function find_activity_completion(int $cmid, int $cid): ?object
     {

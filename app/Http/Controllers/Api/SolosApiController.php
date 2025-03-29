@@ -5,10 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Decorators\ApiPathfinder;
 use App\Models\Groups\Team;
 use App\Models\Membership\User;
-use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
-use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
-#[OpenApi\PathItem]
 class SolosApiController extends ApiController
 {
     /**
@@ -16,7 +13,6 @@ class SolosApiController extends ApiController
      *
      * @param  int  $cid  the users VATSIM ID
      */
-    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('solos.find_member')]
     public function find_member(int $cid): object
     {

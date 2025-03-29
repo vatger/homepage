@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Decorators\ApiPathfinder;
 use App\Models\Membership\User;
-use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
-use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
-#[OpenApi\PathItem]
 class DiscordApiController extends ApiController
 {
     /**
@@ -15,14 +12,13 @@ class DiscordApiController extends ApiController
      *
      * @param  int  $cid  the users VATSIM ID
      */
-    #[OpenApi\Operation(security: TokenSecurityScheme::class)]
     #[ApiPathfinder('discord.find_member')]
     public function find_member(int $cid): object
     {
         $this->authorizeApiRequest('discord.find_member');
         $user = User::find($cid);
 
-        $data = (object) [
+        return (object) [
             'cid' => $user?->id,
             'is_vatger_member' => ! empty($user),
             'is_vatger_fullmember' => $user?->vatgerDetails?->is_vatger_member,
@@ -34,7 +30,5 @@ class DiscordApiController extends ApiController
                 ->values()
                 ->toArray(),
         ];
-
-        return $data;
     }
 }
