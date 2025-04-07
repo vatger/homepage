@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\OpenApi\SecuritySchemes\TokenSecurityScheme;
-use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
-
 class TestApiController extends ApiController
 {
     /**
@@ -14,7 +11,6 @@ class TestApiController extends ApiController
      */
     public function test()
     {
-        // $this->authorizeApiRequest('nudel');
         return [
             'token' => $this->token,
             'token_user' => $this->token_user,

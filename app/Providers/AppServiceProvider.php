@@ -34,12 +34,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('viewApiDocs', function (?User $user = null): bool {
             return $user !== null;
         });
-
         Scramble::configure()
             ->withDocumentTransformers(function (OpenApi $openApi) {
-                $openApi->secure(
-                    SecurityScheme::http('bearer')
-                );
+                $openApi->secure(SecurityScheme::http('bearer'));
             });
 
     }

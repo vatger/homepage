@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "nodenext",
-    "baseUrl": "./public",
+    "moduleResolution": "classic",
+    "baseUrl": null,
     "strict": true,
     // Enable strict type-checking options
     "skipLibCheck": true,
@@ -11,10 +11,18 @@
     "noImplicitAny": false,
     // Bypass raising errors on `any` type
     "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "allowJs": false,
     "paths": {
-      "@/*": ["./resources/*"],
-      "~bootstrap": ["./node_modules/bootstrap/*"],
-      "~vendor": ["./vendor/*"]
+      "@/*": [
+        "./resources/*"
+      ],
+      "~bootstrap": [
+        "./node_modules/bootstrap/*"
+      ],
+      "~vendor/*": [
+        "./vendor/*"
+      ]
     }
   },
   "$schema": "https://json.schemastore.org/tsconfig"

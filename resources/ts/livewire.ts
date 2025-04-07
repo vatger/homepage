@@ -1,4 +1,4 @@
-import { showNoty } from "./noty";
+import { showNoty } from "./noty.ts";
 import { Modal } from "bootstrap";
 
 //for Livewire3
@@ -6,7 +6,9 @@ import {
   Livewire,
   Alpine,
   Component,
-} from "../../vendor/livewire/livewire/dist/livewire.esm";
+  // @ts-ignore
+} from "~vendor/livewire/livewire/dist/livewire.esm";
+// @ts-ignore
 import Clipboard from "@ryangjchandler/alpine-clipboard";
 
 export function findLivewireComponent(name: string): Component {

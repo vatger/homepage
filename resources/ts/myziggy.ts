@@ -1,7 +1,6 @@
-import { Ziggy } from "@/js/ziggy_autogen";
+import { route, Config } from "~vendor/tightenco/ziggy";
 // @ts-ignore
-import route from "~vendor/tightenco/ziggy/dist/index.m.js";
-import { Config } from "ziggy-js";
+import { Ziggy } from "@/js/ziggy_autogen.js";
 
 export const zroute = function (
   name: string,

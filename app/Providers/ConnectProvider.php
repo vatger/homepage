@@ -24,20 +24,4 @@ class ConnectProvider extends GenericProvider
             'scopeSeparator' => ' ',
         ]);
     }
-
-    /**
-     * Get a new token from an older one
-     */
-    public static function updateToken($token): Token\AccessTokenInterface|Token\AccessToken|null
-    {
-        $c = new ConnectProvider;
-
-        try {
-            return $c->getAccessToken('refresh_token', [
-                'refresh_token' => $token->getRefreshToken(),
-            ]);
-        } catch (IdentityProviderException $e) {
-            return null;
-        }
-    }
 }
