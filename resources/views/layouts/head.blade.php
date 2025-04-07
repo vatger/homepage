@@ -11,7 +11,12 @@
 <meta name="color-scheme" content="{{ (!auth()->check() || !Auth::user()->settings->dark_mode) ? 'light' : 'dark' }}">
 
 <!-- favicon -->
-<link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+<link rel="icon" type="image/png" href="{{ asset('images/favicon/favicon-96x96.png') }}" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon/favicon.svg') }}" />
+<link rel="shortcut icon" href="{{ asset('images/favicon/favicon.ico') }}" />
+<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon/apple-touch-icon.png.ico') }}" />
+<meta name="apple-mobile-web-app-title" content="VATGER" />
+<link rel="manifest" href="{{ asset('images/favicon/site.webmanifest') }}" />
 
 @if(!auth()->check() || !Auth::user()->settings->dark_mode)
     @if(isset($_admin) && $_admin)
