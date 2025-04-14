@@ -77,6 +77,7 @@
                         <div class="card-body content">
                             <h4 class="text-dark">Stand Information</h4>
                             @vite('resources/scss/special/aerodrome-mapbox.scss')
+                            @vite('resources/scss/special/leaflet.scss')
                             <div class="w-100" id="map-container">
                                 <div wire:ignore id="map" class="w-100 mt-3 rounded" style="height: 500px">
                                     <h5 class="mt-3 text-muted" id="event-title">@lang('pilot.aerodromes.aerodrome.loading-event-text')</h5>

@@ -31,6 +31,7 @@ export default defineConfig({
       "resources/ts/special/member.ts",
       "resources/ts/special/landing-typewriter.ts",
       "resources/scss/special/aerodrome-mapbox.scss",
+      "resources/scss/special/leaflet.scss",
     ]),
     run([
       {

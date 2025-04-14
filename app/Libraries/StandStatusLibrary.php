@@ -78,6 +78,7 @@ class StandStatusLibrary
                     'type' => $aircraft->flight_plan?->aircraft_short,
                     'latitude' => floatval($aircraft->latitude),
                     'longitude' => floatval($aircraft->longitude),
+                    'heading' => $aircraft->heading,
                 ];
             })
             ->toArray();

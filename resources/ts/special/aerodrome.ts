@@ -1,22 +1,110 @@
 import mapboxgl from "mapbox-gl";
 import { find, forEach, isEmpty, uniq, filter } from "lodash";
 import { findLivewireComponent } from "../livewire.js";
-import dayjs from "dayjs";
+import { dayjs } from "../dayjs";
 import { getDarkmode } from "../template.js";
+import {
+  map,
+  Map,
+  latLng,
+  tileLayer,
+  MapOptions,
+  control,
+  circle,
+  icon,
+  marker,
+} from "leaflet";
 
 document.addEventListener("DOMContentLoaded", () => {
-  load_map();
+  let load_map2_ = load_map2();
+  update_map2();
   metar();
   atis();
   indicator();
   event();
 });
 
+let mymap: Map | null = null;
+
+async function load_map2(): Promise<void> {
+  const lwc = findLivewireComponent("aerodrome-page");
+  const aerodrome_data: Object = await lwc.$wire.load_aerodrome();
+  const mapbox_username = "nikki2048";
+  const mapbox_style_id_light = "ckyg6998m2ec515o86wkmkjnn";
+  const mapbox_style_id_dark = "ckyg12wrq5h6b15pcb4b4dev1";
+  const mapbox_style_id = getDarkmode()
+    ? mapbox_style_id_dark
+    : mapbox_style_id_light;
+  const mapbox_access_token =
+    "pk.eyJ1Ijoibmlra2kyMDQ4IiwiYSI6ImNrOXpibmR5bTA1MTIzZnJ0aXh1cG4yNjYifQ.b-1gEcULFsxkvP2s9BCXQg";
+  const mapbox_link =
+    "https://api.mapbox.com/styles/v1/" +
+    mapbox_username +
+    "/" +
+    mapbox_style_id +
+    "/tiles/256/{z}/{x}/{y}?access_token=" +
+    mapbox_access_token;
+
+  mymap = map("map").setView(
+    [aerodrome_data["latitude"], aerodrome_data["longitude"]],
+    13,
+  );
+  const mytilelayer = tileLayer(mapbox_link, {
+    attribution: `© <a href="https://www.mapbox.com/about/maps">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://apps.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>`,
+    maxZoom: 17,
+  }).addTo(mymap);
+}
+
+async function update_map2() {
+  let lwc = findLivewireComponent("aerodrome-page");
+  const standstatus_data: Array<0> = await lwc.$wire.load_stands();
+  const aircraftstatus_data: Array<0> = await lwc.$wire.load_aircraft();
+  forEach(standstatus_data, (stand) => {
+    if (mymap == null) return;
+    const stand_lat = stand["latitude"];
+    const stand_lon = stand["longitude"];
+    let stand_text = "<center><strong>" + stand["id"] + "</strong></center>";
+    let stand_color = "rgba(0, 128, 0, 0.5)";
+    let stand_border = "rgba(0, 128, 0, 0.8)";
+    if (!isEmpty(stand["occupier"])) {
+      stand_text += `<p class="pb-0 mb-0">${stand["occupier"]}</p>`;
+      stand_color = "rgba(204, 7, 7, 0.5)";
+      stand_border = "rgba(204, 7, 7, 0.8)";
+    }
+
+    const circle_ = circle([stand_lat, stand_lon], {
+      color: stand_border,
+      fillColor: stand_color,
+      fillOpacity: 0.5,
+      radius: 20,
+    }).addTo(mymap);
+    circle_.bindPopup(stand_text);
+  });
+
+  forEach(aircraftstatus_data, (aircraft) => {
+    if (mymap == null) return;
+    const aircraft_lat = aircraft["latitude"];
+    const aircraft_lon = aircraft["longitude"];
+    const aircraft_callsign = aircraft["callsign"];
+    const aircraft_heading = aircraft["heading"];
+    const icon_ = icon({
+      iconUrl: "/images/plane.png",
+      iconSize: [15, 15], // size of the icon
+      iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
+      popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+    });
+    console.log(aircraft);
+    const marker_ = marker([aircraft_lat, aircraft_lon], {
+      icon: icon_,
+    }).addTo(mymap);
+    // @ts-ignore
+    marker_.getElement().style.transform += ` rotate(${aircraft_heading}deg)`;
+  });
+}
+
 async function load_map() {
   let lwc = findLivewireComponent("aerodrome-page");
   const aerodrome_data: Object = await lwc.$wire.load_aerodrome();
-  const standstatus_data: Array<0> = await lwc.$wire.load_stands();
-  const aircraftstatus_data: Array<0> = await lwc.$wire.load_aircraft();
 
   const styleUrlDark = "mapbox://styles/nikki2048/ckyg12wrq5h6b15pcb4b4dev1";
   const styleUrlLight = "mapbox://styles/nikki2048/ckyg6998m2ec515o86wkmkjnn";
