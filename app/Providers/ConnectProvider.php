@@ -2,9 +2,7 @@
 
 namespace App\Providers;
 
-use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\GenericProvider;
-use League\OAuth2\Client\Token;
 
 class ConnectProvider extends GenericProvider
 {

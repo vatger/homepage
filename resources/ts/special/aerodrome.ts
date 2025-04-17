@@ -6,27 +6,32 @@ import { getDarkmode } from "../template.js";
 import {
   map,
   Map,
-  latLng,
   tileLayer,
-  MapOptions,
-  control,
-  circle,
   icon,
   marker,
+  circleMarker,
+  layerGroup,
+  LayerGroup,
+  Marker,
 } from "leaflet";
 
 document.addEventListener("DOMContentLoaded", () => {
-  let load_map2_ = load_map2();
-  update_map2();
+  let load_map_ = load_map();
   metar();
   atis();
   indicator();
   event();
+  download_map();
 });
+
+window.setInterval(() => {
+  download_map();
+  update_map();
+}, 10000);
 
 let mymap: Map | null = null;
 
-async function load_map2(): Promise<void> {
+async function load_map(): Promise<void> {
   const lwc = findLivewireComponent("aerodrome-page");
   const aerodrome_data: Object = await lwc.$wire.load_aerodrome();
   const mapbox_username = "nikki2048";
@@ -53,138 +58,72 @@ async function load_map2(): Promise<void> {
     attribution: `© <a href="https://www.mapbox.com/about/maps">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://apps.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>`,
     maxZoom: 17,
   }).addTo(mymap);
+
+  mymap.on("zoomend", () => update_map());
 }
 
-async function update_map2() {
+let standstatus_data: Array<0> = [];
+let aircraftstatus_data: Array<0> = [];
+
+async function download_map() {
   let lwc = findLivewireComponent("aerodrome-page");
-  const standstatus_data: Array<0> = await lwc.$wire.load_stands();
-  const aircraftstatus_data: Array<0> = await lwc.$wire.load_aircraft();
+  standstatus_data = await lwc.$wire.load_stands();
+  aircraftstatus_data = await lwc.$wire.load_aircraft();
+}
+
+let mymarker: LayerGroup | null = null;
+
+async function update_map() {
+  if (mymarker) {
+    mymarker.remove();
+  }
+  mymarker = layerGroup();
   forEach(standstatus_data, (stand) => {
-    if (mymap == null) return;
+    if (mymap == null || mymarker == null) return;
     const stand_lat = stand["latitude"];
     const stand_lon = stand["longitude"];
-    let stand_text = "<center><strong>" + stand["id"] + "</strong></center>";
+    let stand_text =
+      "<center>Stand <strong>" + stand["id"] + "</strong></center>";
     let stand_color = "rgba(0, 128, 0, 0.5)";
     let stand_border = "rgba(0, 128, 0, 0.8)";
     if (!isEmpty(stand["occupier"])) {
-      stand_text += `<p class="pb-0 mb-0">${stand["occupier"]}</p>`;
+      stand_text += `${stand["occupier"]}`;
       stand_color = "rgba(204, 7, 7, 0.5)";
       stand_border = "rgba(204, 7, 7, 0.8)";
     }
 
-    const circle_ = circle([stand_lat, stand_lon], {
+    const circle_ = circleMarker([stand_lat, stand_lon], {
       color: stand_border,
       fillColor: stand_color,
       fillOpacity: 0.5,
-      radius: 20,
-    }).addTo(mymap);
+      radius: 4.5,
+    }).addTo(mymarker);
     circle_.bindPopup(stand_text);
   });
 
+  if (mymap == null) return;
+  mymarker.addTo(mymap);
+
   forEach(aircraftstatus_data, (aircraft) => {
-    if (mymap == null) return;
+    if (mymap == null || mymarker == null) return;
     const aircraft_lat = aircraft["latitude"];
     const aircraft_lon = aircraft["longitude"];
     const aircraft_callsign = aircraft["callsign"];
     const aircraft_heading = aircraft["heading"];
     const icon_ = icon({
       iconUrl: "/images/plane.png",
-      iconSize: [15, 15], // size of the icon
-      iconAnchor: [0, 0], // point of the icon which will correspond to marker's location
-      popupAnchor: [-3, -76], // point from which the popup should open relative to the iconAnchor
+      iconSize: [16, 16], // size of the icon
+      iconAnchor: [8, 8], // point of the icon which will correspond to marker's location
+      popupAnchor: [0, 0],
     });
-    console.log(aircraft);
-    const marker_ = marker([aircraft_lat, aircraft_lon], {
+    const marker_: Marker = marker([aircraft_lat, aircraft_lon], {
       icon: icon_,
-    }).addTo(mymap);
-    // @ts-ignore
-    marker_.getElement().style.transform += ` rotate(${aircraft_heading}deg)`;
-  });
-}
-
-async function load_map() {
-  let lwc = findLivewireComponent("aerodrome-page");
-  const aerodrome_data: Object = await lwc.$wire.load_aerodrome();
-
-  const styleUrlDark = "mapbox://styles/nikki2048/ckyg12wrq5h6b15pcb4b4dev1";
-  const styleUrlLight = "mapbox://styles/nikki2048/ckyg6998m2ec515o86wkmkjnn";
-  const styleUrl = getDarkmode() ? styleUrlDark : styleUrlLight;
-  mapboxgl.accessToken =
-    "pk.eyJ1Ijoibmlra2kyMDQ4IiwiYSI6ImNrOXpibmR5bTA1MTIzZnJ0aXh1cG4yNjYifQ.b-1gEcULFsxkvP2s9BCXQg";
-
-  let map_el = document.getElementById("map");
-  if (map_el) map_el.innerHTML = "";
-
-  const map = new mapboxgl.Map({
-    container: "map", // container ID
-    style: styleUrl, // style URL
-    center: [aerodrome_data["longitude"], aerodrome_data["latitude"]], // starting position [lng, lat]
-    zoom: 12, // starting zoom
-  });
-
-  map.on("zoom", () => {
-    let marker_occupied = document.getElementsByClassName("marker-occupied");
-    let marker_free = document.getElementsByClassName("marker-free");
-    let marker_ac = document.getElementsByClassName("marker-ac");
-
-    forEach(marker_occupied, (marker) => {
-      let m = <HTMLElement>marker;
-      m.style.width = String(12 * ((map.getZoom() - 3) / 10));
-      m.style.height = String(12 * ((map.getZoom() - 3) / 10));
-    });
-    forEach(marker_free, (marker) => {
-      let m = <HTMLElement>marker;
-      m.style.width = String(12 * ((map.getZoom() - 3) / 10));
-      m.style.height = String(12 * ((map.getZoom() - 3) / 10));
-    });
-    forEach(marker_ac, (marker) => {
-      let m = <HTMLElement>marker;
-      m.style.width = String(12 * ((map.getZoom() - 3) / 20));
-      m.style.height = String(12 * ((map.getZoom() - 3) / 20));
-    });
-  });
-
-  forEach(standstatus_data, (stand) => {
-    const el = document.createElement("div");
-    if (stand["occupier"] == null) el.className = "marker-free";
-    else el.className = "marker-occupied";
-
-    let callsign = "";
-    if (!isEmpty(stand["occupier"])) {
-      callsign = `<p class="pb-0 mb-0">${stand["occupier"]}</p>`;
-    }
-    const marker = new mapboxgl.Marker(el)
-      .setLngLat([stand["longitude"], stand["latitude"]])
-      .setPopup(
-        new mapboxgl.Popup({
-          offset: 8,
-        }) // add popups
-          .setHTML(
-            `<p class="pb-0 mb-0" style="font-size: 15px"><strong>${stand["id"]}</strong></p>` +
-              callsign,
-          ),
-      )
-      .addTo(map);
-    marker.addTo(map);
-  });
-
-  forEach(aircraftstatus_data, (aircraft) => {
-    const el = document.createElement("div");
-    el.className = "marker-ac";
-    let callsign = `<p class="pb-0 mb-0">${aircraft["type"]}</p>`;
-    const marker = new mapboxgl.Marker(el)
-      .setLngLat([aircraft["longitude"], aircraft["latitude"]])
-      .setPopup(
-        new mapboxgl.Popup({
-          offset: 8,
-        }) // add popups
-          .setHTML(
-            `<p class="pb-0 mb-0" style="font-size: 15px"><strong>${aircraft["callsign"]}</strong></p>` +
-              callsign,
-          ),
-      )
-      .addTo(map);
-    marker.addTo(map);
+    }).addTo(mymarker);
+    marker_.bindPopup(aircraft_callsign);
+    const el = marker_.getElement();
+    if (el == null) return;
+    el.style.transformOrigin = "50% 50%";
+    el.style.transform += ` rotate(${aircraft_heading}deg)`;
   });
 }
 

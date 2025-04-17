@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Decorators\ApiPathfinder;
 use App\Models\TeamspeakRegistration;
+
 class TeamspeakApiController extends ApiController
 {
     /**

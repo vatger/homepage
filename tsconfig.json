@@ -14,15 +14,9 @@
     "allowImportingTsExtensions": true,
     "allowJs": false,
     "paths": {
-      "@/*": [
-        "./resources/*"
-      ],
-      "~bootstrap": [
-        "./node_modules/bootstrap/*"
-      ],
-      "~vendor/*": [
-        "./vendor/*"
-      ]
+      "@/*": ["./resources/*"],
+      "~bootstrap": ["./node_modules/bootstrap/*"],
+      "~vendor/*": ["./vendor/*"]
     }
   },
   "$schema": "https://json.schemastore.org/tsconfig"

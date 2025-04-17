@@ -6,6 +6,7 @@ use App\Decorators\ApiPathfinder;
 use App\Models\Membership\User;
 use App\Notifications\BasicNotification;
 use Illuminate\Http\Request;
+
 class UserController extends ApiController
 {
     /**
