@@ -16,17 +16,16 @@ import {
 } from "leaflet";
 
 document.addEventListener("DOMContentLoaded", () => {
-  let load_map_ = load_map();
-  metar();
-  atis();
-  indicator();
-  event();
-  download_map();
+  load_map().then();
+  metar().then();
+  atis().then();
+  indicator().then();
+  event().then();
+  download_map().then(() => update_map());
 });
 
 window.setInterval(() => {
-  download_map();
-  update_map();
+  download_map().then(() => update_map());
 }, 10000);
 
 let mymap: Map | null = null;
@@ -83,7 +82,9 @@ async function update_map() {
     const stand_lat = stand["latitude"];
     const stand_lon = stand["longitude"];
     let stand_text =
-      "<center>Stand <strong>" + stand["id"] + "</strong></center>";
+      "<div style='text-align: center;'>Stand <strong>" +
+      stand["id"] +
+      "</strong></div>";
     let stand_color = "rgba(0, 128, 0, 0.5)";
     let stand_border = "rgba(0, 128, 0, 0.8)";
     if (!isEmpty(stand["occupier"])) {
