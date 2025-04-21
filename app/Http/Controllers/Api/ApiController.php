@@ -6,6 +6,7 @@ use App\Models\Api\ApiLog;
 use App\Models\Api\ApiToken;
 use App\Models\Membership\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use ReflectionClass;
@@ -18,7 +19,7 @@ class ApiController extends Controller
 
     public function __construct()
     {
-        $this->middleware(function ($request, $next) {
+        $this->middleware(function (Request $request, $next) {
             if (Auth::guard('api')->check()) {
                 $this->token = Auth::guard('api')->user();
                 $this->token_user = $this?->token?->user;
@@ -29,7 +30,7 @@ class ApiController extends Controller
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'endpoint' => $request->path(),
-                'ip_address' => $request->ip(),
+                'ip_address' => substr($request->ip(), 0, 45),
             ];
 
             ApiLog::query()->create($log);
