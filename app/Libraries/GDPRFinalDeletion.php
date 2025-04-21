@@ -95,6 +95,7 @@ class GDPRFinalDeletion
             try {
                 ATCBookingsApi::deleteBooking($atcBooking);
             } catch (\Exception $e) {
+                \Log::warning($e->getMessage());
             }
             $atcBooking->delete();
         }
