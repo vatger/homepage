@@ -34,6 +34,10 @@ class ProcessMembersJob implements ShouldQueue
         $data = json_decode(Storage::get($file));
         Storage::delete($file);
 
+        if (! $data || $data?->id) {
+            return;
+        }
+
         $user = User::find($data->id);
         if (! empty($user)) {
             CoreApiLibrary2::insertMemberData($user, $data, $time);

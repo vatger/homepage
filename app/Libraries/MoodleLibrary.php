@@ -127,7 +127,7 @@ class MoodleLibrary extends BaseLibrary
             'includepreviews' => $include_previews ? 1 : 0,
         ]);
 
-        return $results->attempts;
+        return $results?->attempts;
     }
 
     public static function findCourseCompletion(int $course_id, int $vatsim_id): ?object
@@ -141,7 +141,7 @@ class MoodleLibrary extends BaseLibrary
             'userid' => $user->id,
         ]);
 
-        return $results->completionstatus;
+        return $results?->completionstatus;
     }
 
     public static function findQuizOverrides(int $course_module_id, int $vatsim_id): ?object

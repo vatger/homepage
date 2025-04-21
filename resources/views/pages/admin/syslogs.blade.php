@@ -90,10 +90,14 @@
                                 <p><strong>User:</strong> <span>{{ $sellog->user_id }}</span></p>
                                 <p><strong>Method:</strong> <span>{{ $sellog->method }}</span></p>
                                 <p><strong>Time:</strong> <span>{{ $sellog->created_at }}</span></p>
-                                <p><strong>Stacktrace:</strong>
-                                <p>{{ $log->message }}</p>
-                                <p><strong>Stacktrace:</strong>
-                                <p>{!! str_replace('#','<hr>#',$sellog->stack_trace) !!}</p>
+                                @if(!empty($sellog->message))
+                                    <p><strong>Message:</strong>
+                                    <p>{{ $log->message }}</p>
+                                @endif
+                                @if(!empty($sellog->stack_trace))
+                                    <p><strong>Stacktrace:</strong>
+                                    <p>{!! str_replace('#','<hr>#',$sellog->stack_trace) !!}</p>
+                                @endif
                             </div>
                         </div>
                         <div class="modal-footer">
