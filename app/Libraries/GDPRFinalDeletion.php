@@ -52,10 +52,12 @@ class GDPRFinalDeletion
         }
         $removal = GDPRLibrary::get_current_removal($this->user);
         try {
-            DB::beginTransaction();
+
             $reflection = new ReflectionClass(self::class);
             $methods = $reflection->getMethods(ReflectionMethod::IS_PRIVATE);
             $status_ok = true;
+            DB::beginTransaction();
+            DB::statement('SET FOREIGN_KEY_CHECKS = 0');
             foreach ($methods as $method) {
                 $method->setAccessible(true);
                 // Allow access to private methods
@@ -66,6 +68,7 @@ class GDPRFinalDeletion
                 $status_ok = $status_ok && $res;
             }
             $this->user->delete();
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1');
             if ($status_ok) {
                 DB::commit();
             } else {
