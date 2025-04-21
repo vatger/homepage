@@ -13,6 +13,7 @@ use App\Models\Membership\UserSetting;
 use App\Models\Membership\UserStaffDetail;
 use App\Models\Membership\UserVatgerDetail;
 use App\Models\Membership\UserVatsimDetail;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use ReflectionClass;
 use ReflectionMethod;
@@ -29,25 +30,53 @@ class GDPRFinalDeletion
         $this->user_id = $user->id;
     }
 
-    public function run(): bool
+    public function check(): bool
     {
+        $removal = GDPRLibrary::get_current_removal($this->user);
+        $started_at = Carbon::parse($removal->started_at);
+
+        return $removal != null && $started_at->diff() > 30;
+    }
+
+    public function run(bool $debug = false): bool
+    {
+        if (! $this->check()) {
+            return false;
+        }
         try {
             DB::beginTransaction();
             $reflection = new ReflectionClass(self::class);
             $methods = $reflection->getMethods(ReflectionMethod::IS_PRIVATE);
+            $status_ok = true;
             foreach ($methods as $method) {
                 $method->setAccessible(true);
                 // Allow access to private methods
-                $method->invoke($this, $this->user); // Call the private method on the current instance
+                $res = $method->invoke($this, $this->user, $this->user_id); // Call the private method on the current instance
+                if ($debug) {
+                    dump([$method->name => $res]);
+                }
+                $status_ok = $status_ok && $res;
             }
+            $this->user->delete();
+            if ($status_ok) {
+                DB::commit();
+            } else {
+                DB::rollBack();
+
+                return false;
+            }
+
         } catch (\Throwable $e) {
+            \Log::error($e);
             try {
                 DB::rollBack();
             } catch (\Throwable $e) {
             }
+
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     private function bookings(?User $user, int $user_id): bool
@@ -79,7 +108,10 @@ class GDPRFinalDeletion
 
     private function oauth(?User $user, int $user_id): bool
     {
-        return false;
+        DB::table('oauth_auth_codes')->where('user_id', $user_id)->first();
+        DB::table('oauth_access_tokens')->where('user_id', $user_id)->first();
+
+        return true;
     }
 
     private function user_bans(?User $user, int $user_id): bool
