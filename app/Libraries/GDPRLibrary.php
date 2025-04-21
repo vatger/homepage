@@ -145,7 +145,7 @@ class GDPRLibrary extends BaseLibrary
                 'teamspeak' => TeamSpeakWebQuery::deleteUser($gdprRemoval->user),
                 'knowledgebase' => BookstackLibrary::delete_user($gdprRemoval->user),
                 'moodle' => MoodleLibrary::deleteUser($gdprRemoval->user_id),
-                'homepage' => GDPRFinalDeletion::deleteUser($gdprRemoval->user_id),
+                'homepage' => GDPRFinalDeletion::deleteUser($gdprRemoval->user),
                 default => self::call_api_service($gdprRemoval->user_id, $service),
             };
         } catch (\Exception $exception) {

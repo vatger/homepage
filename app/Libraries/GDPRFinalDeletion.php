@@ -30,9 +30,9 @@ class GDPRFinalDeletion
         $this->user_id = $user->id;
     }
 
-    public static function deleteUser(mixed $user_id): bool
+    public static function deleteUser(User $user): bool
     {
-        $g = new self($user_id);
+        $g = new self($user);
 
         return $g->run();
     }
