@@ -30,12 +30,19 @@ class GDPRFinalDeletion
         $this->user_id = $user->id;
     }
 
+    public static function deleteUser(mixed $user_id): bool
+    {
+        $g = new self($user_id);
+
+        return $g->run();
+    }
+
     public function check(): bool
     {
         $removal = GDPRLibrary::get_current_removal($this->user);
         $started_at = Carbon::parse($removal->started_at);
 
-        return $removal != null && $started_at->diff() > 30;
+        return $removal != null && $started_at->diffInDays() > 30 && count($removal->pending_services) == 1;
     }
 
     public function run(bool $debug = false): bool
@@ -43,6 +50,7 @@ class GDPRFinalDeletion
         if (! $this->check()) {
             return false;
         }
+        $removal = GDPRLibrary::get_current_removal($this->user);
         try {
             DB::beginTransaction();
             $reflection = new ReflectionClass(self::class);
@@ -75,6 +83,7 @@ class GDPRFinalDeletion
 
             return false;
         }
+        GDPRLibrary::finalize($removal);
 
         return true;
     }

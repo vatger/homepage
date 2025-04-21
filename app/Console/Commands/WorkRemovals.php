@@ -23,7 +23,7 @@ class WorkRemovals extends Command
      */
     protected $description = 'Command to trigger GDPR removals';
 
-    public static int $count_do = 10000;
+    public static int $count_do = 10;
 
     public static int $count_start = 100;
 
@@ -38,6 +38,7 @@ class WorkRemovals extends Command
 
         GdprRemoval::whereNull('completed_at')
             ->whereNull('canceled_at')
+            ->orderBy('started_at', 'asc')
             ->limit(static::$count_do)
             ->cursor()
             ->each(function (GdprRemoval $gdpr_removal) {

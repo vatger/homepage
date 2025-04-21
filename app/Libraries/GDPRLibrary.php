@@ -145,6 +145,7 @@ class GDPRLibrary extends BaseLibrary
                 'teamspeak' => TeamSpeakWebQuery::deleteUser($gdprRemoval->user),
                 'knowledgebase' => BookstackLibrary::delete_user($gdprRemoval->user),
                 'moodle' => MoodleLibrary::deleteUser($gdprRemoval->user_id),
+                'homepage' => GDPRFinalDeletion::deleteUser($gdprRemoval->user_id),
                 default => self::call_api_service($gdprRemoval->user_id, $service),
             };
         } catch (\Exception $exception) {
@@ -197,7 +198,7 @@ class GDPRLibrary extends BaseLibrary
         return false;
     }
 
-    private static function mark_started(GdprRemoval $gdprRemoval, string $service): void
+    protected static function mark_started(GdprRemoval $gdprRemoval, string $service): void
     {
         $original_service_data = collect($gdprRemoval->service_data);
         $current_data = $original_service_data->first(fn ($service_data) => $service_data->name == $service);
@@ -210,7 +211,7 @@ class GDPRLibrary extends BaseLibrary
         $gdprRemoval->save();
     }
 
-    private static function mark_complete(GdprRemoval $gdprRemoval, string $service): void
+    protected static function mark_complete(GdprRemoval $gdprRemoval, string $service): void
     {
         $original_service_data = collect($gdprRemoval->service_data);
         $current_data = $original_service_data->first(fn ($service_data) => $service_data->name == $service);
@@ -220,6 +221,13 @@ class GDPRLibrary extends BaseLibrary
         $rest_data = $original_service_data->filter(fn ($service_data) => $service_data->name != $service);
         $new_data = $rest_data->push($current_data);
         $gdprRemoval->service_data = $new_data->toArray();
+        $gdprRemoval->save();
+    }
+
+    public static function finalize(GdprRemoval $gdprRemoval): void
+    {
+        self::mark_complete($gdprRemoval, 'homepage');
+        $gdprRemoval->completed_at = Carbon::now();
         $gdprRemoval->save();
     }
 }
