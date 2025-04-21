@@ -25,7 +25,7 @@ class WorkRemovals extends Command
 
     public static int $count_do = 10;
 
-    public static int $count_start = 100;
+    public static int $count_start = 20;
 
     /**
      * Execute the console command.
