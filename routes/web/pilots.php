@@ -13,6 +13,12 @@ Route::middleware('cookie.consent')->group(function () {
     ]);
 
     Route::group(['prefix' => 'pilots', 'as' => 'pilots.'], function () {
+        Route::get('aerodrome/{icao}', function (Request $request) {
+            return redirect()->route('pilots.aerodromes.view', ['icao' => $request->route('icao')]);
+        })->where([
+            'icao' => '[a-zA-Z]{4}',
+        ]);
+
         Route::group(['prefix' => 'aerodromes', 'as' => 'aerodromes.'], function () {
             Route::get('/{icao}', AerodromePage::class)->name('view');
             Route::get('/', AerodromeListPage::class)->name('viewall');

@@ -117,11 +117,4 @@ Route::group([
         })->name('landing');
 });
 
-// ###########
-// API DOKU #
-// ###########
-Route::get('documentation', function () {
-    return view('pages.admin.apidoku');
-});
-
 Route::get('support', SupportPage::class)->name('redirect.support');
