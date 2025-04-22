@@ -17,7 +17,7 @@ class MoodleController extends ApiController
     {
         $this->authorizeApiRequest('moodle.api');
 
-        return MoodleLibrary::findUser($cid);
+        return MoodleLibrary::findUser($cid) ?? response(null, 404);
     }
 
     /**
@@ -27,11 +27,12 @@ class MoodleController extends ApiController
      * @param  int  $cid  the users VATSIM ID
      */
     #[ApiPathfinder('moodle.api')]
-    public function find_quiz_attempts(int $cmid, int $cid): ?array
+    public function find_quiz_attempts(int $cmid, int $cid): array|\Illuminate\Http\Response
     {
         $this->authorizeApiRequest('moodle.api');
+        $res = MoodleLibrary::findQuizAttempts($cmid, $cid);
 
-        return MoodleLibrary::findQuizAttempts($cmid, $cid);
+        return $res != null ? $res : response(null, 404);
     }
 
     /**
@@ -60,7 +61,7 @@ class MoodleController extends ApiController
     {
         $this->authorizeApiRequest('moodle.api');
 
-        return MoodleLibrary::findCourseCompletion($course_id, $cid);
+        return MoodleLibrary::findCourseCompletion($course_id, $cid) ?? response(null, 404);
     }
 
     /**
@@ -88,6 +89,6 @@ class MoodleController extends ApiController
     {
         $this->authorizeApiRequest('moodle.api');
 
-        return MoodleLibrary::findActivityCompletion($cmid, $cid);
+        return MoodleLibrary::findActivityCompletion($cmid, $cid) ?? response(null, 404);
     }
 }
