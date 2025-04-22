@@ -25,6 +25,8 @@ class WorkRemovals extends Command
 
     public static int $count_do = 10;
 
+    public static int $count_candidates = 100;
+
     public static int $count_start = 20;
 
     /**
@@ -36,13 +38,20 @@ class WorkRemovals extends Command
             return;
         }
 
-        GdprRemoval::whereNull('completed_at')
+        $candidates = GdprRemoval::whereNull('completed_at')
             ->whereNull('canceled_at')
             ->orderBy('started_at', 'asc')
-            ->limit(static::$count_do)
-            ->cursor()
-            ->each(function (GdprRemoval $gdpr_removal) {
-                dispatch(new WorkRemovalJob($gdpr_removal));
-            });
+            ->limit(static::$count_candidates)
+            ->get();
+
+        $numbers = range(0, static::$count_candidates - 1);
+        shuffle($numbers);
+        $selected_numbers = array_slice($numbers, 0, static::$count_do);
+
+        foreach ($selected_numbers as $number) {
+            $gdpr_removal = $candidates->at($number);
+            dispatch(new WorkRemovalJob($gdpr_removal));
+        }
+
     }
 }
