@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="layout-specing">
         <x-layouts.admin.content
-            header="GDPR Removal Logs"
+                header="GDPR Removal Logs"
         ></x-layouts.admin.content>
 
 
@@ -15,6 +15,18 @@
                         <i data-feather="search" class=" fea icon-sm icons"></i>
                         <input wire:model.live="search" class="form-control ps-5" type="number" min="0" max="9000000">
                     </div>
+                </li>
+                <li class="list-inline-item" style="width: 100%">
+                    <input class="form-check-input" type="checkbox" wire:model.live="filter_running">
+                    <label class="form-check-label" for="">running anzeigen</label>
+                </li>
+                <li class="list-inline-item" style="width: 100%">
+                    <input class="form-check-input" type="checkbox" wire:model.live="filter_completed">
+                    <label class="form-check-label" for="">completed anzeigen</label>
+                </li>
+                <li class="list-inline-item" style="width: 100%">
+                    <input class="form-check-input" type="checkbox" wire:model.live="filter_canceled">
+                    <label class="form-check-label" for="">canceled anzeigen</label>
                 </li>
             </x-layouts.admin.card-header>
 
