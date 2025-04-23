@@ -23,9 +23,9 @@ class WorkRemovals extends Command
      */
     protected $description = 'Command to trigger GDPR removals';
 
-    public static int $count_do = 10;
+    public static int $count_do = 1;
 
-    public static int $count_candidates = 100;
+    public static int $count_candidates = 500;
 
     public static int $count_start = 20;
 
