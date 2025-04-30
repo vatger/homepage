@@ -54,8 +54,9 @@
     "name_en": null,
     "type": "pdf",
     "needs_approval": false,
-    "last_update": "2024-06-21",
-    "path_de": "/storage/policies/atd-a.pdf"
+    "last_update": "2025-04-04",
+    "path_de": "/storage/policies/atd-a.pdf",
+    "path_changelog_de": "public/policies/atd-a_change.html"
   },
   {
     "id": "pol.atd.b",
