@@ -30,8 +30,12 @@ class GDPRFinalDeletion
         $this->user_id = $user->id;
     }
 
-    public static function deleteUser(User $user): bool
+    public static function deleteUser(?User $user): bool
     {
+        if (! $user) {
+            return false;
+        }
+        
         $g = new self($user);
 
         return $g->run();
