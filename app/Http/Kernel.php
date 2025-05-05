@@ -74,7 +74,7 @@ class Kernel extends HttpKernel
         ],
 
         'web_api' => [
-            'throttle:api',
+            'throttle:web_api',
             SubstituteBindings::class,
             PreventRequestsDuringMaintenance::class,
         ],
