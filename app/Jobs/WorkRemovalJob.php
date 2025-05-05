@@ -14,15 +14,18 @@ class WorkRemovalJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public GdprRemoval $gdprRemoval;
+    public ?GdprRemoval $gdprRemoval;
 
-    public function __construct(GdprRemoval $gdprRemoval)
+    public function __construct(?GdprRemoval $gdprRemoval)
     {
         $this->gdprRemoval = $gdprRemoval;
     }
 
     public function handle(): void
     {
+        if ($this->gdprRemoval) {
+            return;
+        }
         GDPRLibrary::work($this->gdprRemoval);
     }
 }

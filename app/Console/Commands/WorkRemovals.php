@@ -50,6 +50,9 @@ class WorkRemovals extends Command
 
         foreach ($selected_numbers as $number) {
             $gdpr_removal = $candidates->at($number);
+            if (! $gdpr_removal) {
+                continue;
+            }
             dispatch(new WorkRemovalJob($gdpr_removal));
         }
 

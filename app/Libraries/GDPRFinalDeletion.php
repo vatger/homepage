@@ -35,7 +35,7 @@ class GDPRFinalDeletion
         if (! $user) {
             return false;
         }
-        
+
         $g = new self($user);
 
         return $g->run();
