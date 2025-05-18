@@ -34,6 +34,13 @@ class ProcessMembersJob implements ShouldQueue
         $data = json_decode(Storage::get($file));
         Storage::delete($file);
 
+        if (count($files) > 3) {
+            dispatch(new self);
+        }
+        if (count($files) > 100) {
+            dispatch(new self);
+        }
+        
         if (! $data || $data?->id) {
             return;
         }
@@ -43,13 +50,5 @@ class ProcessMembersJob implements ShouldQueue
             CoreApiLibrary2::insertMemberData($user, $data, $time);
             MembershipLibrary::update($user);
         }
-
-        if (count($files) > 3) {
-            dispatch(new self);
-        }
-        if (count($files) > 100) {
-            dispatch(new self);
-        }
-
     }
 }
