@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Libraries\MembershipLibrary;
 use App\Libraries\VATSIM\CoreApiLibrary2;
 use App\Models\Membership\User;
+use App\Models\Tech\Job;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Storage;
@@ -34,13 +35,13 @@ class ProcessMembersJob implements ShouldQueue
         $data = json_decode(Storage::get($file));
         Storage::delete($file);
 
-        if (count($files) > 3) {
+        if (count($files) > 3 && Job::count() < 100) {
             dispatch(new self);
         }
-        if (count($files) > 100) {
+        if (count($files) > 100 && Job::count() < 100) {
             dispatch(new self);
         }
-        
+
         if (! $data || $data?->id) {
             return;
         }
