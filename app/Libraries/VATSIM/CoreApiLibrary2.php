@@ -7,12 +7,35 @@ use App\Libraries\GDPRLibrary;
 use App\Models\Membership\User;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class CoreApiLibrary2 extends BaseLibrary
 {
-    public static function send(string $type, string $endpoint, array $data = []): array|object|null
+    private static string $last_requests_key = 'CoreApiLibrary2.counter';
+
+    private static int $max_request = 10;
+
+    private static int $seconds = 60;
+
+    public static function checkLimit(): int
     {
+        $last_requests = Cache::get(self::$last_requests_key, []);
+        $last_requests = array_filter($last_requests, fn ($key) => floatval($key) > microtime(true) - self::$seconds, ARRAY_FILTER_USE_KEY);
+        Cache::put(self::$last_requests_key, $last_requests);
+
+        return self::$max_request - count($last_requests);
+    }
+
+    public static function send(string $type, string $endpoint, array $data = [], bool $force = false): array|object|null
+    {
+        if (! $force && self::checkLimit() <= 0) {
+            Log::info('CoreApiLibrary2: limit exceeded');
+
+            return null;
+        }
+
         $apikey = config('vatsim.api.token2');
         $uri = config('vatsim.api.host').'/v2/'.ltrim($endpoint, '/');
         $type = strtoupper($type);
@@ -31,7 +54,23 @@ class CoreApiLibrary2 extends BaseLibrary
             } else {
                 $res = $client->request($type, $uri, ['query' => $data]);
             }
+
+            $last_requests = Cache::get(self::$last_requests_key, []);
+            $last_requests[strval(microtime(true))] = $type.':'.$endpoint.':'.implode(',', $data);
+            Cache::put(self::$last_requests_key, $last_requests);
+
         } catch (GuzzleException $e) {
+            if ($e->getCode() == 429) {
+
+                $last_requests = Cache::get(self::$last_requests_key, []);
+                for ($i = 0; $i < self::$max_request + 1; $i++) {
+                    $last_requests[strval(microtime(true) + 1e-6 * $i)] = 'rate limit exceeded '.$i;
+                }
+                Cache::put(self::$last_requests_key, $last_requests);
+
+                Log::info('CoreApiLibrary2: limit exceeded by code 429');
+            }
+
             return null;
         }
         $json = json_decode($res?->getBody()?->getContents());
