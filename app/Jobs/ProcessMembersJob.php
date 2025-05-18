@@ -47,6 +47,9 @@ class ProcessMembersJob implements ShouldQueue
         if (count($files) > 3) {
             dispatch(new self);
         }
+        if (count($files) > 100) {
+            dispatch(new self);
+        }
 
     }
 }
