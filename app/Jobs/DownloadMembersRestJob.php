@@ -13,8 +13,6 @@ class DownloadMembersRestJob implements ShouldQueue
 {
     use Queueable;
 
-    public int $count = 10;
-
     public int $refresh_time = 60 * 60 * 24 * 7;
 
     /**
@@ -22,6 +20,10 @@ class DownloadMembersRestJob implements ShouldQueue
      */
     public function handle(): void
     {
+        $count = CoreApiLibrary2::checkLimit() - 2;
+        if ($count <= 0) {
+            return;
+        }
         $gdpr_user_ids = GdprRemoval::whereNull(['canceled_at', 'completed_at'])
             ->get(['user_id'])
             ->select('user_id')
@@ -32,7 +34,7 @@ class DownloadMembersRestJob implements ShouldQueue
         UserVatsimDetail::where('last_download', '<', $time)
             ->whereIntegerNotInRaw('user_id', $gdpr_user_ids)
             ->orderBy('last_download')
-            ->take($this->count)
+            ->take($count)
             ->each(function (UserVatsimDetail $userVatsimDetail) {
                 CoreApiLibrary2::downloadMember($userVatsimDetail->user);
             });
