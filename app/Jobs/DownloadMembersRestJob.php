@@ -20,7 +20,7 @@ class DownloadMembersRestJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $count = CoreApiLibrary2::checkLimit() - 2;
+        $count = CoreApiLibrary2::checkLimit() - 5;
         if ($count <= 0) {
             return;
         }

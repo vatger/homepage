@@ -17,7 +17,7 @@ class CoreApiLibrary2 extends BaseLibrary
 
     private static int $max_request = 10;
 
-    private static int $seconds = 60;
+    private static int $seconds = 65;
 
     public static function checkLimit(): int
     {
