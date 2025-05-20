@@ -1,26 +1,36 @@
-on: [push, pull_request]
-name: CI
+name: Laravel Format Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 jobs:
-  test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        node-version: [22.x]
-        php-versions: ['8.4']
-        os: [ubuntu-latest]
+  format-check:
+    runs-on: ubuntu-latest  # Ubuntu is Debian-based
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Setup PHP Action
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up PHP 8.4 with required extensions
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
-          ini-values: short_open_tag=On, error_reporting=E_ALL & ~E_NOTICE
+          php-version: '8.4'
+          extensions: curl, ctype, json, mbstring, xml, fileinfo, dom
           tools: composer
-          extensions: curl, ctype, json, mbstring, xml, fileinfo, dom, ctype
-      - run: npm install
-      - run: composer install
-      - run: npm run format:check
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Node.js dependencies
+        run: npm install
+
+      - name: Install PHP dependencies
+        run: composer install --no-progress --no-interaction --prefer-dist
+
+      - name: Run format check
+        run: npm run format:check
