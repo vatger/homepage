@@ -8,6 +8,7 @@ use App\Models\Membership\User;
 use App\Models\Tech\Job;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class ProcessMembersJob implements ShouldQueue
@@ -35,10 +36,12 @@ class ProcessMembersJob implements ShouldQueue
         $data = json_decode(Storage::get($file));
         Storage::delete($file);
 
-        if (count($files) > 3 && Job::count() < 100) {
+        $number_jobs = Cache::remember('ProcessMembersJob', 60, fn () => Job::count());
+
+        if (count($files) > 0 && $number_jobs < 100) {
             dispatch(new self);
         }
-        if (count($files) > 100 && Job::count() < 100) {
+        if (count($files) > 100 && $number_jobs < 100) {
             dispatch(new self);
         }
 
