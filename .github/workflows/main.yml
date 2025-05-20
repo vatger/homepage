@@ -26,11 +26,14 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Node.js dependencies
-        run: npm install
+      - name: Configure GitHub token for Composer
+        run: composer config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install PHP dependencies
         run: composer install --no-progress --no-interaction --prefer-dist
+
+      - name: Install Node.js dependencies
+        run: npm install
 
       - name: Run format check
         run: npm run format:check
