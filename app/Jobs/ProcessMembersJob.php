@@ -56,7 +56,7 @@ class ProcessMembersJob implements ShouldQueue
             Log::debug($data);
             Log::debug($time);
             CoreApiLibrary2::insertMemberData($user, $data, $time);
-            Log::debug("done");
+            Log::debug('done');
             MembershipLibrary::update($user);
         }
     }
