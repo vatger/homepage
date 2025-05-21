@@ -30,6 +30,7 @@ class ProcessMembersJob implements ShouldQueue
         $file = $files[rand(0, min([count($files) - 1, 10]))];
         Log::debug($file);
         $time = intval(explode('+', trim($file, 'jobs/merlit.n'))[0]);
+        Log::debug('tim:'.$time);
         if ($time == 0) {
             return;
         }
