@@ -46,7 +46,7 @@ class ProcessMembersJob implements ShouldQueue
             dispatch(new self);
         }
 
-        if (! $data || !$data?->id) {
+        if (! $data || ! $data?->id) {
             return;
         }
 
