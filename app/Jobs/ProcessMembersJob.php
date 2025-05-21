@@ -9,6 +9,7 @@ use App\Models\Tech\Job;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ProcessMembersJob implements ShouldQueue
@@ -51,7 +52,11 @@ class ProcessMembersJob implements ShouldQueue
 
         $user = User::find($data->id);
         if (! empty($user)) {
+            Log::debug($user);
+            Log::debug($data);
+            Log::debug($time);
             CoreApiLibrary2::insertMemberData($user, $data, $time);
+            Log::debug("done");
             MembershipLibrary::update($user);
         }
     }
