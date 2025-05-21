@@ -36,9 +36,9 @@ class ProcessMembersJob implements ShouldQueue
         }
 
         $data = json_decode(Storage::get($file));
-        Log::debug($data);
+        Log::debug(strval($data));
         Storage::delete($file);
-        Log::debug($data);
+        Log::debug(strval($data));
         $number_jobs = Cache::remember('ProcessMembersJob', 60, fn () => Job::count());
 
         if (count($files) > 0 && $number_jobs < 100) {
@@ -54,8 +54,8 @@ class ProcessMembersJob implements ShouldQueue
 
         $user = User::find($data->id);
         if (! empty($user)) {
-            Log::debug($user);
-            Log::debug($time);
+            Log::debug(strval($user));
+            Log::debug(strval($time));
             CoreApiLibrary2::insertMemberData($user, $data, $time);
             Log::debug('done');
             MembershipLibrary::update($user);
