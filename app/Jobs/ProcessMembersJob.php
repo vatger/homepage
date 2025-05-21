@@ -29,16 +29,15 @@ class ProcessMembersJob implements ShouldQueue
 
         $file = $files[rand(0, min([count($files) - 1, 10]))];
         Log::debug($file);
+
         $time = intval(explode('+', trim($file, 'jobs/merlit.n'))[0]);
-        Log::debug('tim:'.$time);
         if ($time == 0) {
             return;
         }
 
         $data = json_decode(Storage::get($file));
-        Log::debug(strval($data));
         Storage::delete($file);
-        Log::debug(strval($data));
+
         $number_jobs = Cache::remember('ProcessMembersJob', 60, fn () => Job::count());
 
         if (count($files) > 0 && $number_jobs < 100) {
@@ -54,8 +53,6 @@ class ProcessMembersJob implements ShouldQueue
 
         $user = User::find($data->id);
         if (! empty($user)) {
-            Log::debug(strval($user));
-            Log::debug(strval($time));
             CoreApiLibrary2::insertMemberData($user, $data, $time);
             Log::debug('done');
             MembershipLibrary::update($user);
