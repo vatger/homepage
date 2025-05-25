@@ -62,7 +62,7 @@ class MoodleLibrary extends BaseLibrary
 
     public static function listCourses(): ?array
     {
-        $results = Cache::remember('MoodleLibrary::listCourses', 60 * 5, fn () => static::send('core_course_get_course_module', []));
+        $results = Cache::remember('MoodleLibrary::listCourses', 5 * 60, fn () => static::send('core_course_get_courses', []));
 
         return $results;
     }
@@ -70,7 +70,9 @@ class MoodleLibrary extends BaseLibrary
     public static function findCourse(int $course_id): ?object
     {
         $courses = static::listCourses();
-
+        if (empty($courses)) {
+            return null;
+        }
         foreach ($courses as $course) {
             if ($course->id == $course_id) {
                 return (object) $course;
