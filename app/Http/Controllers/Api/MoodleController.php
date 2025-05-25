@@ -21,6 +21,19 @@ class MoodleController extends ApiController
     }
 
     /**
+     * Moodle course info endpoint
+     *
+     * @param  int  $course_id  the course id
+     */
+    #[ApiPathfinder('moodle.api')]
+    public function find_course(int $course_id): ?object
+    {
+        $this->authorizeApiRequest('moodle.api');
+
+        return MoodleLibrary::findCourse($course_id) ?? response(null, 404);
+    }
+
+    /**
      * Moodle quiz attempts endpoint (only finished attempts)
      *
      * @param  int  $cmid  the course module id of the quiz (see the URL)

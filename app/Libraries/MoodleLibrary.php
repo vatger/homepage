@@ -4,6 +4,7 @@ namespace App\Libraries;
 
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
+use Illuminate\Support\Facades\Cache;
 
 class MoodleLibrary extends BaseLibrary
 {
@@ -57,6 +58,26 @@ class MoodleLibrary extends BaseLibrary
         ]);
 
         return true;
+    }
+
+    public static function listCourses(): ?array
+    {
+        $results = Cache::remember('MoodleLibrary::listCourses', 60 * 5, fn () => static::send('core_course_get_course_module', []));
+
+        return $results;
+    }
+
+    public static function findCourse(int $course_id): ?object
+    {
+        $courses = static::listCourses();
+
+        foreach ($courses as $course) {
+            if ($course->id == $course_id) {
+                return (object) $course;
+            }
+        }
+
+        return null;
     }
 
     public static function findCourseModule(string $course_module_id): ?object

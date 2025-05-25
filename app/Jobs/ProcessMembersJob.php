@@ -38,7 +38,7 @@ class ProcessMembersJob implements ShouldQueue
         $data = json_decode(Storage::get($file));
         Storage::delete($file);
 
-        $number_jobs = Cache::remember('ProcessMembersJob', 60, fn () => Job::count());
+        $number_jobs = Cache::remember('ProcessMembersJob', 20, fn () => Job::count());
 
         if (count($files) > 0 && $number_jobs < 100) {
             dispatch(new self);
