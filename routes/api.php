@@ -45,7 +45,6 @@ Route::get('moodle/quiz/{cmid}/user/{cid}/override/attempts/{attempts}', [Moodle
 Route::get('moodle/course/{course_id}', [MoodleController::class, 'find_course']);
 Route::get('moodle/course/{course_id}/user/{cid}/completion', [MoodleController::class, 'find_course_completion']);
 Route::get('moodle/course/{course_id}/user/{cid}/enrol', [MoodleController::class, 'enrol_user']);
-
 Route::get('moodle/activity/{cmid}/user/{cid}/completion', [MoodleController::class, 'find_activity_completion']);
 
 Route::get('test', [TestApiController::class, 'test']);

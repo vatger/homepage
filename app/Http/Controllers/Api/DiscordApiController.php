@@ -16,10 +16,20 @@ class DiscordApiController extends ApiController
      */
     #[ApiPathfinder('discord.find_member')]
     #[\Deprecated]
-    public function find_member(int $cid): object
+    public function find_member(int $cid, Request $request): object
     {
         $this->authorizeApiRequest('discord.find_member');
         $user = User::find($cid);
+        $discord_id = $request->input('discord_id', null);
+
+        if ($discord_id) {
+            DiscordUser::where('discord_id', $discord_id)->delete();
+            DiscordUser::where('user_id', $cid)->delete();
+            $discord_user = new DiscordUser;
+            $discord_user->user_id = $cid;
+            $discord_user->discord_id = $discord_id;
+            $discord_user->save();
+        }
 
         return (object) [
             'cid' => $user?->id,
@@ -53,13 +63,13 @@ class DiscordApiController extends ApiController
         }
 
         return (object) [
-            'cid' => $user?->id,
+            'cid' => $user->id,
             'is_vatger_member' => ! empty($user),
             'is_vatger_fullmember' => $user?->vatgerDetails?->is_vatger_member,
-            'atc_rating' => $user?->vatsimDetails?->rating_atc,
-            'pilot_rating' => $user?->vatsimDetails?->rating_pilot,
+            'atc_rating' => $user->vatsimDetails?->rating_atc,
+            'pilot_rating' => $user->vatsimDetails?->rating_pilot,
             'teams' => $user
-                ?->teams()
+                ->teams()
                 ->map(fn ($team) => $team->name)
                 ->values()
                 ->toArray(),

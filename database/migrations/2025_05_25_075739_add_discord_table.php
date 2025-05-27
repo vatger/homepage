@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('discord', function (Blueprint $table) {
             $table->bigInteger('user_id')->primary();
-            $table->string('discord_id', 32)->unique();
+            $table->string('discord_id', 32)->unique()->nullable();
         });
     }
 
