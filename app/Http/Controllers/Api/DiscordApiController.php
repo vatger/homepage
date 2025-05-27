@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Decorators\ApiPathfinder;
+use App\Models\Membership\DiscordUser;
 use App\Models\Membership\User;
+use Illuminate\Http\Request;
 
 class DiscordApiController extends ApiController
 {
@@ -13,6 +15,7 @@ class DiscordApiController extends ApiController
      * @param  int  $cid  the users VATSIM ID
      */
     #[ApiPathfinder('discord.find_member')]
+    #[\Deprecated]
     public function find_member(int $cid): object
     {
         $this->authorizeApiRequest('discord.find_member');
@@ -30,5 +33,55 @@ class DiscordApiController extends ApiController
                 ->values()
                 ->toArray(),
         ];
+    }
+
+    /**
+     * Discord get member endpoint
+     */
+    #[ApiPathfinder('discord.get_member')]
+    public function get_member(string $discord_id, Request $request): ?object
+    {
+        $this->authorizeApiRequest('discord.get_member');
+        $discord_user = DiscordUser::where('discord_id', $discord_id)->first();
+        if (! $discord_user) {
+            return null;
+        }
+        $user = User::find($discord_user->user_id);
+
+        if (! $user) {
+            return null;
+        }
+
+        return (object) [
+            'cid' => $user?->id,
+            'is_vatger_member' => ! empty($user),
+            'is_vatger_fullmember' => $user?->vatgerDetails?->is_vatger_member,
+            'atc_rating' => $user?->vatsimDetails?->rating_atc,
+            'pilot_rating' => $user?->vatsimDetails?->rating_pilot,
+            'teams' => $user
+                ?->teams()
+                ->map(fn ($team) => $team->name)
+                ->values()
+                ->toArray(),
+        ];
+    }
+
+    /**
+     * Discord add member endpoint
+     */
+    #[ApiPathfinder('discord.add_member')]
+    public function add_member(Request $request): void
+    {
+        $this->authorizeApiRequest('discord.add_member');
+        $req = $request->validate([
+            'cid' => 'required|integer',
+            'discord_id' => 'required|string',
+        ]);
+        DiscordUser::where('discord_id', $req['discord_id'])->delete();
+        DiscordUser::where('user_id', $req['cid'])->delete();
+        $discord_user = new DiscordUser;
+        $discord_user->user_id = $req['cid'];
+        $discord_user->discord_id = $req['discord_id'];
+        $discord_user->save();
     }
 }

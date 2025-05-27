@@ -29,11 +29,6 @@ class Station extends Model
         return $this->hasMany(AtcBooking::class, 'station_id', 'id');
     }
 
-    public function controllerFeedbacks(): HasMany
-    {
-        return $this->hasMany(ControllerFeedback::class, 'station_id', 'id');
-    }
-
     public function getFixedFrequencyAttribute(): string
     {
         return number_format($this->frequency, 3);
