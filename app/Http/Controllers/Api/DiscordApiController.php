@@ -64,6 +64,7 @@ class DiscordApiController extends ApiController
 
         return (object) [
             'cid' => $user->id,
+            'discord_id' => $discord_id,
             'is_vatger_member' => ! empty($user),
             'is_vatger_fullmember' => $user?->vatgerDetails?->is_vatger_member,
             'atc_rating' => $user->vatsimDetails?->rating_atc,
@@ -84,13 +85,15 @@ class DiscordApiController extends ApiController
     {
         $this->authorizeApiRequest('discord.add_member');
         $req = $request->validate([
-            'cid' => 'required|integer',
+            'cid' => 'integer',
             'discord_id' => 'required|string',
         ]);
+        if ($req['cid']) {
+            DiscordUser::where('user_id', $req['cid'])->delete();
+        }
         DiscordUser::where('discord_id', $req['discord_id'])->delete();
-        DiscordUser::where('user_id', $req['cid'])->delete();
         $discord_user = new DiscordUser;
-        $discord_user->user_id = $req['cid'];
+        $discord_user->user_id = $req['cid'] ?? null;
         $discord_user->discord_id = $req['discord_id'];
         $discord_user->save();
     }

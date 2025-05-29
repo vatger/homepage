@@ -26,8 +26,11 @@ class DiscordLibrary extends BaseLibrary
 
     public static function check_user(User $user): void
     {
+        return; //todo
+
         $data = (object) [
             'cid' => $user?->id,
+            'discord_id' => $discord_id,
             'is_vatger_member' => ! empty($user),
             'is_vatger_fullmember' => $user?->vatgerDetails?->is_vatger_member,
             'atc_rating' => $user?->vatsimDetails?->rating_atc,
