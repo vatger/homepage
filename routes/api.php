@@ -27,7 +27,6 @@ Route::get('booking/{start?}/{end?}', [BookingController::class, 'index']);
 
 Route::get('teamspeak/{cid}', [TeamspeakApiController::class, 'ids']);
 
-Route::get('discord/{cid}', [DiscordApiController::class, 'find_member']);
 Route::get('discord/user/{discord_id}', [DiscordApiController::class, 'get_member']);
 Route::post('discord/user', [DiscordApiController::class, 'add_member']);
 
