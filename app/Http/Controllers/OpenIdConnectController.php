@@ -32,6 +32,7 @@ class OpenIdConnectController
             $userinfo['rating_pilot_short'] = $user->vatsimDetails->rating_pilot_short;
             $userinfo['rating_military'] = $user->vatsimDetails->rating_military;
             $userinfo['rating_military_short'] = $user->vatsimDetails->rating_military_short;
+            $userinfo['last_rating_change_at'] = $user->vatsimDetails->last_rating_change_at;
         }
         if ($user->tokenCan('assignment')) {
             $userinfo['region_code'] = $user->vatsimDetails->region_code;
