@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('discord', function (Blueprint $table) {
-            $table->bigInteger('user_id')->primary();
+            $table->id();
+            $table->bigInteger('user_id')->unique()->nullable();
             $table->string('discord_id', 32)->unique()->nullable();
         });
     }
