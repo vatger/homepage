@@ -88,13 +88,15 @@ class DiscordApiController extends ApiController
             'cid' => 'integer',
             'discord_id' => 'required|string',
         ]);
-        if ($req['cid']) {
-            DiscordUser::where('user_id', $req['cid'])->delete();
+        $cid = $req['cid'] ?? null;
+        $discord_id = $req['discord_id'];
+        if ($cid) {
+            DiscordUser::where('user_id')->delete();
         }
-        DiscordUser::where('discord_id', $req['discord_id'])->delete();
+        DiscordUser::where('discord_id', $discord_id)->delete();
         $discord_user = new DiscordUser;
-        $discord_user->user_id = $req['cid'] ?? null;
-        $discord_user->discord_id = $req['discord_id'];
+        $discord_user->user_id = $cid;
+        $discord_user->discord_id = $discord_id;
         $discord_user->save();
     }
 }
