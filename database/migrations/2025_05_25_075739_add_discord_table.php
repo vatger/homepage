@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id')->unique()->nullable();
             $table->string('discord_id', 32)->unique()->nullable();
+            $table->timestamps();
         });
     }
 
