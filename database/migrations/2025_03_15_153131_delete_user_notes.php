@@ -10,7 +10,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::drop('user_notes');
+        Schema::dropIfExists('user_notes');
     }
 
     /**
