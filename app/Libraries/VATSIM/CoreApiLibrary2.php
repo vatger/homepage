@@ -4,6 +4,7 @@ namespace App\Libraries\VATSIM;
 
 use App\Libraries\BaseLibrary;
 use App\Libraries\GDPRLibrary;
+use App\Models\Membership\DiscordUser;
 use App\Models\Membership\User;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
@@ -76,6 +77,23 @@ class CoreApiLibrary2 extends BaseLibrary
         $json = json_decode($res?->getBody()?->getContents());
 
         return $json;
+    }
+
+    public static function findDiscord(string $discord_id): void
+    {
+        $result = self::send('GET', "members/discord/$discord_id");
+        if (empty($result)) {
+            return;
+        }
+        if (isset($result->user_id) && isset($result->id)) {
+            DiscordUser::where('user_id', $result->user_id)->delete();
+            DiscordUser::where('discord_id', $result->id)->delete();
+            $discord_user = new DiscordUser;
+            $discord_user->user_id = $result->user_id;
+            $discord_user->discord_id = $result->id;
+            $discord_user->save();
+        }
+
     }
 
     public static function downloadMember(User $user): void
