@@ -54,20 +54,19 @@ class DiscordApiController extends ApiController
     {
         $this->authorizeApiRequest('discord.get_member');
         $discord_user = DiscordUser::where('discord_id', $discord_id)->first();
-        if (! $discord_user) {
-            $discord_user = new DiscordUser;
-            $discord_user->discord_id = $discord_id;
-            $discord_user->save();
 
-            return null;
-        }
-        $user_id = $discord_user->user_id;
-        if (! $user_id) {
+        if (! $discord_user || ! $discord_user->user_id) {
             if (CoreApiLibrary2::checkLimit() > 0) {
                 CoreApiLibrary2::findDiscord($discord_id);
+                $discord_user = DiscordUser::where('discord_id', $discord_id)->first();
             }
         }
-        $user = User::find($user_id);
+
+        if (! $discord_user || ! $discord_user->user_id) {
+            return null;
+        }
+
+        $user = User::find($discord_user->user_id);
 
         if (! $user) {
             return null;
