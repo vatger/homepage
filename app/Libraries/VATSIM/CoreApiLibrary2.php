@@ -89,7 +89,7 @@ class CoreApiLibrary2 extends BaseLibrary
             DiscordUser::where('user_id', $result->user_id)->delete();
             DiscordUser::where('discord_id', $result->id)->delete();
             $discord_user = new DiscordUser;
-            $discord_user->user_id = $result->user_id;
+            $discord_user->user_id = intval($result->user_id);
             $discord_user->discord_id = $result->id;
             $discord_user->save();
         }
