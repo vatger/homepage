@@ -35,7 +35,9 @@ Route::get('solos/{cid}', [SolosApiController::class, 'find_member']);
 Route::get('vateud/roster', [VATEUDCoreContoller::class, 'roster_controller']);
 
 Route::post('board/user', [BoardController::class, 'create']);
+Route::post('board/post/cpt', [BoardController::class, 'update_cpt_post']);
 Route::post('board/post/{post_id}', [BoardController::class, 'update_post']);
+
 
 Route::post('vatsim/webhook', [VatsimWebhookController::class, 'post']);
 

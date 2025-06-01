@@ -48,7 +48,25 @@ class BoardController extends ApiController
         $this->authorizeApiRequest('board.update_post');
         $validated = $request->validate([
             'text_data' => ['required', 'string'],
+        ]);
+
+        return true;
+    }
+
+    /**
+     * Update the existing cpt forum post
+     */
+    #[ApiPathfinder('board.update_cpt_post')]
+    public function update_cpt_post(Request $request): bool
+    {
+        $this->authorizeApiRequest('board.update_post');
+        $post_id = -1;
+        $validated = $request->validate([
+            'text_data' => ['required', 'string'],
             'table_data' => ['array'],
+            'table_data.*.trainee' => ['string'],
+            'table_data.*.date' => ['string'],
+            'table_data.*.position' => ['string'],
         ]);
 
         return true;
