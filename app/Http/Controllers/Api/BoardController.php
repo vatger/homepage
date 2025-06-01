@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Decorators\ApiPathfinder;
+use App\Libraries\XenForoLibrary;
 use App\Models\Membership\User;
 use Illuminate\Http\Request;
 
@@ -60,15 +61,30 @@ class BoardController extends ApiController
     public function update_cpt_post(Request $request): bool
     {
         $this->authorizeApiRequest('board.update_post');
-        $post_id = -1;
+        $post_id = 44;
         $validated = $request->validate([
             'text_data' => ['required', 'string'],
-            'table_data' => ['array'],
+            'table_data' => ['required', 'array'],
             'table_data.*.trainee' => ['string'],
             'table_data.*.date' => ['string'],
             'table_data.*.position' => ['string'],
         ]);
+        $message = '[TABLE width="100%"]
+                    [TR]
+                    [th]Trainee[/th]
+                    [th]Position[/th]
+                    [th]Datum[/th]
+                    [/TR]';
+        foreach ($validated['table_data'] as $table_data) {
+            $message .= '[TR]';
+            $message .= '[td width="33.3333%"]'.$table_data->trainee.'[/td]';
+            $message .= '[td width="33.3333%"]'.$table_data->position.'[/td]';
+            $message .= '[td width="33.3333%"]'.$table_data->date.'[/td]';
+            $message .= '[/TR]';
+        }
+        $message .= '[/TABLE]';
+        $message .= $validated['text_data'];
 
-        return true;
+        return XenForoLibrary::updatePost($post_id, $message);
     }
 }

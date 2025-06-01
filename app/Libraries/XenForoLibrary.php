@@ -233,13 +233,32 @@ class XenForoLibrary extends BaseLibrary
     }
 
     /**
-     * Grab the posts in the news threads
+     * Grab the post with the given id
      */
     public static function getPost(int|string $postId)
     {
         $result = self::send('GET', 'posts/'.$postId, []);
         if ($result && $result->getStatusCode() == 200) {
             return json_decode($result->getBody()->getContents());
+        }
+
+        return false;
+    }
+
+    public static function updatePost(int|string $postId, string $message): bool
+    {
+        $result = self::send('GET', 'posts/'.$postId, [
+            'message' => $message,
+            'silent' => false,
+            'clear_edit' => false,
+            'author_alert' => false,
+            'author_alert_reason' => '',
+            'attachment_key' => '',
+        ]);
+        if ($result && $result->getStatusCode() == 200) {
+            $data = json_decode($result->getBody()->getContents());
+
+            return $data->success == true;
         }
 
         return false;
