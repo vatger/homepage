@@ -77,9 +77,9 @@ class BoardController extends ApiController
                     [/TR]';
         foreach ($validated['table_data'] as $table_data) {
             $message .= '[TR]';
-            $message .= '[td width="33.3333%"]'.$table_data->trainee.'[/td]';
-            $message .= '[td width="33.3333%"]'.$table_data->position.'[/td]';
-            $message .= '[td width="33.3333%"]'.$table_data->date.'[/td]';
+            $message .= '[td width="33.3333%"]'.$table_data['trainee'].'[/td]';
+            $message .= '[td width="33.3333%"]'.$table_data['position'].'[/td]';
+            $message .= '[td width="33.3333%"]'.$table_data['date'].'[/td]';
             $message .= '[/TR]';
         }
         $message .= '[/TABLE]';
