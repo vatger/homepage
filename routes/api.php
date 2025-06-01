@@ -38,7 +38,6 @@ Route::post('board/user', [BoardController::class, 'create']);
 Route::post('board/post/cpt', [BoardController::class, 'update_cpt_post']);
 Route::post('board/post/{post_id}', [BoardController::class, 'update_post']);
 
-
 Route::post('vatsim/webhook', [VatsimWebhookController::class, 'post']);
 
 Route::get('moodle/user/{cid}', [MoodleController::class, 'find_user']);

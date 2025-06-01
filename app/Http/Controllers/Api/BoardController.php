@@ -64,6 +64,7 @@ class BoardController extends ApiController
         $post_id = 44;
         $validated = $request->validate([
             'text_data' => ['required', 'string'],
+            'table_data' => ['array'],
             'table_data.*.trainee' => ['required', 'string'],
             'table_data.*.date' => ['required', 'string'],
             'table_data.*.position' => ['required', 'string'],
