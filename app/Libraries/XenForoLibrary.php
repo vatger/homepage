@@ -257,8 +257,8 @@ class XenForoLibrary extends BaseLibrary
         ]);
         if ($result && $result->getStatusCode() == 200) {
             $data = json_decode($result->getBody()->getContents());
-
-            return $data->success == true;
+            Log::debug($result->getBody()->getContents());
+            return $data?->success ?? false;
         }
 
         return false;
