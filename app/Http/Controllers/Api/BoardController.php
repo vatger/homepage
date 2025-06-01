@@ -38,4 +38,19 @@ class BoardController extends ApiController
 
         return true;
     }
+
+    /**
+     * Update an existing forum post
+     */
+    #[ApiPathfinder('board.update_post')]
+    public function update_post(int $post_id, Request $request): bool
+    {
+        $this->authorizeApiRequest('board.update_post');
+        $validated = $request->validate([
+            'text_data' => ['required', 'string'],
+            'table_data' => ['array'],
+        ]);
+
+        return true;
+    }
 }
