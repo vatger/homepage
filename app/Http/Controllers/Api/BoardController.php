@@ -64,10 +64,9 @@ class BoardController extends ApiController
         $post_id = 44;
         $validated = $request->validate([
             'text_data' => ['required', 'string'],
-            'table_data' => ['required', 'array'],
-            'table_data.*.trainee' => ['string'],
-            'table_data.*.date' => ['string'],
-            'table_data.*.position' => ['string'],
+            'table_data.*.trainee' => ['required', 'string'],
+            'table_data.*.date' => ['required', 'string'],
+            'table_data.*.position' => ['required', 'string'],
         ]);
         $message = '[TABLE width="100%"]
                     [TR]
