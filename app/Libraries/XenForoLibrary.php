@@ -247,7 +247,7 @@ class XenForoLibrary extends BaseLibrary
 
     public static function updatePost(int|string $postId, string $message): bool
     {
-        $result = self::send('GET', 'posts/'.$postId, [
+        $result = self::send('POST', 'posts/'.$postId, [
             'message' => $message,
             'silent' => false,
             'clear_edit' => false,
