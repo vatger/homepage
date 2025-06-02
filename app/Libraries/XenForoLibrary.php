@@ -245,6 +245,39 @@ class XenForoLibrary extends BaseLibrary
         return false;
     }
 
+    public static function addPost(int|string $threadId, string $message): bool
+    {
+        $result = self::send('POST', 'posts/', [
+            'thread_id' => $threadId,
+            'message' => $message,
+            'attachment_key' => '',
+        ]);
+        if ($result && $result->getStatusCode() == 200) {
+            $data = json_decode($result->getBody()->getContents());
+
+            return $data?->success ?? false;
+        }
+
+        return false;
+    }
+
+    public static function deletePost(int|string $postId): bool
+    {
+        $result = self::send('DELETE', 'posts/'.$postId, [
+            'hard_delete' => false,
+            'reason' => 'Deleted by API',
+            'author_alert' => false,
+            'author_alert_reason' => '',
+        ]);
+        if ($result && $result->getStatusCode() == 200) {
+            $data = json_decode($result->getBody()->getContents());
+
+            return $data?->success ?? false;
+        }
+
+        return false;
+    }
+
     public static function updatePost(int|string $postId, string $message): bool
     {
         $result = self::send('POST', 'posts/'.$postId, [
@@ -257,11 +290,27 @@ class XenForoLibrary extends BaseLibrary
         ]);
         if ($result && $result->getStatusCode() == 200) {
             $data = json_decode($result->getBody()->getContents());
-            Log::debug($result->getBody()->getContents());
+
             return $data?->success ?? false;
         }
 
         return false;
+    }
+
+    public static function getThread(int $threadId): ?object
+    {
+        $result = self::send('GET', 'threads/'.$threadId, [
+            'with_posts' => false,
+            'page' => 0,
+            'with_first_post' => false,
+            'with_last_post' => true,
+            // 'order' => '',
+        ]);
+        if ($result && $result->getStatusCode() == 200) {
+            $data = json_decode($result->getBody()->getContents());
+            return $data ?? null;
+        }
+        return null;
     }
 
     public static function get_groups(): array

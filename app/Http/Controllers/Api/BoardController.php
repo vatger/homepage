@@ -61,7 +61,6 @@ class BoardController extends ApiController
     public function update_cpt_post(Request $request): bool
     {
         $this->authorizeApiRequest('board.update_post');
-        $post_id = 44;
         $validated = $request->validate([
             'text_data' => ['required', 'string'],
             'table_data' => ['array'],
@@ -85,6 +84,20 @@ class BoardController extends ApiController
         $message .= '[/TABLE]';
         $message .= $validated['text_data'];
 
-        return XenForoLibrary::updatePost($post_id, $message);
+        $threadId = 43;
+        $thread = XenForoLibrary::getThread($threadId);
+        if (empty($thread)) {
+            return false;
+        }
+        $bool = XenForoLibrary::updatePost($thread->first_post->post_id, $message);
+        if (! $bool) {
+            return false;
+        }
+        if (! $thread->last_post?->is_first_post) {
+            XenForoLibrary::deletePost($thread->last_post->post_id);
+        }
+        XenForoLibrary::addPost($threadId, 'Update');
+
+        return true;
     }
 }
