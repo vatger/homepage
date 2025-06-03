@@ -17,7 +17,7 @@ class SyslogPage extends Component
     public $search;
 
     #[Url]
-    public ?int $log_id = null;
+    public ?string $log_id = null;
 
     #[Url]
     public ?string $type = null;
