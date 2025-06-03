@@ -91,8 +91,10 @@
                     </div>
                     <div class="col-12">
                         <div class="alert bg-soft-primary fw-medium" role="alert">
-                            <i data-feather="info" class="fea fs-5 align-middle me-1"></i>
-                            <a href="{{ route('policies', ['policy_id' => 'pol.booking']) }}" class="alert-link">Rules</a>
+                            <a href="{{ route('policies', ['policy_id' => 'pol.booking']) }}" class="alert-link">
+                                <i data-feather="info" class="fea fs-5 align-middle me-1"></i>
+                                Rules
+                            </a>
                         </div>
                     </div>
                     <!--end col-->
