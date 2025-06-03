@@ -84,14 +84,14 @@
                             <input wire:model="selected_training" class="form-check-input" type="checkbox" id="training-selector">
                         </div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 mb-4">
                         <button wire:click="book()" class="btn btn-soft-primary">
                             @lang('booking.atc.create.save-button-text')
                         </button>
                     </div>
                     <div class="col-12">
                         <div class="alert bg-soft-primary fw-medium" role="alert">
-                            <i data-feather="search" class="fea fs-5 align-middle me-1"></i>
+                            <i data-feather="info" class="fea fs-5 align-middle me-1"></i>
                             <a href="{{ route('policies', ['policy_id' => 'pol.booking']) }}" class="alert-link">Rules</a>
                         </div>
                     </div>
