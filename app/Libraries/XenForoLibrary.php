@@ -302,7 +302,7 @@ class XenForoLibrary extends BaseLibrary
         $result = self::send('GET', 'threads/'.$threadId, [
             'with_posts' => false,
             'page' => 0,
-            'with_first_post' => false,
+            'with_first_post' => true,
             'with_last_post' => true,
             // 'order' => '',
         ]);
