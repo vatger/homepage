@@ -308,7 +308,7 @@ class XenForoLibrary extends BaseLibrary
         ]);
         if ($result && $result->getStatusCode() == 200) {
             $data = json_decode($result->getBody()->getContents());
-            return $data ?? null;
+            return $data?->thread ?? null;
         }
         return null;
     }
