@@ -114,5 +114,15 @@
     "needs_approval": false,
     "last_update": "2023-07-12",
     "path_de": "/storage/policies/ptd.pdf"
+  },
+  {
+    "id": "pol.booking",
+    "name_de": "Buchungs‐ und Besetzungsregeln",
+    "name_en": "Booking and Staffing Rules",
+    "type": "pdf",
+    "needs_approval": false,
+    "last_update": "2025-06-03",
+    "path_de": "/storage/policies/booking_de.pdf",
+    "path_en": "/storage/policies/booking_en.pdf"
   }
 ]
