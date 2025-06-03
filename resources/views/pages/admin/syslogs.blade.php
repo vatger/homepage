@@ -37,6 +37,9 @@
                             created_at
                             <i data-feather="{{$this->getSortIconClasses('created_at')}}"></i>
                         </th>
+                        <th class="border-bottom p-3" style="white-space: nowrap">
+                            id
+                        </th>
                         <th class="border-bottom p-3" style="white-space: nowrap" wire:click="sortBy('type')">
                             type
                             <i data-feather="{{$this->getSortIconClasses('type')}}"></i>
@@ -56,6 +59,7 @@
                     @foreach ($logs as $log)
                         <tr>
                             <td>{{ $log->created_at }}</td>
+                            <td><small>{{ $log->id }}</small></td>
                             <td>{{ $log->type }}</td>
                             <td>{{ $log->path }}</td>
                             <td>{{ $log->method }}</td>
@@ -74,7 +78,7 @@
 
         </x-layouts.admin.card>
 
-        @if($sellog)
+        @if(!empty($sellog))
             <div class="modal show" tabindex="-1" aria-modal="true" role="dialog" style="display: block;">
                 <div class="container">
                     <div class="modal-content rounded shadow border-0">
