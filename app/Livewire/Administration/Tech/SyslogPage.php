@@ -42,6 +42,9 @@ class SyslogPage extends Component
         }
         $this->sortQueryModifier($query);
         $log = $this->log_id ? SysLog::findOrFail($this->log_id) : null;
+        if ($log) {
+            dd($log);
+        }
 
         return view('pages.admin.syslogs')->with([
             'logs' => $query->paginate(),
