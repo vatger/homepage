@@ -96,7 +96,7 @@
                                 <p><strong>Time:</strong> <span>{{ $sellog->created_at }}</span></p>
                                 @if(!empty($sellog->message))
                                     <p><strong>Message:</strong>
-                                    <p>{{ $log->message }}</p>
+                                    <p>{!! str_replace("\n",'<br>', $log->message)  !!}</p>
                                 @endif
                                 @if(!empty($sellog->stack_trace))
                                     <p><strong>Stacktrace:</strong>
