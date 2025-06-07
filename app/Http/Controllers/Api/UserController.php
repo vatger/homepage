@@ -32,6 +32,7 @@ class UserController extends ApiController
             'source_name' => 'required|string',
             'link_text' => 'nullable|string',
             'link_url' => 'nullable|string',
+            'via' => 'nullable|string',
         ]);
 
         $title = $request->input('title');
@@ -39,8 +40,9 @@ class UserController extends ApiController
         $source_name = $request->input('source_name');
         $link_text = $request->input('link_text');
         $link_url = $request->input('link_url');
+        $via = empty($request->input('via')) ? null : explode(',', $request->input('via'));
 
-        $notification = new BasicNotification($title, $message, $source_name, $link_text, $link_url);
+        $notification = new BasicNotification($title, $message, $source_name, $link_text, $link_url, $via);
         $cid->notify($notification);
 
         \Log::info(json_encode($notification));

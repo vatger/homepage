@@ -27,6 +27,7 @@ class BasicNotification extends Notification
         public ?string $link_url = null,
         public ?Carbon $valid_till = null,
         public ?Carbon $delete_at = null,
+        public ?array $via = null
     ) {}
 
     /**
@@ -34,7 +35,21 @@ class BasicNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database', BoardChannel::class, 'mail'];
+        if (empty($this->via)) {
+            return ['database', BoardChannel::class, 'mail'];
+        }
+        $res = ['database'];
+        if (array_any($this->via, fn ($s) => strcasecmp($s, 'board.ping'))) {
+            $res[] = BoardChannel::class;
+        }
+        // if (array_any($this->via, fn ($s) => strcasecmp($s, 'board.pn'))) {
+        //    $res[] = BoardChannel::class;
+        // }
+        if (array_any($this->via, fn ($s) => strcasecmp($s, 'mail'))) {
+            $res[] = 'mail';
+        }
+
+        return $res;
     }
 
     /**
