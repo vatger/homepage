@@ -6,6 +6,7 @@ use App\Libraries\GDPRLibrary;
 use App\Libraries\MembershipLibrary;
 use App\Libraries\VATSIM\CoreApiLibrary2;
 use App\Livewire\Helpers\NotyTrait;
+use App\Models\Membership\DiscordUser;
 use App\Models\Membership\User;
 use App\Models\Membership\UserBan;
 use Carbon\Carbon;
@@ -87,7 +88,11 @@ class MemberPage extends Component
 
         $this->last_api_update = Carbon::createFromTimestamp($this->user->vatsimDetails->last_download)->diffForHumans();
 
-        return view('pages.admin.member')->with(['user' => $this->user, 'acting_user' => Auth::user()]);
+        return view('pages.admin.member')->with([
+            'user' => $this->user,
+            'acting_user' => Auth::user(),
+            'discord' => DiscordUser::where('user_id', $this->user->id)->first(),
+        ]);
     }
 
     public function force_member_update(): void

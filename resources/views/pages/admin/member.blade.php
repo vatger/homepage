@@ -51,7 +51,7 @@
                                     <a wire:ignore.self class="nav-link" id="pills-apps-tab" data-bs-toggle="pill" href="#ts-board-pill" role="tab"
                                        aria-controls="pills-apps" aria-selected="false">
                                         <div class="text-center py-1">
-                                            <h6 class="mb-0">TS & Forum</h6>
+                                            <h6 class="mb-0">Linked Accounts</h6>
                                         </div>
                                     </a>
                                     <!--end nav link-->
@@ -187,6 +187,17 @@
                                     <p class="text-muted mb-0">
                                         @if($user->settings->forum_id)
                                             The user has an account with the id <code>{{ $user->settings->forum_id }}</code>.
+                                        @else
+                                            The user does not have an account.
+                                        @endif
+
+                                    </p>
+
+                                    <hr>
+                                    <h4 class="card-title">Discord:</h4>
+                                    <p class="text-muted mb-0">
+                                        @if($discord)
+                                            The user has an account with the id <code>{{ $discord->discord_id }}</code>.
                                         @else
                                             The user does not have an account.
                                         @endif
