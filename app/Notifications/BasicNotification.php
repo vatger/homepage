@@ -39,13 +39,13 @@ class BasicNotification extends Notification
             return ['database', BoardChannel::class, 'mail'];
         }
         $res = ['database'];
-        if (array_any($this->via, fn ($s) => strcasecmp($s, 'board.ping'))) {
+        if (array_any($this->via, fn ($s) => strcasecmp($s, 'board.ping') == 0)) {
             $res[] = BoardChannel::class;
         }
         // if (array_any($this->via, fn ($s) => strcasecmp($s, 'board.pn'))) {
         //    $res[] = BoardChannel::class;
         // }
-        if (array_any($this->via, fn ($s) => strcasecmp($s, 'mail'))) {
+        if (array_any($this->via, fn ($s) => strcasecmp($s, 'mail') == 0)) {
             $res[] = 'mail';
         }
 
