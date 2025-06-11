@@ -42,7 +42,7 @@ class UserController extends ApiController
         $link_url = $request->input('link_url');
         $via = empty($request->input('via')) ? null : explode(',', $request->input('via'));
 
-        $notification = new BasicNotification($title, $message, $source_name, $link_text, $link_url, $via);
+        $notification = new BasicNotification($title, $message, $source_name, $link_text, $link_url, via: $via);
         $cid->notify($notification);
 
         \Log::info(json_encode($notification));
