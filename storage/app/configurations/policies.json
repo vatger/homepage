@@ -13,7 +13,7 @@
     "name_de": "Impressum",
     "name_en": "Imprint",
     "type": "html",
-    "needs_approval": true,
+    "needs_approval": false,
     "last_update": "2025-06-16",
     "path_de": "public/policies/imprint.html"
   },
