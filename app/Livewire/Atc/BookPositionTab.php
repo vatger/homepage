@@ -121,7 +121,7 @@ class BookPositionTab extends Component
         $already_controller = DataFeedLibrary::Controller($b->station);
         $allowed_start = Carbon::now()->addHours(0.5);
         if ($b->starts_at->isBefore($allowed_start)) {
-            if ($already_controller->cid == Auth::user()->id) {
+            if ($already_controller && $already_controller->cid == Auth::user()->id) {
                 return null;
             }
 
