@@ -6,6 +6,7 @@ use App\Models\Navigation\Aerodrome;
 use App\Models\Navigation\Station;
 use Illuminate\Support\Str;
 use VatsimData\Datafeed;
+use VatsimData\DatafeedClasses\Controller;
 use VatsimData\DatafeedClasses\ControllerWithTransceivers;
 
 /**
@@ -36,7 +37,7 @@ class DataFeedLibrary
         return $matched_controllers;
     }
 
-    public static function Controller(Station $station): ?object
+    public static function Controller(Station $station): ?Controller
     {
         $all_controllers = Datafeed::ControllersLocal();
 

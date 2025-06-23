@@ -118,14 +118,22 @@ class BookPositionTab extends Component
 
     private function checkBooking(AtcBooking $b): ?string
     {
+        $already_controller = DataFeedLibrary::Controller($b->station);
         $allowed_start = Carbon::now()->addHours(0.5);
         if ($b->starts_at->isBefore($allowed_start)) {
+            if ($already_controller->cid == Auth::user()->id) {
+                return null;
+            }
+
             return "You can't book a station this close to the start.";
         }
 
-        $already_controller = DataFeedLibrary::Controller($b->station);
         $allowed_start = Carbon::now()->addHours(1.5);
         if ($already_controller && $b->starts_at->isBefore($allowed_start)) {
+            if ($already_controller->cid == Auth::user()->id) {
+                return null;
+            }
+
             return "You can't book this station. There is someone already connected to this station.";
         }
 
