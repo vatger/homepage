@@ -32,18 +32,18 @@ class XenForoLibrary extends BaseLibrary
         } else {
             $url = config('forum.url').'/api/'.$endpoint;
         }
-        if ($allow_errors) {
-            try {
-                return $client->request($method, $url, ['form_params' => $data, 'http_errors' => false]);
-            } catch (GuzzleException $e) {
-                Log::error($e->getMessage());
+
+        try {
+            $result = $client->request($method, $url, ['form_params' => $data, 'http_errors' => false]);
+            if (! $allow_errors && ($result->getStatusCode() < 200 || $result->getStatusCode() > 299)) {
+                Log::error($result->getBody()->getContents());
+                return false;
             }
-        } else {
-            try {
-                return $client->request($method, $url, ['form_params' => $data]);
-            } catch (GuzzleException $e) {
-                Log::debug($e->getMessage());
-            }
+
+            return $result;
+
+        } catch (GuzzleException $e) {
+            Log::error($e->getMessage());
         }
 
         return false;
@@ -308,8 +308,10 @@ class XenForoLibrary extends BaseLibrary
         ]);
         if ($result && $result->getStatusCode() == 200) {
             $data = json_decode($result->getBody()->getContents());
+
             return $data?->thread ?? null;
         }
+
         return null;
     }
 
