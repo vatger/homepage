@@ -22,7 +22,7 @@ class XenForoLibrary extends BaseLibrary
             'headers' => [
                 'Accept' => 'application/json',
                 'XF-Api-Key' => config('forum.apikey'),
-                'XF-Api-User' => 1,
+                // 'XF-Api-User' => 1,
             ],
         ]);
 
