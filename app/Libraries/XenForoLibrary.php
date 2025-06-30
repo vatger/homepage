@@ -44,14 +44,15 @@ class XenForoLibrary extends BaseLibrary
                     'error' => $result?->getBody()?->getContents(),
                 ];
                 Log::withContext()->error(json_encode($log));
-
+                dump($result);
+                dump($log);
                 return false;
             }
 
             return $result;
 
         } catch (GuzzleException $e) {
-            Log::error($e->getMessage());
+            Log::withContext()->error($e->getMessage());
         }
 
         return false;
@@ -288,7 +289,7 @@ class XenForoLibrary extends BaseLibrary
 
     public static function updatePost(int|string $postId, string $message): bool
     {
-        $result = self::send('POST', 'posts/'.$postId, [
+        $result = self::send('POST', 'posts/'.$postId.'/', [
             'message' => $message,
             'silent' => false,
             'clear_edit' => false,
