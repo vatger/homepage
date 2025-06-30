@@ -36,8 +36,14 @@ class XenForoLibrary extends BaseLibrary
         try {
             $result = $client->request($method, $url, ['form_params' => $data, 'http_errors' => false]);
             if (! $allow_errors && ($result->getStatusCode() < 200 || $result->getStatusCode() > 299)) {
-                Log::withContext()->error($result->getBody()->getContents());
-                Log::withContext()->debug($endpoint.': '.json_encode($data));
+                $log = (object) [
+                    'endpoint' => $url,
+                    'method' => $method,
+                    'data' => $data,
+                    'code' => $result->getStatusCode(),
+                    'error' => $result?->getBody()?->getContents(),
+                ];
+                Log::withContext()->error(json_encode($log));
 
                 return false;
             }
