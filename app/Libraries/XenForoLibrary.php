@@ -16,13 +16,13 @@ class XenForoLibrary extends BaseLibrary
     /**
      * Send an actual call to the XenForo API.
      */
-    public static function send(string $method, string $endpoint, array $data, bool $bypass = true, bool $allow_errors = false): false|ResponseInterface
+    public static function send(string $method, string $endpoint, array $data, bool $bypass = true, bool $allow_errors = false, bool $set_user = false): false|ResponseInterface
     {
         $client = self::constructClient([
             'headers' => [
                 'Accept' => 'application/json',
                 'XF-Api-Key' => config('forum.apikey'),
-                'XF-Api-User' => 1,
+                $set_user ? 'XF-Api-User' : 'XXX' => 1,
             ],
         ]);
 
@@ -46,6 +46,7 @@ class XenForoLibrary extends BaseLibrary
                 Log::withContext()->error(json_encode($log));
                 dump($result);
                 dump($log);
+
                 return false;
             }
 
@@ -260,7 +261,7 @@ class XenForoLibrary extends BaseLibrary
             'thread_id' => $threadId,
             'message' => $message,
             'attachment_key' => '',
-        ]);
+        ], set_user: true);
         if ($result && $result->getStatusCode() == 200) {
             $data = json_decode($result->getBody()->getContents());
 
