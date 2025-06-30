@@ -44,8 +44,6 @@ class XenForoLibrary extends BaseLibrary
                     'error' => $result?->getBody()?->getContents(),
                 ];
                 Log::withContext()->error(json_encode($log));
-                dump($result);
-                dump($log);
 
                 return false;
             }
