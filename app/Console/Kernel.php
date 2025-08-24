@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\ProcessMissingDiscordRecordsJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,6 +16,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('vatger:download-members-subdivision')->everyTwoHours();
         $schedule->command('vatger:download-members-rest')->everyMinute();
         $schedule->command('vatger:process-members')->everyMinute();
+        $schedule->job(new ProcessMissingDiscordRecordsJob)->everyTwoMinutes();
 
         $schedule->command('vatger:update-nav-stations')->everyFourHours();
         $schedule->command('vatger:update-teamspeak')->everyFifteenMinutes();
