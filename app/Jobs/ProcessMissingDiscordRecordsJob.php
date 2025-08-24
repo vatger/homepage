@@ -16,7 +16,7 @@ class ProcessMissingDiscordRecordsJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $dicord_user = DiscordUser::whereNull('user_id')->first();
+        $dicord_user = DiscordUser::whereNull('user_id')->inRandomOrder()->first();
         if (! $dicord_user) {
             return;
         }
