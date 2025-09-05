@@ -5,6 +5,7 @@ namespace App\Libraries;
 use App\Libraries\VATSIM\ATCBookingsApi;
 use App\Models\AtcBooking;
 use App\Models\Membership\Concerns\FirMembership;
+use App\Models\Membership\DiscordUser;
 use App\Models\Membership\SurveyKey;
 use App\Models\Membership\User;
 use App\Models\Membership\UserBan;
@@ -183,6 +184,13 @@ class GDPRFinalDeletion
     private function user_vatsim_details(?User $user, int $user_id): bool
     {
         UserVatsimDetail::where('user_id', $user_id)->delete();
+
+        return true;
+    }
+
+    private function discord(?User $user, int $user_id): bool
+    {
+        DiscordUser::where('user_id', $user_id)->delete();
 
         return true;
     }

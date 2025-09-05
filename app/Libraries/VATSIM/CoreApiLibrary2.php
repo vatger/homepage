@@ -88,6 +88,9 @@ class CoreApiLibrary2 extends BaseLibrary
         if (isset($result->user_id) && isset($result->id)) {
             DiscordUser::where('user_id', $result->user_id)->delete();
             DiscordUser::where('discord_id', $result->id)->delete();
+            if (! User::find($result->user_id)) {
+                return;
+            }
             $discord_user = new DiscordUser;
             $discord_user->user_id = intval($result->user_id);
             $discord_user->discord_id = $result->id;
