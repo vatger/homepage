@@ -253,9 +253,10 @@ class XenForoLibrary extends BaseLibrary
         return false;
     }
 
-    public static function addPost(int|string $threadId, string $message): bool
+    public static function addPost(int|string $threadId, string $message, int $authorId = 1): bool
     {
         $result = self::send('POST', 'posts/', [
+            'author_id' => $authorId,
             'thread_id' => $threadId,
             'message' => $message,
             'attachment_key' => '',
@@ -272,9 +273,9 @@ class XenForoLibrary extends BaseLibrary
     public static function deletePost(int|string $postId): bool
     {
         $result = self::send('DELETE', 'posts/'.$postId, [
-            'hard_delete' => false,
+            'hard_delete' => 1,
             'reason' => 'Deleted by API',
-            'author_alert' => false,
+            'author_alert' => 0,
             'author_alert_reason' => '',
         ]);
         if ($result && $result->getStatusCode() == 200) {

@@ -96,7 +96,7 @@ class BoardController extends ApiController
         if ($thread->first_post_id != $thread->last_post_id) {
             XenForoLibrary::deletePost($thread->last_post_id);
         }
-        XenForoLibrary::addPost($threadId, 'Update');
+        XenForoLibrary::addPost($threadId, 'Update', 133);
 
         return true;
     }
