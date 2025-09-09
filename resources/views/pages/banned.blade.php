@@ -48,8 +48,10 @@
             @endif
             <p>
                 Sollte dein Account mit veralteten Daten auf der VATSIM Germany Homepage angezeigt werden, klicke <a href="{{ route('member.refresh') }}">hier</a>.
+                Achtung bitte warte bis zu 12h bis die neuen Daten zu Verfügung stehen.
                 <br>
                 If your account is displayed with outdated data on the VATSIM Germany homepage, click <a href="{{ route('member.refresh') }}">here</a>.
+                Please wait up to 12h until we have received your new data.
             </p>
         </div>
         <!--end container-->

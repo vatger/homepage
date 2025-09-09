@@ -25,7 +25,7 @@ Route::prefix('members')
             ->withoutMiddleware('pending_removal')
             ->name('member.removal-pending.cancel');
 
-        Route::get('refresh', [MembershipController::class, 'refresh'])
+        Route::get('refresh/{percent?}', [MembershipController::class, 'refresh'])
             ->withoutMiddleware('banned')
             ->name('member.refresh');
 

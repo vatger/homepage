@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Libraries\GDPRLibrary;
 use App\Libraries\MembershipLibrary;
+use App\Libraries\VATSIM\CoreApiLibrary2;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -55,11 +56,18 @@ class MembershipController extends Controller
 
     }
 
-    public function refresh(Request $request)
+    public function refresh(Request $request, int $percent = 0)
     {
+        if ($percent == 0) {
+            CoreApiLibrary2::downloadMember(Auth::user());
+        }
+        sleep(3);
+        $percent += 10;
+        if ($percent < 100) {
+            return redirect()->route('member.refresh', ['percent' => $percent]);
+        }
         MembershipLibrary::update(Auth::user());
-        sleep(10);
 
-        return redirect()->back(fallback: route('member.profile'));
+        return redirect()->route('member.profile')->with(['success', 'Account updated']);
     }
 }
