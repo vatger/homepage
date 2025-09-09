@@ -148,8 +148,11 @@ class GDPRLibrary extends BaseLibrary
                 'homepage' => GDPRFinalDeletion::deleteUser($gdprRemoval->user),
                 default => self::call_api_service($gdprRemoval->user_id, $service),
             };
+            Log::debug("GDPRLibrary::call_service::$service<-$gdprRemoval->user_id $result");
         } catch (\Exception $exception) {
+            Log::warning($exception->getMessage());
         }
+        
 
         if ($result) {
             self::mark_complete($gdprRemoval, $service);
