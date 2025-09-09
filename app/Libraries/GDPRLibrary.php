@@ -152,7 +152,6 @@ class GDPRLibrary extends BaseLibrary
         } catch (\Exception $exception) {
             Log::warning($exception->getMessage());
         }
-        
 
         if ($result) {
             self::mark_complete($gdprRemoval, $service);

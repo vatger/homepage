@@ -23,7 +23,7 @@ class WorkRemovalJob implements ShouldQueue
 
     public function handle(): void
     {
-        if ($this->gdprRemoval) {
+        if (! $this->gdprRemoval) {
             return;
         }
         GDPRLibrary::work($this->gdprRemoval);
