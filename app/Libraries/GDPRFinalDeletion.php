@@ -36,6 +36,7 @@ class GDPRFinalDeletion
         if (! $user) {
             return false;
         }
+        \Log::debug('HP DEL '.$user->id);
 
         $g = new self($user);
 
@@ -63,14 +64,20 @@ class GDPRFinalDeletion
             $status_ok = true;
             DB::beginTransaction();
             DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+            if ($debug) {
+                $dumps = [];
+            }
             foreach ($methods as $method) {
                 $method->setAccessible(true);
                 // Allow access to private methods
                 $res = $method->invoke($this, $this->user, $this->user_id); // Call the private method on the current instance
                 if ($debug) {
-                    dump([$method->name => $res]);
+                    $dumps[$method->name] = $res;
                 }
                 $status_ok = $status_ok && $res;
+            }
+            if ($debug) {
+                dump($dumps);
             }
             $this->user->delete();
             DB::statement('SET FOREIGN_KEY_CHECKS = 1');
