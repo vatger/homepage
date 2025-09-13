@@ -34,7 +34,6 @@ class ImageHelperLibrary extends BaseLibrary
             return Storage::url($filepath);
         }
         if ($fast) {
-            dump($filepath);
             Storage::put($filepath, $this->manager->create(1, 1)->toWebp()->toString());
             dispatch(new DownloadImageForCache($filepath, $url, $width));
             return Storage::url($filepath);
