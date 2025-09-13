@@ -98,6 +98,7 @@ class EventLibrary extends BaseLibrary
      */
     private static function loadEvents(): array
     {
+        return [];
         return Cache::remember('de.vatsim-germany.events.all', 0, function () {
             $response = Http::get('https://my.vatsim.net/api/v1/events/all');
             $event_array = json_decode($response)->data;
