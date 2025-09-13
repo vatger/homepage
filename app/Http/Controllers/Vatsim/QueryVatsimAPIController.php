@@ -22,7 +22,7 @@ class QueryVatsimAPIController extends Controller
      */
     public function loadEvents(Request $request, int $count = 9): string
     {
-        return EventLibrary::getEvents($count, true);
+        return json_encode(EventLibrary::getEvents($count));
     }
 
     /**
