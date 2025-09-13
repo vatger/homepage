@@ -11,42 +11,6 @@ use Illuminate\Http\Request;
 class DiscordApiController extends ApiController
 {
     /**
-     * Discord member endpoint
-     *
-     * @param  int  $cid  the users VATSIM ID
-     */
-    #[ApiPathfinder('discord.find_member')]
-    #[\Deprecated]
-    public function find_member(int $cid, Request $request): object
-    {
-        $this->authorizeApiRequest('discord.find_member');
-        $user = User::find($cid);
-        $discord_id = $request->input('discord_id', null);
-
-        if ($discord_id) {
-            DiscordUser::where('discord_id', $discord_id)->delete();
-            DiscordUser::where('user_id', $cid)->delete();
-            $discord_user = new DiscordUser;
-            $discord_user->user_id = $cid;
-            $discord_user->discord_id = $discord_id;
-            $discord_user->save();
-        }
-
-        return (object) [
-            'cid' => $user?->id,
-            'is_vatger_member' => ! empty($user),
-            'is_vatger_fullmember' => $user?->vatgerDetails?->is_vatger_member,
-            'atc_rating' => $user?->vatsimDetails?->rating_atc,
-            'pilot_rating' => $user?->vatsimDetails?->rating_pilot,
-            'teams' => $user
-                ?->teams()
-                ->map(fn ($team) => $team->name)
-                ->values()
-                ->toArray(),
-        ];
-    }
-
-    /**
      * Discord get member endpoint
      */
     #[ApiPathfinder('discord.get_member')]
@@ -73,10 +37,11 @@ class DiscordApiController extends ApiController
         }
 
         return (object) [
-            'cid' => $user->id,
             'discord_id' => $discord_id,
-            'is_vatger_member' => ! empty($user),
-            'is_vatger_fullmember' => $user?->vatgerDetails?->is_vatger_member,
+            'vatsim_id' => $user->id,
+            'is_guest' => ! $user->vatgerDetails?->is_vatger_member,
+            'is_vatger_member' => $user->vatgerDetails?->is_vatger_member,
+            'fir_name' => $user->fir,
             'atc_rating' => $user->vatsimDetails?->rating_atc,
             'pilot_rating' => $user->vatsimDetails?->rating_pilot,
             'teams' => $user
