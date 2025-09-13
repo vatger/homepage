@@ -15,6 +15,7 @@ class UserBan extends Model
     protected $casts = [
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
+        'cancelled_at' => 'datetime',
         'type' => UserBanType::class,
     ];
 

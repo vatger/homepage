@@ -11,7 +11,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
-class JoblogPage extends Component
+class JoblogListPage extends Component
 {
     use PaginationTrait, SortableTrait;
 

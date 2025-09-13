@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Libraries\NavLibrary;
-use App\Models\Navigation\Aerodrome;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

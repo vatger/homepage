@@ -3,6 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Decorators\ApiPathfinder;
+<<<<<<< Updated upstream
+=======
+use App\Libraries\VATSIM\EventLibrary;
+use App\Libraries\XenForoLibrary;
+>>>>>>> Stashed changes
 use App\Models\Membership\User;
 use Illuminate\Http\Request;
 
@@ -38,4 +43,76 @@ class BoardController extends ApiController
 
         return true;
     }
+<<<<<<< Updated upstream
+=======
+
+    /**
+     * Update an existing forum post
+     */
+    #[ApiPathfinder('board.update_post')]
+    public function update_post(int $post_id, Request $request): bool
+    {
+        $this->authorizeApiRequest('board.update_post');
+        $validated = $request->validate([
+            'text_data' => ['required', 'string'],
+        ]);
+
+        return true;
+    }
+
+    /**
+     * Update the existing cpt forum post
+     */
+    #[ApiPathfinder('board.update_cpt_post')]
+    public function update_cpt_post(Request $request): bool
+    {
+        $this->authorizeApiRequest('board.update_post');
+        $validated = $request->validate([
+            'text_data' => ['required', 'string'],
+            'table_data' => ['array'],
+            'table_data.*.trainee' => ['required', 'string'],
+            'table_data.*.date' => ['required', 'string'],
+            'table_data.*.position' => ['required', 'string'],
+        ]);
+        $message = '[TABLE width="100%"]
+                    [TR]
+                    [th]Trainee[/th]
+                    [th]Position[/th]
+                    [th]Datum[/th]
+                    [/TR]';
+        foreach ($validated['table_data'] as $table_data) {
+            $message .= '[TR]';
+            $message .= '[td width="33.3333%"]'.$table_data['trainee'].'[/td]';
+            $message .= '[td width="33.3333%"]'.$table_data['position'].'[/td]';
+            $message .= '[td width="33.3333%"]'.$table_data['date'].'[/td]';
+            $message .= '[/TR]';
+        }
+        $message .= '[/TABLE]';
+        $message .= $validated['text_data'];
+
+        $threadId = 43;
+        $thread = XenForoLibrary::getThread($threadId);
+        if (empty($thread)) {
+            return false;
+        }
+        $bool = XenForoLibrary::updatePost($thread->first_post_id, $message);
+        if (! $bool) {
+            return false;
+        }
+        if ($thread->first_post_id != $thread->last_post_id) {
+            XenForoLibrary::deletePost($thread->last_post_id);
+        }
+        XenForoLibrary::addPost($threadId, 'Update', 133);
+
+        return true;
+    }
+
+
+    #[ApiPathfinder('board.get_next_events_html')]
+    public function get_next_events_html(): string
+    {
+        $events = EventLibrary::getEvents();
+        return '';
+    }
+>>>>>>> Stashed changes
 }

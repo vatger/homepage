@@ -31,16 +31,16 @@ class MemberPage extends Component
     {
         $author = Auth::user();
 
-        UserBan::query()->create([
-            'user_id' => $this->user->id,
-            'author_id' => $author->id,
-            'ends_at' => $this->form->permanent ? null : $this->form->endDate,
-            'homepage' => $this->form->homepage, // Why do we need this? The isCurrentlyBanned Attribute is true if any ban exists which has an end_date >= now
-            'forum' => $this->form->forum,
-            'teamspeak' => $this->form->teamspeak,
-            'other_services' => $this->form->otherServices,
-            'reason' => $this->form->reason,
-        ]);
+        $ban = new UserBan;
+        $ban->user_id = $this->user->id;
+        $ban->author_id = $author->id;
+        $ban->ends_at = $this->form->permanent ? null : $this->form->endDate;
+        $ban->homepage = $this->form->homepage;
+        $ban->forum = $this->form->forum;
+        $ban->teamspeak = $this->form->teamspeak;
+        $ban->other_services = $this->form->otherServices;
+        $ban->reason = $this->form->reason;
+        $ban->save();
 
         MembershipLibrary::update($this->user);
 
@@ -59,8 +59,13 @@ class MemberPage extends Component
 
             return;
         }
+        $author = Auth::user();
 
-        $this->banInformation->delete();
+        $ban = $this->banInformation;
+        $ban->canceled_at = Carbon::now();
+        $ban->canceled_by = $author->id;
+        $ban->save();
+
         MembershipLibrary::update($this->user);
 
         $this->showNoty('Sperre erfolgreich aufgehoben');
@@ -77,7 +82,7 @@ class MemberPage extends Component
         $this->banInformation->endBanNow();
         MembershipLibrary::update($this->user);
 
-        $this->showNoty('Sperre erfolgreich aufgehoben');
+        $this->showNoty('Sperre erfolgreich geändert');
     }
 
     #[Layout('layouts.admin.admin-master')]

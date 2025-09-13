@@ -12,7 +12,7 @@ use App\Livewire\Administration\TeamListPage;
 use App\Livewire\Administration\TeamPage;
 use App\Livewire\Administration\Tech\ApilogPage;
 use App\Livewire\Administration\Tech\GdprRemovalsLogPage;
-use App\Livewire\Administration\Tech\JoblogPage;
+use App\Livewire\Administration\Tech\JoblogListPage;
 use App\Livewire\Administration\Tech\OpenIDConnectPage;
 use App\Livewire\Administration\Tech\SyslogPage;
 use Illuminate\Support\Facades\Route;
@@ -50,7 +50,7 @@ Route::prefix('administration')
         Route::prefix('tech')->group(function () {
             Route::get('gdpr-log', GdprRemovalsLogPage::class)->name('administration.tech.gdpr');
 
-            Route::get('job-log', JoblogPage::class)->name('administration.tech.jobs');
+            Route::get('job-log', JoblogListPage::class)->name('administration.tech.jobs');
 
             Route::get('sys-log', SyslogPage::class)->name('administration.tech.syslog');
 
