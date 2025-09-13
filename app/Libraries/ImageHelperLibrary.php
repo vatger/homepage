@@ -2,6 +2,7 @@
 
 namespace App\Libraries;
 
+use App\Jobs\DownloadImageForCache;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -26,23 +27,34 @@ class ImageHelperLibrary extends BaseLibrary
         $this->manager = new ImageManager(new Driver);
     }
 
-    public function get(string $filename, string $url, int $width = 1920): string
+    public function get(string $filename, string $url, int $width = 1920, bool $fast = false): string
     {
         $filepath = 'public/image_cache/'.$filename.'.webp';
         if (Storage::exists($filepath)) {
             return Storage::url($filepath);
         }
+        if ($fast) {
+            dump($filepath);
+            Storage::put($filepath, $this->manager->create(1, 1)->toWebp()->toString());
+            dispatch(new DownloadImageForCache($filepath, $url, $width));
+            return Storage::url($filepath);
+        }
+        return self::download_and_save($filepath, $url, $width);
+    }
+
+    public function download_and_save(string $filepath, string $url, int $width): string
+    {
         try {
             $response = $this->client->get($url);
             throw_if($response->getStatusCode() != 200, new \Exception);
             $data = $response->getBody()->getContents();
             $image = $this->manager->read($data);
             $image->scale(width: $width);
+            Storage::delete($filepath);
             Storage::put($filepath, $image->toWebp()->toString());
-
             return Storage::url($filepath);
         } catch (\Throwable $e) {
-            return $url;
+            return '';
         }
     }
 
