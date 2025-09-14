@@ -23,13 +23,6 @@ class EventPagesController extends Controller
         return view('pages.event')->with(['event' => $event]);
     }
 
-    private static array $HEADERS = [
-        'Access-Control-Allow-Origin' => 'https://board.vatsim-germany.org',
-        'Access-Control-Allow-Methods' => 'GET',
-        'Access-Control-Allow-Headers' => 'Content-Type, Authorization',
-        'Access-Control-Allow-Credentials' => 'true',
-    ];
-
     public function calendar()
     {
         if (request()->isMethod('OPTIONS')) {
@@ -64,7 +57,7 @@ class EventPagesController extends Controller
         }
         $html .= '</ul>';
 
-        return response($html, 200, self::$HEADERS);
+        return response($html);
 
     }
 }

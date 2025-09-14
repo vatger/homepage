@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Http\Middleware\ApiJsonResponse;
 use App\Http\Middleware\ApiOptionalAuthenticate;
 use App\Http\Middleware\CookieChecker;
+use App\Http\Middleware\Cors;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\LocaleMiddleware;
 use App\Http\Middleware\Membership\CheckGDPRMiddleware;
@@ -112,5 +113,6 @@ class Kernel extends HttpKernel
         'staff_data_protection' => CheckSDPMiddleware::class,
         'cookie.consent' => CookieConsentMiddleware::class,
         'cookie.redirect' => CookieChecker::class,
+        'cors' => Cors::class,
     ];
 }
