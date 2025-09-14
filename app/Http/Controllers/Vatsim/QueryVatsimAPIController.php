@@ -22,7 +22,7 @@ class QueryVatsimAPIController extends Controller
      */
     public function loadEvents(Request $request, int $count = 9): string
     {
-        return json_encode(EventLibrary::getEvents($count));
+        return json_encode(EventLibrary::getGermanEvents($count));
     }
 
     /**
@@ -33,7 +33,6 @@ class QueryVatsimAPIController extends Controller
      */
     public function loadSingleEvent(Request $request): mixed
     {
-        // Return event date, either cached (10 minutes), or by executing the function
         return EventLibrary::getAerodromeEvent($request->get('icao'));
     }
 }

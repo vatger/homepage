@@ -11,23 +11,6 @@ use Stevebauman\Purify\Facades\Purify;
 
 class EventLibrary extends BaseLibrary
 {
-    /**
-     * Queries the myVatsim event API and selects only german events.
-     * API Response is in ascending date, so order does not need to be checked.
-     * Parsed response ($count events) data cached for 10 minutes (600s)
-     */
-    public static function getEvents(int $count = 6, bool $nocache = false): false|array
-    {
-        if ($nocache) {
-            return self::loadEventData($count);
-        } else {
-            // Return event date, either cached (10 minutes), or by executing the function
-            return Cache::remember('de.vatsim-germany.events.next', 0, function () use ($count) {
-                return self::loadEventData($count);
-            });
-        }
-    }
-
     public static function getAerodromeEvent(string $icao): ?object
     {
         $data = self::getAerodromeEvents($icao, 1);
@@ -43,37 +26,31 @@ class EventLibrary extends BaseLibrary
         if (strlen($icao) != 4) {
             return [];
         }
-
-        return Cache::remember('de.vatsim-germany.events.aerodrome.'.$icao, 0, function () use ($icao, $count) {
-            $events = self::loadEvents();
-            $eventArray = [];
-
-            $index = 0;
-            foreach ($events as $e) {
-                if ($index >= $count) {
-                    break;
-                }
-
-                foreach ($e->airports as $a) {
-                    if (Str::upper($a->icao) == Str::upper($icao)) {
-                        $nextEvent = $e;
-                        $eventArray[] = $nextEvent;
-                        $index++;
-                    }
+        $events = self::getEvents();
+        $eventArray = [];
+        $index = 0;
+        foreach ($events as $e) {
+            if ($index >= $count) {
+                break;
+            }
+            foreach ($e->airports as $a) {
+                if (Str::upper($a->icao) == Str::upper($icao)) {
+                    $nextEvent = $e;
+                    $eventArray[] = $nextEvent;
+                    $index++;
                 }
             }
+        }
 
-            return $eventArray;
-        });
+        return $eventArray;
     }
 
-    public static function loadEventData(int $count): array|false
+    public static function getGermanEvents(int $count): array|false
     {
-        $events = self::loadEvents();
+        $events = self::getEvents();
 
         // Init array
         $eventArray = [];
-
         // Loop through response array (i.e. through events)
         foreach ($events as $event) {
             foreach ($event->airports as $event_airport) {
@@ -83,7 +60,6 @@ class EventLibrary extends BaseLibrary
                     break;
                 }
             }
-
             if (count($eventArray) == $count) {
                 break;
             }
@@ -96,9 +72,9 @@ class EventLibrary extends BaseLibrary
     /**
      * Load and cache all upcoming events from VATSIM API.
      */
-    public static function loadEvents(): array
+    public static function getEvents(): array
     {
-        return Cache::remember('de.vatsim-germany.events.all', 0, function () {
+        return Cache::remember('de.vatsim-germany.events.all', 60 * 10, function () {
             $response = Http::get('https://my.vatsim.net/api/v1/events/all');
             $event_array = json_decode($response)->data;
             $image_lib = new ImageHelperLibrary;

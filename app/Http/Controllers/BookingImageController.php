@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\Response as ResponseCodes;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class BookingImageController extends Controller
 {
@@ -24,7 +25,7 @@ class BookingImageController extends Controller
         'Content-Type' => 'image/png',
     ];
 
-    public function serveBookingImage(Request $request, string $image_id): Response|JsonResponse|BinaryFileResponse
+    public function serveBookingImage(Request $request, string $image_id): \Illuminate\Http\Response|StreamedResponse|BinaryFileResponse
     {
         if (! Auth::check()) {
             if ($this->_getDisplayMode($request) == 'dark') {
@@ -34,16 +35,25 @@ class BookingImageController extends Controller
             return response()->file(storage_path('app/public/booking_image/error.png'), self::$HEADERS);
         }
 
-        // http required for internal traffic
+        $client = new Client;
         $url = 'http://bookings.vatsim-germany.org/'.$image_id.'/?theme='.$this->_getDisplayMode($request).'&'.$request->getQueryString();
+        try {
+            $response = $client->get($url, ['stream' => true]);
 
-        $response = Http::get($url);
+            if ($response->getStatusCode() === 200) {
+                $stream = $response->getBody(); // This is a Psr7 Stream
 
-        if ($response->successful()) {
-            return response($response->body(), ResponseCodes::HTTP_OK, self::$HEADERS);
+                return Response::stream(function () use ($stream) {
+                    while (! $stream->eof()) {
+                        echo $stream->read(1024); // read in chunks
+                        flush(); // ensure data is sent immediately
+                    }
+                }, 200, self::$HEADERS);
+            }
+        } catch (GuzzleException $e) {
         }
 
-        return response()->json(['error' => 'Not found'], 404);
+        return response('Error fetching image', 404);
     }
 
     public function setDarkMode(Request $request): JsonResponse
