@@ -23,20 +23,15 @@ class EventPagesController extends Controller
         return view('pages.event')->with(['event' => $event]);
     }
 
+    private static array $HEADERS = [
+        'Access-Control-Allow-Origin' => 'https://board.vatsim-germany.org',
+        'Access-Control-Allow-Methods' => 'GET',
+        'Access-Control-Allow-Headers' => 'Content-Type, Authorization',
+        'Access-Control-Allow-Credentials' => 'true',
+    ];
+
     public function calendar()
     {
-        $allowedOrigin = 'https://board.vatger.de';
-        if (isset($_SERVER['HTTP_ORIGIN']) && $_SERVER['HTTP_ORIGIN'] === $allowedOrigin) {
-            header('Access-Control-Allow-Origin: '.$allowedOrigin);
-            header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-            header('Access-Control-Allow-Headers: Content-Type, Authorization');
-            header('Access-Control-Allow-Credentials: true');
-        }
-        // Handle preflight OPTIONS request
-        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-            exit;
-        }
-
         $events = EventLibrary::getGermanEvents(6);
 
         $html = '<ul class="block-body">';
@@ -66,7 +61,7 @@ class EventPagesController extends Controller
         }
         $html .= '</ul>';
 
-        return $html;
+        return response($html, 200, self::$HEADERS);
 
     }
 }
