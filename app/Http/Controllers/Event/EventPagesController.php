@@ -25,6 +25,18 @@ class EventPagesController extends Controller
 
     public function calendar()
     {
+        $allowedOrigin = 'https://board.vatger.de';
+        if (isset($_SERVER['HTTP_ORIGIN']) && $_SERVER['HTTP_ORIGIN'] === $allowedOrigin) {
+            header('Access-Control-Allow-Origin: '.$allowedOrigin);
+            header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+            header('Access-Control-Allow-Headers: Content-Type, Authorization');
+            header('Access-Control-Allow-Credentials: true');
+        }
+        // Handle preflight OPTIONS request
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            exit;
+        }
+
         $events = EventLibrary::getGermanEvents(6);
 
         $html = '<ul class="block-body">';
@@ -45,7 +57,7 @@ class EventPagesController extends Controller
             $html .= '</span>';
             $html .= '<div class="contentRow-minor contentRow-minor--hideLinks">';
             // $html .= '<span class="calendarevents-forum-title">';
-            // $html .= '<a href="'.$link.'">'.htmlspecialchars($event['forum_title']).'</a>';
+            // $html .= '<a href="'.$link.'">'.($event['forum_title']).'</a>';
             // $html .= '</span>';
             $html .= '</div>'; // contentRow-minor
             $html .= '</div>'; // contentRow-main
