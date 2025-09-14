@@ -35,7 +35,7 @@ class EventPagesController extends Controller
 
             $link = route('events.view', ['id' => $event->id]);
 
-            $html .= '<li class="">';
+            $html .= '<li class="block-row" style="padding-inline: 0;">';
             $html .= '<div class="contentRow">';
             $html .= '<div class="contentRow-figure calendarevents-date-container">';
             $html .= '<div class="calendarevents-date-container-month">'.$start->getTranslatedShortMonthName().'</div>';
@@ -47,7 +47,12 @@ class EventPagesController extends Controller
             $html .= '</span>';
             $html .= '<div class="contentRow-minor contentRow-minor--hideLinks">';
             $html .= '<span class="calendarevents-forum-title">';
-            $html .= $start->format('Hi').'-'.$end->format('Hi').'z '.$airports;
+            $html .= $start->format('Hi').'-'.$end->format('Hi').'z';
+            $html .= '</span>';
+            $html .= '</div>'; // contentRow-minor
+            $html .= '<div class="contentRow-minor contentRow-minor--hideLinks">';
+            $html .= '<span class="calendarevents-forum-title">';
+            $html .= $airports;
             $html .= '</span>';
             $html .= '</div>'; // contentRow-minor
             $html .= '</div>'; // contentRow-main
