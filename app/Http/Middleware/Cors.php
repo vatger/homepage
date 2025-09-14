@@ -12,18 +12,25 @@ class Cors
      */
     public function handle(Request $request, Closure $next)
     {
-        // Handle preflight requests
+        $headers = [
+            'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Methods' => 'GET, POST, PUT, PATCH, DELETE, OPTIONS, HEAD',
+            'Access-Control-Allow-Headers' => 'Content-Type, Authorization',
+        ];
+
+        // Handle preflight OPTIONS request
         if ($request->getMethod() === 'OPTIONS') {
-            return response('', 200)
-                ->header('Access-Control-Allow-Origin', '*')
-                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
-                ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return response('', 200)->withHeaders($headers);
         }
 
-        // Handle normal requests
-        return $next($request)
-            ->header('Access-Control-Allow-Origin', '*')
-            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
-            ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        // Handle normal requests including HEAD
+        $response = $next($request);
+
+        // Ensure headers are set even for HEAD requests
+        foreach ($headers as $key => $value) {
+            $response->header($key, $value);
+        }
+
+        return $response;
     }
 }
