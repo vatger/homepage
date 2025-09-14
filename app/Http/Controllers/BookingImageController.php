@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Http\Request;
+use Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
