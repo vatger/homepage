@@ -25,18 +25,17 @@ class EventPagesController extends Controller
 
     public function calendar()
     {
-        if (request()->isMethod('OPTIONS')) {
-            return response('', 204, self::$HEADERS);
-        }
         $events = EventLibrary::getGermanEvents(6);
 
         $html = '<ul class="block-body">';
         foreach ($events as $event) {
             $start = Carbon::parse($event->start_time);
+            $end = Carbon::parse($event->end_time);
+            $airports = collect($event->airports)->map(fn ($airport) => $airport->icao)->join(', ');
 
             $link = route('events.view', ['id' => $event->id]);
 
-            $html .= '<li class="block-row">';
+            $html .= '<li class="">';
             $html .= '<div class="contentRow">';
             $html .= '<div class="contentRow-figure calendarevents-date-container">';
             $html .= '<div class="calendarevents-date-container-month">'.$start->getTranslatedShortMonthName().'</div>';
@@ -47,9 +46,9 @@ class EventPagesController extends Controller
             $html .= '<a href="'.$link.'">'.$event->name.'</a>';
             $html .= '</span>';
             $html .= '<div class="contentRow-minor contentRow-minor--hideLinks">';
-            // $html .= '<span class="calendarevents-forum-title">';
-            // $html .= '<a href="'.$link.'">'.($event['forum_title']).'</a>';
-            // $html .= '</span>';
+            $html .= '<span class="calendarevents-forum-title">';
+            $html .= $start->format('Hi').'-'.$end->format('Hi').'z '.$airports;
+            $html .= '</span>';
             $html .= '</div>'; // contentRow-minor
             $html .= '</div>'; // contentRow-main
             $html .= '</div>'; // contentRow
