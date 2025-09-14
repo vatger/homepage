@@ -98,7 +98,7 @@ class EventLibrary extends BaseLibrary
      */
     private static function loadEvents(): array
     {
-        return Cache::remember('de.vatsim-germany.events.all', 60*10, function () {
+        return Cache::remember('de.vatsim-germany.events.all', 60 * 10, function () {
             $response = Http::get('https://my.vatsim.net/api/v1/events/all');
             $event_array = json_decode($response)->data;
             $image_lib = new ImageHelperLibrary;
@@ -118,6 +118,7 @@ class EventLibrary extends BaseLibrary
                 }
 
             }
+
             return $event_array;
         });
     }

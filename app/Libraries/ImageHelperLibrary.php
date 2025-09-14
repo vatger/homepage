@@ -6,7 +6,7 @@ use App\Jobs\DownloadImageForCache;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Drivers\Vips\Driver as VipsDriver;
 use Intervention\Image\ImageManager;
 
 class ImageHelperLibrary extends BaseLibrary
@@ -24,7 +24,7 @@ class ImageHelperLibrary extends BaseLibrary
                 'Host' => parse_url(config('app.url'), PHP_URL_HOST),
             ],
         ]);
-        $this->manager = new ImageManager(new Driver);
+        $this->manager = ImageManager::withDriver(VipsDriver::class);
     }
 
     public function get(string $filename, string $url, int $width = 1920, bool $fast = false): string
@@ -36,8 +36,10 @@ class ImageHelperLibrary extends BaseLibrary
         if ($fast) {
             Storage::put($filepath, $this->manager->create(1, 1)->toWebp()->toString());
             dispatch(new DownloadImageForCache($filepath, $url, $width));
+
             return Storage::url($filepath);
         }
+
         return self::download_and_save($filepath, $url, $width);
     }
 
@@ -51,6 +53,7 @@ class ImageHelperLibrary extends BaseLibrary
             $image->scale(width: $width);
             Storage::delete($filepath);
             Storage::put($filepath, $image->toWebp()->toString());
+
             return Storage::url($filepath);
         } catch (\Throwable $e) {
             return '';
