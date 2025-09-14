@@ -32,6 +32,9 @@ class EventPagesController extends Controller
 
     public function calendar()
     {
+        if (request()->isMethod('OPTIONS')) {
+            return response('', 204, self::$HEADERS);
+        }
         $events = EventLibrary::getGermanEvents(6);
 
         $html = '<ul class="block-body">';
