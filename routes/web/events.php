@@ -9,7 +9,7 @@ Route::group(['prefix' => 'events', 'as' => 'events.',  'middleware' => 'cookie.
 
 });
 
-Route::group(['prefix' => 'events', 'as' => 'events.',  'middleware' => ['cookie.redirect', 'cors']], function () {
+Route::group(['prefix' => 'events', 'as' => 'events.',  'middleware' => 'cors'], function () {
 
     Route::get('calendar', [EventPagesController::class, 'calendar'])->name('calendar');
 
