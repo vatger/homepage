@@ -4,6 +4,7 @@ namespace App\Livewire\Administration;
 
 use App\Libraries\LimesurveyLibrary;
 use App\Livewire\Helpers\NotyTrait;
+use App\Livewire\Helpers\PaginationTrait;
 use App\Models\Membership\SurveyKey;
 use App\Models\Membership\User;
 use Livewire\Attributes\Layout;
@@ -11,7 +12,7 @@ use Livewire\Component;
 
 class SurveyPage extends Component
 {
-    use NotyTrait;
+    use NotyTrait, PaginationTrait;
 
     public $selected_survey;
 
@@ -64,7 +65,7 @@ class SurveyPage extends Component
 
         return view('pages.admin.survey')->with([
             'surveys' => $this->ls->list_surveys(),
-            'keys' => SurveyKey::all(),
+            'keys' => SurveyKey::paginate(100),
             'selections' => json_decode(json_encode($this->selections)),
         ]);
     }

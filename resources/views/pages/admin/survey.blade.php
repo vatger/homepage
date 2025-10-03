@@ -83,6 +83,7 @@
                                 @endif
                                 </tbody>
                             </table>
+                            {{ $keys->links() }}
                         </div>
                     </x-layouts.admin.card>
                 </x-layouts.admin.sidebar-col>
