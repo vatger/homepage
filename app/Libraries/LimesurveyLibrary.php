@@ -25,6 +25,7 @@ class LimesurveyLibrary
             $this->lsJSONRPCClient = new jsonRPCClient(config('survey.url'));
             $this->sessionKey = $this->lsJSONRPCClient->get_session_key(config('survey.uname'), config('survey.pass'));
         } catch (Exception $e) {
+            Log::error($e->getMessage());
             throw new Exception('LimesurveyLibrary cant connect');
         }
 
