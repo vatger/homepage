@@ -46,7 +46,7 @@
 
                 <x-layouts.admin.sidebar-col position="right">
                     <x-layouts.admin.card>
-                        <x-layouts.admin.card-header position="left" title="Keys" :subtitle="$keys->count()" />
+                        <x-layouts.admin.card-header position="left" title="Keys" :subtitle="\App\Models\Membership\SurveyKey::count()" />
                         <x-layouts.admin.card-header position="right">
                             <li class="list-inline-item" style="width: 100%">
                                 <div class="row">
