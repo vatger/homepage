@@ -25,7 +25,7 @@ class GithubLibrary extends BaseGithubLibrary
 
             return true;
         }
-        if (! empty($roles) && ! $orga_member) {
+        if ((! empty($roles)) && (! $orga_member)) {
             self::github_add_to_organization($user, 'vatger-nav');
 
             return true;
