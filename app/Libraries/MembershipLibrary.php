@@ -118,7 +118,16 @@ class MembershipLibrary
         // 8. Nav
         if (true) {
             try {
-                NavLibrary::check_user($user);
+                //NavLibrary::check_user($user);
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+            }
+        }
+
+        // 9. Github
+        if (true) {
+            try {
+                GithubLibrary::check_user($user);
             } catch (Exception $e) {
                 Log::error($e->getMessage());
             }
