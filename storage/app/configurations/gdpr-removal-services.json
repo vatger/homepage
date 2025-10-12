@@ -46,5 +46,13 @@
         "token_config":"external_services.training_gdpr_token",
         "request_method": "DELETE",
         "request_expected_response_code": 200
+    },
+    {
+      "name": "eventmanager",
+      "deletion_type": "api_request",
+      "endpoint": "http://docker.vatsim-germany.org:8018/api/gdpr-removal/$id",
+      "token_config":"external_services.eventmanager_gdpr_token",
+      "request_method": "DELETE",
+      "request_expected_response_code": 200
     }
 ]
