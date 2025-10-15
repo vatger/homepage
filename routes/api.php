@@ -50,6 +50,7 @@ Route::get('moodle/activity/{cmid}/user/{cid}/completion', [MoodleController::cl
 
 Route::get('test', [TestApiController::class, 'test']);
 
+Route::get('user/{cid}', [UserController::class, 'details']);
 Route::post('user/{cid}/send_notification', [UserController::class, 'send_notification']);
 
 // Route::get('bookstack', [BookstackApiController::class, 'bookstack']);

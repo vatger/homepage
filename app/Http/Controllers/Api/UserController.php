@@ -14,7 +14,26 @@ class UserController extends ApiController
      *
      * Show some basic info about the membership.
      */
-    public function membership(User $cid) {}
+    #[ApiPathfinder('user.details')]
+    public function details(User $cid, Request $request): \Illuminate\Http\JsonResponse
+    {
+        $this->authorizeApiRequest('user.details');
+
+        $user = $cid;
+
+        return response()->json(
+            (object) [
+                'vatsim_id' => $user->id,
+                'fir_name' => $user->fir,
+                'atc_rating' => $user->vatsimDetails?->rating_atc,
+                'pilot_rating' => $user->vatsimDetails?->rating_pilot,
+                'teams' => $user
+                    ->teams()
+                    ->map(fn ($team) => $team->name)
+                    ->values()
+                    ->toArray(),
+            ]);
+    }
 
     /**
      * User Notification
