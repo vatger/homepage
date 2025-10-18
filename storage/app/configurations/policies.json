@@ -5,8 +5,9 @@
     "name_en": "Privacy Policy",
     "type": "html",
     "needs_approval": true,
-    "last_update": "2023-08-31",
-    "path_de": "public/policies/gdpr.html"
+    "last_update": "2025-10-18",
+    "path_de": "public/policies/gdpr.html",
+    "path_changelog_de": "public/policies/gdpr_change.html"
   },
   {
     "id": "imprint",
