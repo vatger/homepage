@@ -18,7 +18,11 @@ class GithubLibrary extends BaseGithubLibrary
     private static function check_user_nav(User $user): bool
     {
         $roles = $user->service_role_ids(ServiceRoleType::GitHubGroup, cast_to_int: false);
-        $roles = collect($roles)->map(fn ($role) => str_replace('vatger-nav.', '', $role))->toArray();
+
+        $roles = collect($roles)
+            ->filter(fn ($role) => str_starts_with($role, 'vatger-nav.'))
+            ->map(fn ($role) => str_replace('vatger-nav.', '', $role))
+            ->toArray();
         $orga_member = self::github_is_in_organization($user, 'vatger-nav');
         if (empty($roles) && $orga_member) {
             self::github_remove_from_organization($user, 'vatger-nav');
@@ -46,10 +50,13 @@ class GithubLibrary extends BaseGithubLibrary
         return true;
     }
 
-    private static function check_user_vatger(User $user)
+    private static function check_user_vatger(User $user): bool
     {
         $roles = $user->service_role_ids(ServiceRoleType::GitHubGroup, cast_to_int: false);
-        $roles = collect($roles)->map(fn ($role) => str_replace('vatger.', '', $role))->toArray();
+        $roles = collect($roles)
+            ->filter(fn ($role) => str_starts_with($role, 'vatger.'))
+            ->map(fn ($role) => str_replace('vatger.', '', $role))
+            ->toArray();
         $orga_member = self::github_is_in_organization($user, 'vatger');
         if (empty($roles) && $orga_member) {
             self::github_remove_from_organization($user, 'vatger');
