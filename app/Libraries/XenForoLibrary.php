@@ -146,9 +146,9 @@ class XenForoLibrary extends BaseLibrary
 
         if ($is_moderator) {
             $data = json_decode(File::get(storage_path('app/configurations/board_moderator_permissions.json')));
-            self::send('POST', "moderators/$forum_user_id", $data);
+            self::send('POST', "vatger/moderators/$forum_user_id", $data);
         } else {
-            self::send('DELETE', "moderators/$forum_user_id", []);
+            self::send('DELETE', "vatger/moderators/$forum_user_id", []);
         }
 
         return true;
@@ -330,7 +330,7 @@ class XenForoLibrary extends BaseLibrary
             return Cache::get('XenforoLibrary.Groups');
         }
         sleep(3);
-        $response = self::send('GET', 'usergroups', []);
+        $response = self::send('GET', 'vatger/usergroups/', []);
         sleep(3);
         if (! $response || $response->getStatusCode() != 200) {
             return [];
