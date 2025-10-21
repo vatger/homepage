@@ -21,9 +21,10 @@ class CleanupJob
     {
         $cutoff_date_7 = Carbon::now()->subDays(7);
         $cutoff_date_1 = Carbon::now()->subDays(1);
+        $cutoff_hour_1 = Carbon::now()->subHours(1);
 
-        SysLog::where('created_at', '<', $cutoff_date_7)->delete();
-        SysLog::where('type', 'LIKE', 'http')->where('created_at', '<', $cutoff_date_1)->delete();
+        SysLog::where('created_at', '<', $cutoff_date_1)->delete();
+        SysLog::where('type', 'LIKE', 'http')->where('created_at', '<', $cutoff_hour_1)->delete();
 
         ApiLog::where('created_at', '<', $cutoff_date_7)->delete();
 
