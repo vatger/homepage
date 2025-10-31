@@ -3,10 +3,10 @@
         <!-- Logo container-->
         <a class="logo" href="{{ route('landing') }}">
             <span class="logo-light-mode">
-                <img src="{{ iasset('images/vacc_logo.png', 170*2) }}" class="l-dark" height="32px">
-                <img src="{{ iasset('images/vacc_logo_white.png', 170*2) }}" class="l-light" height="32px">
+                <img src="{{ iasset('images/vacc_logo.png', 170*2) }}" class="l-dark" height="32px" alt="VATGER Logo">
+                <img src="{{ iasset('images/vacc_logo_white.png', 170*2) }}" class="l-light" height="32px" alt="VATGER Logo white">
             </span>
-            <img src="{{ iasset('images/vacc_logo_white.png', 170*2) }}" class="logo-dark-mode" alt="">
+            <img src="{{ iasset('images/vacc_logo_white.png', 170*2) }}" class="logo-dark-mode" alt="VATGER Logo white">
         </a>
 
         <!-- End Logo container-->
@@ -63,6 +63,7 @@
                         <li><a href="{{ route("redirect.sectorfiles") }}" target="_blank" class="sub-menu-item">Sectorfiles</a></li>
                         <li><a href="{{ route("controllers.restricted") }}" class="sub-menu-item">Restricted Stations</a></li>
                         <li><a href="{{ route("controllers.s1") }}" class="sub-menu-item">S1 Tower</a></li>
+                        <li><a href="{{ route("controllers.s1-stations") }}" class="sub-menu-item">S1 Stations</a></li>
                         <li><a href="{{ route("controllers.required-courses") }}" class="sub-menu-item">Required courses</a></li>
                         <li><a href="{{ route("redirect.support.feedback") }}" target="_blank" class="sub-menu-item">@lang('navigation.lotsen.feedback')</a></li>
                     </ul>

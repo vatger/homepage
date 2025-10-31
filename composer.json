@@ -21,6 +21,7 @@
     "php": "^8.4",
     "ext-curl": "*",
     "ext-gd": "*",
+    "ext-pdo": "*",
     "ext-simplexml": "*",
     "dedoc/scramble": "^0.12.16",
     "doctrine/dbal": "^3.9",

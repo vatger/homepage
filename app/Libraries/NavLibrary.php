@@ -39,6 +39,7 @@ class NavLibrary extends BaseGithubLibrary
                 $d->setAttribute('gcap_class_group', strval($s->gcap_status ?? '0'));
                 $d->setAttribute('gcap_training_airport', $s->gcap_training_airport ?? false);
                 $d->setAttribute('s1_twr', $s->s1_twr ?? false);
+                $d->setAttribute('s1_theory', $s->s1_theory ?? false);
                 $d->save();
 
                 // attach to aerodromes
