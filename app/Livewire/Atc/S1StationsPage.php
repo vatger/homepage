@@ -21,7 +21,7 @@ class S1StationsPage extends Component
     #[Layout('layouts.master')]
     public function render()
     {
-        $stations = Station::where('s1_station', true);
+        $stations = Station::where('s1_theory', true);
         $this->searchQueryModifier($stations, $this->search);
         $this->sortQueryModifier($stations);
 

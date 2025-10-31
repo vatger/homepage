@@ -1,8 +1,8 @@
 <div>
     @component('components.layouts.content',[
-        'header' => 'S1 Stations',
+        'header' => 'S1 Theory Stations',
         'links' => [
-            route('landing') => config('app.name'),'Controllers','S1 Stations'
+            route('landing') => config('app.name'),'Controllers','S1 Theory Stations'
             ]
     ])
 
