@@ -399,7 +399,7 @@ class XenForoLibrary extends BaseLibrary
         return [];
     }
 
-    public static function award_user_bagde(User $user, int $badge): bool
+    public static function award_user_badge(User $user, int $badge): bool
     {
         $forumId = $user->settings->forum_id;
         if ($forumId == null) {

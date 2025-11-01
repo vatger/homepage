@@ -114,6 +114,6 @@ class BoardController extends ApiController
         ]);
         $user = User::findOrFail($validated['user_id']);
         $badgeId = $validated['badge_id'];
-        return XenForoLibrary::award_user_bagde($user, $badgeId);
+        return XenForoLibrary::award_user_badge($user, $badgeId);
     }
 }
