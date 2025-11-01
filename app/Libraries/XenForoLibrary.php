@@ -373,6 +373,51 @@ class XenForoLibrary extends BaseLibrary
         return null;
     }
 
+    public static function get_user_badges(User $user): array
+    {
+        $forumId = $user->settings->forum_id;
+        if ($forumId == null) {
+            return [];
+        }
+        $cache_key = 'XenforoLibrary.UserBadges.'.$forumId;
+        if (Cache::has($cache_key)) {
+            return Cache::get($cache_key);
+        }
+        $result = self::send('GET', 'user-badges', [
+            'page' => 0,
+            'user_id' => true,
+        ]);
+        if ($result && $result->getStatusCode() == 200) {
+            $data = json_decode($result->getBody()->getContents());
+            $arr = $data?->userBadges ?? [];
+            $result = collect($arr)->map(fn ($item) => $item->user_badge_id)->toArray();
+            Cache::put($cache_key, $result, 60 * 60);
+
+            return $result;
+        }
+
+        return [];
+    }
+
+    public static function award_user_bagde(User $user, int $badge): bool
+    {
+        $forumId = $user->settings->forum_id;
+        if ($forumId == null) {
+            return false;
+        }
+        if (array_find(self::get_user_badges($user), fn ($b) => $b == $badge)) {
+            return false; // user already has badge
+        }
+        $result = self::send('POST', 'user-badges', [
+            'badge_id' => $badge,
+            'user_id' => $forumId,
+        ]);
+        if ($result && $result->getStatusCode() == 200) {
+            return true;
+        }
+        return false;
+    }
+
     private static function map_vatsim_ratings(UserVatsimDetail $detail): array
     {
         $groups = [];

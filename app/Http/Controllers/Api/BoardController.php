@@ -100,4 +100,20 @@ class BoardController extends ApiController
 
         return true;
     }
+
+    /**
+     * Award a badge to a user
+     */
+    #[ApiPathfinder('board.award_badge')]
+    public function award_badge(Request $request): bool
+    {
+        $this->authorizeApiRequest('board.award_badge');
+        $validated = $request->validate([
+            'user_id' => ['required', 'integer'],
+            'badge_id' => ['required', 'integer'],
+        ]);
+        $user = User::findOrFail($validated['user_id']);
+        $badgeId = $validated['badge_id'];
+        return XenForoLibrary::award_user_bagde($user, $badgeId);
+    }
 }
