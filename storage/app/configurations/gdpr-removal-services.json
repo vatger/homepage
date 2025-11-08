@@ -58,9 +58,9 @@
     {
       "name": "tours",
       "deletion_type": "api_request",
-      "endpoint": "http://tours.vatsim-germany.org/api/gdpr-removal/$id",
+      "endpoint": "http://tours.vatsim-germany.org:81/api/delete/$id",
       "token_config":"external_services.tours_gdpr_token",
-      "request_method": "DELETE",
+      "request_method": "GET",
       "request_expected_response_code": 200
     }
 ]
