@@ -40,7 +40,7 @@ class GDPRFinalDeletion
         $g = new self($user);
         $b = $g->run();
 
-        \Log::debug("HP DEL of $user->id code ".$b ? 'true' : 'false');
+        \Log::debug("HP DEL of $user->id code ".($b ? 'true' : 'false'));
 
         return $b;
     }
