@@ -415,6 +415,7 @@ class XenForoLibrary extends BaseLibrary
         if ($result && $result->getStatusCode() == 200) {
             return true;
         }
+
         return false;
     }
 

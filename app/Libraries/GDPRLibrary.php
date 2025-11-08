@@ -177,7 +177,9 @@ class GDPRLibrary extends BaseLibrary
             $client = self::constructClient([
                 'headers' => $headers,
             ]);
-            dump($api_url, $expected_code, $method, $token, $headers, $client);
+            if ($debug) {
+                dump($api_url, $expected_code, $method, $token, $headers);
+            }
             try {
                 $response = $client->request($method, $api_url, ['http_errors' => false]);
             } catch (GuzzleException $e) {
@@ -185,14 +187,18 @@ class GDPRLibrary extends BaseLibrary
 
                 return false;
             }
+
             if ($debug) {
                 dump($response->getStatusCode());
                 dump($response->getBody()->getContents());
+
             }
+
             $response_code = $response?->getStatusCode();
             if ($response_code == $expected_code) {
                 return true;
             }
+            Log::debug("Calling  $api_url with response code $response_code expected $expected_code");
 
             return false;
         }
