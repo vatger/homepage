@@ -38,6 +38,7 @@ trait HasTeamConcern
                     return $r->service_role;
                 })
                 ->unique()
+                ->values()
                 ->toArray();
         } else {
             return [];
