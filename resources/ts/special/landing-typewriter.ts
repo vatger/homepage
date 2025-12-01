@@ -1,5 +1,6 @@
+// @ts-ignore
 import Typewriter from "typewriter-effect/dist/core";
-import _ from "lodash";
+import { shuffle } from "lodash";
 import { getLanguage } from "@/ts/template";
 
 let slogans_de = [
@@ -53,7 +54,7 @@ let slogans_en = [
   "Experience the Thrill of Virtual Flying in Real Time.",
 ];
 
-let slogans = _.shuffle(getLanguage() == "en" ? slogans_en : slogans_de);
+let slogans = shuffle(getLanguage() == "en" ? slogans_en : slogans_de);
 
 new Typewriter("#typewriter", {
   strings: slogans,
@@ -62,3 +63,9 @@ new Typewriter("#typewriter", {
   deleteSpeed: 20,
   loop: true,
 });
+
+const slogan_one = shuffle(slogans)[0] ?? "";
+const p = document.getElementById("slogan_one");
+if (p instanceof HTMLParagraphElement) {
+  p.textContent = slogan_one;
+}

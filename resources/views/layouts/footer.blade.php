@@ -6,9 +6,9 @@
                 <div class="footer-py-60" style="padding-bottom: 0">
                     <div class="row">
                         <div class="col-lg-4 col-12 mb-0 mb-md-4 pb-0 pb-md-2">
-                            <img src="{{ iasset('images/vacc_logo_white.png', 300) }}" width="55%">
+                            <img src="{{ iasset('images/vacc_logo_white.png', 300) }}" width="55%" alt="">
 
-                            <p class="mt-4">Controlling The Virtual German Airspace With Passion!</p>
+                            <p id="slogan_one" class="mt-4"></p>
 
                             <ul class="list-unstyled social-icon foot-social-icon mb-0 mt-4">
                                 <li class="list-inline-item"><a href="https://www.facebook.com/vatger/" class="rounded" target="_blank"><i
@@ -43,7 +43,6 @@
                             <h5 class="footer-head">@lang('general.footer.helpful-links')</h5>
                             <ul class="list-unstyled footer-list mt-4">
                                 <li><a href="https://vatger-fv.de/" target="_blank" class="text-foot">VATGER Förderverein</a></li>
-                                <li><a href="https://aip.dfs.de/BasicIFR/" target="_blank" class="text-foot">DFS AIP - Basic</a></li>
                             </ul>
                         </div>
                         <!--end col-->
