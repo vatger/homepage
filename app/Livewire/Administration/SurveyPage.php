@@ -43,6 +43,10 @@ class SurveyPage extends Component
             'id' => 6,
             'name' => 'Vollmitglied VATGER und VATSIM nicht inaktiv',
         ],
+        [
+            'id' => 7,
+            'name' => 'Wahlberechtigt VATGER',
+        ],
 
     ];
 
@@ -107,6 +111,12 @@ class SurveyPage extends Component
                 $users = User::with(['vatgerDetails', 'vatsimDetails'])
                     ->lazy()
                     ->filter(fn (User $u) => $u->vatgerDetails?->active_vatger_member_at != null && $u->vatsimDetails?->rating_atc > 0)
+                    ->collect();
+                break;
+            case 7:
+                $users = User::with(['vatgerDetails', 'vatsimDetails'])
+                    ->lazy()
+                    ->filter(fn (User $u) => $u->vatgerDetails?->is_vatger_voter)
                     ->collect();
                 break;
             default:
