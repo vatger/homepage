@@ -48,6 +48,14 @@
                         <!--end col-->
 
                         <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                            <h5 class="footer-head">@lang('general.footer.helpful-links')</h5>
+                            <ul class="list-unstyled footer-list mt-4">
+                                <li><a href="https://aip.dfs.de/basicAIP/" target="_blank" class="text-foot">DFS Basic AIP</a></li>
+                            </ul>
+                        </div>
+                        <!--end col-->
+
+                        <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                             <h5 class="footer-head"></h5>
                             <a href="https://vatsim.net"><img class="mb-4" src="{{ iasset('images/vatsim/VATSIM_Logo_White_500px.png', 300) }}" width="80%" alt="vatsim"></a>
                             <a href="https://vateud.net"><img src="{{ iasset('images/vateud.png',300) }}" width="80%" alt="vateud"></a>
