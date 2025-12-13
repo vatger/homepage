@@ -406,7 +406,7 @@ class XenForoLibrary extends BaseLibrary
             return false;
         }
         if (array_find(self::get_user_badges($user), fn ($b) => $b == $badge)) {
-            return false; // user already has badge
+            return true; // user already has badge
         }
         $result = self::send('POST', 'user-badges', [
             'badge_id' => $badge,

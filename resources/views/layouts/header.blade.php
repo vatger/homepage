@@ -51,7 +51,7 @@
                         <li><a href="{{ route('redirect.knowledgebase.training-pilot') }}" class="sub-menu-item" target="_blank">@lang('navigation.piloten.training')</a></li>
                         <li><a href="{{ route('pilots.aerodromes.viewall') }}" class="sub-menu-item">@lang('navigation.piloten.flugplaetze')</a></li>
                         <li><a href="{{ route('redirect.vatger-tours') }}" class="sub-menu-item">VATGER Touren</a></li>
-                        <li><a href="{{ route('redirect.pmp') }}" class="sub-menu-item">PMP</a></li>
+                        <li><a href="{{ route('redirect.pmp') }}" class="sub-menu-item">Pilot Mentoring</a></li>
                     </ul>
                 </li>
 
