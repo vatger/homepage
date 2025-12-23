@@ -37,7 +37,7 @@
     "livewire/livewire": "^v3.6",
     "paulhollmann/vatsim-data": "^v1.0.1",
     "paulhollmann/vatsim-stand-status": "dev-master",
-    "spatie/icalendar-generator": "^2.9",
+    "spatie/icalendar-generator": "^3.2",
     "spatie/laravel-collection-macros": "^8.0",
     "spatie/laravel-permission": "^6.21",
     "statikbe/laravel-cookie-consent": "^1.10",
