@@ -53,7 +53,7 @@
     "resize-observer-polyfill": "^1.5.1",
     "shufflejs": "^6.1.1",
     "simplebar": "^6.3.0",
-    "tinymce": "^7.6.0",
+    "tinymce": "^8.3.1",
     "toastify-js": "^1.12.0",
     "tobii": "^2.0.0-alpha",
     "typewriter-effect": "^2.21.0",
