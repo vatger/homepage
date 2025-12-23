@@ -27,6 +27,8 @@
     "last_update": "2025-12-23",
     "path_de": "/storage/policies/satzung_de.pdf",
     "path_en": "/storage/policies/satzung_en.pdf"
+    "path_changelog_de": "public/policies/satzung_de_changelog.html",
+    "path_changelog_en": "public/policies/satzung_en_changelog.html"
   },
   {
     "id": "termsofuse",
