@@ -248,6 +248,18 @@ class MembershipLibrary
         $warning_delete = Carbon::now()->diffInDays($user->vatgerDetails->last_seen_at, true) > 180 * 2 - 30;
         $delete = Carbon::now()->diffInDays($user->vatgerDetails->last_seen_at, true) > 180 * 2;
 
+        // handle the vatsim inactivity first
+        $vatsim_inactive = $user->vatsimDetails->rating_atc == -1;
+        $warning_inactive |= $vatsim_inactive;
+        $inactive |= $vatsim_inactive;
+        if ($vatsim_inactive && ! $user->vatgerDetails->warning_inactive_at) {
+            // if vatsim inactive no 30 day warning
+            $user->vatgerDetails->update(['warning_inactive_at' => Carbon::now()]);
+            $user = $user->fresh();
+        }
+
+        App::setLocale($user->settings->language);
+
         // user is active clear all flags
         if (! $warning_inactive) {
             if ($user->vatgerDetails->warning_inactive_at != null) {
@@ -269,8 +281,7 @@ class MembershipLibrary
             $user->vatgerDetails->update($data);
         }
 
-        App::setLocale($user->settings->language);
-
+        // user has 30 days till inactive inform him
         if ($warning_inactive && ! $user->vatgerDetails->warning_inactive_at) {
             $user->vatgerDetails->update(['warning_inactive_at' => Carbon::now()]);
             $date = $user->vatgerDetails->last_seen_at->addDays(180);
@@ -285,6 +296,7 @@ class MembershipLibrary
             );
             $user->notify($n);
         }
+        // user is now inactive inform him
         if ($inactive && ! $user->vatgerDetails->inactive_at) {
             $user->vatgerDetails->update(['inactive_at' => Carbon::now()]);
             $date = $user->vatgerDetails->last_seen_at->addDays(180);
@@ -299,6 +311,7 @@ class MembershipLibrary
             );
             $user->notify($n);
         }
+        // user will be deleted in 30 day inform him
         if ($warning_delete && ! $user->vatgerDetails->warning_delete_at) {
             $user->vatgerDetails->update(['warning_delete_at' => Carbon::now()]);
             $date = $user->vatgerDetails->last_seen_at->addDays(180 * 2);
@@ -313,6 +326,7 @@ class MembershipLibrary
             );
             $user->notify($n);
         }
+        // user will be deleted in 24h inform him
         if ($delete && ! $user->vatgerDetails->delete_at) {
             $user->vatgerDetails->update(['delete_at' => Carbon::now()]);
             $date = Carbon::now()->addDay();
