@@ -23,7 +23,7 @@
     "ext-gd": "*",
     "ext-pdo": "*",
     "ext-simplexml": "*",
-    "dedoc/scramble": "^0.12.16",
+    "dedoc/scramble": "^0.13.8",
     "doctrine/dbal": "^3.9",
     "firebase/php-jwt": "^6.10",
     "guzzlehttp/guzzle": "^7.8",
