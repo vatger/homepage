@@ -18,11 +18,9 @@
 <meta name="apple-mobile-web-app-title" content="VATGER" />
 <link rel="manifest" href="{{ asset('site.webmanifest') }}" />
 
-<!--
 @if(app()->isProduction())
-    <script defer src="https://analytics.vatsim-germany.org/script.js" data-website-id="27e4ac08-daf1-4bb8-b07a-09d3e6d6a3d1"></script>
+    <script defer src="https://analytics.vatsim-germany.org/script.js" data-website-id="ebee2a79-7a84-4680-af45-7ef23c7d94c2"></script>
 @endif
--->
 
 @if(!auth()->check() || !Auth::user()->settings->dark_mode)
     @if(isset($_admin) && $_admin)
