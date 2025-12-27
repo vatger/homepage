@@ -1,14 +1,24 @@
 @props(['partners'])
 
-<section class="py-4 border-bottom border-top">
+<section class="footer py-4 border-bottom border-top">
     <div class="container">
         <div class="row justify-content-center">
+            <div class="col-12 text-center">
+                <div class="section-title mb-4 pb-2">
+                    <h4 class="title mb-4">@lang('landing.partner.title')</h4>
+                    <p class="text-muted para-desc mx-auto mb-0">@lang('landing.partner.text')</p>
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
 
+        <div class="row justify-content-center">
             @foreach ($partners as $partner)
                 <div class="col-lg-2 col-md-2 col-6 text-center py-4"
                      data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ $partner->name }}">
                     <a href="{{ $partner->link_url }}">
-                        <img src="{{ $partner->logo_url }}" width="160px" class="avatar avatar-ex" alt="">
+                        <img src="{{ iasset($partner->logo_url, 160*2)}}" width="160px" class="avatar avatar-ex" alt="">
                     </a>
                 </div><!--end col-->
             @endforeach

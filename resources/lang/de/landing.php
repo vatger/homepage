@@ -27,4 +27,8 @@ return [
         'read-more-text' => 'Read More',
         'loading-error-text' => 'An error has occurred loading the event data. Please try again later.',
     ],
+    'partner' => [
+        'title' => 'Partner',
+        'text' => 'Schau dir unsere Partner an',
+    ],
 ];
