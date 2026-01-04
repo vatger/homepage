@@ -37,6 +37,7 @@
     "vite-plugin-run": "^0.6.1"
   },
   "dependencies": {
+    "@inertiajs/vue3": "^2.3.6",
     "@popperjs/core": "^2.11.8",
     "@ryangjchandler/alpine-clipboard": "^2.3.0",
     "@types/geojson": "^7946.0.16",
