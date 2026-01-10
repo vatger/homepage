@@ -1,3 +1,5 @@
+/.idea
+/.vscode
 /node_modules
 /public/mix-manifest.json
 /public/hot
@@ -6,16 +8,11 @@
 /public/build
 /storage/*.key
 /vendor
+/resources/js/actions/
+/resources/js/routes/
+/resources/js/wayfinder/
 .env
 .env.backup
-.phpunit.result.cache
-docker-compose.override.yml
-Homestead.json
-Homestead.yaml
-npm-debug.log
-yarn-error.log
-/.idea
-/.vscode
 *.lock
 package-lock.json
 .phpstorm.meta.php

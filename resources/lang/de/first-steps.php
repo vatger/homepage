@@ -2,7 +2,7 @@
 
 /**
  * All translations required for the following pages:
- * views/general/firststeps/...
+ * views_old/general/firststeps/...
  */
 
 return [

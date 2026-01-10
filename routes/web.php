@@ -1,5 +1,7 @@
 <?php
 
+use Inertia\Inertia;
+
 Route::get('/', function () {
-    return 'OK';
+    return Inertia::render('Welcome');
 })->name('home');

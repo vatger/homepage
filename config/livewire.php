@@ -21,12 +21,12 @@ return [
     | View Path
     |--------------------------------------------------------------------------
     |
-    | This value sets the path for Livewire component views. This affects
+    | This value sets the path for Livewire component views_old. This affects
     | file manipulation helper commands like `artisan make:livewire`.
     |
     */
 
-    'view_path' => resource_path('views'),
+    'view_path' => resource_path('views_old'),
 
     /*
     |--------------------------------------------------------------------------

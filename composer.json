@@ -1,4 +1,5 @@
 {
+  "$schema": "https://getcomposer.org/schema.json",
   "name": "vatger/website",
   "type": "project",
   "description": "The vACC Germany Website.",
@@ -33,17 +34,15 @@
     "laravel/framework": "^12.44",
     "laravel/passport": "^12.4",
     "laravel/ui": "^4.6",
+    "laravel/wayfinder": "^0.1.12",
     "league/commonmark": "^2.8",
     "league/oauth2-client": "^2.9",
-    "livewire/livewire": "^v3.7",
     "paulhollmann/vatsim-data": "^v1.0.1",
     "paulhollmann/vatsim-stand-status": "dev-master",
     "spatie/icalendar-generator": "^3.2",
     "spatie/laravel-collection-macros": "^8.0",
     "spatie/laravel-permission": "^6.21",
-    "statikbe/laravel-cookie-consent": "^1.10",
     "stevebauman/purify": "^6.3",
-    "tightenco/ziggy": "^2.5",
     "weberhofer/jsonrpcphp": "^2.2"
   },
   "require-dev": {
@@ -76,11 +75,30 @@
     }
   },
   "scripts": {
+    "setup": [
+      "composer install",
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+      "@php artisan key:generate",
+      "@php artisan migrate --force",
+      "npm install",
+      "npm run build"
+    ],
+    "dev": [
+      "Composer\\Config::disableProcessTimeout",
+      "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
+    ],
+    "dev:ssr": [
+      "npm run build:ssr",
+      "Composer\\Config::disableProcessTimeout",
+      "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"php artisan inertia:start-ssr\" --names=server,queue,logs,ssr --kill-others"
+    ],
+    "test": [
+      "@php artisan config:clear --ansi",
+      "@php artisan test"
+    ],
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-      "@php artisan package:discover --ansi",
-      "@php artisan vendor:publish --force --tag=livewire:assets --ansi",
-      "@php artisan ziggy:generate --types"
+      "@php artisan package:discover --ansi"
     ],
     "post-update-cmd": [
       "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -89,7 +107,12 @@
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
     ],
     "post-create-project-cmd": [
-      "@php artisan key:generate --ansi"
+      "@php artisan key:generate --ansi",
+      "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+      "@php artisan migrate --graceful --ansi"
+    ],
+    "pre-package-uninstall": [
+      "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
     ]
   },
   "extra": {
@@ -102,7 +125,9 @@
     "preferred-install": "dist",
     "sort-packages": true,
     "allow-plugins": {
-      "composer/package-versions-deprecated": true
+      "composer/package-versions-deprecated": true,
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true
     }
   },
   "minimum-stability": "dev",
