@@ -1,7 +1,7 @@
 {
   "semi": true,
   "singleQuote": true,
-  "singleAttributePerLine": false,
+  "singleAttributePerLine": true,
   "htmlWhitespaceSensitivity": "css",
   "printWidth": 120,
   "plugins": [
@@ -13,7 +13,7 @@
     "cn",
     "cva"
   ],
-  "tailwindStylesheet": "resources/css/app.css",
+  "tailwindStylesheet": "resources/css/styles/globals.css",
   "tabWidth": 4,
   "overrides": [
     {

@@ -19,7 +19,7 @@ class ImageHelperLibrary extends BaseLibrary
     {
         $this->client = self::constructClient([
             'headers' => [
-                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0', // Spoof the User-Agent Header
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0', // Spoof the User-Agent MyHeader
                 'Referer' => config('app.url'),
                 'Host' => parse_url(config('app.url'), PHP_URL_HOST),
             ],

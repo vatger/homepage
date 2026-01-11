@@ -4,8 +4,6 @@ docker
 .github
 storage
 public
-resources/js
-resources/js_old
-resources/views_old
+resources/views
 composer.json
 package.json
