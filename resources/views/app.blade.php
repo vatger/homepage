@@ -22,8 +22,8 @@
             }
         })();
     </script>
-
-    @vite(['resources/js/app.ts'])
+    @viteReactRefresh
+    @vite('resources/js/app.tsx')
     @inertiaHead
 </head>
 <body>
