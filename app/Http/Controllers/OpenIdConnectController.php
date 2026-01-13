@@ -9,6 +9,7 @@ class OpenIdConnectController
     public function userinfo(Request $request)
     {
         $user = $request->user('openid_api');
+        $legacy = $user->tokenCan('legacy');
         $user_client_id = $request->user()->token()->client->user_id;
         if ($user_client_id != null && $user_client_id != $user->id) {
             abort(401, 'This client can only used by '.$user_client_id);
@@ -16,16 +17,18 @@ class OpenIdConnectController
 
         $userinfo = [];
 
-        $userinfo['id'] = $user->id;
-        if ($user->tokenCan('name')) {
+        if (! $legacy) {
+            $userinfo['id'] = $user->id;
+        }
+        if ($user->tokenCan('name') && ! $legacy) {
             $userinfo['firstname'] = $user->firstname;
             $userinfo['lastname'] = $user->lastname;
             $userinfo['fullname'] = $user->firstname.' '.$user->lastname;
         }
-        if ($user->tokenCan('email')) {
+        if ($user->tokenCan('email') && ! $legacy) {
             $userinfo['email'] = $user->email;
         }
-        if ($user->tokenCan('rating')) {
+        if ($user->tokenCan('rating') && ! $legacy) {
             $userinfo['rating_atc'] = $user->vatsimDetails->rating_atc;
             $userinfo['rating_atc_short'] = $user->vatsimDetails->rating_atc_short;
             $userinfo['rating_pilot'] = $user->vatsimDetails->rating_pilot;
@@ -34,13 +37,13 @@ class OpenIdConnectController
             $userinfo['rating_military_short'] = $user->vatsimDetails->rating_military_short;
             $userinfo['last_rating_change_at'] = $user->vatsimDetails->last_rating_change_at;
         }
-        if ($user->tokenCan('assignment')) {
+        if ($user->tokenCan('assignment') && ! $legacy) {
             $userinfo['region_code'] = $user->vatsimDetails->region_code;
             $userinfo['division_code'] = $user->vatsimDetails->division_code;
             $userinfo['subdivision_code'] = $user->vatsimDetails->subdivision_code;
             $userinfo['fir_code'] = $user->fir?->slug;
         }
-        if ($user->tokenCan('teams')) {
+        if ($user->tokenCan('teams') && ! $legacy) {
             $teams = $user->teams();
             $userinfo['teams'] = collect($teams)->map(fn ($team) => $team->name)->toArray();
         }
@@ -76,7 +79,9 @@ class OpenIdConnectController
             $userinfo['data']['oauth']['token_valid'] = 'true';
         }
 
-        $userinfo['openid'] = 'vatger v'.config('app.version');
+        if (! $legacy) {
+            $userinfo['openid'] = 'vatger v'.config('app.version');
+        }
 
         return response()->json((object) $userinfo);
     }
