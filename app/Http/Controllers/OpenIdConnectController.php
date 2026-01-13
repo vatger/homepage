@@ -45,7 +45,7 @@ class OpenIdConnectController
         }
         if ($user->tokenCan('teams') && ! $legacy) {
             $teams = $user->teams();
-            $userinfo['teams'] = collect($teams)->map(fn ($team) => $team->name)->toArray();
+            $userinfo['teams'] = collect($teams)->map(fn ($team) => $team->name)->values()->toArray();
         }
 
         if ($user->tokenCan('legacy')) {
