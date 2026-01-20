@@ -34,7 +34,7 @@
     "laravel/ui": "^4.6",
     "league/commonmark": "^2.6",
     "league/oauth2-client": "^2.8",
-    "livewire/livewire": "^v3.6",
+    "livewire/livewire": "^v4.0",
     "paulhollmann/vatsim-data": "^v1.0.1",
     "paulhollmann/vatsim-stand-status": "dev-master",
     "spatie/icalendar-generator": "^3.2",
