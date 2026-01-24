@@ -299,7 +299,7 @@ class MembershipLibrary
         // user is now inactive inform him
         if ($inactive && ! $user->vatgerDetails->inactive_at) {
             $user->vatgerDetails->update(['inactive_at' => Carbon::now()]);
-            $date = $user->vatgerDetails->last_seen_at->addDays(180);
+            $date = Carbon::now();
             $n = new BasicNotification(
                 __('membership_library.inactivity_notice.title'),
                 __('membership_library.inactivity_notice.message', ['date' => $date->format('d.m.Y')]),
