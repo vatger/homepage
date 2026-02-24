@@ -39,7 +39,7 @@
     "paulhollmann/vatsim-stand-status": "dev-master",
     "spatie/icalendar-generator": "^3.2",
     "spatie/laravel-collection-macros": "^8.0",
-    "spatie/laravel-permission": "^6.21",
+    "spatie/laravel-permission": "^7.2",
     "statikbe/laravel-cookie-consent": "^1.10",
     "stevebauman/purify": "^6.3",
     "tightenco/ziggy": "^2.5",
