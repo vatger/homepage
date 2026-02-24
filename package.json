@@ -22,7 +22,7 @@
     "@types/axios": "^0.14.4",
     "@types/bootstrap": "^5.2.10",
     "@types/feather-icons": "^4.29.4",
-    "@types/jquery": "^3.5.32",
+    "@types/jquery": "^4.0.0",
     "@types/lodash": "^4.17.14",
     "@types/mapbox-gl": "^3.4.1",
     "@types/toastify-js": "^1.12.3",
