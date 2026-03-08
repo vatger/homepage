@@ -42,7 +42,7 @@ class BasicNotification extends Notification
         if (array_any($this->via, fn ($s) => strcasecmp($s, 'board.ping') == 0)) {
             $res[] = BoardChannel::class;
         }
-        if (array_any($this->via, fn ($s) => strcasecmp($s, 'board.pn'))) {
+        if (array_any($this->via, fn ($s) => strcasecmp($s, 'board.pn') == 0)) {
             $res[] = BoardPNChannel::class;
         }
         if (array_any($this->via, fn ($s) => strcasecmp($s, 'mail') == 0)) {
