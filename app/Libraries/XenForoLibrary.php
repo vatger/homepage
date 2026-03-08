@@ -185,19 +185,16 @@ class XenForoLibrary extends BaseLibrary
         if ($user->settings->forum_id == null) {
             return false;
         }
-
+        $dataArray = [];
         $dataArray['recipient_ids'] = [$user->settings->forum_id];
-
         $dataArray['title'] = $title;
         $dataArray['message'] = $message;
-        $dataArray['open_invite'] = false;
-
-        $result = self::send('POST', 'conversations', $dataArray);
-        if ($result && $result->getStatusCode() == 200) {
-            return true;
+        $result = self::send('POST', 'conversations/', $dataArray, set_user: true);
+        if (! $result) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     public static function deleteForumAccount(User $user): bool
