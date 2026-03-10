@@ -46,7 +46,7 @@
     "weberhofer/jsonrpcphp": "^2.2"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "^v3.16",
+    "barryvdh/laravel-debugbar": "^v4.1",
     "barryvdh/laravel-ide-helper": "^v3.6",
     "fakerphp/faker": "^1.24",
     "laravel/pint": "^1.24",
