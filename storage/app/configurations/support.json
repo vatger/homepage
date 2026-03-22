@@ -3,20 +3,6 @@
         "name": "Tech",
         "types": [
             {
-                "name": "Feature Request",
-                "system": "V",
-                "project_id": 5,
-                "label": 8,
-                "public_url":"http://vikunja.vatsim-germany.org/share/pYCBqPTYwKfxpdEIlPfxiAAXAOXddGYpdrGQOEmw/auth?view=kanban"
-            },
-            {
-                "name": "Bug Report",
-                "system": "V",
-                "project_id": 5,
-                "label": 7,
-                "public_url":"http://vikunja.vatsim-germany.org/share/pYCBqPTYwKfxpdEIlPfxiAAXAOXddGYpdrGQOEmw/auth?view=kanban"
-            },
-            {
                 "trans": "support.text-credentials",
                 "system": "T",
                 "topic_id": 16
