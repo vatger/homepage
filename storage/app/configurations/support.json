@@ -3,11 +3,6 @@
         "name": "Tech",
         "types": [
             {
-                "trans": "support.text-credentials",
-                "system": "T",
-                "topic_id": 16
-            },
-            {
                 "trans": "support.text-others",
                 "system": "T",
                 "topic_id": 16
