@@ -6,4 +6,5 @@ return [
     'training_gdpr_token' => env('TRAINING_GDPR_TOKEN', ''),
     'eventmanager_gdpr_token' => env('EVENTMANAGER_GDPR_TOKEN', ''),
     'tours_gdpr_token' => env('TOURS_GDPR_TOKEN', ''),
+    'pmp_gdpr_token' => env('PMP_GDPR_TOKEN', ''),
 ];
