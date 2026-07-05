@@ -136,7 +136,7 @@
                                     <span class="badge bg-primary">T</span>
                                 @endif
                                 @if($booking->event)
-                                    <span class="badge bg-light">E</span>
+                                    <span class="badge bg-info">E</span>
                                 @endif
                                 @if($booking->vatger_event)
                                     <span class="badge bg-danger">E</span>
