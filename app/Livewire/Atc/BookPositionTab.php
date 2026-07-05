@@ -3,13 +3,14 @@
 namespace App\Livewire\Atc;
 
 use App\Libraries\VATSIM\ATCBookingsApi;
-use App\Libraries\VATSIM\DataFeedLibrary;
 use App\Livewire\Helpers\NotyTrait;
 use App\Livewire\Helpers\SearchTrait;
 use App\Models\AtcBooking;
 use App\Models\Navigation\Station;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
 
@@ -32,7 +33,12 @@ class BookPositionTab extends Component
 
     public bool $selected_event = false;
 
+    public bool $selected_vatger_event = false;
+
     public bool $selected_training = false;
+
+    #[Locked]
+    public bool $can_vatger_event = false;
 
     protected array $searchable_fields = ['ident', 'name', 'frequency'];
 
@@ -45,9 +51,11 @@ class BookPositionTab extends Component
         $this->selected_end_at = Carbon::now()
             ->addHours(2.6)
             ->format('H00');
+        $user = Auth::user();
+        $this->can_vatger_event = $user->can('booking.eventbooking');
     }
 
-    public function render()
+    public function render(): Factory|\Illuminate\Contracts\View\View|View
     {
         $station_suggestions_query = Station::orderBy('selection', 'desc')->bookable();
         $this->searchQueryModifier($station_suggestions_query, $this->station_search);
@@ -69,11 +77,10 @@ class BookPositionTab extends Component
         $this->selected_station = $s;
     }
 
-    public int $val = 0;
-
     public function book(): void
     {
-        $this->val = 2;
+        $canVatgerEvent = Auth::user()->can('booking.eventbooking');
+
         $validated = $this->validate([
             'selected_station' => 'required',
             'selected_date' => 'required|date_format:Y-m-d|after_or_equal:today|before:+2 month',
@@ -81,9 +88,9 @@ class BookPositionTab extends Component
             'selected_end_at' => 'required|date_format:Hi',
             'selected_voice' => 'required|boolean',
             'selected_event' => 'required|boolean',
+            'selected_vatger_event' => 'required|boolean',
             'selected_training' => 'required|boolean',
         ]);
-        $this->val = 1;
 
         $b = new AtcBooking;
         $b->station_id = $validated['selected_station']['id'];
@@ -96,11 +103,21 @@ class BookPositionTab extends Component
             ->copy()
             ->setTimeFromTimeString(substr($validated['selected_end_at'], 0, 2).':'.substr($validated['selected_end_at'], 2, 2));
         $b->voice = $validated['selected_voice'];
-        $b->event = $validated['selected_event'];
+        $b->event = $validated['selected_event'] || $validated['selected_vatger_event'];
+        $b->vatger_event = $validated['selected_vatger_event'];
         $b->training = $validated['selected_training'];
 
-        $check = $this->checkBooking($b);
-        if ($check) {
+        if ($b->vatger_event && ! $canVatgerEvent) {
+            $this->showNoty('You can not book VATGER Events!', 'error');
+        }
+
+        $removed_bookings = ATCBookingsApi::deleteBookingsInTheWayForVatgerEvent($b);
+        if ($removed_bookings > 0) {
+            $this->showNoty('Removed '.$removed_bookings.' other bookings that were in the way!', 'success');
+        }
+
+        $check = ATCBookingsApi::checkBooking($b);
+        if ($check != null) {
             $this->showNoty($check, 'warning');
 
             return;
@@ -114,29 +131,5 @@ class BookPositionTab extends Component
             $this->selected_station = null;
             $this->station_search = '';
         }
-    }
-
-    private function checkBooking(AtcBooking $b): ?string
-    {
-        $already_controller = DataFeedLibrary::Controller($b->station);
-        $allowed_start = Carbon::now()->addHours(0.5);
-        if ($b->starts_at->isBefore($allowed_start)) {
-            if ($already_controller && $already_controller->cid == Auth::user()->id) {
-                return null;
-            }
-
-            return "You can't book a station this close to the start.";
-        }
-
-        $allowed_start = Carbon::now()->addHours(1.5);
-        if ($already_controller && $b->starts_at->isBefore($allowed_start)) {
-            if ($already_controller->cid == Auth::user()->id) {
-                return null;
-            }
-
-            return "You can't book this station. There is someone already connected to this station.";
-        }
-
-        return null;
     }
 }

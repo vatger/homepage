@@ -78,6 +78,16 @@
                             <input wire:model="selected_event" class="form-check-input" type="checkbox" id="event-selector">
                         </div>
                     </div>
+                    @if($can_vatger_event)
+                        <div class="col-12 mb-3">
+                            <div class="form-check">
+                                <label class="form-check-label" for="vatger-event-selector">
+                                    @lang('booking.atc.create.vatger-event-text')
+                                </label>
+                                <input wire:model="selected_vatger_event" class="form-check-input" type="checkbox" id="vatger-event-selector">
+                            </div>
+                        </div>
+                    @endif
                     <div class="col-12 mb-3">
                         <div class="form-check">
                             <label class="form-check-label" for="training-selector">@lang('booking.atc.create.training-text')</label>

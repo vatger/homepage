@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Api\ApiToken;
+use App\Models\Membership\User;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -73,12 +76,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => \App\Models\Membership\User::class,
+            'model' => User::class,
         ],
 
         'api_tokens' => [
             'driver' => 'eloquent',
-            'model' => \App\Models\Api\ApiToken::class,
+            'model' => ApiToken::class,
         ],
 
         // 'users' => [

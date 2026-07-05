@@ -2,7 +2,10 @@
 
 namespace App\Livewire;
 
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -13,7 +16,7 @@ class GettingStartedPage extends Component
     public int $step = 1;
 
     #[Layout('layouts.master')]
-    public function render(): \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\View|\Illuminate\View\View
+    public function render(): Factory|Application|\Illuminate\Contracts\View\View|View
     {
         $logged_in = Auth::check();
         $user = Auth::user();

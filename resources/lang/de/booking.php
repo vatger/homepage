@@ -50,8 +50,11 @@ return [
             'station-text' => 'Die Station, die gebucht werden soll.',
             'voice-text' => 'Es wird Voice-Kommunikation angeboten.',
             'event-text' => 'Diese Buchung ist Teil eines Events.',
+            'vatger-event-text' => 'VATGER Event Buchung! (Ich buche als VATGER Event eine Station für ein offizielles Event)',
             'training-text' => 'Diese Sitzung ist Teil eines Trainings.',
             'save-button-text' => 'Buchung speichern.',
+            'delete-title' => 'Deine ATC Buchung wurde gelöscht',
+            'delete-text' => 'Deine ATC Buchung :STATION von :START bis :END wurde gelöscht.',
         ],
     ],
 ];

@@ -10,6 +10,7 @@ use App\Libraries\VikunjaLibrary;
 use App\Libraries\XenForoLibrary;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ServiceRole extends Model
 {
@@ -23,7 +24,7 @@ class ServiceRole extends Model
         'service_type' => ServiceRoleType::class,
     ];
 
-    public function team(): \Illuminate\Database\Eloquent\Relations\BelongsTo|Team
+    public function team(): BelongsTo|Team
     {
         return $this->belongsTo(Team::class, 'team_id', 'id');
     }

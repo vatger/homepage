@@ -9,6 +9,9 @@ use App\Livewire\Helpers\SearchTrait;
 use App\Livewire\Helpers\SortableTrait;
 use App\Models\AtcBooking;
 use Carbon\Carbon;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -40,7 +43,7 @@ class ListAtcBookingTab extends Component
         $this->setSortable(['controller_id', 'starts_at']);
     }
 
-    public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function render(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         if ($this->selected_my_bookings) {
             $bookings_filtered_query = AtcBooking::with('station')->where('starts_at', '>=', Carbon::now()->format('Y-m-d'))->where('controller_id', Auth::id());

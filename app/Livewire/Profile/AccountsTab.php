@@ -6,6 +6,9 @@ use App\Libraries\TeamSpeak\TeamSpeakWebQuery;
 use App\Libraries\XenForoLibrary;
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\TeamspeakRegistration;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -17,7 +20,7 @@ class AccountsTab extends Component
 
     public string $teamspeak = '';
 
-    public function render(): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+    public function render(): \Illuminate\Contracts\Foundation\Application|Factory|View|Application
     {
         $user = Auth::user();
         $username = XenForoLibrary::getForumUsername($user);

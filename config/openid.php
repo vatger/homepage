@@ -1,5 +1,8 @@
 <?php
 
+use Lcobucci\JWT\Signer\Rsa\Sha256;
+use OpenIDConnect\Repositories\IdentityRepository;
+
 return [
     'passport' => [
 
@@ -37,7 +40,7 @@ return [
      * You can override the repositories below.
      */
     'repositories' => [
-        'identity' => \OpenIDConnect\Repositories\IdentityRepository::class,
+        'identity' => IdentityRepository::class,
     ],
 
     'routes' => [
@@ -71,7 +74,7 @@ return [
     /**
      * The signer to be used
      */
-    'signer' => \Lcobucci\JWT\Signer\Rsa\Sha256::class,
+    'signer' => Sha256::class,
 
     /**
      * Optional associative array that will be used to set headers on the JWT

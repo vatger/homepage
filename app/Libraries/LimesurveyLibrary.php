@@ -14,7 +14,7 @@ class LimesurveyLibrary
 {
     private string $sessionKey;
 
-    private jsonRPCClient $lsJSONRPCClient;
+    private JsonRPCClient $lsJSONRPCClient;
 
     /**
      * @throws Exception
@@ -22,7 +22,7 @@ class LimesurveyLibrary
     public function __construct()
     {
         try {
-            $this->lsJSONRPCClient = new jsonRPCClient(config('survey.url'));
+            $this->lsJSONRPCClient = new JsonRPCClient(config('survey.url'));
             $this->sessionKey = $this->lsJSONRPCClient->get_session_key(config('survey.uname'), config('survey.pass'));
         } catch (Exception $e) {
             Log::error($e->getMessage());

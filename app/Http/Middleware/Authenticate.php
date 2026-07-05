@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Libraries\MembershipLibrary;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Http\Request;
 
 class Authenticate extends Middleware
 {
@@ -28,7 +29,7 @@ class Authenticate extends Middleware
     /**
      * Get the path the user should be redirected to when they are not authenticated.
      */
-    protected function redirectTo(\Illuminate\Http\Request $request): ?string
+    protected function redirectTo(Request $request): ?string
     {
         if (! $request->expectsJson()) {
             return route('vatsim.authentication.connect.login');

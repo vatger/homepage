@@ -5,6 +5,9 @@ namespace App\Livewire\Administration;
 use App\Livewire\Helpers\NotyTrait;
 use App\Livewire\Helpers\PaginationTrait;
 use App\Models\Groups\Team;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
@@ -27,7 +30,7 @@ class TeamListPage extends Component
     }
 
     #[Layout('layouts.admin.admin-master')]
-    public function render(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
+    public function render(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         // todo improve
         $limitedselection = false;

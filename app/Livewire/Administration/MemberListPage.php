@@ -6,6 +6,8 @@ use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SearchTrait;
 use App\Livewire\Helpers\SortableTrait;
 use App\Models\Membership\User;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
@@ -39,7 +41,7 @@ class MemberListPage extends Component
     }
 
     #[Layout('layouts.admin.admin-master')]
-    public function render(): \Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|View
+    public function render(): Application|Factory|\Illuminate\Contracts\View\View|View
     {
         $this->authorize('membership.users.view');
         // build sql query

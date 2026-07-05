@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Decorators\ApiPathfinder;
 use App\Models\Membership\User;
 use App\Notifications\BasicNotification;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class UserController extends ApiController
@@ -15,7 +16,7 @@ class UserController extends ApiController
      * Show some basic info about the membership.
      */
     #[ApiPathfinder('user.details')]
-    public function details(User $cid, Request $request): \Illuminate\Http\JsonResponse
+    public function details(User $cid, Request $request): JsonResponse
     {
         $this->authorizeApiRequest('user.details');
 
@@ -41,7 +42,7 @@ class UserController extends ApiController
      * Send a notification to the user via board,mail,homepage,...
      */
     #[ApiPathfinder('user.send_notification')]
-    public function send_notification(User $cid, Request $request): \Illuminate\Http\JsonResponse
+    public function send_notification(User $cid, Request $request): JsonResponse
     {
         $this->authorizeApiRequest('user.send_notification');
 

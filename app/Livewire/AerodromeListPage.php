@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SearchTrait;
 use App\Models\Navigation\Aerodrome;
+use App\Models\Navigation\Fir;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -29,7 +30,7 @@ class AerodromeListPage extends Component
 
         return view('pages.aerodromes')->with([
             'aerodromes' => $aerodromes->get()->paginate()->onEachSide(0),
-            'firs' => \App\Models\Navigation\Fir::all(),
+            'firs' => Fir::all(),
         ]);
     }
 

@@ -45,7 +45,7 @@ class UpdateTeamspeakJob implements ShouldQueue
         // Log::info('[UpdateTeamspeakJob]::Starting. First ID '.$this->_lastUpdatedListNr);
 
         for ($i = 0; $i < $this->_chunckNumber; $i++) {
-            $this->_clientDBlist = TeamSpeakWebquery::getClientDB($this->_lastUpdatedListNr);
+            $this->_clientDBlist = TeamSpeakWebQuery::getClientDB($this->_lastUpdatedListNr);
             if (count($this->_clientDBlist) == 0) {
                 Cache::put('teamspeak.updater.lastUpdatedListNr', 0);
                 // \Log::info('[TS]::Finished update. Checked '.$this->_lastUpdatedListNr);
@@ -54,7 +54,7 @@ class UpdateTeamspeakJob implements ShouldQueue
                 return;
             }
             foreach ($this->_clientDBlist as $client) {
-                TeamSpeakWebquery::checkClient($client);
+                TeamSpeakWebQuery::checkClient($client);
                 $this->_lastUpdatedListNr++;
             }
         }

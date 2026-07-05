@@ -5,7 +5,12 @@ namespace App\Http\Controllers\Administration\Content;
 use App\Http\Controllers\Controller;
 use App\Models\Content\ShortLink;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 
 class ShortLinkController extends Controller
@@ -131,7 +136,7 @@ class ShortLinkController extends Controller
      * Only function that is publically available,
      * shows the result of the link (ie. a redirect)
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Application|Factory|View|RedirectResponse|Redirector
      */
     public function viewLink(Request $request, $shortLink)
     {

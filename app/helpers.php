@@ -1,8 +1,10 @@
 <?php
 
+use App\Libraries\ImageHelperLibrary;
+
 if (! function_exists('iasset')) {
     function iasset(string $path, ?int $width = null): string
     {
-        return \App\Libraries\ImageHelperLibrary::asset($path, $width);
+        return ImageHelperLibrary::asset($path, $width);
     }
 }

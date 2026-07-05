@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Decorators\ApiPathfinder;
 use App\Libraries\MoodleLibrary;
+use Illuminate\Http\Response;
 
 class MoodleController extends ApiController
 {
@@ -40,7 +41,7 @@ class MoodleController extends ApiController
      * @param  int  $cid  the users VATSIM ID
      */
     #[ApiPathfinder('moodle.api')]
-    public function find_quiz_attempts(int $cmid, int $cid): array|\Illuminate\Http\Response
+    public function find_quiz_attempts(int $cmid, int $cid): array|Response
     {
         $this->authorizeApiRequest('moodle.api');
         $res = MoodleLibrary::findQuizAttempts($cmid, $cid);
