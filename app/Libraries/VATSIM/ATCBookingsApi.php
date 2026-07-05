@@ -29,7 +29,7 @@ class ATCBookingsApi
         $deletedCount = 0;
 
         foreach ($bookingsInTheWay as $booking) {
-            $booking->delete();
+            self::deleteBooking($booking);
             $deletedCount++;
         }
 

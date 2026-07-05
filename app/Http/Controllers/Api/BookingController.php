@@ -46,6 +46,7 @@ class BookingController extends ApiController
                 'training' => (bool) $b->training,
                 'exam' => (bool) $b->exam,
                 'event' => (bool) $b->event,
+                'vatger_event' => (bool) $b->vatger_event,
                 'station' => [
                     'ident' => $b->station?->ident,
                     'name' => $b->station?->name,

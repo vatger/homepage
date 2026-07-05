@@ -66,18 +66,22 @@
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-12 mb-3">
-                        <div class="form-check">
-                            <label class="form-check-label" for="voice-selector">@lang('booking.atc.create.voice-text')</label>
-                            <input wire:model="selected_voice" class="form-check-input" type="checkbox" id="voice-selector" name="voice">
+                    @if(!$selected_vatger_event)
+                        <!--<div class="col-12 mb-3">
+                            <div class="form-check">
+                                <label class="form-check-label" for="voice-selector">@lang('booking.atc.create.voice-text')</label>
+                                -->
+                        <input wire:model="selected_voice" class="form-check-input" type="checkbox" id="voice-selector" name="voice" hidden="hidden">
+                        <!--</div>
+                        </div>-->
+
+                        <div class="col-12 mb-3">
+                            <div class="form-check">
+                                <label class="form-check-label" for="event-selector">@lang('booking.atc.create.event-text')</label>
+                                <input wire:model="selected_event" class="form-check-input" type="checkbox" id="event-selector">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12 mb-3">
-                        <div class="form-check">
-                            <label class="form-check-label" for="event-selector">@lang('booking.atc.create.event-text')</label>
-                            <input wire:model="selected_event" class="form-check-input" type="checkbox" id="event-selector">
-                        </div>
-                    </div>
+                    @endif
                     @if($can_vatger_event)
                         <div class="col-12 mb-3">
                             <div class="form-check">
@@ -88,25 +92,29 @@
                             </div>
                         </div>
                     @endif
-                    <div class="col-12 mb-3">
-                        <div class="form-check">
-                            <label class="form-check-label" for="training-selector">@lang('booking.atc.create.training-text')</label>
-                            <input wire:model="selected_training" class="form-check-input" type="checkbox" id="training-selector">
+                    @if(!$selected_vatger_event)
+                        <div class="col-12 mb-3">
+                            <div class="form-check">
+                                <label class="form-check-label" for="training-selector">@lang('booking.atc.create.training-text')</label>
+                                <input wire:model="selected_training" class="form-check-input" type="checkbox" id="training-selector">
+                            </div>
                         </div>
-                    </div>
+                    @endif
                     <div class="col-12 mb-4">
                         <button wire:click="book()" class="btn btn-soft-primary">
                             @lang('booking.atc.create.save-button-text')
                         </button>
                     </div>
-                    <div class="col-12">
-                        <div class="alert bg-soft-primary fw-medium" role="alert">
-                            <a href="{{ route('policies', ['policy_id' => 'pol.booking']) }}" class="alert-link">
-                                <i data-feather="info" class="fea fs-5 align-middle me-1"></i>
-                                Rules
-                            </a>
+                    @if(!$selected_vatger_event)
+                        <div class="col-12">
+                            <div class="alert bg-soft-primary fw-medium" role="alert">
+                                <a href="{{ route('policies', ['policy_id' => 'pol.booking']) }}" class="alert-link">
+                                    <i data-feather="info" class="fea fs-5 align-middle me-1"></i>
+                                    Rules
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                     <!--end col-->
                 </div>
             </div>

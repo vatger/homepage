@@ -114,6 +114,7 @@ class BookPositionTab extends Component
         $removed_bookings = ATCBookingsApi::deleteBookingsInTheWayForVatgerEvent($b);
         if ($removed_bookings > 0) {
             $this->showNoty('Removed '.$removed_bookings.' other bookings that were in the way!', 'success');
+            sleep(3);
         }
 
         $check = ATCBookingsApi::checkBooking($b);

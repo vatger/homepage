@@ -84,7 +84,7 @@
                                                 @else
                                                     <input class="form-control ps-5" disabled>
                                                 @endif
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -132,6 +132,15 @@
                             <td>
                                 {{ $booking->controller->username }}
                                 <small>({{ $booking->controller_id }})</small>
+                                @if($booking->training)
+                                    <span class="badge bg-primary">T</span>
+                                @endif
+                                @if($booking->event)
+                                    <span class="badge bg-light">E</span>
+                                @endif
+                                @if($booking->vatger_event)
+                                    <span class="badge bg-danger">E</span>
+                                @endif
                             </td>
                             <td>{{ $booking->station->ident }}</td>
                             <td>
