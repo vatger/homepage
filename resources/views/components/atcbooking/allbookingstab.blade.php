@@ -1,4 +1,4 @@
-<div class="card blog blog-detail border-0 shadow rounded mt-5">
+<div class="card blog blog-detail border-0 shadow rounded">
     <div class="card-body content text-center">
         <h4 class="mb-2"><i class="text-primary me-1 text-center"></i><a class="text-primary">@lang('booking.atc.all.title')</a></h4>
         <div class="row justify-content-center mb-1">

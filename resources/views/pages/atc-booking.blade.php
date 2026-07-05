@@ -14,17 +14,20 @@
         @endcomponent
 
         <section class="section">
-            <div class="container-md">
+            <div class="container-fluid" style="max-width: 1750px">
                 <div class="row">
                     <!-- BLog Start -->
-                    <div class="col-lg-7 col-md-6 mb-4">
+                    <div class="col-lg-8 col-md-6 mb-4">
                         <livewire:atc.list-atc-booking-tab />
                     </div>
                     <!-- BLog End -->
 
                     <!-- START SIDEBAR -->
-                    <livewire:atc.book-position-tab />
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <livewire:atc.book-position-tab />
+                    </div>
                     <!-- END SIDEBAR -->
+
                 </div>
                 <!--end row-->
             </div>
