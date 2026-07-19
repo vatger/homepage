@@ -122,9 +122,11 @@
     "name_de": "Buchungs‐ und Besetzungsregeln",
     "name_en": "Booking and Staffing Rules",
     "type": "pdf",
-    "needs_approval": false,
-    "last_update": "2025-06-03",
+    "needs_approval": true,
+    "last_update": "2025-07-13",
     "path_de": "/storage/policies/booking_de.pdf",
     "path_en": "/storage/policies/booking_en.pdf"
+    "path_changelog_de": "public/policies/booking_de_changelog.html"
+    "path_changelog_en": "public/policies/booking_en_changelog.html"
   }
 ]
