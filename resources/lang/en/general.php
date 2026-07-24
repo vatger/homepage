@@ -28,6 +28,8 @@ return [
         'terms' => 'Terms of Service',
         'satzung' => 'Satzung',
         'further' => 'further policies...',
+        'light-theme' => 'Light theme',
+        'dark-theme' => 'Dark theme',
     ],
 
     'blog' => [

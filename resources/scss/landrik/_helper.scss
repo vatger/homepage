@@ -258,7 +258,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     &.clip-text-image {
-        background-image: url("/images/logistics/01.jpg");
+        background-color: $primary;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;

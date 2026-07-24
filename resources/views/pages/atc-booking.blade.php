@@ -6,7 +6,7 @@
             'header' => __('booking.atc.title'),
             'links' => [
                 route('landing') => config('app.name'),
-            'Controllers',
+            __('navigation.lotsen.titel'),
             route('controllers.booking') => __('booking.atc.title')
             ],
             'backgroundurl' => iasset('images/bookings/booking_' . rand(1, 1) . '.png')

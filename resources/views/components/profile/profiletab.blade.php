@@ -1,9 +1,10 @@
-<div class="tab-pane fade bg-white p-4 rounded shadow active show" id="profile-tab" role="tabpanel" aria-labelledby="profile">
-    <div class="pb-4 border-bottom">
-        <div class="row">
+<div class="tab-pane profile-panel fade bg-white active show" id="profile-tab" role="tabpanel" aria-labelledby="profile">
+    <div class="p-4 p-lg-5 border-bottom">
+        <div class="row g-4">
             <div class="col-md-6">
-                <h5>VATGER Details:</h5>
-                <div class="mt-1">
+                <div class="profile-details-group">
+                    <span class="profile-eyebrow">Membership</span>
+                    <h4 class="mt-2 mb-4">VATGER Details</h4>
                     <x-profile.profiletabitem title="E-Mail (Forum)" :text="$user->email_backup ?? 'N/A' " feaicon="mail">
                         @if($user->email_backup)
                             <button wire:click="changeEmail()" class="btn btn-sm btn-primary">reset to VATSIM E-Mail</button>
@@ -25,8 +26,9 @@
             <!--end col-->
 
             <div class="col-md-6">
-                <h5>VATSIM Details:</h5>
-                <div class="mt-1">
+                <div class="profile-details-group">
+                    <span class="profile-eyebrow">Network</span>
+                    <h4 class="mt-2 mb-4">VATSIM Details</h4>
                     <x-profile.profiletabitem title="E-Mail" :text="$user->email" feaicon="mail">
                         <a href="https://my.vatsim.net/user/email">change</a>
                     </x-profile.profiletabitem>
@@ -48,10 +50,7 @@
                             <a href="https://members.vateud.net">change</a>
                         @endif
                     </x-profile.profiletabitem>
-                    <br>
-                    <a href="{{ route('member.refresh') }}">
-                        <button class="btn btn-sm btn-primary">Fetch new VATSIM Data</button>
-                    </a>
+                    <a href="{{ route('member.refresh') }}" class="btn btn-sm btn-primary mt-3">Fetch new VATSIM Data</a>
                 </div>
             </div>
             <!--end col-->
@@ -60,7 +59,7 @@
     </div>
 
 
-    <div class="p-4">
+    <div class="p-4 p-lg-5 profile-fir-section">
         <div class="d-flex align-items-center justify-content-between">
             <h5 class="mb-0">Flight Information Region (FIR)</h5>
             <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#change-fir-modal" @if(!$user->vatgerDetails->can_change_fir) disabled @endif>
@@ -82,7 +81,7 @@
         @if($user->fir)
             <div class="row">
                 <div class="col-md-6 mt-4 pt-2">
-                    <div class="card rounded shadow bg-secondary border-0">
+                            <div class="card profile-fir-card is-current border-0">
                         <div class="card-body">
                             <div>
                                 <h5 class="text-light">{{$user->fir?->name}}</h5>
@@ -97,7 +96,7 @@
                 @foreach(\App\Models\Groups\Fir::all() as $f)
                     @if($f->id != $user->fir?->fir_id)
                         <div class="col-md-6 mt-4 pt-2">
-                            <div class="card rounded shadow bg-dark border-0">
+                            <div class="card profile-fir-card border-0">
                                 <div class="card-body">
                                     <div>
                                         <h5 class="text-light">{{$f->name}}</h5>
@@ -116,7 +115,7 @@
 
     </div>
 
-    <div class="modal fade" id="change-fir-modal" tabindex="-1" aria-labelledby="fir-change-label" aria-hidden="true">
+    <div class="modal fade profile-fir-modal" id="change-fir-modal" tabindex="-1" aria-labelledby="fir-change-label" aria-hidden="true">
         <div class="modal-dialog modal-lg ">
             <div class="modal-content rounded shadow border-0">
                 <div class="modal-header border-bottom">
@@ -164,7 +163,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Schließen</button>
-                    <button wire:click="changeFir()" type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">
+                    <button wire:click="changeFir()" wire:loading.attr="disabled" wire:target="changeFir"
+                            type="button" class="btn btn-sm btn-primary">
                         @if($user->fir)
                             FIR Wechseln
                         @else

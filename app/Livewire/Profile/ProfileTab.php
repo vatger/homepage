@@ -63,5 +63,6 @@ class ProfileTab extends Component
         }
         MembershipLibrary::update(Auth::user());
         $this->fir_selection_checkbox = false;
+        $this->dispatch('profile_fir_changed');
     }
 }

@@ -18,22 +18,6 @@
                         </div>
                     </div>
                     <form id="appearance-form">
-                        <div class="d-flex justify-content-between border-top pt-4">
-                            <h6 class="mb-0">@lang('profile.profile.settings.color-text')</h6>
-                            <div class="form-check" style="min-width: 30%;">
-                                <select wire:model.live="color" class="form-select form-control" id="color-mode-selector" name="color-select">
-                                    <option value="default">@lang('profile.profile.settings.color.dark-blue')</option>
-                                    <option value="cyan">@lang('profile.profile.settings.color.cyan')</option>
-                                    <option value="red">@lang('profile.profile.settings.color.red')</option>
-                                    <option value="green">@lang('profile.profile.settings.color.green')</option>
-                                    <option value="purple">@lang('profile.profile.settings.color.purple')</option>
-                                    <!--<option value="slateblue">@lang('profile.profile.settings.color.slateblue')</option>-->
-                                    <option value="skobleoff">@lang('profile.profile.settings.color.skobleoff')</option>
-                                    <option value="yellow">@lang('profile.profile.settings.color.yellow')</option>
-                                </select>
-                                <label class="form-check-label" for="color-mode-selector"></label>
-                            </div>
-                        </div>
                         <div class="d-flex justify-content-between border-top py-4">
                             <h6 class="mb-0">@lang('profile.profile.settings.dark-mode-text')</h6>
                             <div class="form-check">

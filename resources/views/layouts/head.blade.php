@@ -36,16 +36,16 @@
     @endif
 
 @endif
-@php
-    $c = Auth::check() ? 'resources/css/'. Auth::user()->settings->color .'.css' : false;
-    $v = false;
-    try {
-        $v = !! \Illuminate\Support\Facades\Vite::asset($c);
-    } catch (Exception $e){}
-@endphp
-@if($c && $v)
-    @vite($c)
-@else
-    @vite('resources/css/default.css')
+@if(!isset($_admin) || !$_admin)
+    <script>
+        (() => {
+            const theme = localStorage.getItem('vatger-theme');
+            if (theme === 'light' || theme === 'dark') {
+                document.documentElement.dataset.theme = theme;
+                document.querySelector('meta[name="color-scheme"]')?.setAttribute('content', theme);
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="{{ asset('css/vatger-brand.css') }}">
 @endif
 <link rel="stylesheet" type="text/css" href="{{ asset("vendor/cookie-consent/css/cookie-consent.css") }}">

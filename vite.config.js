@@ -10,6 +10,19 @@ export default defineConfig({
     port: 3000,
   },
 
+  css: {
+    preprocessorOptions: {
+      scss: {
+        silenceDeprecations: [
+          "import",
+          "global-builtin",
+          "color-functions",
+          "if-function",
+        ],
+      },
+    },
+  },
+
   plugins: [
     laravel([
       "resources/scss/app.scss",
@@ -17,14 +30,6 @@ export default defineConfig({
       "resources/scss/app-admin.scss",
       "resources/scss/app-admin-dark.scss",
       "resources/scss/mail.scss",
-      "resources/css/cyan.css",
-      "resources/css/default.css",
-      "resources/css/green.css",
-      "resources/css/purple.css",
-      "resources/css/red.css",
-      "resources/css/skobleoff.css",
-      "resources/css/skyblue.css",
-      "resources/css/yellow.css",
       "resources/ts/app.ts",
       "resources/ts/special/events.ts",
       "resources/ts/special/aerodrome.ts",

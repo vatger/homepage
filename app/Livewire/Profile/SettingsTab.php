@@ -16,16 +16,12 @@ class SettingsTab extends Component
     #[Rule('required')]
     public bool $darkmode;
 
-    #[Rule('required')]
-    public string $color;
-
     #[Rule('required|in:de,en')]
     public string $language;
 
     public function mount(): void
     {
         $this->darkmode = Auth::user()->settings->dark_mode;
-        $this->color = Auth::user()->settings->color;
         $this->language = Auth::user()->settings->language;
     }
 
@@ -55,7 +51,6 @@ class SettingsTab extends Component
             ->update([
                 'language' => $this->language,
                 'dark_mode' => intval($this->darkmode),
-                'color' => $this->color,
             ]);
         Session::put('language', $this->language);
         $this->js('window.location.reload()');

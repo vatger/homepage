@@ -6,7 +6,7 @@
                 <div class="footer-py-60" style="padding-bottom: 0">
                     <div class="row">
                         <div class="col-lg-4 col-12 mb-0 mb-md-4 pb-0 pb-md-2">
-                            <img src="{{ iasset('images/vacc_logo_white.png', 300) }}" width="55%" alt="">
+                            <img src="{{ asset('images/brand/logo-dark.svg') }}" width="55%" alt="VATGER Logo">
 
                             <p id="slogan_one" class="mt-4"></p>
 
@@ -79,6 +79,19 @@
                         <p class="mb-0">&copy; {{ \Carbon\Carbon::now()->year }} VATSIM Germany</p>
                     </div>
                 </div>
+                <div class="col-sm-6 mt-3 mt-sm-0">
+                    <div class="text-sm-end">
+                        <button type="button" class="theme-toggle-control theme-toggle" aria-pressed="false"
+                                data-light-label="@lang('general.footer.light-theme')"
+                                data-dark-label="@lang('general.footer.dark-theme')">
+                            <span class="theme-toggle-icon" aria-hidden="true">
+                                <i data-feather="moon" class="theme-icon-moon"></i>
+                                <i data-feather="sun" class="theme-icon-sun"></i>
+                            </span>
+                            <span class="theme-toggle-label">@lang('general.footer.dark-theme')</span>
+                        </button>
+                    </div>
+                </div>
                 <!--end col-->
             </div>
             <!--end row-->
@@ -88,3 +101,45 @@
 </footer>
 <!--end footer-->
 <!-- Footer End -->
+
+<script>
+    (() => {
+        const buttons = document.querySelectorAll('.theme-toggle-control');
+        if (buttons.length === 0) {
+            return;
+        }
+
+        const syncToggle = () => {
+            const isDark = document.documentElement.dataset.theme === 'dark';
+            buttons.forEach((button) => {
+                if (!(button instanceof HTMLButtonElement)) {
+                    return;
+                }
+
+                const nextLabel = isDark ? button.dataset.lightLabel : button.dataset.darkLabel;
+                const label = button.querySelector('.theme-toggle-label');
+                button.setAttribute('aria-pressed', String(isDark));
+                button.setAttribute('aria-label', nextLabel ?? '');
+                button.setAttribute('title', nextLabel ?? '');
+
+                if (label) {
+                    label.textContent = nextLabel ?? '';
+                }
+            });
+        };
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+                document.documentElement.dataset.theme = nextTheme;
+                localStorage.setItem('vatger-theme', nextTheme);
+
+                const colorScheme = document.querySelector('meta[name="color-scheme"]');
+                colorScheme?.setAttribute('content', nextTheme);
+                syncToggle();
+            });
+        });
+
+        syncToggle();
+    })();
+</script>

@@ -27,18 +27,6 @@ return [
             'retype-new-password-text' => 'Re-type new password',
 
             'dark-mode-text' => 'Dark mode',
-            'color-text' => 'Select color',
-
-            'color' => [
-                'dark-blue' => 'Dark-Blue',
-                'cyan' => 'Cyan',
-                'red' => 'Red',
-                'green' => 'Green',
-                'purple' => 'Purple',
-                'slateblue' => 'Slateblue',
-                'skobleoff' => 'Turquoise',
-                'yellow' => 'Yellow',
-            ],
         ],
 
         'teamspeak' => [

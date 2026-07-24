@@ -28,6 +28,8 @@ return [
         'terms' => 'Nutzungsbedingungen',
         'satzung' => 'Satzung',
         'further' => 'weitere Richtlinien...',
+        'light-theme' => 'Helles Design',
+        'dark-theme' => 'Dunkles Design',
     ],
 
     'blog' => [
