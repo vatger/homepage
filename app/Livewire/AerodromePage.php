@@ -9,6 +9,7 @@ use App\Libraries\VATSIM\EventLibrary;
 use App\Models\Navigation\Aerodrome;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Renderless;
 use Livewire\Component;
 use VatsimData\Datafeed;
 use VatsimData\Metar;
@@ -41,38 +42,45 @@ class AerodromePage extends Component
         ]);
     }
 
+    #[Renderless]
     public function load_stands(): array
     {
         return StandStatusLibrary::standstatus($this->aerodrome);
     }
 
+    #[Renderless]
     public function load_aircraft(): array
     {
         return StandStatusLibrary::aircraftstatus($this->aerodrome);
     }
 
+    #[Renderless]
     public function load_aerodrome(): array
     {
         return $this->aerodrome->toArray();
     }
 
+    #[Renderless]
     public function load_metar(): ?string
     {
         return Metar::get($this->icao) ?? null;
     }
 
+    #[Renderless]
     public function load_indicators(): array
     {
         return DataFeedLibrary::ControllersAerodrome($this->aerodrome);
     }
 
+    #[Renderless]
     public function load_atis(): array
     {
         return Datafeed::AtisAerodrome($this->icao);
     }
 
+    #[Renderless]
     public function load_events(): array
     {
-        return EventLibrary::getAerodromeEvents($this->aerodrome->icao);
+        return EventLibrary::getAerodromeEvents($this->aerodrome->icao, 3);
     }
 }

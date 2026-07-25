@@ -2,18 +2,20 @@
     @component('components.layouts.content',[
         'header' => 'Support',
         'links' => [
-            route('landing') => config('app.name'),'Help','Support'
+            route('landing') => config('app.name'),
+            __('navigation.hilfe.titel'),
+            __('navigation.hilfe.support')
             ]
     ])
 
     @endcomponent
-    <script src="https://js.hcaptcha.com/1/api.js?hl=en"></script>
-    <section class="section">
+    <script src="https://js.hcaptcha.com/1/api.js?hl={{ app()->getLocale() }}"></script>
+    <section class="section support-page">
         <div class="container">
             <div class="row ">
 
                 <div class="col-lg col-md mb-4">
-                    <div class="card features rounded p-4 bg-white shadow position-relative overflow-hidden border-0 ">
+                    <div class="card features support-panel p-4 position-relative overflow-hidden">
                         <div class="card-body content">
                             @if($selected_type && ($selected_type->system == "V" || property_exists($selected_type, 'public_url')))
                                 <div class="alert bg-soft-danger fw-medium" role="alert">
@@ -106,8 +108,8 @@
                             </div><!--end row-->
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <button name="send" wire:click="send()" wire:loading.attr="disabled" class="btn btn-soft-success">
-                                        <i data-feather="plus" class="fea fea-primary"></i>@lang('support.text-send')
+                                    <button name="send" wire:click="send()" wire:loading.attr="disabled" class="btn btn-primary">
+                                        <i data-feather="plus" class="fea"></i>@lang('support.text-send')
                                     </button>
                                 </div><!--end col-->
                             </div><!--end row-->

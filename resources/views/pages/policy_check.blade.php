@@ -4,7 +4,7 @@
             <div class="row mt-5 justify-content-center">
                 <div class="col-lg-12 text-center">
                     <div class="pages-heading">
-                        <h4 class="title">Wichtiges</h4>
+                        <h4 class="title">@lang('pages.policy.important')</h4>
                     </div>
                 </div>  <!--end col-->
             </div><!--end row-->
@@ -32,7 +32,9 @@
 
                                 @if($user_settings->agreed)
                                     <div class="accordion pt-2">
-                                        <button wire:click="continue" class="btn btn-success mt-2 me-2">Weiter</button>
+                                        <button wire:click="continue" class="btn btn-success mt-2 me-2">
+                                            @lang('pages.policy.continue')
+                                        </button>
                                     </div>
                                 @endif
                             </div>

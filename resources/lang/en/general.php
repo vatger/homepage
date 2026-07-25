@@ -21,6 +21,21 @@ return [
         'read-more' => 'Read More',
     ],
 
+    'external-link' => [
+        'title' => 'Open external website',
+        'text' => 'You are leaving VATSIM Germany. VATSIM Germany is not responsible for the content of the external website.',
+        'continue' => 'Continue to website',
+    ],
+
+    'policy-language' => [
+        'notice' => 'This document is also available in :language.',
+        'switch' => 'Switch to the :language version',
+        'languages' => [
+            'de' => 'German',
+            'en' => 'English',
+        ],
+    ],
+
     'footer' => [
         'data-protection' => 'Data Protection',
         'imprint' => 'Imprint',

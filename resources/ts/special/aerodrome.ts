@@ -189,6 +189,10 @@ async function indicator() {
   let table = document.getElementById("loading-text-atc");
   let tableContainer = document.getElementById("table-atc-container");
   if (!table || !tableContainer) return;
+  const monitoringText =
+    tableContainer.dataset.monitoringText ?? "monitoring";
+  const emptyText =
+    tableContainer.dataset.emptyText ?? "No ATC is currently online.";
 
   let html = "";
 
@@ -211,7 +215,7 @@ async function indicator() {
       "</b> MHz</small>";
 
     if (!isEmpty(secondary_frequencies)) {
-      html += "<br><small>monitoring ";
+      html += `<br><small>${monitoringText} `;
       forEach(secondary_frequencies, (frequency) => {
         html += frequency + ", ";
       });
@@ -222,8 +226,7 @@ async function indicator() {
   });
 
   if (isEmpty(data)) {
-    tableContainer.innerHTML =
-      '<p style="text-align: center">No ATC Online</p>';
+    tableContainer.innerHTML = `<p style="text-align: center">${emptyText}</p>`;
     return;
   }
 

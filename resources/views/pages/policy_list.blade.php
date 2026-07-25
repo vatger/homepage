@@ -1,9 +1,9 @@
 <div>
     @component('components.layouts.content',[
-        'header' => 'Policies',
+        'header' => __('pages.policy.list-title'),
         'links' => [
             route('landing') => config('app.name'),
-            'Policies',
+            __('pages.policy.list-title'),
             ]
     ])
     @endcomponent

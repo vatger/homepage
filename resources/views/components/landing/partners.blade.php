@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-12 text-center">
                 <div class="section-title mb-4 pb-2">
-                    <span class="landing-section-label">Community</span>
+                    <span class="landing-section-label">@lang('pages.landing.community')</span>
                     <h2 class="title mt-3 mb-3">@lang('landing.partner.title')</h2>
                     <p class="text-muted para-desc mx-auto mb-0">@lang('landing.partner.text')</p>
                 </div>
@@ -35,8 +35,11 @@
             <div class="row justify-content-center">
                 <div class="col-12 text-center">
                     <div class="section-title mb-4 pb-2">
-                        <h4 class="title mb-1">Unsere Partner</h4>
-                        <p class="text-muted mb-0 pb-0">Mehr Informationen könnt ihr <a href="#" class="link">hier</a> sammeln.</p>
+                        <h4 class="title mb-1">@lang('pages.landing.partners-title')</h4>
+                        <p class="text-muted mb-0 pb-0">
+                            @lang('pages.landing.partners-text')
+                            <a href="#" class="link">@lang('pages.landing.partners-link')</a>.
+                        </p>
                     </div>
                 </div>
                 <!--end col-->

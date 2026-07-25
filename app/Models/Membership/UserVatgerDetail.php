@@ -117,7 +117,7 @@ class UserVatgerDetail extends Model
                 'vatger-details.lastfir',
                 [
                     'leftdate' => $joined->format('d.m.Y H:i'),
-                    'waitdays' => 90 - $diff,
+                    'waitdays' => intval(90 - $diff),
                     'waitdate' => Carbon::create($joined)
                         ->addDays(90)
                         ->format('d.m.Y H:i'),

@@ -27,7 +27,7 @@
                                 <div>
                                     <span class="profile-eyebrow">@lang('profile.profile.menu.profile-text')</span>
                                     <h2 class="title text-dark mb-1">@yield('section-title', $user->username)</h2>
-                                    <span class="text-muted">VATSIM ID @yield('section-subtitle', $user->id)</span>
+                                    <span class="text-muted">@lang('pages.membership.vatsim-id') @yield('section-subtitle', $user->id)</span>
                                 </div>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                                     <a class="nav-link profile-nav-link {{ $tab == 'notifications' ? 'active' : '' }}" data-bs-toggle="pill" role="tab"
                                        aria-controls="profile" aria-selected="true">
                                         <i data-feather="bell" aria-hidden="true"></i>
-                                        <span>Notifications</span>
+                                        <span>@lang('pages.membership.notifications')</span>
                                     </a>
                                     <!--end nav link-->
                                 </li>
@@ -63,7 +63,7 @@
                                     <a class="nav-link profile-nav-link {{ $tab == 'settings' ? 'active' : '' }}" data-bs-toggle="pill" role="tab"
                                        aria-controls="profile" aria-selected="true">
                                         <i data-feather="settings" aria-hidden="true"></i>
-                                        <span>Settings/Accounts</span>
+                                        <span>@lang('pages.membership.settings-accounts')</span>
                                     </a>
                                     <!--end nav link-->
                                 </li>
@@ -72,7 +72,7 @@
                                     <a class="nav-link profile-nav-link {{ $tab == 'accounts' ? 'active' : '' }}" data-bs-toggle="pill" role="tab"
                                        aria-controls="profile" aria-selected="true">
                                         <i data-feather="headphones" aria-hidden="true"></i>
-                                        <span>Teamspeak</span>
+                                        <span>@lang('pages.membership.teamspeak')</span>
                                     </a>
                                     <!--end nav link-->
                                 </li>
@@ -81,7 +81,7 @@
                                     <a class="nav-link profile-nav-link {{ $tab == 'surveykeys' ? 'active' : '' }}" data-bs-toggle="pill" role="tab"
                                        aria-controls="profile" aria-selected="true">
                                         <i data-feather="clipboard" aria-hidden="true"></i>
-                                        <span>Survey/Umfragen</span>
+                                        <span>@lang('pages.membership.surveys')</span>
                                     </a>
                                     <!--end nav link-->
                                 </li>
@@ -90,7 +90,7 @@
                                         <a class="nav-link profile-nav-link {{ $tab == 'staff' ? 'active' : '' }}" data-bs-toggle="pill" role="tab"
                                            aria-controls="profile" aria-selected="true">
                                             <i data-feather="shield" aria-hidden="true"></i>
-                                            <span>Staff</span>
+                                            <span>@lang('pages.membership.staff')</span>
                                         </a>
                                         <!--end nav link-->
                                     </li>
@@ -122,7 +122,7 @@
                             @case('accounts')
                                 @if (\Illuminate\Support\Facades\Auth::user()->vatsimDetails->rating_pilot == -1)
                                     <div class="tab-pane fade bg-white p-4 rounded shadow active show" role="tabpanel" aria-labelledby="profile">
-                                        <h5>Fehler</h5>
+                                        <h5>@lang('pages.membership.error')</h5>
                                         <div class="alert alert-danger mt-4">
                                             @lang('profile.profile.error.account-inactive-text')
                                         </div>

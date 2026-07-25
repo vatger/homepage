@@ -1,4 +1,4 @@
-<div class="card blog blog-detail border-0 shadow rounded">
+<div class="card blog blog-detail atc-bookings-panel">
     <div class="card-body content text-center">
         <h4 class="mb-2"><i class="text-primary me-1 text-center"></i><a class="text-primary">@lang('booking.atc.all.title')</a></h4>
         <div class="row justify-content-center mb-1">
@@ -10,7 +10,7 @@
         </div>
         <div class="w-100">
             <div class="accordion">
-                <div class="accordion-item rounded shadow bg-white">
+                <div class="accordion-item atc-booking-filter">
                     <h2 class="accordion-header">
                         <button wire:ignore.self class="accordion-button border-0 bg-light collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#accordion-header-1" aria-expanded="false" aria-controls="accordion-header-1">

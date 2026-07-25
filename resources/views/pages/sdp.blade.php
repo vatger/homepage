@@ -4,7 +4,7 @@
          'header' => __('sdp.text-header'),
          'links' => [
              route('landing') => config('app.name'),
-             'Members',
+             __('pages.common.members'),
              __('sdp.text-header'),
              ]
      ])

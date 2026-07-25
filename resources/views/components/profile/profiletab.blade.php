@@ -1,7 +1,7 @@
 <div class="tab-pane profile-panel fade bg-white active show" id="profile-tab" role="tabpanel" aria-labelledby="profile">
-    <div class="p-4 p-lg-5 border-bottom">
-        <div class="row g-4">
-            <div class="col-md-6">
+    <div class="p-4 p-lg-5 border-bottom profile-details-section">
+        <div class="row g-4 profile-details-row">
+            <div class="col-md-6 profile-details-column">
                 <div class="profile-details-group">
                     <span class="profile-eyebrow">Membership</span>
                     <h4 class="mt-2 mb-4">VATGER Details</h4>
@@ -25,7 +25,7 @@
             </div>
             <!--end col-->
 
-            <div class="col-md-6">
+            <div class="col-md-6 profile-details-column">
                 <div class="profile-details-group">
                     <span class="profile-eyebrow">Network</span>
                     <h4 class="mt-2 mb-4">VATSIM Details</h4>

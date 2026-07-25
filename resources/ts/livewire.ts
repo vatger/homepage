@@ -43,6 +43,14 @@ export function loadLivewireExtensions() {
     });
   });
 
+  Livewire.hook("morph.updated", () => {
+    queueMicrotask(() => {
+      if (!document.querySelector(".modal.show")) {
+        cleanupModalBackdrop();
+      }
+    });
+  });
+
   Alpine.plugin(Clipboard);
   Livewire.start();
 

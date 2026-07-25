@@ -3,7 +3,7 @@
         'header' => $aerodrome->name,
         'links' => [
             route('landing') => config('app.name'),
-            'Pilots',
+            __('navigation.piloten.titel'),
             route('pilots.aerodromes.viewall') => __('pilot.aerodromes.title'),
             $aerodrome->icao,
             ],
@@ -20,12 +20,12 @@
         </ul>
     @endcomponent
 
-    <section class="section">
+    <section class="section aerodrome-page">
         <div class="container">
-            <div class="row">
+            <div class="row g-4">
                 <!-- BLog Start -->
-                <div class="col-lg-8 col-md-6 mb-4">
-                    <div class="card blog blog-detail border-0 shadow rounded">
+                <div class="col-lg-8 col-md-6">
+                    <div class="card blog blog-detail aerodrome-panel">
                         <div class="card-body content">
                             <div class="w-100">
                                 <div class="row" id="counter">
@@ -50,7 +50,7 @@
                                     <div class="col-sm-3 col-6 pt-2">
                                         <div class="counter-box text-center">
                                             <h4 class="mb-0 text-primary">{{ $aerodrome->elevation }}</h4>
-                                            <h6 class="counter-head text-muted">Elevation (ft)</h6>
+                                            <h6 class="counter-head text-muted">@lang('pages.aerodrome.elevation')</h6>
                                         </div>
                                         <!--end counter box-->
                                     </div>
@@ -64,7 +64,7 @@
                                                     @lang('general.phrases.no')
                                                 @endif
                                             </h4>
-                                            <h6 class="counter-head text-muted">Civil</h6>
+                                            <h6 class="counter-head text-muted">@lang('pages.aerodrome.civil')</h6>
                                         </div>
                                         <!--end counter box-->
                                     </div>
@@ -73,9 +73,9 @@
                         </div>
                     </div>
 
-                    <div class="card blog blog-detail border-0 shadow rounded mt-4">
+                    <div class="card blog blog-detail aerodrome-panel mt-4">
                         <div class="card-body content">
-                            <h4 class="text-dark">Stand Information</h4>
+                            <h4 class="text-dark">@lang('pages.aerodrome.stand-information')</h4>
                             @vite('resources/scss/special/aerodrome-mapbox.scss')
                             @vite('resources/scss/special/leaflet.scss')
                             <div class="w-100" id="map-container">
@@ -86,7 +86,7 @@
                         </div>
                     </div>
 
-                    <div class="card blog-detail border-0 shadow rounded mt-4">
+                    <div class="card blog-detail aerodrome-panel mt-4">
                         <div class="card-body content">
                             <h4 class="text-dark">@lang('pilot.aerodromes.aerodrome.upcoming-event-title-text')</h4>
                             <div wire:ignore class="w-100" id="event-container">
@@ -102,13 +102,13 @@
                 <!-- BLog End -->
 
                 <!-- START SIDEBAR -->
-                <div class="col-lg-4 col-md-6 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                    <div class="card border-0 sidebar sticky-bar ms-lg-4">
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="card sidebar sticky-bar aerodrome-sidebar">
                         <div class="card-body p-0">
 
                             <div class="widget">
                                 <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0 text-dark">
-                                    Links
+                                    @lang('pages.aerodrome.links')
                                 </span>
 
                                 <div class="mt-2 mb-2">
@@ -146,7 +146,7 @@
                                 <div class="mt-2 mb-2">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-1 ms-3" style="margin-right: 1rem !important;">
-                                            <code wire:ignore class="d-block title text-dark" id="metar-container">Loading...</code>
+                                            <code wire:ignore class="d-block title text-dark" id="metar-container">@lang('pages.common.loading')</code>
                                         </div>
                                     </div>
                                 </div>
@@ -161,7 +161,7 @@
                                 <div class="mt-2 mb-2">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-1 ms-3" style="margin-right: 1rem !important;">
-                                            <code wire:ignore class="d-block title text-dark" id="atis-container">Loading...</code>
+                                            <code wire:ignore class="d-block title text-dark" id="atis-container">@lang('pages.common.loading')</code>
                                         </div>
                                     </div>
                                 </div>
@@ -171,16 +171,19 @@
                             <!-- RECENT POST -->
                             <div class="widget mt-4">
                                 <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0 text-dark">
-                                    Active ATC
+                                    @lang('pages.aerodrome.active-atc')
                                 </span>
 
                                 <div class="mt-2">
                                     <div class="d-flex align-items-center">
-                                        <div wire:ignore class="flex-1 ms-3 table-responsive" style="margin-right: 1rem !important;" id="table-atc-container">
+                                        <div wire:ignore class="flex-1 ms-3 table-responsive" style="margin-right: 1rem !important;"
+                                             id="table-atc-container"
+                                             data-monitoring-text="{{ __('pages.aerodrome.monitoring') }}"
+                                             data-empty-text="{{ __('pages.aerodrome.no-atc-online') }}">
                                             <table class="table table-center" id="table-active-atc">
                                                 <tbody id="loading-text-atc">
                                                 <tr>
-                                                    <td class="text-center" colspan="2">Loading...</td>
+                                                    <td class="text-center" colspan="2">@lang('pages.common.loading')</td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -201,27 +204,36 @@
 
         @foreach($links as $category)
             @foreach($category as $link)
-                <div class="modal fade" id="warning-{{ bin2hex($link->url) }}" tabindex="-1" aria-labelledby="LoginForm-title" style="display: none;"
+                <div class="modal fade aerodrome-link-modal" id="warning-{{ bin2hex($link->url) }}" tabindex="-1"
+                     aria-labelledby="warning-title-{{ bin2hex($link->url) }}" style="display: none;"
                      aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content rounded shadow border-0">
-                            <div class="modal-body text-center">
+                            <div class="modal-header border-0 pb-0">
+                                <h4 class="modal-title" id="warning-title-{{ bin2hex($link->url) }}">
+                                    @lang('general.external-link.title')
+                                </h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="{{ __('general.phrases.cancel') }}"></button>
+                            </div>
+                            <div class="modal-body text-center pt-3">
                                 <div class="icon d-flex align-items-center justify-content-center bg-soft-danger rounded-circle mx-auto"
                                      style="height: 80px; width:80px;">
                                     <i data-feather="alert-triangle" class=""></i>
                                 </div>
                                 <div class="mt-4">
-                                    <h4>Weiterleitung</h4>
-                                    <p class="text-muted">
-                                        Du verlässt VATSIM Germany.
-                                        Der von dir ausgewählte Link leitet dich auf eine externe Seite <span style="font-family: monospace">{{ $link->url }}</span>
-                                        weiter.
-                                        VATSIM Germany ist in keiner Weise mit dieser Seite verbunden und für keine Inhalte der Seite verantwortlich.
-                                    </p>
-                                    <div class="mt-4">
-                                        <a href="{{ $link->url }}" target="_blank" class="btn btn-primary">Verstanden</a>
-                                    </div>
+                                    <p class="mb-2">@lang('general.external-link.text')</p>
+                                    <code class="d-block text-break">{{ $link->url }}</code>
                                 </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                                    @lang('general.phrases.cancel')
+                                </button>
+                                <a href="{{ $link->url }}" target="_blank" rel="noopener noreferrer"
+                                   class="btn btn-primary" data-bs-dismiss="modal">
+                                    @lang('general.external-link.continue')
+                                </a>
                             </div>
                         </div>
                     </div>

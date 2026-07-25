@@ -11,7 +11,7 @@
                     <div class="title-heading mt-4 text-center text-lg-start">
                         <span class="landing-kicker">@lang('landing.welcome.badge-text')</span>
                         <h1 class="heading landing-hero-title mt-4 mb-3 text-white">VATSIM Germany</h1>
-                        <p class="landing-hero-copy text-white-50" id="typewriter">Controlling The Virtual German Airspace With Passion!</p>
+                        <p class="landing-hero-copy text-white-50" id="typewriter">@lang('pages.landing.hero-fallback')</p>
                         <div class="mt-4 d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
                             <a href="{{ route('redirect.knowledgebase.start') }}" class="btn btn-primary btn-lg rounded-pill px-4">@lang('landing.join-now-button-content')</a>
                             <a href="#welcome" class="btn btn-outline-light btn-lg rounded-pill px-4">@lang('landing.read-more-button-content')</a>
