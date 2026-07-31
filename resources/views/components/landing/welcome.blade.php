@@ -12,7 +12,7 @@
                 <div class="ms-lg-4">
                     <div class="section-title">
                         <span class="landing-section-label">@lang('landing.welcome.badge-text')</span>
-                        <h2 class="title mt-3 mb-4 text-white">@lang('landing.welcome.title')</h2>
+                        <h2 class="title mt-3 mb-4">@lang('landing.welcome.title')</h2>
                         <div class="landing-copy text-muted">@lang('landing.welcome.text.0')</div>
                     </div>
                 </div>

@@ -13,8 +13,8 @@
                         <h1 class="heading landing-hero-title mt-4 mb-3 text-white">VATSIM Germany</h1>
                         <p class="landing-hero-copy text-white-50" id="typewriter">@lang('pages.landing.hero-fallback')</p>
                         <div class="mt-4 d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
-                            <a href="{{ route('redirect.knowledgebase.start') }}" class="btn btn-primary btn-lg rounded-pill px-4">@lang('landing.join-now-button-content')</a>
-                            <a href="#welcome" class="btn btn-outline-light btn-lg rounded-pill px-4">@lang('landing.read-more-button-content')</a>
+                            <a href="{{ route('redirect.knowledgebase.start') }}" class="btn btn-lg rounded-pill px-4 text-white">@lang('landing.join-now-button-content')</a>
+                            <a href="#welcome" class="btn btn-outline-white btn-lg rounded-pill px-4 text-white">@lang('landing.read-more-button-content')</a>
                         </div>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
         </div>
     </div>
     <!-- Hero End -->
-    
+
     <x-landing.welcome></x-landing.welcome>
 
     <x-landing.events></x-landing.events>
