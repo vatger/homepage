@@ -3,7 +3,7 @@
         'header' => __('pilot.aerodromes.title'),
         'links' => [
             route('landing') => config('app.name'),
-            'Pilots',
+            __('navigation.piloten.titel'),
             route('pilots.aerodromes.viewall') => __('pilot.aerodromes.title')
             ]
     ])
@@ -25,8 +25,9 @@
                             </div>
                         </div>
                         <!--end col-->
-                        <p class="text-muted mb-0" style="display: none" id="search-count-container">Die Suche ergab <span id="search-count"></span>
-                            Treffer.</p>
+                        <p class="text-muted mb-0" style="display: none" id="search-count-container">
+                            {!! __('pages.aerodromes.search-results', ['count' => '<span id="search-count"></span>']) !!}
+                        </p>
                     </div>
                 </div>
                 <!--end col-->

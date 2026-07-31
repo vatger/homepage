@@ -1,8 +1,10 @@
 <div>
     @component('components.layouts.content',[
-        'header' => 'Required Courses',
+        'header' => __('pages.required-courses.title'),
         'links' => [
-            route('landing') => config('app.name'),'Controllers','Required Courses'
+            route('landing') => config('app.name'),
+            __('navigation.lotsen.titel'),
+            __('pages.required-courses.title')
             ]
     ])
 
@@ -11,16 +13,16 @@
         <div class="container">
             <div class="alert bg-soft-primary fw-medium" role="alert">
                 <i data-feather="info" class="fea fs-5 align-middle me-1"></i>
-                Here you can find a list of positions with their required Moodle courses.
+                @lang('pages.required-courses.text')
             </div>
 
             <div class="mb-3">
                 <table class="table mb-0 table-center">
                     <thead>
                     <tr>
-                        <th scope="col" class="border-bottom">Station</th>
-                        <th scope="col" class="border-bottom">Courses</th>
-                        <th scope="col" class="border-bottom">FIR</th>
+                        <th scope="col" class="border-bottom">@lang('pages.required-courses.station')</th>
+                        <th scope="col" class="border-bottom">@lang('pages.required-courses.courses')</th>
+                        <th scope="col" class="border-bottom">@lang('pages.required-courses.fir')</th>
                     </tr>
                     </thead>
                     <tbody>

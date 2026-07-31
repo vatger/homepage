@@ -4,46 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
     <title>{{ $title }}</title>
+    <style>
+        :root {
+            color-scheme: light dark;
+            supported-color-schemes: light dark;
+        }
+
+        @media only screen and (max-width: 620px) {
+            .email-card {
+                width: 100% !important;
+            }
+
+            .email-padding {
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .email-bg {
+                background-color: #20232a !important;
+            }
+
+            .email-card {
+                background-color: #282d35 !important;
+                border-color: #414751 !important;
+            }
+
+            .email-copy,
+            .email-signature {
+                color: #f0f1f3 !important;
+            }
+
+            .email-muted {
+                color: #b8bec7 !important;
+            }
+
+            .email-divider {
+                border-color: #414751 !important;
+            }
+
+            .email-title {
+                background-color: #3b3035 !important;
+                border-color: #71424a !important;
+                color: #ff7480 !important;
+            }
+
+            .email-header,
+            .email-footer {
+                background-color: #202b37 !important;
+                background-image: linear-gradient(#202b37, #202b37) !important;
+            }
+        }
+
+        [data-ogsc] .email-bg {
+            background-color: #20232a !important;
+        }
+
+        [data-ogsc] .email-card {
+            background-color: #282d35 !important;
+            border-color: #414751 !important;
+        }
+
+        [data-ogsc] .email-copy,
+        [data-ogsc] .email-signature {
+            color: #f0f1f3 !important;
+        }
+
+        [data-ogsc] .email-muted {
+            color: #b8bec7 !important;
+        }
+
+        [data-ogsc] .email-header,
+        [data-ogsc] .email-footer {
+            background-color: #202b37 !important;
+            background-image: linear-gradient(#202b37, #202b37) !important;
+        }
+    </style>
+    <!--[if mso]>
+    <style>
+        .email-card {
+            width: 600px !important;
+        }
+    </style>
+    <![endif]-->
 </head>
 
-<body style="font-family: Inter, sans-serif; font-size: 15px; font-weight: 400; justify-content: center">
+<body class="email-bg" style="margin: 0; padding: 0; background-color: #f0f1f3; color: #2b3f55; font-family: 'Segoe UI', Arial, sans-serif;">
 <!-- Hero Start -->
-<div style="margin-top: 50px;">
-    <table
-        style="font-family: Inter, sans-serif; font-size: 15px; font-weight: 400; max-width: 600px; border: none; margin: 0 auto; border-radius: 6px; overflow: hidden; background-color: #fff; box-shadow: 0 0 3px rgba(60, 72, 88, 0.15);">
+<div style="padding: 40px 12px;">
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" bgcolor="#ffffff" class="email-card"
+           style="width: 600px; max-width: 100%; margin: 0 auto; border-collapse: separate; border-spacing: 0; overflow: hidden; background-color: #ffffff; border: 1px solid #d2d5dc; border-radius: 16px; box-shadow: 0 8px 30px rgba(43, 63, 85, 0.12);">
         <thead>
-        <tr style="background-color: #2f55d4; padding: 3px 0; line-height: 68px; text-align: center; color: #fff; font-size: 24px; font-weight: 700; letter-spacing: 1px;">
-            <th scope="col">
-                <img src="{{ $message->embed(asset('images/vacc_logo_white.png')) }}" height="48px" alt="VATSIM Germany" style="margin-bottom: 10px">
+        <tr bgcolor="#202b37" class="email-header"
+            style="background-color: #202b37; background-image: linear-gradient(#202b37, #202b37);">
+            <th scope="col" style="padding: 28px 32px; text-align: left;">
+                <img src="{{ $message->embed(public_path('images/brand/logo-email-dark.png')) }}"
+                     width="208" height="38" alt="VATSIM Germany"
+                     style="display: block; width: 208px; height: 38px; max-width: 100%; border: 0;">
             </th>
         </tr>
         </thead>
 
         <tbody>
         <tr>
-            <td style="padding: 24px 24px;">
+            <td class="email-padding" style="padding: 32px 32px 16px; text-align: center;">
                 <div
-                    style="padding: 8px; color: #000000; background-color: rgba(228, 63, 82, 0.2); border: 1px solid rgba(228, 63, 82, 0.2); border-radius: 6px; text-align: center; font-size: 16px; font-weight: 600;">
+                    class="email-title"
+                    style="padding: 13px 18px; color: #c83f4c; background-color: #fceef0; border: 1px solid #f7cdd1; border-radius: 10px; font-size: 18px; line-height: 1.4; font-weight: 700;">
                     {{ $title }}
                 </div>
             </td>
         </tr>
         <tr>
-            <td style="padding: 0 24px 15px; color: #8492a6;">
-                {{ $source_name }} sendete eine Nachricht:
+            <td class="email-padding email-muted" style="padding: 0 32px 12px; color: #8690a0; text-align: center; font-size: 14px; line-height: 1.5;">
+                {{ $source_name }} hat dir eine Nachricht gesendet:
             </td>
         </tr>
         <tr>
-            <td style="padding: 24px 24px 15px; color: #000000;">
+            <td class="email-padding email-copy" style="padding: 20px 32px; color: #2b3f55; font-size: 15px; line-height: 1.7; text-align: left;">
                 {!! $message_text !!}
             </td>
         </tr>
         @if($link_text && $link_url)
             <tr>
-                <td style="padding: 15px 24px;">
+                <td class="email-padding" style="padding: 12px 32px 20px; text-align: center;">
                     <a href="{{ $link_url }}"
-                       style="padding: 8px 20px; outline: none; text-decoration: none; font-size: 16px; letter-spacing: 0.5px; transition: all 0.3s; font-weight: 600; border-radius: 6px; background-color: #2f55d4; border: 1px solid #2f55d4; color: #ffffff;">
+                       style="display: inline-block; padding: 12px 24px; text-decoration: none; font-size: 16px; line-height: 1.2; font-weight: 700; border-radius: 999px; background-color: #ea5763; border: 1px solid #ea5763; color: #ffffff;">
                         {{ $link_text }}
                     </a>
                 </td>
@@ -51,20 +141,23 @@
         @endif
 
         <tr>
-            <td style="padding: 48px 24px 0; color: #8492a6;">
-                Solltest du noch Fragen haben wende dich bitte an <a href="mailto:support@vatger.de">support@vatger.de</a> oder antworte auf diese Nachricht.
+            <td class="email-padding email-muted email-divider" style="padding: 32px 32px 0; color: #8690a0; font-size: 14px; line-height: 1.6; text-align: center; border-top: 1px solid #e7e9ed;">
+                Bei Fragen erreichst du uns unter <a href="mailto:support@vatger.de" style="color: #ea5763; font-weight: 600; text-decoration: none;">support@vatger.de</a> oder antworte einfach auf diese Nachricht. Deine VATSIM-ID ist {{
+                $user_id }}.
             </td>
         </tr>
 
         <tr>
-            <td style="padding: 15px 24px 15px; color: #8492a6;">
-                VATSIM Germany <br> Support Team
+            <td class="email-padding email-signature" style="padding: 18px 32px 28px; color: #2b3f55; font-size: 14px; line-height: 1.5; text-align: center; font-weight: 600;">
+                VATSIM Germany<br>
+                <span class="email-muted" style="color: #8690a0; font-weight: 400;">Support Team</span>
             </td>
         </tr>
 
         <tr>
-            <td style="padding: 16px 8px; color: #8492a6; background-color: #f8f9fc; text-align: center;">
-                Diese automatische Nachricht wurde am {{ \Carbon\Carbon::now()->format('d.m.Y') }} generiert.
+            <td bgcolor="#202b37" class="email-footer"
+                style="padding: 16px 24px; color: #b8bec7; background-color: #202b37; background-image: linear-gradient(#202b37, #202b37); text-align: center; font-size: 12px; line-height: 1.5;">
+                Diese automatische Nachricht wurde am {{ \Carbon\Carbon::now()->format('d.m.Y') }} erstellt.
             </td>
         </tr>
         </tbody>

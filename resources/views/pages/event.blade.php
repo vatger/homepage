@@ -6,7 +6,7 @@
            'header' => $event->name,
            'links' => [
                route('landing') => config('app.name'),
-           'Events',
+           __('pages.common.events'),
           $event->name
            ],
            'backgroundurl' => $event->banner
@@ -39,7 +39,7 @@
 
                         @if ($event->routes)
                             <div class="alert alert-light shadow mt-4" id="event-routes" role="alert" style="display: block;">
-                                <h6 class="text-muted mb-3 p-1"><strong>Suggested Route(s)</strong>:</h6>
+                                <h6 class="text-muted mb-3 p-1"><strong>@lang('pages.event.suggested-routes')</strong>:</h6>
                                 @foreach ($event->routes as $rte)
                                     <p class="text-muted px-1 @if ($loop->index > 0) border-top pt-3 @endif">
                                         <strong>{{ $rte->departure }} - {{ $rte->arrival }}</strong>: {{ $rte->route }}

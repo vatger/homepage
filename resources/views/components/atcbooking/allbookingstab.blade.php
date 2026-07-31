@@ -1,4 +1,4 @@
-<div class="card blog blog-detail border-0 shadow rounded">
+<div class="card blog blog-detail atc-bookings-panel">
     <div class="card-body content text-center">
         <h4 class="mb-2"><i class="text-primary me-1 text-center"></i><a class="text-primary">@lang('booking.atc.all.title')</a></h4>
         <div class="row justify-content-center mb-1">
@@ -10,11 +10,11 @@
         </div>
         <div class="w-100">
             <div class="accordion">
-                <div class="accordion-item rounded shadow bg-white">
+                <div class="accordion-item atc-booking-filter">
                     <h2 class="accordion-header">
                         <button wire:ignore.self class="accordion-button border-0 bg-light collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#accordion-header-1" aria-expanded="false" aria-controls="accordion-header-1">
-                            Filter
+                            @lang('booking.atc.all.filter')
                         </button>
                     </h2>
                     <div wire:ignore.self id="accordion-header-1" class="accordion-collapse border-0 collapse" aria-labelledby="accordion-header-1"
@@ -76,7 +76,7 @@
                                     --}}
                                     <div class="col">
                                         <div class="mb-3">
-                                            <label class="form-label">Search</label>
+                                            <label class="form-label">@lang('booking.atc.all.search')</label>
                                             <div class="form-icon position-relative">
                                                 <i data-feather="map-pin" class="fea icon-sm icons"></i>
                                                 @if(!$selected_my_bookings)
@@ -90,11 +90,11 @@
                                     </div>
                                     <div class="col">
                                         <div class="mb-3">
-                                            <label class="form-check-label">Quick select</label>
+                                            <label class="form-check-label">@lang('booking.atc.all.quick-select')</label>
                                             <div class="form-control ps-5">
                                                 <div class="form-check">
                                                     <input wire:model.live="selected_my_bookings" class="form-check-input" type="checkbox" />
-                                                    <label class="form-check-label">Show only my bookings</label>
+                                                    <label class="form-check-label">@lang('booking.atc.all.my-bookings')</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -111,14 +111,14 @@
                     <thead>
                     <tr>
                         <th wire:click="sortBy('controller_id')" style="width: 33%" scope="col" class="border-bottom text-center">
-                            Name
+                            @lang('booking.atc.all.controller')
                             <i data-feather="{{ $this->getSortIconClasses('controller_id') }}"></i>
                         </th>
                         <th {{--wire:click="sortBy('station_id')"--}} style="width: 33%" scope="col" class="border-bottom text-center">
-                            Position
+                            @lang('booking.atc.all.position')
                         </th>
                         <th wire:click="sortBy('starts_at')" style="width: 33%" scope="col" class="border-bottom text-center">
-                            Zeitraum
+                            @lang('booking.atc.all.timeframe')
                             <i data-feather="{{ $this->getSortIconClasses('starts_at') }}"></i>
                         </th>
                         <th scope="col" class="border-bottom text-center">
@@ -149,12 +149,15 @@
                             </td>
                             <td>
                                 @if(!$booking->vatsim_booking_id)
-                                    <button class="btn badge bg-warning" data-bs-toggle="tooltip" data-bs-placement="right" title="This booking was not added to the VATSIM-Booking-API.">
+                                    <button class="btn badge bg-warning" data-bs-toggle="tooltip" data-bs-placement="right"
+                                            title="{{ __('booking.atc.all.external-warning') }}">
                                         <i data-feather="info" class="fea icon-sm"></i>
                                     </button>
                                 @endif
                                 @if($booking->controller_id == \Illuminate\Support\Facades\Auth::user()?->id)
-                                    <button wire:click="delete({{$booking->id}})" wire:confirm="Are you sure you want to delete this booking?" class="btn badge bg-danger mt-1">
+                                    <button wire:click="delete({{$booking->id}})"
+                                            wire:confirm="{{ __('booking.atc.all.delete-confirm') }}"
+                                            class="btn badge bg-danger mt-1">
                                         <i data-feather="trash" class="fea icon-sm"></i>
                                     </button>
                                 @endif

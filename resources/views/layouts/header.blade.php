@@ -3,10 +3,10 @@
         <!-- Logo container-->
         <a class="logo" href="{{ route('landing') }}">
             <span class="logo-light-mode">
-                <img src="{{ iasset('images/vacc_logo.png', 170*2) }}" class="l-dark" height="32px" alt="VATGER Logo">
-                <img src="{{ iasset('images/vacc_logo_white.png', 170*2) }}" class="l-light" height="32px" alt="VATGER Logo white">
+                <img src="{{ asset('images/brand/logo-light.svg') }}" class="l-dark" height="32" alt="VATGER Logo">
+                <img src="{{ asset('images/brand/logo-dark.svg') }}" class="l-light" height="32" alt="VATGER Logo">
             </span>
-            <img src="{{ iasset('images/vacc_logo_white.png', 170*2) }}" class="logo-dark-mode" alt="VATGER Logo white">
+            <img src="{{ asset('images/brand/logo-dark.svg') }}" class="logo-dark-mode" height="32" alt="VATGER Logo">
         </a>
 
         <!-- End Logo container-->
@@ -43,6 +43,19 @@
                             </a>
                         </li>
                 @endswitch
+
+                <li class="theme-toggle-nav parent-menu-item">
+                    <button type="button" class="theme-toggle-control theme-toggle-mini" aria-pressed="false"
+                            aria-label="@lang('general.footer.dark-theme')"
+                            title="@lang('general.footer.dark-theme')"
+                            data-light-label="@lang('general.footer.light-theme')"
+                            data-dark-label="@lang('general.footer.dark-theme')">
+                        <span class="theme-toggle-icon" aria-hidden="true">
+                            <i data-feather="moon" class="theme-icon-moon"></i>
+                            <i data-feather="sun" class="theme-icon-sun"></i>
+                        </span>
+                    </button>
+                </li>
 
                 <li class="has-submenu parent-menu-item">
                     <a href="javascript:void(0)">@lang('navigation.piloten.titel')</a><span class="menu-arrow"></span>

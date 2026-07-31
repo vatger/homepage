@@ -60,7 +60,7 @@ getEvents()
                   i > 5 ? "hide" : ""
                 }" id="event-${i}">
                     <a href="${window.location.origin}/events/view/${e.id}">
-                        <div class="card blog rounded border-0 shadow overflow-hidden">
+                        <div class="card blog landing-event-card border-0 overflow-hidden">
                             <div class="position-relative">
                                 <div class="overlay rounded-top"></div>
                                 <div class="card-img-top loader-show overflow-hidden" id="event-banner-1" style="min-height: 200px; min-width: 356px; background: url('${
@@ -105,7 +105,7 @@ getEvents()
       "beforeend",
       `
             <div style="text-align: center" class="mt-4 mb-0 pb-0" id="show-events-btn-container">
-                <button type="button" class="btn btn-pills btn-soft-primary" id="show-events-btn"> Show More</button>
+                <button type="button" class="btn btn-pills btn-primary" id="show-events-btn"> Show More</button>
             </div>
         `,
     );

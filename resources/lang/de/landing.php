@@ -17,7 +17,7 @@ return [
                 Viel Spaß im virtuellen deutschen Luftraum
             </p>',
         ],
-        'badge-text' => 'Der vACC für Deutschland im VATSIM Netzwerk.',
+        'badge-text' => 'Das vACC für Deutschland im VATSIM Netzwerk.',
     ],
 
     'events' => [

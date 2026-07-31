@@ -1,9 +1,9 @@
 <div>
     @component('components.layouts.content',[
-       'header' => "Erste Schritte",
+       'header' => __('pages.getting-started.title'),
        'links' => [
            route('landing') => config('app.name'),
-       'Erste Schritte',
+       __('pages.getting-started.title'),
        ],
     ])
     @endcomponent
@@ -14,7 +14,9 @@
                 <div class="sidebar sticky-bar p-4 rounded shadow">
                     <div class="widget border-bottom pb-4">
                         <div class="progress-box mt-2">
-                            <p class="title text-muted mb-2">{{ $steps_completed }}/{{ $steps_total }} Abgeschlossen</p>
+                            <p class="title text-muted mb-2">
+                                {{ __('pages.getting-started.completed', ['completed' => $steps_completed, 'total' => $steps_total]) }}
+                            </p>
 
                             <div class="progress">
                                 <div class="progress-bar position-relative bg-primary" style="width: {{$steps_completed / $steps_total * 100}}%;"></div>
@@ -27,7 +29,7 @@
                             <li class="navbar-item px-0">
                                 <a wire:click="setStep(1)" class="{{$completed1 ? 'text-success':'text-muted'}} {{$step ==1 ? 'bg-soft-success':''}} d-flex rounded shadow align-items-center py-2
                                 px-2">
-                                    <h6 class="mb-0 ms-2">1. Registrierung VATSIM</h6>
+                                    <h6 class="mb-0 ms-2">1. @lang('pages.getting-started.steps.vatsim-registration')</h6>
                                 </a>
                             </li>
 
@@ -36,21 +38,21 @@
                             <li class="navbar-item  account-menu px-0 mt-2">
                                 <a wire:click="setStep(2)" class="{{$completed2 ? 'text-success':'text-muted'}} {{$step ==2 ? 'bg-soft-success':''}} d-flex rounded shadow
                                 align-items-center py-2 px-2">
-                                    <h6 class="mb-0 ms-2">2. Registrierung VATSIM Germany</h6>
+                                    <h6 class="mb-0 ms-2">2. @lang('pages.getting-started.steps.vatger-registration')</h6>
                                 </a>
                             </li>
 
                             <li class="navbar-item account-menu px-0 mt-2">
                                 <a wire:click="setStep(3)" class="{{$completed3 ? 'text-success':'text-muted'}} {{$step ==3 ? 'bg-soft-success':''}} d-flex rounded shadow align-items-center py-2
                                 px-2">
-                                    <h6 class="mb-0 ms-2">3. New Member Orientation Test</h6>
+                                    <h6 class="mb-0 ms-2">3. @lang('pages.getting-started.steps.orientation-test')</h6>
                                 </a>
                             </li>
 
                             <li class="navbar-item account-menu px-0 mt-2">
                                 <a wire:click="setStep(4)" class="{{$completed4 ? 'text-success':'text-muted'}} {{$step ==4 ? 'bg-soft-success':''}} d-flex rounded shadow align-items-center py-2
                                 px-2">
-                                    <h6 class="mb-0 ms-2">4. Zuordnung EMEA / EUD / GER</h6>
+                                    <h6 class="mb-0 ms-2">4. @lang('pages.getting-started.steps.assignment')</h6>
                                 </a>
                             </li>
                         </ul>
@@ -67,7 +69,7 @@
                         @component('components.getting-started.vatger-registration')@endcomponent
                         @break
                     @default
-                        <div>empty</div>
+                        <div class="alert bg-soft-primary">@lang('pages.getting-started.not-available')</div>
                 @endswitch
 
             </div><!--end col-->

@@ -16,6 +16,15 @@ export function findLivewireComponent(name: string): Component {
 }
 
 export function loadLivewireExtensions() {
+  const cleanupModalBackdrop = () => {
+    document
+      .querySelectorAll(".modal-backdrop")
+      .forEach((backdrop) => backdrop.remove());
+    document.body.classList.remove("modal-open");
+    document.body.style.removeProperty("overflow");
+    document.body.style.removeProperty("padding-right");
+  };
+
   Livewire.hook("commit", ({ component, commit, respond, succeed, fail }) => {
     // Runs immediately before a commit's payload is sent to the server...
 
@@ -31,6 +40,14 @@ export function loadLivewireExtensions() {
 
     fail(() => {
       // Runs if some part of the request failed...
+    });
+  });
+
+  Livewire.hook("morph.updated", () => {
+    queueMicrotask(() => {
+      if (!document.querySelector(".modal.show")) {
+        cleanupModalBackdrop();
+      }
     });
   });
 
@@ -55,5 +72,15 @@ export function loadLivewireExtensions() {
       let modal = Modal.getOrCreateInstance(el);
       modal.hide();
     }
+  });
+
+  Livewire.on("profile_fir_changed", () => {
+    const el = document.getElementById("change-fir-modal");
+    if (el) {
+      Modal.getOrCreateInstance(el).hide();
+    }
+
+    cleanupModalBackdrop();
+    window.setTimeout(cleanupModalBackdrop, 350);
   });
 }

@@ -1,8 +1,10 @@
 <div>
     @component('components.layouts.content',[
-        'header' => 'Restricted Stations',
+        'header' => __('pages.restricted.title'),
         'links' => [
-            route('landing') => config('app.name'),'Controllers','Restricted stations'
+            route('landing') => config('app.name'),
+            __('navigation.lotsen.titel'),
+            __('pages.restricted.title')
             ]
     ])
 
@@ -13,12 +15,15 @@
             <div class="mb-5" style="margin-left:auto;margin-right: 0;width: 40%">
                 <div class="form-icon position-relative">
                     <i data-feather="search" class="fea icon-sm icons"></i>
-                    <input class="form-control ps-5" wire:model.live="search" type="search" placeholder="Ident, Name, Frequency">
+                    <input class="form-control ps-5" wire:model.live="search" type="search"
+                           placeholder="{{ __('pages.stations.search-placeholder') }}">
                 </div>
             </div>
 
             <div class="mb-3">
-                <label class="form-label text-primary">Choose restriction type<span class="text-danger">*</span></label>
+                <label class="form-label text-primary">
+                    @lang('pages.restricted.choose-type')<span class="text-danger">*</span>
+                </label>
                 <select wire:model.live="restriction" class="form-select form-control" aria-label="RestrictionChooser">
                     <option selected></option>
                     @foreach($rests as $r)
@@ -33,15 +38,15 @@
                     <thead>
                     <tr>
                         <th scope="col" class="border-bottom" wire:click="sortBy('ident')">
-                            Ident
+                            @lang('pages.stations.ident')
                             <i data-feather="{{ $this->getSortIconClasses('ident') }}"></i>
                         </th>
                         <th scope="col" class="border-bottom" wire:click="sortBy('name')">
-                            Name
+                            @lang('pages.stations.name')
                             <i data-feather="{{ $this->getSortIconClasses('name') }}"></i>
                         </th>
                         <th scope="col" class="border-bottom" wire:click="sortBy('frequency')">
-                            Frequency
+                            @lang('pages.stations.frequency')
                             <i data-feather="{{ $this->getSortIconClasses('frequency') }}"></i>
                         </th>
                     </tr>

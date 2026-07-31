@@ -1,11 +1,13 @@
 @props(['title', 'text', 'subtext' => null, 'feaicon'])
-<div class="d-flex align-items-center mt-3">
-    <i data-feather="{{ $feaicon }}" class="fea text-muted me-3"></i>
-    <div class="flex-1">
-        <h6 class="text-primary mb-0">{{ $title }}:</h6>
-        <a class="text-muted">
+<div class="profile-detail-item d-flex align-items-center">
+    <span class="profile-detail-icon">
+        <i data-feather="{{ $feaicon }}" aria-hidden="true"></i>
+    </span>
+    <div class="flex-grow-1 min-w-0">
+        <span class="profile-detail-label">{{ $title }}</span>
+        <div class="profile-detail-value">
             {{ $text ? : '-' }} {{ $subtext ? '('. $subtext .')': '' }}
-        </a>
+        </div>
         {{ $slot }}
     </div>
 </div>

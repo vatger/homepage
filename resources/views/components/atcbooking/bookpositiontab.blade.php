@@ -1,6 +1,6 @@
-<div class="card border-0 shadow rounded sidebar sticky-bar ms-lg-4">
-    <div class="card-body p-0 text-center form-control">
-        <h4 class="mt-4"><a class="text-primary">Book Position</a></h4>
+<div class="card sidebar sticky-bar atc-booking-form-panel">
+    <div class="card-body p-0 text-center">
+        <h4 class="mt-4"><a class="text-primary">@lang('booking.atc.create.title')</a></h4>
         <div class="">
             <div class="row p-3">
                 <div class="col-12 mb-3">
@@ -100,7 +100,7 @@
                     </div>
                 @endif
                 <div class="col-12 mb-4">
-                    <button wire:click="book()" class="btn btn-soft-primary">
+                    <button wire:click="book()" class="btn btn-primary">
                         @lang('booking.atc.create.save-button-text')
                     </button>
                 </div>
@@ -109,7 +109,7 @@
                         <div class="alert bg-soft-primary fw-medium" role="alert">
                             <a href="{{ route('policies', ['policy_id' => 'pol.booking']) }}" class="alert-link">
                                 <i data-feather="info" class="fea fs-5 align-middle me-1"></i>
-                                Rules
+                                @lang('booking.atc.create.rules-text')
                             </a>
                         </div>
                     </div>

@@ -1,8 +1,10 @@
 <div>
     @component('components.layouts.content',[
-        'header' => 'S1 Theory Stations',
+        'header' => __('pages.stations.s1-theory'),
         'links' => [
-            route('landing') => config('app.name'),'Controllers','S1 Theory Stations'
+            route('landing') => config('app.name'),
+            __('navigation.lotsen.titel'),
+            __('pages.stations.s1-theory')
             ]
     ])
 
@@ -13,7 +15,8 @@
             <div class="mb-5" style="margin-left:auto;margin-right: 0;width: 40%">
                 <div class="form-icon position-relative">
                     <i data-feather="search" class="fea icon-sm icons"></i>
-                    <input class="form-control ps-5" wire:model.live="search" type="search" placeholder="Ident, Name, Frequency">
+                    <input class="form-control ps-5" wire:model.live="search" type="search"
+                           placeholder="{{ __('pages.stations.search-placeholder') }}">
                 </div>
             </div>
 
@@ -22,15 +25,15 @@
                     <thead>
                     <tr>
                         <th scope="col" class="border-bottom" wire:click="sortBy('ident')">
-                            Ident
+                            @lang('pages.stations.ident')
                             <i data-feather="{{ $this->getSortIconClasses('ident') }}"></i>
                         </th>
                         <th scope="col" class="border-bottom" wire:click="sortBy('name')">
-                            Name
+                            @lang('pages.stations.name')
                             <i data-feather="{{ $this->getSortIconClasses('name') }}"></i>
                         </th>
                         <th scope="col" class="border-bottom" wire:click="sortBy('frequency')">
-                            Frequency
+                            @lang('pages.stations.frequency')
                             <i data-feather="{{ $this->getSortIconClasses('frequency') }}"></i>
                         </th>
                     </tr>
