@@ -63,7 +63,7 @@ return [
             'charts' => [
                 'chartfox' => [
                     'warning-title' => 'Caution!',
-                    'warning-text' => "You are about to leave VATSIM Germany's webservices to an external resource. Do you wish to proceed?",
+                    'warning-text' => "You are about to leave vatger's webservices to an external resource. Do you wish to proceed?",
                     'button-content' => 'Continue to chartfox.org',
                 ],
             ],

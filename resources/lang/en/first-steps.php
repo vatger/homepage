@@ -10,9 +10,9 @@ return [
         'title' => 'Welcome to VATSIM',
         'breadcrumb' => 'Getting Started',
 
-        'text-title' => 'Introduction to VATSIM Germany',
+        'text-title' => 'Introduction to vatger',
         'text-content' => [
-            'VATSIM Germany is part of the <a>VATSIM Europe Division</a>, which together with other divisions forms the VATSIM Europe, Middle East and Africa Region. Altogether they are a part of the global VATSIM network,
+            'vatger is part of the <a>VATSIM Europe Division</a>, which together with other divisions forms the VATSIM Europe, Middle East and Africa Region. Altogether they are a part of the global VATSIM network,
         which provides ATC services over the internet free of charge to pilots connected to this network using their flight simulator. Please take a couple of minutes to read the following information, as it will significantly simplify your initial experience making it more enjoyable.
         <br><br>
         Enjoy your stay in German airspace!',
@@ -60,7 +60,7 @@ return [
         ],
 
         'vatger-services' => [
-            'text-title' => 'VATGER Services',
+            'text-title' => 'vatger Services',
             'text-content' => ['Lorem Ipsum ...'],
         ],
     ],
@@ -125,7 +125,7 @@ return [
                 'content' => ['todo'],
             ],
             [
-                'title' => 'Registration VATSIM Germany',
+                'title' => 'Registration vatger',
                 'content' => [
                     "<h6>Registration Procedure</h6>
                     <p>...</p>
@@ -215,7 +215,7 @@ return [
                 'content' => ['todo'],
             ],
             [
-                'title' => 'Registration VATSIM Germany',
+                'title' => 'Registration vatger',
                 'content' => [
                     "<h6>Registration Procedure</h6>
                     <p>...</p>

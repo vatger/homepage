@@ -48,7 +48,7 @@ return [
             'charts' => [
                 'chartfox' => [
                     'warning-title' => 'Achtung!',
-                    'warning-text' => 'Du verlässt die Webdienste von VATSIM Germany und öffnest eine externe Ressource. Möchtest du fortfahren?',
+                    'warning-text' => 'Du verlässt die Webdienste von vatger und öffnest eine externe Ressource. Möchtest du fortfahren?',
                     'button-content' => 'Weiter zu chartfox.org',
                 ],
             ],

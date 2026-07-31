@@ -103,7 +103,7 @@ class ATCBookingsApi
         if ($booking->vatger_event && $booking->training) {
             return [
                 'ok' => false,
-                'message' => 'Can not book, a VATGER event can never be a training!',
+                'message' => 'Can not book, a vatger event can never be a training!',
             ];
         }
 
@@ -203,7 +203,7 @@ class ATCBookingsApi
                 'START' => $booking->starts_at->toDateTimeString(),
                 'END' => $booking->ends_at->toDateTimeString(),
             ]),
-            'VATGER BOOKING System');
+            'vatger BOOKING System');
         $controller->notify($n);
     }
 

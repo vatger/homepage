@@ -16,7 +16,7 @@ return [
         ],
         'all' => [
             'title' => 'Bevorstehende Buchungen',
-            'text' => 'Innerhalb von VATGER gebuchte ATC-Stationen',
+            'text' => 'Innerhalb von vatger gebuchte ATC-Stationen',
             'filter' => 'Filter',
             'search' => 'Suche',
             'quick-select' => 'Schnellauswahl',
@@ -63,7 +63,7 @@ return [
             'station-text' => 'Die Station, die gebucht werden soll.',
             'voice-text' => 'Es wird Voice-Kommunikation angeboten.',
             'event-text' => 'Diese Buchung ist Teil eines Events.',
-            'vatger-event-text' => 'Offizielle VATGER-Eventbuchung (Station für ein offizielles VATGER-Event buchen)',
+            'vatger-event-text' => 'Offizielle vatger-Eventbuchung (Station für ein offizielles vatger-Event buchen)',
             'training-text' => 'Diese Sitzung ist Teil eines Trainings.',
             'save-button-text' => 'Buchung speichern.',
             'rules-text' => 'Buchungsregeln',

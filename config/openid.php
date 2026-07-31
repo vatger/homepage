@@ -11,13 +11,13 @@ return [
          * To receive an `id_token, you should at least provide the openid scope.
          */
         'tokens_can' => [
-            'openid' => 'Authenticate against Vatsim Germany Connect',
+            'openid' => 'Authenticate against vatger Connect',
             'name' => 'First and last name',
             'email' => 'Email address',
             'rating' => 'ATC, pilot and military ratings',
             'assignment' => 'Region, division, subdivision and fir',
             'legacy' => 'The information above in legacy format',
-            'teams' => 'Assigned teams on the VATGER homepage',
+            'teams' => 'Assigned teams on the vatger homepage',
         ],
     ],
 

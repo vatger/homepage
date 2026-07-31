@@ -6,7 +6,7 @@
         <div class="row justify-content-center">
             <div class="col-12 text-center">
                 <div class="section-title mb-4 pb-2">
-                    <span class="landing-section-label">VATSIM Germany</span>
+                    <span class="landing-section-label">vatger</span>
                     <h2 class="title mt-3 mb-3">@lang('landing.events.title')</h2>
                     <p class="text-muted para-desc mx-auto mb-0">@lang('landing.events.text')</p>
                 </div>

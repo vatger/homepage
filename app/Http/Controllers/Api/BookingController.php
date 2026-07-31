@@ -81,7 +81,7 @@ class BookingController extends ApiController
         }
 
         $calendar_string = Cache::remember('api.booking.ical.'.$user->id, 60 * 10, function () use ($user) {
-            $calendar = Calendar::create('VATSIM Germany Bookings')->refreshInterval(60);
+            $calendar = Calendar::create('vatger Bookings')->refreshInterval(60);
             $events = [];
 
             $bookings = AtcBooking::with(['station', 'controller'])->where('controller_id', $user->id)->get();
@@ -90,7 +90,7 @@ class BookingController extends ApiController
                 $events[] = Event::create('ATC Booking '.$booking->station->ident)
                     ->startsAt($booking->starts_at)
                     ->endsAt($booking->ends_at)
-                    ->description('VATSIM Germany Booking of '.$booking->station->name.' on '.$booking->station->fixed_frequency.' kHz');
+                    ->description('vatger Booking of '.$booking->station->name.' on '.$booking->station->fixed_frequency.' kHz');
             }
 
             $calendar->event($events);

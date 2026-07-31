@@ -3,10 +3,10 @@
         <!-- Logo container-->
         <a class="logo" href="{{ route('landing') }}">
             <span class="logo-light-mode">
-                <img src="{{ asset('images/brand/logo-light.svg') }}" class="l-dark" height="32" alt="VATGER Logo">
-                <img src="{{ asset('images/brand/logo-dark.svg') }}" class="l-light" height="32" alt="VATGER Logo">
+                <img src="{{ asset('images/brand/logo-light.svg') }}" class="l-dark" height="32" alt="vatger Logo">
+                <img src="{{ asset('images/brand/logo-dark.svg') }}" class="l-light" height="32" alt="vatger Logo">
             </span>
-            <img src="{{ asset('images/brand/logo-dark.svg') }}" class="logo-dark-mode" height="32" alt="VATGER Logo">
+            <img src="{{ asset('images/brand/logo-dark.svg') }}" class="logo-dark-mode" height="32" alt="vatger Logo">
         </a>
 
         <!-- End Logo container-->
@@ -63,7 +63,7 @@
                         <li><a href="{{ route('redirect.knowledgebase.start-pilot') }}" class="sub-menu-item" target="_blank">@lang('navigation.piloten.erste-schritte')</a></li>
                         <li><a href="{{ route('redirect.knowledgebase.training-pilot') }}" class="sub-menu-item" target="_blank">@lang('navigation.piloten.training')</a></li>
                         <li><a href="{{ route('pilots.aerodromes.viewall') }}" class="sub-menu-item">@lang('navigation.piloten.flugplaetze')</a></li>
-                        <li><a href="{{ route('redirect.vatger-tours') }}" class="sub-menu-item">VATGER Touren</a></li>
+                        <li><a href="{{ route('redirect.vatger-tours') }}" class="sub-menu-item">vatger Touren</a></li>
                         <li><a href="{{ route('redirect.pmp') }}" class="sub-menu-item">Pilot Mentoring</a></li>
                     </ul>
                 </li>
