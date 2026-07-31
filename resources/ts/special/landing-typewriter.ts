@@ -22,7 +22,7 @@ let slogans_de = [
   "Hoch über Deutschland – virtuell und leidenschaftlich.",
   "Für die Liebe zum Flug – vatger.",
   "Deutschlands digitale Flügel, real gesteuert.",
-  "vatger: Mit Currywurst und Rückenwind."
+  "vatger: Mit Currywurst und Rückenwind.",
 ];
 
 let slogans_en = [
@@ -50,7 +50,7 @@ let slogans_en = [
   "Your Passion for Flying Meets Genuine Teamwork – Become Part of vatger!",
   "Don't Fly Alone – vatger Offers You an Active Community of Flight Enthusiasts!",
   "Experience the Thrill of Virtual Flying in Real Time.",
-  "vatger: With currywurst and tailwind."
+  "vatger: With currywurst and tailwind.",
 ];
 
 let slogans = shuffle(getLanguage() == "en" ? slogans_en : slogans_de);
