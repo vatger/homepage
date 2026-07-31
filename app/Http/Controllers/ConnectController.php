@@ -92,7 +92,7 @@ class ConnectController extends Controller
 
             return redirect()
                 ->route('landing')
-                ->withErrors('Login Error: Wende dich an den VATSIM Germany Support.');
+                ->withErrors('Login Error: Wende dich an den vatger-Support.');
         }
 
         // All checks completed. Let's finally sign in the user

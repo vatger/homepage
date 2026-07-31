@@ -10,7 +10,7 @@
                 <div class="col-xl-7 col-lg-8 col-md-11">
                     <div class="title-heading mt-4 text-center text-lg-start">
                         <span class="landing-kicker">@lang('landing.welcome.badge-text')</span>
-                        <h1 class="heading landing-hero-title mt-4 mb-3 text-white">VATSIM Germany</h1>
+                        <h1 class="heading landing-hero-title mt-4 mb-3 text-white">vatger</h1>
                         <p class="landing-hero-copy text-white-50" id="typewriter">@lang('pages.landing.hero-fallback')</p>
                         <div class="mt-4 d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
                             <a href="{{ route('redirect.knowledgebase.start') }}" class="btn btn-lg rounded-pill px-4 text-white">@lang('landing.join-now-button-content')</a>

@@ -38,7 +38,7 @@ class MailcowLibrary extends BaseLibrary
             'active' => '1',
             'domain' => 'vatger.de',
             'local_part' => $email,
-            'name' => "VATSIM Germany - $name",
+            'name' => "vatger - $name",
             'password' => $pwd,
             'password2' => $pwd,
             'quota' => '128',

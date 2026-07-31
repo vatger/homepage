@@ -4,7 +4,7 @@
             <div class="col-md-6 profile-details-column">
                 <div class="profile-details-group">
                     <span class="profile-eyebrow">Membership</span>
-                    <h4 class="mt-2 mb-4">VATGER Details</h4>
+                    <h4 class="mt-2 mb-4">vatger Details</h4>
                     <x-profile.profiletabitem title="E-Mail (Forum)" :text="$user->email_backup ?? 'N/A' " feaicon="mail">
                         @if($user->email_backup)
                             <button wire:click="changeEmail()" class="btn btn-sm btn-primary">reset to VATSIM E-Mail</button>

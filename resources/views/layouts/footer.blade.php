@@ -6,7 +6,7 @@
                 <div class="footer-py-60" style="padding-bottom: 0">
                     <div class="row">
                         <div class="col-lg-4 col-12 mb-0 mb-md-4 pb-0 pb-md-2">
-                            <img src="{{ asset('images/brand/logo-dark.svg') }}" width="55%" alt="VATGER Logo">
+                            <img src="{{ asset('images/brand/logo-dark.svg') }}" width="55%" alt="vatger Logo">
 
                             <p id="slogan_one" class="mt-4"></p>
 
@@ -28,7 +28,7 @@
                         <!--end col-->
 
                         <div class="col-lg-2 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                            <h5 class="footer-head">VATGER</h5>
+                            <h5 class="footer-head">vatger</h5>
                             <ul class="list-unstyled footer-list mt-4">
                                 <li><a href="{{ route('gdpr') }}" class="text-foot">@lang('general.footer.data-protection')</a></li>
                                 <li><a href="{{ route('imprint') }}" class="text-foot">@lang('general.footer.imprint')</a></li>
@@ -76,7 +76,7 @@
             <div class="row align-items-center">
                 <div class="col-sm-6">
                     <div class="text-sm-start">
-                        <p class="mb-0">&copy; {{ \Carbon\Carbon::now()->year }} VATSIM Germany</p>
+                        <p class="mb-0">&copy; {{ \Carbon\Carbon::now()->year }} vatger</p>
                     </div>
                 </div>
                 <div class="col-sm-6 mt-3 mt-sm-0">

@@ -108,7 +108,7 @@ class BookPositionTab extends Component
         $b->training = $validated['selected_training'];
 
         if ($b->vatger_event && ! $canVatgerEvent) {
-            $this->showNoty('You can not book VATGER Events!', 'error');
+            $this->showNoty('You can not book vatger Events!', 'error');
         }
 
         $removed_bookings = ATCBookingsApi::deleteBookingsInTheWayForVatgerEvent($b);

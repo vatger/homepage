@@ -228,7 +228,7 @@
                                         @foreach($user->bans as $b)
                                             <tr>
                                                 <td>@switch($b->type)
-                                                        @case(\App\Models\Membership\UserBanType::vatger_ban) VATGER @break
+                                                        @case(\App\Models\Membership\UserBanType::vatger_ban) vatger @break
                                                         @case(\App\Models\Membership\UserBanType::vatsim_inactivity) Inaktiv @break
                                                         @case(\App\Models\Membership\UserBanType::vatsim_ban) VATSIM @break
                                                         @case(\App\Models\Membership\UserBanType::pilot_rating_incomplete) P0 nicht bestanden @break

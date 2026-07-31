@@ -10,10 +10,10 @@ return [
         'title' => 'Willkommen bei VATSIM',
         'breadcrumb' => 'Los Geht Es',
 
-        'text-title' => 'Introduction to VATSIM Germany',
+        'text-title' => 'Introduction to vatger',
         'text-content' => [
             '<p class="pb-20">
-                VATSIM Germany ist Mitglied in der <b><a href="https://www.vateud.net" target="_blank">VATSIM Europe Division</a></b>, die wiederum mit weiteren Divisions die <b><a href="https://www.vatsim.eu/" target="_blank">VATSIM Europe, Middle East and Africa Region</a></b> bildet. Insgesamt sind sie Teil des globalen <a href="https://www.vatsim.net" target="_blank"><b>VATSIM</b></a>-Netzwerks, das Piloten, die mit ihrem Flugsimulator an dieses Netzwerk angeschlossen sind, ATC-Dienste über das Internet kostenlos zur Verfügung stellt.
+                vatger ist Mitglied in der <b><a href="https://www.vateud.net" target="_blank">VATSIM Europe Division</a></b>, die wiederum mit weiteren Divisions die <b><a href="https://www.vatsim.eu/" target="_blank">VATSIM Europe, Middle East and Africa Region</a></b> bildet. Insgesamt sind sie Teil des globalen <a href="https://www.vatsim.net" target="_blank"><b>VATSIM</b></a>-Netzwerks, das Piloten, die mit ihrem Flugsimulator an dieses Netzwerk angeschlossen sind, ATC-Dienste über das Internet kostenlos zur Verfügung stellt.
             </p><p>
                 Viel Spaß im virtuellen deutschen Luftraum
             </p>',
@@ -61,7 +61,7 @@ return [
         ],
 
         'vatger-services' => [
-            'text-title' => 'VATGER Services',
+            'text-title' => 'vatger Services',
             'text-content' => ['Lorem Ipsum ...'],
         ],
     ],
@@ -126,7 +126,7 @@ return [
                 'content' => ['todo'],
             ],
             [
-                'title' => 'Registration VATSIM Germany',
+                'title' => 'Registration vatger',
                 'content' => [
                     "<h6>Registration Procedure</h6>
                     <p>...</p>
@@ -216,7 +216,7 @@ return [
                 'content' => ['todo'],
             ],
             [
-                'title' => 'Registration VATSIM Germany',
+                'title' => 'Registration vatger',
                 'content' => [
                     "<h6>Registration Procedure</h6>
                     <p>...</p>

@@ -40,7 +40,7 @@ return [
         'completed' => ':completed von :total abgeschlossen',
         'steps' => [
             'vatsim-registration' => 'Registrierung bei VATSIM',
-            'vatger-registration' => 'Registrierung bei VATSIM Germany',
+            'vatger-registration' => 'Registrierung bei vatger',
             'orientation-test' => 'New Member Orientation Test',
             'assignment' => 'Zuordnung EMEA / EUD / GER',
         ],
@@ -59,8 +59,8 @@ return [
             'reactivate' => 'Einen wegen längerer Inaktivität gesperrten Account kannst du <a class="link text-decoration-underline" href="https://my.vatsim.net/reactivate" target="_blank" rel="noopener">hier reaktivieren</a>.',
         ],
         'vatger' => [
-            'title' => 'Registrierung bei VATSIM Germany',
-            'text' => 'Melde dich jetzt mit deinem neu erstellten VATSIM-Account bei VATSIM Germany an.',
+            'title' => 'Registrierung bei vatger',
+            'text' => 'Melde dich jetzt mit deinem neu erstellten VATSIM-Account bei vatger an.',
         ],
     ],
 
@@ -79,7 +79,7 @@ return [
         'breadcrumb' => 'Sperre',
         'intro' => 'Dein VATSIM-Germany-Account wurde gesperrt. Dies kann verschiedene Gründe haben.',
         'reason' => 'Grund:',
-        'inactive' => 'Durch längere Inaktivität wurde dein Account in der zentralen VATSIM-Datenbank automatisch auf „INACTIVE“ gesetzt. VATSIM Germany hat keinen Zugriff auf diese Datenbank. Du kannst deinen Account unter <a href="https://my.vatsim.net/reactivate">my.vatsim.net/reactivate</a> reaktivieren. Bei Problemen kontaktiere bitte das <a href="https://membership.vatsim.net/">VATSIM Membership Department</a>.',
+        'inactive' => 'Durch längere Inaktivität wurde dein Account in der zentralen VATSIM-Datenbank automatisch auf „INACTIVE“ gesetzt. vatger hat keinen Zugriff auf diese Datenbank. Du kannst deinen Account unter <a href="https://my.vatsim.net/reactivate">my.vatsim.net/reactivate</a> reaktivieren. Bei Problemen kontaktiere bitte das <a href="https://membership.vatsim.net/">VATSIM Membership Department</a>.',
         'orientation-test' => 'Der New Member Orientation Test wurde offenbar noch nicht abgeschlossen.',
         'support' => 'Bei Fragen wende dich an <code>support@vatger.de</code>.',
         'refresh' => 'Werden auf der VATSIM-Germany-Homepage veraltete Daten angezeigt, <a href=":url">aktualisiere sie hier</a>. Es kann bis zu 12 Stunden dauern, bis neue Daten verfügbar sind.',
@@ -89,7 +89,7 @@ return [
         'title' => 'Datenlöschung läuft',
         'breadcrumb' => 'Ausstehende Löschung',
         'heading' => 'Deine VATSIM-Germany-Daten werden gelöscht',
-        'text' => 'Du hast die Löschung deiner VATSIM-Germany-Daten beantragt oder dich nicht innerhalb der in der Satzung genannten Frist zurückgemeldet. Wir löschen deshalb die bei VATSIM Germany gespeicherten Daten. Wir können nur Daten auf VATGER-Servern löschen und haben keinen Zugriff auf die zentrale VATSIM-Datenbank. Wenn du deinen VATSIM-Account löschen möchtest, kontaktiere den VATSIM Support unter support.vatsim.net. Der Vorgang kann einige Zeit dauern. Anschließend kannst du bei Bedarf erneut einen Account bei uns erstellen.',
+        'text' => 'Du hast die Löschung deiner VATSIM-Germany-Daten beantragt oder dich nicht innerhalb der in der Satzung genannten Frist zurückgemeldet. Wir löschen deshalb die bei vatger gespeicherten Daten. Wir können nur Daten auf vatger-Servern löschen und haben keinen Zugriff auf die zentrale VATSIM-Datenbank. Wenn du deinen VATSIM-Account löschen möchtest, kontaktiere den VATSIM Support unter support.vatsim.net. Der Vorgang kann einige Zeit dauern. Anschließend kannst du bei Bedarf erneut einen Account bei uns erstellen.',
         'cancel-title' => 'Löschung abbrechen',
         'cancel-text' => 'Einige Daten wurden möglicherweise bereits gelöscht. Du kannst den laufenden Löschvorgang trotzdem hier abbrechen.',
         'cancel-button' => 'Löschung abbrechen',
