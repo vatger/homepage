@@ -3,10 +3,10 @@
     <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
         <div class="sidebar-brand">
             <a href="{{ route('landing') }}">
-                <img src="{{ asset('images/vacc_logo_white.png') }}" height="24" class="logo-light-mode" alt="">
-                <img src="{{ asset('images/vacc_logo.png') }}" height="24" class="logo-dark-mode" alt="">
+                <img src="{{ asset('images/brand/logo-dark.svg') }}" height="24" class="logo-light-mode" alt="">
+                <img src="{{ asset('images/brand/logo-dark.svg') }}" height="24" class="logo-dark-mode" alt="">
                 <span class="sidebar-colored">
-                <img src="{{ asset('images/vacc_logo_white.png') }}" height="24" alt=""></span>
+                <img src="{{ asset('images/brand/logo-dark.svg') }}" height="24" alt=""></span>
             </a>
         </div>
         <ul class="sidebar-menu">

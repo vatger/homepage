@@ -19,10 +19,10 @@
             <div class="header-bar d-flex justify-content-between">
                 <div class="d-flex align-items-center">
                     <a href="#" class="logo-icon me-3">
-                        <img src="{{ asset('images/vacc_logo.png') }}" height="30" class="small" alt="">
+                        <img src="{{ asset('images/brand/logo-light.svg') }}" height="30" class="small" alt="">
                         <span class="big">
-                                <img src="{{ asset('images/vacc_logo.png') }}" height="24" class="logo-light-mode" alt="">
-                                <img src="{{ asset('images/vacc_logo_white.png') }}" height="24" class="logo-dark-mode" alt="">
+                                <img src="{{ asset('images/brand/logo-light.svg') }}" height="24" class="logo-light-mode" alt="">
+                                <img src="{{ asset('images/brand/logo-light.svg') }}" height="24" class="logo-dark-mode" alt="">
                             </span>
                     </a>
                     <a id="close-sidebar" class="btn btn-icon btn-soft-light" href="javascript:void(0)">

@@ -105,7 +105,7 @@ getEvents()
       "beforeend",
       `
             <div style="text-align: center" class="mt-4 mb-0 pb-0" id="show-events-btn-container">
-                <button type="button" class="btn btn-pills btn-soft-primary" id="show-events-btn"> Show More</button>
+                <button type="button" class="btn btn-pills btn-primary" id="show-events-btn"> Show More</button>
             </div>
         `,
     );

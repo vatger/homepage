@@ -49,7 +49,7 @@ class BasicNotificationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.mail-master1',
+            view: 'emails.mail-master',
             with: [
                 'title' => $this->notification->title,
                 'source_name' => $this->notification->source_name,

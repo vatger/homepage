@@ -11,31 +11,30 @@
 <meta name="color-scheme" content="{{ (!auth()->check() || !Auth::user()->settings->dark_mode) ? 'light' : 'dark' }}">
 
 <!-- favicon -->
-<link rel="icon" type="image/png" href="{{ asset('favicon-96x96.png') }}" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}" />
 <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
-<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}" />
 <meta name="apple-mobile-web-app-title" content="VATGER" />
-<link rel="manifest" href="{{ asset('site.webmanifest') }}" />
 
 @if(app()->isProduction())
     <script defer src="https://analytics.vatsim-germany.org/script.js" data-website-id="ebee2a79-7a84-4680-af45-7ef23c7d94c2"></script>
 @endif
 
+{{--
 @if(!auth()->check() || !Auth::user()->settings->dark_mode)
-    @if(isset($_admin) && $_admin)
-        @vite('resources/scss/app-admin.scss')
-    @else
-        @vite('resources/scss/app.scss')
-    @endif
+--}}
+@if(isset($_admin) && $_admin)
+    @vite('resources/scss/app-admin.scss')
+@else
+    @vite('resources/scss/app.scss')
+@endif
+{{--
 @else
     @if(isset($_admin) && $_admin)
         @vite('resources/scss/app-admin-dark.scss')
     @else
         @vite('resources/scss/app-dark.scss')
     @endif
-
 @endif
+--}}
 @if(!isset($_admin) || !$_admin)
     <script>
         (() => {
