@@ -189,8 +189,7 @@ async function indicator() {
   let table = document.getElementById("loading-text-atc");
   let tableContainer = document.getElementById("table-atc-container");
   if (!table || !tableContainer) return;
-  const monitoringText =
-    tableContainer.dataset.monitoringText ?? "monitoring";
+  const monitoringText = tableContainer.dataset.monitoringText ?? "monitoring";
   const emptyText =
     tableContainer.dataset.emptyText ?? "No ATC is currently online.";
 
