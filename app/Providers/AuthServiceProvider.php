@@ -23,6 +23,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Passport::tokensCan(config('openid.passport.tokens_can'));
+        Passport::authorizationView('vendor.passport.authorize');
 
         $this->registerPolicies();
 
