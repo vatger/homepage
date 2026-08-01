@@ -12,8 +12,8 @@ export function findLivewireComponent(name: string): Component | undefined {
 }
 
 export function loadPublicLivewire() {
-  Livewire.hook("commit", ({ succeed }) => {
-    succeed(() => window.dispatchEvent(new Event("featherReplace")));
+  Livewire.interceptMessage(({ onSuccess }) => {
+    onSuccess(() => window.dispatchEvent(new Event("featherReplace")));
   });
 
   Alpine.plugin(Clipboard);

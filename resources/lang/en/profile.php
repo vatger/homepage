@@ -14,6 +14,14 @@ return [
         ],
 
         'notifications' => [
+            'title' => 'Notifications',
+            'description' => 'News and updates related to your VATGER account.',
+            'unread-only' => 'Unread only',
+            'read' => 'Read',
+            'unread' => 'Unread',
+            'mark-read' => 'Mark as read',
+            'mark-unread' => 'Mark as unread',
+            'empty' => 'There are no notifications to show.',
             'settings-saved-successfully' => 'Settings saved successfully',
             'settings-saved-error' => 'There was an error saving your settings. Please try again later.',
         ],

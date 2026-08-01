@@ -1,8 +1,6 @@
 import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 import laravel from "laravel-vite-plugin";
-import { run } from "vite-plugin-run";
-import viteTsconfigPaths from "vite-tsconfig-paths";
 import * as path from "path";
 
 export default defineConfig({
@@ -28,8 +26,7 @@ export default defineConfig({
     tailwindcss(),
     laravel([
       "resources/css/app-public.css",
-      "resources/scss/app-admin.scss",
-      "resources/scss/app-admin-dark.scss",
+      "resources/css/app-admin.css",
       "resources/scss/mail.scss",
       "resources/ts/app-public.ts",
       "resources/ts/app.ts",
@@ -40,14 +37,6 @@ export default defineConfig({
       "resources/scss/special/aerodrome-mapbox.scss",
       "resources/scss/special/leaflet.scss",
     ]),
-    run([
-      {
-        name: "build routes",
-        run: ["php", "artisan", "routes:generate"],
-        condition: (file) => file.includes("/routes/"),
-      },
-    ]),
-    viteTsconfigPaths(),
   ],
 
   build: {
@@ -73,9 +62,8 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "resources"),
-      "~bootstrap": path.resolve(__dirname, "node_modules/bootstrap"),
-      "~vendor": path.resolve(__dirname, "vendor"),
+      "@": path.resolve(import.meta.dirname, "resources"),
+      "~vendor": path.resolve(import.meta.dirname, "vendor"),
     },
   },
 });

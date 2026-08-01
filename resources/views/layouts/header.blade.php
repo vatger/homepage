@@ -1,4 +1,5 @@
 @php
+    $isLandingPage = request()->routeIs('landing');
     $menus = [
         __('navigation.piloten.titel') => [
             [route('redirect.knowledgebase.start-pilot'), __('navigation.piloten.erste-schritte'), true],
@@ -34,11 +35,20 @@
 @endphp
 
 <header class="sticky top-0 z-50 border-b border-secondary-200 bg-white/95 text-primary-900 shadow-sm backdrop-blur dark:border-secondary-800 dark:bg-secondary-900/95 dark:text-secondary-50"
-        x-data="{ mobile: false }" @keydown.escape.window="mobile = false">
-    <div class="site-container flex h-20 items-center justify-between gap-4">
+        x-data="{ mobile: false, scrolled: window.scrollY > 24 }"
+        @scroll.window="scrolled = window.scrollY > 24"
+        @keydown.escape.window="mobile = false">
+    <div class="site-container flex h-20 items-center justify-between gap-4 transition-[height] duration-200"
+         @if($isLandingPage) :class="scrolled ? 'h-20' : 'h-28'" @endif>
         <a href="{{ route('landing') }}" class="shrink-0" aria-label="{{ config('app.name') }}">
-            <img src="{{ asset('images/brand/logo-light.svg') }}" class="h-8 w-auto dark:hidden" alt="VATGER Logo">
-            <img src="{{ asset('images/brand/logo-dark.svg') }}" class="hidden h-8 w-auto dark:block" alt="VATGER Logo">
+            <img src="{{ asset('images/brand/logo-light.svg') }}"
+                 class="w-auto transition-[height] duration-200 dark:hidden {{ $isLandingPage ? '' : 'h-16' }}"
+                 @if($isLandingPage) style="height: 6rem" :style="{ height: scrolled ? '3.5rem' : '6rem' }" @endif
+                 alt="VATGER Logo">
+            <img src="{{ asset('images/brand/logo-dark.svg') }}"
+                 class="hidden w-auto transition-[height] duration-200 dark:block {{ $isLandingPage ? '' : 'h-16' }}"
+                 @if($isLandingPage) style="height: 6rem" :style="{ height: scrolled ? '3.5rem' : '6rem' }" @endif
+                 alt="VATGER Logo">
         </a>
 
         <nav class="hidden items-center gap-1 lg:flex" aria-label="@lang('navigation.navigation')">

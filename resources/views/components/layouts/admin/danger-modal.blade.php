@@ -6,7 +6,7 @@
 
 <div class="modal fade" id="{{ $id }}" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content rounded shadow border-0">
+        <div class="modal-content">
             <div class="modal-body py-5">
                 <div class="text-center">
                     <div class="icon d-flex align-items-center justify-content-center bg-soft-danger rounded-circle mx-auto" style="height: 95px; width:95px;">

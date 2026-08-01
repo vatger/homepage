@@ -9,15 +9,16 @@
            __('pages.common.events'),
           $event->name
            ],
-           'backgroundurl' => $event->banner
+           'backgroundurl' => $event->banner,
+           'compact' => true,
        ])
     @endcomponent
 
-    <section class="section pt-0">
-        <div class="container mt-100">
-            <div class="row align-items-start">
-                <div class="col-lg-6 col-md-12 col-sm-12 mt-4 mt-sm-0 pt-2 pt-sm-0 order-1 order-sm-1 order-md-1 order-lg-0">
-                    <div class="ms-lg-5 ms-md-4">
+    <section class="pb-16 pt-12 sm:pb-20 sm:pt-14">
+        <div class="site-container">
+            <div class="grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
+                <div class="order-2 lg:order-1">
+                    <div>
                         <div class="section-title">
                             @foreach ($event->airports as $apt)
                                 @if (\App\Models\Navigation\Aerodrome::query()->isDe()->where('icao', $apt->icao)->exists())
@@ -49,15 +50,13 @@
                         @endif
                     </div>
                 </div>
-                <!--end col-->
-                <div class="col-lg-6 col-md-12 col-sm-12 mt-4 mt-sm-0 pt-2 mb-4 pt-sm-0 order-0 order-sm-0 order-md-0 order-lg-1">
-                    <div class="position-relative p-md-4 p-lg-4">
-                        <img class="rounded img-fluid mx-auto d-block bg-light mt-lg-4" src="{{ $event->banner }}" alt="">
+                <div class="order-1 lg:order-2">
+                    <div class="flex justify-center lg:justify-end">
+                        <img class="max-h-96 w-auto max-w-full rounded-2xl bg-secondary-100 object-contain shadow-sm dark:bg-secondary-800"
+                             src="{{ $event->banner }}" alt="{{ $event->name }}">
                     </div>
                 </div>
-                <!--end col-->
             </div>
-            <!--end row-->
         </div>
     </section>
 @endsection

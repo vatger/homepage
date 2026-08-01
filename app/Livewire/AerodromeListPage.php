@@ -29,12 +29,12 @@ class AerodromeListPage extends Component
         $aerodromes->orderBy('selection', direction: 'desc');
 
         return view('pages.aerodromes')->with([
-            'aerodromes' => $aerodromes->get()->paginate()->onEachSide(0),
+            'aerodromes' => $aerodromes->get()->paginate(perPage: 21)->onEachSide(0),
             'firs' => Fir::all(),
         ]);
     }
 
-    public function aerodrome_select(int $id)
+    public function aerodrome_select(int $id): void
     {
         $a = Aerodrome::findOrFail($id);
         $a->increment('selection');

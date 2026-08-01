@@ -15,7 +15,6 @@
     "allowJs": false,
     "paths": {
       "@/*": ["./resources/*"],
-      "~bootstrap": ["./node_modules/bootstrap/*"],
       "~vendor/*": ["./vendor/*"]
     }
   },

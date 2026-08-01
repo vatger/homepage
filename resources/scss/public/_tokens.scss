@@ -1,7 +1,7 @@
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 @theme {
-  --font-sans: "Inter", "Segoe UI", sans-serif;
+  --font-sans: "Vatger", "Segoe UI", sans-serif;
 
   --color-primary-50: oklch(0.966 0.009 258.36);
   --color-primary-100: oklch(0.932 0.018 258.36);

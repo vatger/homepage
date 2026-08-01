@@ -5,16 +5,12 @@
                 header="Email Verwaltung"
                 :links="[
                     route('administration.dashboard') => 'Administration',
-                    route('administration.survey') => 'Email Verwaltung',
+                    route('administration.email') => 'Email Verwaltung',
                 ]"
             ></x-layouts.admin.content>
 
-            <div class="row">
-
-
-                <x-layouts.admin.card>
-
-                    <div class="row pt-4 ps-4 table-responsive">
+            <section class="admin-card p-5">
+                    <div class="table-responsive">
                         <table class="table table-center bg-white mb-0">
                             <thead>
                             <tr class="text-center">
@@ -85,9 +81,7 @@
                             </div>
                         </div>
                     </div>
-
-                </x-layouts.admin.card>
-            </div>
+            </section>
 
         </div>
         <!--end row-->

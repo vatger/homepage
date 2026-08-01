@@ -1,39 +1,4 @@
-@font-face {
-  font-family: "Inter";
-  src: url(@/scss/fonts/Inter-Light.ttf);
-  font-weight: 300;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url(@/scss/fonts/Inter-Regular.ttf);
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url(@/scss/fonts/Inter-SemiBold.ttf);
-  font-weight: 600;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url(@/scss/fonts/Inter-Bold.ttf);
-  font-weight: 700;
-}
-
-@font-face {
-  font-family: "Sergoe";
-  src: url(@/scss/fonts/Segoe-UI.ttf);
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: "SergoeItalic";
-  src: url(@/scss/fonts/Segoe-UI-Bold-Italic.ttf);
-  font-weight: 600;
-}
-
+@import "fonts";
 
 // Color
 $white: #ffffff;

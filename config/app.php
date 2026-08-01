@@ -3,9 +3,9 @@
 use App\Providers\AppServiceProvider;
 use App\Providers\EventServiceProvider;
 use App\Providers\RouteServiceProvider;
-use Barryvdh\Debugbar\Facades\Debugbar;
-use Barryvdh\Debugbar\ServiceProvider;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
+use Fruitcake\LaravelDebugbar\Facades\Debugbar;
+use Fruitcake\LaravelDebugbar\ServiceProvider;
 use Illuminate\Auth\AuthServiceProvider;
 use Illuminate\Auth\Passwords\PasswordResetServiceProvider;
 use Illuminate\Broadcasting\BroadcastServiceProvider;

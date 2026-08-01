@@ -1,4 +1,4 @@
-<div class="tab-pane fade bg-white p-4 rounded shadow active show" role="tabpanel" aria-labelledby="staff">
+<div class="tab-pane profile-staff-panel fade active show p-5 sm:p-8" role="tabpanel" aria-labelledby="staff">
     <div class="mt-4">
         <h5 class="text-md-start text-center">@lang('sdp.text-header'):</h5>
         <h4 class="alert-heading">@lang('sdp.text-welcome-header')</h4>

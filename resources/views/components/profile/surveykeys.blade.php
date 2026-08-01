@@ -1,4 +1,4 @@
-<div class="tab-pane fade bg-white p-4 rounded shadow active show" role="tabpanel" aria-labelledby="surveykeys">
+<div class="tab-pane profile-survey-panel fade active show p-5 sm:p-8" role="tabpanel" aria-labelledby="surveykeys">
     <h5 class="text-md-start text-center">Survey Keys:</h5>
     <p class="text-muted mb-4">
         Hier siehst du alle dir zugeordneten Keys.

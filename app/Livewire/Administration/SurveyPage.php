@@ -50,15 +50,16 @@ class SurveyPage extends Component
 
     ];
 
-    private LimesurveyLibrary $ls;
+    private ?LimesurveyLibrary $ls = null;
+
+    public bool $survey_available = true;
 
     public function boot()
     {
         try {
             $this->ls = new LimesurveyLibrary;
-        } catch (\Exception $e) {
-            session()->flash('status', 'Survey failed');
-            $this->redirect(route('administration.dashboard'));
+        } catch (\Throwable $e) {
+            $this->survey_available = false;
         }
     }
 
@@ -67,8 +68,17 @@ class SurveyPage extends Component
     {
         $this->authorize('survey');
 
+        $surveys = [];
+        if ($this->ls) {
+            try {
+                $surveys = $this->ls->list_surveys();
+            } catch (\Throwable $e) {
+                $this->survey_available = false;
+            }
+        }
+
         return view('pages.admin.survey')->with([
-            'surveys' => $this->ls->list_surveys(),
+            'surveys' => $surveys,
             'keys' => SurveyKey::paginate(100),
             'selections' => json_decode(json_encode($this->selections)),
         ]);
@@ -76,6 +86,11 @@ class SurveyPage extends Component
 
     public function create_keys(): void
     {
+        if (! $this->ls || ! $this->survey_available) {
+            $this->showNoty('LimeSurvey is currently unavailable.', 'error');
+
+            return;
+        }
         $users = collect();
 
         switch ($this->selected_selection) {

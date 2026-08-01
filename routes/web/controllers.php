@@ -17,8 +17,8 @@ Route::prefix('controllers')
     });
 Route::prefix('controllers')
     ->group(function () {
-        Route::get('restricted', RestrictedPage::class)->name('controllers.restricted');
-        Route::get('s1', S1Page::class)->name('controllers.s1');
-        Route::get('s1-stations', S1StationsPage::class)->name('controllers.s1-stations');
-        Route::get('required-courses', RequiredCoursesPage::class)->name('controllers.required-courses');
+        Route::livewire('restricted', RestrictedPage::class)->name('controllers.restricted');
+        Route::livewire('s1', S1Page::class)->name('controllers.s1');
+        Route::livewire('s1-stations', S1StationsPage::class)->name('controllers.s1-stations');
+        Route::livewire('required-courses', RequiredCoursesPage::class)->name('controllers.required-courses');
     });

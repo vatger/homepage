@@ -19,12 +19,11 @@
 @endif
 
 @if(isset($_admin) && $_admin)
-    @vite('resources/scss/app-admin.scss')
+    @vite('resources/css/app-admin.css')
 @else
     @vite('resources/css/app-public.css')
 @endif
-@if(!isset($_admin) || !$_admin)
-    <script>
+<script>
         (() => {
             let theme = null;
             try {
@@ -38,4 +37,3 @@
             }
         })();
     </script>
-@endif
