@@ -22,6 +22,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Existing OAuth clients use the legacy numeric identifiers.
+        Passport::$clientUuids = false;
         Passport::tokensCan(config('openid.passport.tokens_can'));
         Passport::authorizationView('vendor.passport.authorize');
 
