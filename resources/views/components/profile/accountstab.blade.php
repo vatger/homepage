@@ -3,11 +3,11 @@
         <h5 class="text-md-start text-center">Forenaccount:</h5>
         @if($username)
             <p class="text-muted mb-4">
-                Du besitzt bereits einen Forenaccount. Melde dich im Forum mit VATGER Connect oder dem Benutzernamen <code>{{ $username }}</code> und deinem gewähltem Forenpasswort an.
+                Du besitzt bereits einen Forenaccount. Melde dich im Forum mit vatger Connect oder dem Benutzernamen <code>{{ $username }}</code> und deinem gewähltem Forenpasswort an.
             </p>
         @else
             <p class="text-muted mb-4">
-                Du besitzt noch keinen Forenaccount. Du kannst dir einen Account über VATGER Connect erstellen.
+                Du besitzt noch keinen Forenaccount. Du kannst dir einen Account über vatger Connect erstellen.
             </p>
             <div class="mb-5">
                 <div class="form-icon position-relative">

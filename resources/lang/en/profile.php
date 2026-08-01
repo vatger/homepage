@@ -64,7 +64,7 @@ return [
         ],
 
         'error' => [
-            'account-inactive-text' => 'Your VATSIM Account isn\'t active. It is therefore currently not possible to create a Forum-/Teamspeak Account with VATSIM Germany. 
+            'account-inactive-text' => 'Your VATSIM Account isn\'t active. It is therefore currently not possible to create a Forum-/Teamspeak Account with vatger. 
                 Please visit the following website to active your account:
                 <a href="https://my.vatsim.net" target="_blank" class="text-dark" style="text-decoration: underline !important;">https://my.vatsim.net</a>.',
             'contact-support-text' => 'If this doesn\'t work, or you have questions regarding the activation process, please contact VATSIM Support directly: <a href="https://support.vatsim.net" target="_blank" class="text-muted" style="text-decoration: underline !important;">https://support.vatsim.net</a>',

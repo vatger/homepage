@@ -23,7 +23,7 @@ return [
 
     'external-link' => [
         'title' => 'Externe Seite öffnen',
-        'text' => 'Du verlässt VATSIM Germany. Für die Inhalte der externen Seite ist VATSIM Germany nicht verantwortlich.',
+        'text' => 'Du verlässt vatger. Für die Inhalte der externen Seite ist vatger nicht verantwortlich.',
         'continue' => 'Weiter zur Seite',
     ],
 

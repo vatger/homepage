@@ -125,7 +125,7 @@
             style="background-color: #202b37; background-image: linear-gradient(#202b37, #202b37);">
             <th scope="col" style="padding: 28px 32px; text-align: left;">
                 <img src="{{ $message->embed(public_path('images/brand/logo-email-dark.png')) }}"
-                     width="208" height="38" alt="VATSIM Germany"
+                     width="208" height="38" alt="vatger"
                      style="display: block; width: 208px; height: 38px; max-width: 100%; border: 0;">
             </th>
         </tr>
@@ -172,7 +172,7 @@
 
         <tr>
             <td class="email-padding email-signature" style="padding: 18px 32px 28px; color: #2b3f55; font-size: 14px; line-height: 1.5; text-align: center; font-weight: 600;">
-                VATSIM Germany<br>
+                vatger<br>
                 <span class="email-muted" style="color: #8690a0; font-weight: 400;">Support Team</span>
             </td>
         </tr>

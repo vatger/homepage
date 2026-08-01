@@ -47,7 +47,7 @@ class GDPRLibrary extends BaseLibrary
         $n = new BasicNotification(
             __('membership_library.deletion_notice.title'),
             __('membership_library.deletion_notice.message', ['date' => $date->format('d.m.Y H:i')]),
-            'VATGER Membership System',
+            'vatger Membership System',
             __('membership_library.deletion_notice.link'),
             route('vatsim.authentication.connect.login'),
             valid_till: $date,

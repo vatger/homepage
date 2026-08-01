@@ -16,7 +16,7 @@ return [
         ],
         'all' => [
             'title' => 'Upcoming Bookings',
-            'text' => 'ATC Stations that are booked within VATGER',
+            'text' => 'ATC Stations that are booked within vatger',
             'filter' => 'Filter',
             'search' => 'Search',
             'quick-select' => 'Quick select',
@@ -64,7 +64,7 @@ return [
             'station-text' => 'The ATS station the session will take place at.',
             'voice-text' => 'Session is planned with voice communication available.',
             'event-text' => 'This session is part of an event.',
-            'vatger-event-text' => 'Official VATGER event booking (book a station for an official VATGER event)',
+            'vatger-event-text' => 'Official vatger event booking (book a station for an official vatger event)',
             'training-text' => 'This session is a training.',
             'save-button-text' => 'Book session.',
             'rules-text' => 'Booking rules',

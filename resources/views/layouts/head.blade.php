@@ -12,7 +12,7 @@
 
 <!-- favicon -->
 <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
-<meta name="apple-mobile-web-app-title" content="VATGER" />
+<meta name="apple-mobile-web-app-title" content="vatger" />
 
 @if(app()->isProduction())
     <script defer src="https://analytics.vatsim-germany.org/script.js" data-website-id="ebee2a79-7a84-4680-af45-7ef23c7d94c2"></script>

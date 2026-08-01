@@ -37,15 +37,15 @@ class SurveyPage extends Component
         ],
         [
             'id' => 5,
-            'name' => 'Vollmitglied VATGER',
+            'name' => 'Vollmitglied vatger',
         ],
         [
             'id' => 6,
-            'name' => 'Vollmitglied VATGER und VATSIM nicht inaktiv',
+            'name' => 'Vollmitglied vatger und VATSIM nicht inaktiv',
         ],
         [
             'id' => 7,
-            'name' => 'Wahlberechtigt VATGER',
+            'name' => 'Wahlberechtigt vatger',
         ],
 
     ];
