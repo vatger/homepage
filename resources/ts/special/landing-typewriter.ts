@@ -1,7 +1,7 @@
 // @ts-ignore
 import Typewriter from "typewriter-effect/dist/core";
 import { shuffle } from "lodash";
-import { getLanguage } from "@/ts/template";
+import { getLanguage } from "@/ts/preferences";
 
 let slogans_de = [
   "Deutschlands Himmel, Virtuell Perfekt!",

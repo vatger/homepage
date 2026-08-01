@@ -1,5 +1,5 @@
 <div class="tab-pane profile-panel fade bg-white active show" id="profile-tab" role="tabpanel" aria-labelledby="profile">
-    <div class="p-4 p-lg-5 border-bottom profile-details-section">
+    <div class="border-bottom profile-details-section">
         <div class="row g-4 profile-details-row">
             <div class="col-md-6 profile-details-column">
                 <div class="profile-details-group">
@@ -59,7 +59,7 @@
     </div>
 
 
-    <div class="p-4 p-lg-5 profile-fir-section">
+    <div class="profile-fir-section">
         <div class="d-flex align-items-center justify-content-between">
             <h5 class="mb-0">Flight Information Region (FIR)</h5>
             <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#change-fir-modal" @if(!$user->vatgerDetails->can_change_fir) disabled @endif>
@@ -81,7 +81,7 @@
         @if($user->fir)
             <div class="row">
                 <div class="col-md-6 mt-4 pt-2">
-                            <div class="card profile-fir-card is-current border-0">
+                            <div class="card profile-fir-card is-current">
                         <div class="card-body">
                             <div>
                                 <h5 class="text-light">{{$user->fir?->name}}</h5>
@@ -96,7 +96,7 @@
                 @foreach(\App\Models\Groups\Fir::all() as $f)
                     @if($f->id != $user->fir?->fir_id)
                         <div class="col-md-6 mt-4 pt-2">
-                            <div class="card profile-fir-card border-0">
+                            <div class="card profile-fir-card">
                                 <div class="card-body">
                                     <div>
                                         <h5 class="text-light">{{$f->name}}</h5>

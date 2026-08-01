@@ -1,0 +1,220 @@
+@layer components {
+  .d-flex {
+    @apply flex;
+  }
+
+  .d-grid {
+    @apply grid;
+  }
+
+  .d-block,
+  .d-table {
+    @apply block;
+  }
+
+  .d-none {
+    @apply hidden;
+  }
+
+  .flex-column {
+    @apply flex-col;
+  }
+
+  .flex-shrink-0 {
+    @apply shrink-0;
+  }
+
+  .align-items-center {
+    @apply items-center;
+  }
+
+  .align-items-start {
+    @apply items-start;
+  }
+
+  .justify-content-center {
+    @apply justify-center;
+  }
+
+  .justify-content-between {
+    @apply justify-between;
+  }
+
+  .justify-content-end {
+    @apply justify-end;
+  }
+
+  .position-relative {
+    @apply relative;
+  }
+
+  .position-absolute {
+    @apply absolute;
+  }
+
+  .w-100 {
+    @apply w-full;
+  }
+
+  .h-100 {
+    @apply h-full;
+  }
+
+  .text-center {
+    @apply text-center;
+  }
+
+  .text-start {
+    @apply text-left;
+  }
+
+  .text-end {
+    @apply text-right;
+  }
+
+  .text-muted {
+    @apply text-secondary-500 dark:text-secondary-300;
+  }
+
+  .text-dark {
+    @apply text-primary-900 dark:text-secondary-50;
+  }
+
+  .text-primary {
+    @apply text-accent-600 dark:text-accent-400;
+  }
+
+  .text-danger {
+    @apply text-red-600 dark:text-red-400;
+  }
+
+  .text-warning {
+    @apply text-amber-600 dark:text-amber-400;
+  }
+
+  .text-light,
+  .text-white {
+    @apply text-white;
+  }
+
+  .bg-light {
+    @apply bg-secondary-100 dark:bg-secondary-800;
+  }
+
+  .bg-white {
+    @apply bg-white dark:bg-secondary-800;
+  }
+
+  .bg-soft-primary {
+    @apply bg-accent-50 text-accent-700 dark:bg-accent-900 dark:text-accent-300;
+  }
+
+  .bg-soft-danger {
+    @apply bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300;
+  }
+
+  .border,
+  .border-top,
+  .border-bottom {
+    @apply border-secondary-200 dark:border-secondary-700;
+  }
+
+  .border {
+    @apply border;
+  }
+
+  .border-top {
+    @apply border-t;
+  }
+
+  .border-bottom {
+    @apply border-b;
+  }
+
+  .border-0 {
+    @apply border-0;
+  }
+
+  .list-unstyled {
+    @apply list-none p-0;
+  }
+
+  .fw-medium {
+    @apply font-medium;
+  }
+
+  .fw-bold {
+    @apply font-bold;
+  }
+
+  .fs-5 {
+    @apply text-xl;
+  }
+
+  .small {
+    @apply text-sm;
+  }
+
+  .img-fluid {
+    @apply h-auto max-w-full;
+  }
+
+  .table-center th,
+  .table-center td {
+    @apply align-middle;
+  }
+
+  .tab-pane:not(.show) {
+    @apply hidden;
+  }
+
+  @media (min-width: 640px) {
+    .col-sm-3 {
+      @apply w-1/4;
+    }
+
+    .col-sm-6 {
+      @apply w-1/2;
+    }
+
+    .col-sm-12 {
+      @apply w-full;
+    }
+
+    .text-sm-start {
+      @apply text-left;
+    }
+
+    .text-sm-end {
+      @apply text-right;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .col-md-3 {
+      @apply w-1/4;
+    }
+
+    .col-md-12 {
+      @apply w-full;
+    }
+
+    .text-md-start {
+      @apply text-left;
+    }
+  }
+}
+
+/* Bootstrap's w-100 means 100%; Tailwind's generated w-100 means 25rem. */
+.w-100 {
+  width: 100% !important;
+}
+
+.h-100 {
+  height: 100% !important;
+}
+
+/* Legacy `rounded` elements follow the new 2xl component radius. */
+.rounded {
+  border-radius: 1rem !important;
+}

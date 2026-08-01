@@ -5,12 +5,14 @@ return [
         'events' => 'Events',
         'members' => 'Members',
         'policies' => 'Policies',
+        'no-results' => 'No results',
         'loading' => 'Loading…',
     ],
 
     'landing' => [
         'hero-fallback' => 'Virtual sky, real passion!',
         'show-more-events' => 'Show more events',
+        'no-events' => 'There are currently no upcoming events. Please check back later.',
         'community' => 'Community',
         'partners-title' => 'Our Partners',
         'partners-text' => 'You can find more information',
@@ -129,5 +131,8 @@ return [
         'frequency' => 'Frequency',
         's1-tower' => 'S1 Tower',
         's1-theory' => 'S1 Theory Stations',
+        'staffing-tool-title' => 'Can I staff this station?',
+        'staffing-tool-text' => 'Check your current endorsements with Can I Staff It.',
+        'staffing-tool-link' => 'Open Can I Staff It',
     ],
 ];

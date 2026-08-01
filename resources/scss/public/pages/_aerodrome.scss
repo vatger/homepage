@@ -1,0 +1,67 @@
+@layer components {
+  .aerodrome-page .aerodrome-panel,
+  .aerodrome-sidebar {
+    @apply border-secondary-200 bg-white dark:border-secondary-700 dark:bg-secondary-800;
+  }
+
+  .aerodrome-sidebar {
+    @apply w-full lg:sticky lg:top-24;
+  }
+
+  .aerodrome-sidebar .card-body {
+    @apply p-4;
+  }
+
+  .aerodrome-sidebar .widget > span {
+    @apply block rounded-lg bg-secondary-100 px-3 py-2 text-center font-semibold text-primary-900 shadow-none dark:bg-secondary-900 dark:text-secondary-50;
+  }
+
+  .aerodrome-sidebar .btn-secondary {
+    @apply min-h-12 w-full justify-between whitespace-normal rounded-2xl border-secondary-200 bg-white px-4 py-3 text-left leading-5 text-primary-900 hover:border-accent-500 hover:bg-secondary-50 hover:text-accent-600 dark:border-secondary-700 dark:bg-secondary-900 dark:text-secondary-50;
+  }
+
+  .aerodrome-sidebar .btn-secondary span {
+    @apply min-w-0 flex-1 text-center;
+  }
+
+  .aerodrome-sidebar .btn-secondary svg {
+    @apply size-4 shrink-0;
+  }
+
+  .aerodrome-sidebar code,
+  .aerodrome-panel h4,
+  .aerodrome-panel h5 {
+    @apply text-primary-900 dark:text-secondary-50;
+  }
+
+  #table-active-atc td {
+    @apply text-primary-900 dark:text-secondary-50;
+  }
+
+  #metar-container,
+  #atis-container {
+    @apply whitespace-pre-wrap break-words font-mono text-sm leading-6;
+  }
+
+  .aerodrome-link-modal code {
+    @apply break-all text-accent-600 dark:text-accent-400;
+  }
+
+  #map {
+    @apply relative z-0 w-full overflow-hidden rounded-2xl;
+  }
+
+  .aerodrome-panel #map-container {
+    @apply w-full overflow-hidden rounded-2xl;
+  }
+
+  @media (max-width: 767px) {
+    .aerodrome-sidebar .card-body {
+      @apply p-3;
+    }
+
+    #map {
+      height: 24rem !important;
+    }
+  }
+}

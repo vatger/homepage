@@ -11,6 +11,7 @@
     @endcomponent
     <section class="section">
         <div class="container">
+            <x-controller.staffing-tool-link />
 
             <div class="mb-5" style="margin-left:auto;margin-right: 0;width: 40%">
                 <div class="form-icon position-relative">

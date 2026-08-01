@@ -11,6 +11,8 @@
     @endcomponent
     <section class="section">
         <div class="container">
+            <x-controller.staffing-tool-link />
+
             <div class="alert bg-soft-primary fw-medium" role="alert">
                 <i data-feather="info" class="fea fs-5 align-middle me-1"></i>
                 @lang('pages.required-courses.text')

@@ -1,4 +1,4 @@
-<div class="tab-pane fade bg-white p-4 rounded shadow active show" role="tabpanel" aria-labelledby="profile">
+<div class="tab-pane profile-accounts-panel fade bg-white p-5 sm:p-8 rounded shadow active show" role="tabpanel" aria-labelledby="profile">
     <div class="border-bottom">
         <h5 class="text-md-start text-center">Forenaccount:</h5>
         @if($username)
@@ -60,13 +60,13 @@
             </div>
         </form>
 
-        <div class="alert bg-soft-primary fw-medium" role="alert">
+        <div class="alert mt-5 bg-soft-primary fw-medium" role="alert">
             <i data-feather="info" class="fea fs-5 align-middle me-1"></i>
             Deine TS-ID findest du unter <code>
                 Extras > Identitäten > Eindeutige ID (Experten-Ansicht)
             </code>.
         </div>
-        <div class="alert bg-soft-warning fw-medium" role="alert">
+        <div class="alert mt-3 bg-soft-warning fw-medium" role="alert">
             <i data-feather="alert-triangle" class="fea fs-5 align-middle me-1"></i>
             Stelle sicher, dass du mit dem Server verbunden bist oder schon einmal verbunden warst.
         </div>

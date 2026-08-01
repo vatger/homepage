@@ -1,173 +1,83 @@
-<div class="card blog blog-detail atc-bookings-panel">
-    <div class="card-body content text-center">
-        <h4 class="mb-2"><i class="text-primary me-1 text-center"></i><a class="text-primary">@lang('booking.atc.all.title')</a></h4>
-        <div class="row justify-content-center mb-1">
-            <div class="col-12 text-center">
-                <div class="section-title mb-4 pb-2">
-                    <p class="text-muted para-desc mx-auto mb-0">@lang('booking.atc.all.text')</p>
-                </div>
+<section class="surface p-5 sm:p-7">
+    <header class="text-center">
+        <h2 class="text-2xl font-bold text-primary-900 dark:text-secondary-50">@lang('booking.atc.all.title')</h2>
+        <p class="mt-2 text-secondary-500 dark:text-secondary-300">@lang('booking.atc.all.text')</p>
+    </header>
+
+    <details wire:ignore.self data-persist-details="atc-booking-filters"
+             class="mt-8 rounded-2xl border border-secondary-200 bg-secondary-50 dark:border-secondary-700 dark:bg-secondary-900/40">
+        <summary class="cursor-pointer px-5 py-4 font-semibold text-primary-900 dark:text-secondary-50">@lang('booking.atc.all.filter')</summary>
+        <form id="filter-bookings-form" class="grid gap-5 border-t border-secondary-200 p-5 md:grid-cols-2 dark:border-secondary-700">
+            <div>
+                <label class="form-label" for="date-start-select">@lang('booking.atc.search.from-text')</label>
+                @if(!$selected_my_bookings)
+                    <input wire:model.live="selected_start_at" id="date-start-select" class="form-control" type="date" min="{{ now()->format('Y-m-d') }}">
+                @else
+                    <input class="form-control" type="date" value="{{ now()->format('Y-m-d') }}" disabled>
+                @endif
             </div>
-        </div>
-        <div class="w-100">
-            <div class="accordion">
-                <div class="accordion-item atc-booking-filter">
-                    <h2 class="accordion-header">
-                        <button wire:ignore.self class="accordion-button border-0 bg-light collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#accordion-header-1" aria-expanded="false" aria-controls="accordion-header-1">
-                            @lang('booking.atc.all.filter')
-                        </button>
-                    </h2>
-                    <div wire:ignore.self id="accordion-header-1" class="accordion-collapse border-0 collapse" aria-labelledby="accordion-header-1"
-                         data-bs-parent="#general-section" style="">
-                        <div class="accordion-body text-muted">
-                            <form id="filter-bookings-form">
-                                <div class="row" id="search-container">
-                                    <div class="col">
-                                        <div class="mb-3">
-                                            <label class="form-label">@lang('booking.atc.search.from-text')</label>
-                                            <div class="form-icon position-relative">
-                                                <i data-feather="calendar" class="fea icon-sm icons"></i>
-                                                @if(!$selected_my_bookings)
-                                                    <input wire:model.live="selected_start_at" id="date-end-select" class="form-control ps-5" type="date"
-                                                           min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
-                                                @else
-                                                    <input class="form-control ps-5" type="date" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" disabled>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="mb-3">
-                                            <label class="form-label">@lang('booking.atc.search.till-text')</label>
-                                            <div class="form-icon position-relative">
-                                                <i data-feather="calendar" class="fea icon-sm icons"></i>
-                                                @if(!$selected_my_bookings)
-                                                    <input wire:model.live="selected_end_at" id="date-end-select" class="form-control ps-5" type="date"
-                                                           min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
-                                                @else
-                                                    <input class="form-control ps-5" disabled>
-                                                @endif
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row" id="search-container">
-                                    {{--
-                                    <div class="col">
-                                        <div class="mb-3">
-                                            <label class="form-label">Sort by Regionalgroup</label>
-                                            <div class="form-icon position-relative">
-                                                <i data-feather="database" class="fea icon-sm icons"></i>
-                                                <select name="report-rg" type="text" class="form-control ps-5">
-                                                    <option value="-1">-</option>
-
-                                                    @foreach (\App\Models\Navigation\Fir::all() as $fir)
-                                                        <option value="{{ $fir->id }}">
-                                                            {{ $fir->name }}
-                                                        </option>
-                                                    @endforeach
-
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    --}}
-                                    <div class="col">
-                                        <div class="mb-3">
-                                            <label class="form-label">@lang('booking.atc.all.search')</label>
-                                            <div class="form-icon position-relative">
-                                                <i data-feather="map-pin" class="fea icon-sm icons"></i>
-                                                @if(!$selected_my_bookings)
-                                                    <input wire:model.live="selected_search" type="text" class="form-control ps-5" placeholder="EDDF, Langen Radar, 119.905...">
-                                                @else
-                                                    <input class="form-control ps-5" disabled>
-                                                @endif
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="mb-3">
-                                            <label class="form-check-label">@lang('booking.atc.all.quick-select')</label>
-                                            <div class="form-control ps-5">
-                                                <div class="form-check">
-                                                    <input wire:model.live="selected_my_bookings" class="form-check-input" type="checkbox" />
-                                                    <label class="form-check-label">@lang('booking.atc.all.my-bookings')</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            <div>
+                <label class="form-label" for="date-end-select">@lang('booking.atc.search.till-text')</label>
+                @if(!$selected_my_bookings)
+                    <input wire:model.live="selected_end_at" id="date-end-select" class="form-control" type="date" min="{{ now()->format('Y-m-d') }}">
+                @else
+                    <input class="form-control" disabled>
+                @endif
             </div>
+            <div>
+                <label class="form-label" for="booking-search">@lang('booking.atc.all.search')</label>
+                <input wire:model.live="selected_search" id="booking-search" type="search" class="form-control"
+                       placeholder="EDDF, Langen Radar, 119.905..." @disabled($selected_my_bookings)>
+            </div>
+            <div>
+                <span class="form-label">@lang('booking.atc.all.quick-select')</span>
+                <label class="flex min-h-11 items-center gap-3 rounded-lg border border-secondary-300 bg-white px-3 dark:border-secondary-600 dark:bg-secondary-800">
+                    <input wire:model.live="selected_my_bookings" class="form-check-input" type="checkbox">
+                    <span class="text-sm font-medium">@lang('booking.atc.all.my-bookings')</span>
+                </label>
+            </div>
+        </form>
+    </details>
 
-            <div class="table-responsive mt-4">
-                <table class="table mb-0 table-center">
-                    <thead>
+    <div class="table-responsive mt-8 rounded-xl border border-secondary-200 dark:border-secondary-700">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th wire:click="sortBy('controller_id')" class="cursor-pointer">@lang('booking.atc.all.controller') <i data-feather="{{ $this->getSortIconClasses('controller_id') }}" class="inline size-4"></i></th>
+                    <th>@lang('booking.atc.all.position')</th>
+                    <th wire:click="sortBy('starts_at')" class="cursor-pointer">@lang('booking.atc.all.timeframe') <i data-feather="{{ $this->getSortIconClasses('starts_at') }}" class="inline size-4"></i></th>
+                    <th><span class="sr-only">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody wire:poll.5s>
+                @forelse($filtered_bookings as $booking)
                     <tr>
-                        <th wire:click="sortBy('controller_id')" style="width: 33%" scope="col" class="border-bottom text-center">
-                            @lang('booking.atc.all.controller')
-                            <i data-feather="{{ $this->getSortIconClasses('controller_id') }}"></i>
-                        </th>
-                        <th {{--wire:click="sortBy('station_id')"--}} style="width: 33%" scope="col" class="border-bottom text-center">
-                            @lang('booking.atc.all.position')
-                        </th>
-                        <th wire:click="sortBy('starts_at')" style="width: 33%" scope="col" class="border-bottom text-center">
-                            @lang('booking.atc.all.timeframe')
-                            <i data-feather="{{ $this->getSortIconClasses('starts_at') }}"></i>
-                        </th>
-                        <th scope="col" class="border-bottom text-center">
-
-                        </th>
+                        <td>
+                            <span class="font-medium">{{ $booking->controller->username }}</span>
+                            <small class="text-secondary-500">({{ $booking->controller_id }})</small>
+                            @if($booking->training)<span class="badge">T</span>@endif
+                            @if($booking->event)<span class="badge">E</span>@endif
+                            @if($booking->vatger_event)<span class="badge bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300">E</span>@endif
+                        </td>
+                        <td>{{ $booking->station->ident }}</td>
+                        <td>{{ $booking->starts_at->format('d.m. H:i') }}–{{ $booking->ends_at->format('H:i') }}z</td>
+                        <td class="whitespace-nowrap text-right">
+                            @if(!$booking->vatsim_booking_id)
+                                <span class="inline-flex size-9 items-center justify-center rounded-lg bg-amber-100 text-amber-700" title="{{ __('booking.atc.all.external-warning') }}"><i data-feather="info" class="size-4"></i></span>
+                            @endif
+                            @if($booking->controller_id == Auth::user()?->id)
+                                <button wire:click="delete({{ $booking->id }})" wire:confirm="{{ __('booking.atc.all.delete-confirm') }}"
+                                        class="inline-flex size-9 items-center justify-center rounded-lg bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-950 dark:text-red-300">
+                                    <i data-feather="trash" class="size-4"></i><span class="sr-only">Delete</span>
+                                </button>
+                            @endif
+                        </td>
                     </tr>
-                    </thead>
-                    <tbody wire:poll.5s>
-                    @foreach($filtered_bookings as $booking)
-                        <tr>
-                            <td>
-                                {{ $booking->controller->username }}
-                                <small>({{ $booking->controller_id }})</small>
-                                @if($booking->training)
-                                    <span class="badge bg-primary">T</span>
-                                @endif
-                                @if($booking->event)
-                                    <span class="badge bg-info">E</span>
-                                @endif
-                                @if($booking->vatger_event)
-                                    <span class="badge bg-danger">E</span>
-                                @endif
-                            </td>
-                            <td>{{ $booking->station->ident }}</td>
-                            <td>
-                                {{ $booking->starts_at->format('d.m.') }}
-                                {{ $booking->starts_at->format('H:i') }}-{{ $booking->ends_at->format('H:i') }}z
-                            </td>
-                            <td>
-                                @if(!$booking->vatsim_booking_id)
-                                    <button class="btn badge bg-warning" data-bs-toggle="tooltip" data-bs-placement="right"
-                                            title="{{ __('booking.atc.all.external-warning') }}">
-                                        <i data-feather="info" class="fea icon-sm"></i>
-                                    </button>
-                                @endif
-                                @if($booking->controller_id == \Illuminate\Support\Facades\Auth::user()?->id)
-                                    <button wire:click="delete({{$booking->id}})"
-                                            wire:confirm="{{ __('booking.atc.all.delete-confirm') }}"
-                                            class="btn badge bg-danger mt-1">
-                                        <i data-feather="trash" class="fea icon-sm"></i>
-                                    </button>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-                {{ $filtered_bookings->links() }}
-            </div>
-        </div>
+                @empty
+                    <tr><td colspan="4" class="py-10 text-center text-secondary-500">@lang('pages.common.no-results')</td></tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
-</div>
+    <div class="mt-5">{{ $filtered_bookings->links() }}</div>
+</section>

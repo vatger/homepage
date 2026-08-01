@@ -4,15 +4,17 @@
     @include('layouts.head')
     @stack('styles')
 </head>
-<body>
+<body class="flex min-h-screen flex-col">
 @include('layouts.header')
 
-@yield('content')
-{{ $slot ?? '' }}
+<main class="public-main flex-1">
+    @yield('content')
+    {{ $slot ?? '' }}
+</main>
 
 @include('layouts.footer')
 
-@vite(['resources/ts/app.ts'])
+@vite(['resources/ts/app-public.ts'])
 @livewireScriptConfig
 @include('layouts.noty')
 @stack('scripts')

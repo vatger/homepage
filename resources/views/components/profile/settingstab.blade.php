@@ -1,124 +1,116 @@
-<div class="tab-pane fade bg-white p-4 rounded shadow active show" id="profile-tab" role="tabpanel" aria-labelledby="profile">
-    <h5 class="text-md-start text-center">@lang('profile.profile.profile.language-appearance'):</h5>
-    <form class="">
-        <div class="row mt-4">
-            <div class="col-lg-12">
-                <div class="p-4 pb-0">
-                    <div class="d-flex justify-content-between">
-                        <h6 class="mb-0">@lang('profile.profile.profile.language')</h6>
-                        <div class="form-check" style="min-width: 30%;">
-                            <form id="language-form">
-                                <select wire:model.live="language" class="form-select form-control" id="language-selector"
-                                        name="language-select">
-                                    <option value="de">@lang('profile.profile.languages.german')</option>
-                                    <option value="en">@lang('profile.profile.languages.english')</option>
-                                </select>
-                                <label class="form-check-label" for="language-selector"></label>
-                            </form>
-                        </div>
-                    </div>
-                    <form id="appearance-form">
-                        <div class="d-flex justify-content-between border-top py-4">
-                            <h6 class="mb-0">@lang('profile.profile.settings.dark-mode-text')</h6>
-                            <div class="form-check">
-                                <input wire:model.live="darkmode" class="form-check-input" type="checkbox" id="dark-mode-selector" name="dark-mode-select">
-                                <label class="form-check-label" for="dark-mode-selector"></label>
-                            </div>
-                        </div>
-                    </form>
+<div class="tab-pane active show p-5 sm:p-8" id="profile-tab" role="tabpanel" aria-labelledby="profile">
+    <section class="profile-setting-section">
+        <h2 class="text-xl font-bold text-primary-900 dark:text-secondary-50">
+            @lang('profile.profile.profile.language-appearance')
+        </h2>
+
+        <div class="mt-5">
+            <div class="profile-setting-row">
+                <div>
+                    <h3 class="font-semibold text-primary-900 dark:text-secondary-50">@lang('profile.profile.profile.language')</h3>
+                </div>
+                <div class="profile-setting-actions sm:min-w-64">
+                    <label class="sr-only" for="language-selector">@lang('profile.profile.profile.language')</label>
+                    <select wire:model.live="language" class="form-select" id="language-selector" name="language-select">
+                        <option value="de">@lang('profile.profile.languages.german')</option>
+                        <option value="en">@lang('profile.profile.languages.english')</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="profile-setting-row">
+                <h3 class="font-semibold text-primary-900 dark:text-secondary-50">@lang('profile.profile.settings.dark-mode-text')</h3>
+                <div class="profile-setting-actions">
+                    <input wire:model.live="darkmode" class="form-check-input size-5" type="checkbox" id="dark-mode-selector" name="dark-mode-select">
+                    <label class="form-check-label" for="dark-mode-selector">@lang('profile.profile.settings.dark-mode-text')</label>
                 </div>
             </div>
         </div>
-        <!--end row-->
-    </form>
-    <!--end form-->
+    </section>
 
-    <h5 class="text-md-start text-center mt-4">Settings:</h5>
-
-    <div class="row mt-4">
-        <div class="col-lg-12">
-            <div class="d-flex justify-content-between p-4 pb-0">
-                <h6 class="mb-0">iCalender Link for bookings</h6>
-                <div class="form-check" style="min-width: 30%;">
+    <section class="profile-setting-section">
+        <h2 class="text-xl font-bold text-primary-900 dark:text-secondary-50">Settings</h2>
+        <div class="mt-5">
+            <div class="profile-setting-row">
+                <div>
+                    <h3 class="font-semibold text-primary-900 dark:text-secondary-50">iCalendar Link for bookings</h3>
+                </div>
+                <div class="profile-setting-actions">
                     @if(!empty($ical))
-                        <a href="{{ $ical }}">iCalender Url</a>
-                        <button onclick="navigator.clipboard.writeText('{{ $ical }}');" class="btn btn-primary"><i data-feather="clipboard" class="fea icon-sm"></i> copy</button>
+                        <a href="{{ $ical }}" class="btn btn-light">iCalendar URL</a>
+                        <button type="button" onclick="navigator.clipboard.writeText('{{ $ical }}');" class="btn btn-primary">
+                            <i data-feather="clipboard" class="size-4"></i> Copy
+                        </button>
+                        <button type="button" wire:click="new_ical_token" class="btn border-danger-200 bg-danger-50 text-danger-800 hover:bg-danger-100 dark:border-danger-800 dark:bg-danger-950 dark:text-danger-200">
+                            <i data-feather="refresh-cw" class="size-4"></i> Renew
+                        </button>
+                    @else
+                        <button type="button" wire:click="new_ical_token" class="btn btn-primary">
+                            <i data-feather="calendar" class="size-4"></i> Generate link
+                        </button>
                     @endif
-                    <button wire:click="new_ical_token" class="btn btn-danger"><i data-feather="refresh-cw" class="fea icon-sm"></i> renew</button>
                 </div>
-
             </div>
         </div>
-    </div>
-    <!--end row-->
+    </section>
 
-    <h5 class="text-md-start text-center mt-4">Accounts:</h5>
-
-    <div class="row mt-4">
-        <div class="col-lg-12">
-
-            <div class="d-flex justify-content-between p-4 pb-0">
-                <h6 class="mb-0">VATSIM Account</h6>
-                <div class="form-check" style="min-width: 30%;">
-                    <span><b>ID</b> {{ $user->id }}</span>
-                    <a href="https://my.vatsim.net/profile">
-                        <button class="btn btn-secondary"><i data-feather="user" class="fea icon-sm"></i> manage</button>
-                    </a>
+    <section class="profile-setting-section">
+        <h2 class="text-xl font-bold text-primary-900 dark:text-secondary-50">Accounts</h2>
+        <div class="mt-5">
+            <div class="profile-setting-row">
+                <div>
+                    <h3 class="font-semibold text-primary-900 dark:text-secondary-50">VATSIM Account</h3>
+                    <p class="mt-1 text-sm text-secondary-500 dark:text-secondary-300"><strong>ID</strong> {{ $user->id }}</p>
+                </div>
+                <div class="profile-setting-actions">
+                    <a href="https://my.vatsim.net/profile" class="btn btn-light"><i data-feather="user" class="size-4"></i> Manage</a>
                 </div>
             </div>
 
-            <div class="d-flex justify-content-between p-4 pb-0">
-                <h6 class="mb-0">Forum Account</h6>
-                <div class="form-check" style="min-width: 30%;">
+            <div class="profile-setting-row">
+                <div>
+                    <h3 class="font-semibold text-primary-900 dark:text-secondary-50">Forum Account</h3>
+                    <p class="mt-1 text-sm text-secondary-500 dark:text-secondary-300">
+                        <strong>Username</strong> {{ $board_username ?: 'not set' }}
+                    </p>
+                </div>
+                <div class="profile-setting-actions">
                     @if(!empty($board_username))
-                        <span><b>Username</b> {{ $board_username }}</span>
-                        <a href="https://board.vatsim-germany.org/account/account-details">
-                            <button class="btn btn-secondary"><i data-feather="user" class="fea icon-sm"></i> view</button>
-                        </a>
+                        <a href="https://board.vatsim-germany.org/account/account-details" class="btn btn-light"><i data-feather="user" class="size-4"></i> View</a>
                     @else
-                        <span><b>Username</b> not set</span>
-                        <a href="https://board.vatsim-germany.org/oauth">
-                            <button class="btn btn-secondary"><i data-feather="user-plus" class="fea icon-sm"></i> create</button>
-                        </a>
+                        <a href="https://board.vatsim-germany.org/oauth" class="btn btn-light"><i data-feather="user-plus" class="size-4"></i> Create</a>
                     @endif
-
                 </div>
             </div>
 
-            <div class="d-flex justify-content-between p-4 pb-0">
-                <h6 class="mb-0">Github Account</h6>
-                <div class="form-check" style="min-width: 30%;">
-                    @if(!empty($user->settings->github_username))
-                        <span><b>Username</b> {{ $user->settings->github_username }}</span>
-                    @else
-                        <span><b>Username</b> not set</span>
-                    @endif
-                    <a href="{{ route('github.oauth.link') }}">
-                        <button class="btn btn-secondary"><i data-feather="github" class="fea icon-sm"></i> link</button>
-                    </a>
+            <div class="profile-setting-row">
+                <div>
+                    <h3 class="font-semibold text-primary-900 dark:text-secondary-50">GitHub Account</h3>
+                    <p class="mt-1 text-sm text-secondary-500 dark:text-secondary-300">
+                        <strong>Username</strong> {{ $user->settings->github_username ?: 'not set' }}
+                    </p>
+                </div>
+                <div class="profile-setting-actions">
+                    <a href="{{ route('github.oauth.link') }}" class="btn btn-light"><i data-feather="github" class="size-4"></i> Link</a>
                 </div>
             </div>
-
-
         </div>
-    </div>
-    <!--end row-->
+    </section>
 
-    <h5 class="text-md-start text-center mt-4">My Account:</h5>
-
-    <div class="row mt-4">
-        <div class="col-lg-12">
-
-            <div class="d-flex justify-content-between p-4 pb-0">
-                <h6 class="mb-0">vatger Account</h6>
-                <div class="form-check" style="min-width: 30%;">
-                    <button wire:click="call_delete_me()" wire:confirm="I want to delete my vatger account!" class="btn btn-danger"><i data-feather="danger" class="fea icon-sm"></i> DELETE MY
-                        VATGER
-                        ACCOUNT
+    <section class="profile-setting-section border-danger-200 bg-danger-50 dark:border-danger-900 dark:bg-danger-950/40">
+        <h2 class="text-xl font-bold text-danger-900 dark:text-danger-200">My Account</h2>
+        <div class="mt-5">
+            <div class="profile-setting-row border-danger-200 dark:border-danger-900">
+                <div>
+                    <h3 class="font-semibold text-danger-900 dark:text-danger-200">VATSIM Germany Account</h3>
+                </div>
+                <div class="profile-setting-actions">
+                    <button type="button" wire:click="call_delete_me" wire:confirm="I want to delete my VATSIM Germany account!"
+                        class="btn bg-danger-700 text-white hover:bg-danger-800">
+                        <i data-feather="trash-2" class="size-4"></i> Delete account
                     </button>
                 </div>
             </div>
         </div>
-    </div>
-
+    </section>
 </div>

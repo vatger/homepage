@@ -1,145 +1,56 @@
-<!-- Footer Start -->
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="footer-py-60" style="padding-bottom: 0">
-                    <div class="row">
-                        <div class="col-lg-4 col-12 mb-0 mb-md-4 pb-0 pb-md-2">
-                            <img src="{{ asset('images/brand/logo-dark.svg') }}" width="55%" alt="vatger Logo">
-
-                            <p id="slogan_one" class="mt-4"></p>
-
-                            <ul class="list-unstyled social-icon foot-social-icon mb-0 mt-4">
-                                <li class="list-inline-item"><a href="https://www.facebook.com/vatger/" class="rounded" target="_blank"><i
-                                                data-feather="facebook" class="fea icon-sm fea-social"></i></a></li>
-                                <li class="list-inline-item"><a href="https://twitter.com/vatger" class="rounded" target="_blank"><i
-                                                data-feather="twitter" class="fea icon-sm fea-social"></i></a>
-                                </li>
-                                <li class="list-inline-item"><a href="https://www.instagram.com/vatger/" class="rounded" target="_blank"><i
-                                                data-feather="instagram" class="fea icon-sm fea-social"></i></a></li>
-                                <li class="list-inline-item"><a href="https://www.twitch.tv/vatsimgermany" class="rounded" target="_blank"><i
-                                                data-feather="twitch" class="fea icon-sm fea-social"></i></a></li>
-                                <li class="list-inline-item"><a href="https://www.youtube.com/user/vatsimgermany" class="rounded" target="_blank"><i
-                                                data-feather="youtube" class="fea icon-sm fea-social"></i></a></li>
-                            </ul>
-                            <!--end icon-->
-                        </div>
-                        <!--end col-->
-
-                        <div class="col-lg-2 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                            <h5 class="footer-head">vatger</h5>
-                            <ul class="list-unstyled footer-list mt-4">
-                                <li><a href="{{ route('gdpr') }}" class="text-foot">@lang('general.footer.data-protection')</a></li>
-                                <li><a href="{{ route('imprint') }}" class="text-foot">@lang('general.footer.imprint')</a></li>
-                                <li><a href="{{ route('terms') }}" class="text-foot">@lang('general.footer.terms')</a></li>
-                                <li><a href="{{ route('satzung') }}" class="text-foot">@lang('general.footer.satzung')</a></li>
-                                <li><a href="{{ route('policy-list') }}" class="text-foot">@lang('general.footer.further')</a></li>
-                            </ul>
-                        </div>
-                        <!--end col-->
-
-                        <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                            <h5 class="footer-head">@lang('general.footer.helpful-links')</h5>
-                            <ul class="list-unstyled footer-list mt-4">
-                                <li><a href="https://vatger-fv.de/" target="_blank" class="text-foot">VATGER Förderverein</a></li>
-                            </ul>
-                        </div>
-                        <!--end col-->
-
-                        <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                            <h5 class="footer-head">@lang('general.footer.helpful-links')</h5>
-                            <ul class="list-unstyled footer-list mt-4">
-                                <li><a href="https://aip.dfs.de/basicAIP/" target="_blank" class="text-foot">DFS Basic AIP</a></li>
-                            </ul>
-                        </div>
-                        <!--end col-->
-
-                        <div class="col-lg-3 col-md-4 col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                            <h5 class="footer-head"></h5>
-                            <a href="https://vatsim.net"><img class="mb-4" src="{{ iasset('images/vatsim/VATSIM_Logo_White_500px.png', 300) }}" width="80%" alt="vatsim"></a>
-                            <a href="https://vateud.net"><img src="{{ iasset('images/vateud.png',300) }}" width="80%" alt="vateud"></a>
-                        </div>
-                        <!--end col-->
-                    </div>
-                    <!--end row-->
-                </div>
+<footer class="border-t border-secondary-100 bg-primary-900 text-white/70 dark:border-secondary-800">
+    <div class="site-container grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-5">
+        <div class="md:col-span-2">
+            <img src="{{ asset('images/brand/logo-dark.svg') }}" class="h-10 w-auto" alt="VATGER Logo">
+            <p id="slogan_one" class="mt-5 max-w-md text-sm leading-6 text-secondary-300"></p>
+            <div class="mt-6 flex flex-wrap gap-2">
+                @foreach([
+                    ['https://www.facebook.com/vatger/', 'facebook', 'Facebook'],
+                    ['https://twitter.com/vatger', 'twitter', 'Twitter'],
+                    ['https://www.instagram.com/vatger/', 'instagram', 'Instagram'],
+                    ['https://www.twitch.tv/vatsimgermany', 'twitch', 'Twitch'],
+                    ['https://www.youtube.com/user/vatsimgermany', 'youtube', 'YouTube'],
+                ] as [$href, $icon, $label])
+                    <a href="{{ $href }}" target="_blank" rel="noopener" aria-label="{{ $label }}"
+                       class="inline-flex size-10 items-center justify-center rounded-2xl border border-primary-700 hover:border-accent-500 hover:text-accent-400">
+                        <i data-feather="{{ $icon }}" class="size-4"></i>
+                    </a>
+                @endforeach
             </div>
-            <!--end col-->
         </div>
-        <!--end row-->
+
+        <div>
+            <h2 class="font-semibold text-white">VATGER</h2>
+            <ul class="mt-4 grid gap-2 text-sm">
+                <li><a href="{{ route('gdpr') }}" class="hover:text-accent-400">@lang('general.footer.data-protection')</a></li>
+                <li><a href="{{ route('imprint') }}" class="hover:text-accent-400">@lang('general.footer.imprint')</a></li>
+                <li><a href="{{ route('terms') }}" class="hover:text-accent-400">@lang('general.footer.terms')</a></li>
+                <li><a href="{{ route('satzung') }}" class="hover:text-accent-400">@lang('general.footer.satzung')</a></li>
+                <li><a href="{{ route('policy-list') }}" class="hover:text-accent-400">@lang('general.footer.further')</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h2 class="font-semibold text-white">@lang('general.footer.helpful-links')</h2>
+            <ul class="mt-4 grid gap-2 text-sm">
+                <li><a href="https://vatger-fv.de/" target="_blank" rel="noopener" class="hover:text-accent-400">VATGER Förderverein</a></li>
+                <li><a href="https://aip.dfs.de/basicAIP/" target="_blank" rel="noopener" class="hover:text-accent-400">DFS Basic AIP</a></li>
+            </ul>
+        </div>
+
+        <div class="flex flex-col items-start gap-5">
+            <a href="https://vatsim.net" target="_blank" rel="noopener"><img src="{{ iasset('images/vatsim/VATSIM_Logo_White_500px.png', 300) }}" class="h-10 w-auto" alt="VATSIM"></a>
+            <a href="https://vateud.net" target="_blank" rel="noopener"><img src="{{ iasset('images/vateud.png', 300) }}" class="h-10 w-auto" alt="VATSIM Europe Division"></a>
+        </div>
     </div>
-    <!--end container-->
 
-    <div class="footer-py-30 footer-bar">
-        <div class="container text-center">
-            <div class="row align-items-center">
-                <div class="col-sm-6">
-                    <div class="text-sm-start">
-                        <p class="mb-0">&copy; {{ \Carbon\Carbon::now()->year }} vatger</p>
-                    </div>
-                </div>
-                <div class="col-sm-6 mt-3 mt-sm-0">
-                    <div class="text-sm-end">
-                        <button type="button" class="theme-toggle-control theme-toggle" aria-pressed="false"
-                                data-light-label="@lang('general.footer.light-theme')"
-                                data-dark-label="@lang('general.footer.dark-theme')">
-                            <span class="theme-toggle-icon" aria-hidden="true">
-                                <i data-feather="moon" class="theme-icon-moon"></i>
-                                <i data-feather="sun" class="theme-icon-sun"></i>
-                            </span>
-                            <span class="theme-toggle-label">@lang('general.footer.dark-theme')</span>
-                        </button>
-                    </div>
-                </div>
-                <!--end col-->
+    <div class="border-t border-secondary-800">
+        <div class="site-container flex flex-col items-center justify-between gap-4 py-6 text-sm sm:flex-row">
+            <p>&copy; {{ now()->year }} VATSIM Germany</p>
+            <div class="flex items-center gap-2">
+                <x-preferences.language-switch />
+                <x-preferences.theme-switch />
             </div>
-            <!--end row-->
         </div>
-        <!--end container-->
     </div>
 </footer>
-<!--end footer-->
-<!-- Footer End -->
-
-<script>
-    (() => {
-        const buttons = document.querySelectorAll('.theme-toggle-control');
-        if (buttons.length === 0) {
-            return;
-        }
-
-        const syncToggle = () => {
-            const isDark = document.documentElement.dataset.theme === 'dark';
-            buttons.forEach((button) => {
-                if (!(button instanceof HTMLButtonElement)) {
-                    return;
-                }
-
-                const nextLabel = isDark ? button.dataset.lightLabel : button.dataset.darkLabel;
-                const label = button.querySelector('.theme-toggle-label');
-                button.setAttribute('aria-pressed', String(isDark));
-                button.setAttribute('aria-label', nextLabel ?? '');
-                button.setAttribute('title', nextLabel ?? '');
-
-                if (label) {
-                    label.textContent = nextLabel ?? '';
-                }
-            });
-        };
-
-        buttons.forEach((button) => {
-            button.addEventListener('click', () => {
-                const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-                document.documentElement.dataset.theme = nextTheme;
-                localStorage.setItem('vatger-theme', nextTheme);
-
-                const colorScheme = document.querySelector('meta[name="color-scheme"]');
-                colorScheme?.setAttribute('content', nextTheme);
-                syncToggle();
-            });
-        });
-
-        syncToggle();
-    })();
-</script>

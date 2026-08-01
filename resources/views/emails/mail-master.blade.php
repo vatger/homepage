@@ -26,11 +26,11 @@
 
         @media (prefers-color-scheme: dark) {
             .email-bg {
-                background-color: #20232a !important;
+                background-color: #282d35 !important;
             }
 
             .email-card {
-                background-color: #282d35 !important;
+                background-color: #343941 !important;
                 border-color: #414751 !important;
             }
 
@@ -48,9 +48,15 @@
             }
 
             .email-title {
-                background-color: #3b3035 !important;
-                border-color: #71424a !important;
-                color: #ff7480 !important;
+                background-color: #282d35 !important;
+                border-color: #414751 !important;
+                color: #f0f1f3 !important;
+            }
+
+            .email-button {
+                background-color: #2b3f55 !important;
+                border-color: #2b3f55 !important;
+                color: #ffffff !important;
             }
 
             .email-header,
@@ -61,11 +67,11 @@
         }
 
         [data-ogsc] .email-bg {
-            background-color: #20232a !important;
+            background-color: #282d35 !important;
         }
 
         [data-ogsc] .email-card {
-            background-color: #282d35 !important;
+            background-color: #343941 !important;
             border-color: #414751 !important;
         }
 
@@ -76,6 +82,22 @@
 
         [data-ogsc] .email-muted {
             color: #b8bec7 !important;
+        }
+
+        [data-ogsc] .email-divider {
+            border-color: #414751 !important;
+        }
+
+        [data-ogsc] .email-title {
+            background-color: #282d35 !important;
+            border-color: #414751 !important;
+            color: #f0f1f3 !important;
+        }
+
+        [data-ogsc] .email-button {
+            background-color: #2b3f55 !important;
+            border-color: #2b3f55 !important;
+            color: #ffffff !important;
         }
 
         [data-ogsc] .email-header,
@@ -114,7 +136,7 @@
             <td class="email-padding" style="padding: 32px 32px 16px; text-align: center;">
                 <div
                     class="email-title"
-                    style="padding: 13px 18px; color: #c83f4c; background-color: #fceef0; border: 1px solid #f7cdd1; border-radius: 10px; font-size: 18px; line-height: 1.4; font-weight: 700;">
+                    style="padding: 13px 18px; color: #2b3f55; background-color: #f0f1f3; border: 1px solid #d2d5dc; border-radius: 16px; font-size: 18px; line-height: 1.4; font-weight: 700;">
                     {{ $title }}
                 </div>
             </td>
@@ -133,7 +155,8 @@
             <tr>
                 <td class="email-padding" style="padding: 12px 32px 20px; text-align: center;">
                     <a href="{{ $link_url }}"
-                       style="display: inline-block; padding: 12px 24px; text-decoration: none; font-size: 16px; line-height: 1.2; font-weight: 700; border-radius: 999px; background-color: #ea5763; border: 1px solid #ea5763; color: #ffffff;">
+                       class="email-button"
+                       style="display: inline-block; padding: 12px 24px; text-decoration: none; font-size: 16px; line-height: 1.2; font-weight: 700; border-radius: 16px; background-color: #2b3f55; border: 1px solid #2b3f55; color: #ffffff;">
                         {{ $link_text }}
                     </a>
                 </td>

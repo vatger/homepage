@@ -1,38 +1,18 @@
 @extends('layouts.master')
 
 @section('content')
-    <div>
-        @component('components.layouts.content',[
-            'header' => __('booking.atc.title'),
-            'links' => [
-                route('landing') => config('app.name'),
-            __('navigation.lotsen.titel'),
-            route('controllers.booking') => __('booking.atc.title')
-            ],
-            'backgroundurl' => iasset('images/bookings/booking_' . rand(1, 1) . '.png')
-        ])
-        @endcomponent
+    <x-layouts.content :header="__('booking.atc.title')"
+        :links="[route('landing') => config('app.name'), __('navigation.lotsen.titel'), route('controllers.booking') => __('booking.atc.title')]"
+        :backgroundurl="iasset('images/bookings/booking_1.png')" />
 
-        <section class="section atc-booking-page">
-            <div class="container-fluid" style="max-width: 1750px">
-                <div class="row g-4">
-                    <!-- BLog Start -->
-                    <div class="col-lg-8 col-md-7">
-                        <livewire:atc.list-atc-booking-tab />
-                    </div>
-                    <!-- BLog End -->
-
-                    <!-- START SIDEBAR -->
-                    <div class="col-lg-4 col-md-5 col-12">
-                        <livewire:atc.book-position-tab />
-                    </div>
-                    <!-- END SIDEBAR -->
-
-                </div>
-                <!--end row-->
+    <section class="section">
+        <div class="mx-auto grid w-full max-w-[1750px] gap-6 px-4 sm:px-6 lg:grid-cols-3 lg:px-8">
+            <div class="lg:col-span-2">
+                <livewire:atc.list-atc-booking-tab />
             </div>
-            <!--end container-->
-        </section>
-
-    </div>
+            <aside>
+                <livewire:atc.book-position-tab />
+            </aside>
+        </div>
+    </section>
 @endsection

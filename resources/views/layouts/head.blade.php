@@ -18,33 +18,24 @@
     <script defer src="https://analytics.vatsim-germany.org/script.js" data-website-id="ebee2a79-7a84-4680-af45-7ef23c7d94c2"></script>
 @endif
 
-{{--
-@if(!auth()->check() || !Auth::user()->settings->dark_mode)
---}}
 @if(isset($_admin) && $_admin)
     @vite('resources/scss/app-admin.scss')
 @else
-    @vite('resources/scss/app.scss')
+    @vite('resources/css/app-public.css')
 @endif
-{{--
-@else
-    @if(isset($_admin) && $_admin)
-        @vite('resources/scss/app-admin-dark.scss')
-    @else
-        @vite('resources/scss/app-dark.scss')
-    @endif
-@endif
---}}
 @if(!isset($_admin) || !$_admin)
     <script>
         (() => {
-            const theme = localStorage.getItem('vatger-theme');
+            let theme = null;
+            try {
+                theme = window.localStorage?.getItem('vatger-theme');
+            } catch {
+                // Storage can be unavailable in privacy modes.
+            }
             if (theme === 'light' || theme === 'dark') {
                 document.documentElement.dataset.theme = theme;
                 document.querySelector('meta[name="color-scheme"]')?.setAttribute('content', theme);
             }
         })();
     </script>
-    <link rel="stylesheet" href="{{ asset('css/vatger-brand.css') }}">
 @endif
-<link rel="stylesheet" type="text/css" href="{{ asset("vendor/cookie-consent/css/cookie-consent.css") }}">

@@ -36,8 +36,8 @@
             <div class="row mb-1 text-center">
                 <div class="row" style="padding-right: 0 !important; left: 5px !important;">
                     @foreach($aerodromes as $aerodrome)
-                        <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2 picture-item" role="button">
-                            <a wire:click="aerodrome_select({{ $aerodrome->id }})">
+                        <div class="col-lg-4 col-md-6 col-12 mt-4 pt-2 picture-item cursor-pointer" role="button">
+                            <a wire:click="aerodrome_select({{ $aerodrome->id }})" class="block cursor-pointer">
                                 <div class="card blog border-0 work-container work-primary work-classic shadow rounded-md overflow-hidden">
                                     <div class="card-body">
                                         <div class="content">

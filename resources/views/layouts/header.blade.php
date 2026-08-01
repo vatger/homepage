@@ -1,140 +1,139 @@
-<header id="topnav" class="defaultscroll sticky">
-    <div class="container">
-        <!-- Logo container-->
-        <a class="logo" href="{{ route('landing') }}">
-            <span class="logo-light-mode">
-                <img src="{{ asset('images/brand/logo-light.svg') }}" class="l-dark" height="32" alt="vatger Logo">
-                <img src="{{ asset('images/brand/logo-dark.svg') }}" class="l-light" height="32" alt="vatger Logo">
-            </span>
-            <img src="{{ asset('images/brand/logo-dark.svg') }}" class="logo-dark-mode" height="32" alt="vatger Logo">
+@php
+    $menus = [
+        __('navigation.piloten.titel') => [
+            [route('redirect.knowledgebase.start-pilot'), __('navigation.piloten.erste-schritte'), true],
+            [route('redirect.knowledgebase.training-pilot'), __('navigation.piloten.training'), true],
+            [route('pilots.aerodromes.viewall'), __('navigation.piloten.flugplaetze'), false],
+            [route('redirect.vatger-tours'), 'VATGER Touren', false],
+            [route('redirect.pmp'), 'Pilot Mentoring', false],
+        ],
+        __('navigation.lotsen.titel') => [
+            [route('redirect.knowledgebase.start-atc'), __('navigation.lotsen.erste-schritte'), true],
+            [route('controllers.booking'), __('navigation.user.booking'), false],
+            [route('redirect.training-center'), 'ATC Training', true],
+            [route('redirect.sectorfiles'), 'Sectorfiles', true],
+            [route('controllers.restricted'), 'Restricted Stations', false],
+            [route('controllers.s1'), 'S1 Tower', false],
+            [route('controllers.s1-stations'), 'S1 Stations', false],
+            [route('controllers.required-courses'), 'Required courses', false],
+            [route('redirect.support.feedback'), __('navigation.lotsen.feedback'), true],
+        ],
+        __('navigation.community.titel') => [
+            [route('redirect.ts3'), __('navigation.community.teamspeak'), false],
+            [route('redirect.board'), __('navigation.community.forum'), true],
+            [route('redirect.discord'), __('navigation.community.discord'), true],
+            [route('redirect.knowledgebase'), __('navigation.community.wiki'), true],
+            [route('redirect.moodle'), __('navigation.community.moodle'), true],
+            [route('redirect.spreadshop'), __('navigation.community.fan-shop'), true],
+        ],
+        __('navigation.hilfe.titel') => [
+            [route('redirect.support'), __('navigation.hilfe.support'), false],
+            [route('redirect.knowledgebase.contact'), __('navigation.hilfe.personal'), true],
+        ],
+    ];
+@endphp
+
+<header class="sticky top-0 z-50 border-b border-secondary-200 bg-white/95 text-primary-900 shadow-sm backdrop-blur dark:border-secondary-800 dark:bg-secondary-900/95 dark:text-secondary-50"
+        x-data="{ mobile: false }" @keydown.escape.window="mobile = false">
+    <div class="site-container flex h-20 items-center justify-between gap-4">
+        <a href="{{ route('landing') }}" class="shrink-0" aria-label="{{ config('app.name') }}">
+            <img src="{{ asset('images/brand/logo-light.svg') }}" class="h-8 w-auto dark:hidden" alt="VATGER Logo">
+            <img src="{{ asset('images/brand/logo-dark.svg') }}" class="hidden h-8 w-auto dark:block" alt="VATGER Logo">
         </a>
 
-        <!-- End Logo container-->
-        <div class="menu-extras">
-            <div class="menu-item">
-                <!-- Mobile menu toggle-->
-                <a class="navbar-toggle" id="isToggle" onclick="toggleMenu()">
-                    <div class="lines">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </a>
-                <!-- End mobile menu toggle-->
-            </div>
-        </div>
+        <nav class="hidden items-center gap-1 lg:flex" aria-label="@lang('navigation.navigation')">
+            <x-preferences.language-switch />
+            <x-preferences.theme-switch />
 
-        <div id="navigation">
-            <!-- Navigation Menu-->
-            <ul class="navigation-menu nav-light nav-right">
-                @switch(Session::get('language', 'en'))
-                    @case('en')
-                        <li>
-                            <a href="{{ route('language.change', ['lang' => 'de']) }}" class="sub-menu-item">
-                                <img src="{{ asset('images/germany.svg') }}" height="25px" style="margin-top:-3px" alt="DE">
-                            </a>
-                        </li>
-                        @break
-                    @case('de')
-                    @default
-                        <li>
-                            <a href="{{ route('language.change', ['lang' => 'en']) }}" class="sub-menu-item">
-                                <img src="{{ asset('images/united-kingdom.svg') }}" height="25px" style="margin-top:-3px" alt="ENG">
-                            </a>
-                        </li>
-                @endswitch
-
-                <li class="theme-toggle-nav parent-menu-item">
-                    <button type="button" class="theme-toggle-control theme-toggle-mini" aria-pressed="false"
-                            aria-label="@lang('general.footer.dark-theme')"
-                            title="@lang('general.footer.dark-theme')"
-                            data-light-label="@lang('general.footer.light-theme')"
-                            data-dark-label="@lang('general.footer.dark-theme')">
-                        <span class="theme-toggle-icon" aria-hidden="true">
-                            <i data-feather="moon" class="theme-icon-moon"></i>
-                            <i data-feather="sun" class="theme-icon-sun"></i>
-                        </span>
+            @foreach($menus as $label => $items)
+                <div class="relative" x-data="{ open: false }" @click.outside="open = false">
+                    <button type="button" @click="open = !open" :aria-expanded="open"
+                            class="inline-flex min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-semibold uppercase tracking-wide hover:bg-secondary-100 hover:text-accent-600 dark:hover:bg-secondary-800 dark:hover:text-accent-400">
+                        {{ $label }}
+                        <i data-feather="chevron-down" class="size-4 transition-transform" :class="open && 'rotate-180'"></i>
                     </button>
-                </li>
+                    <div x-cloak x-show="open" x-transition.origin.top.right
+                         class="absolute right-0 top-full mt-2 w-64 rounded-xl border border-secondary-200 bg-white p-2 shadow-xl dark:border-secondary-700 dark:bg-secondary-800">
+                        @foreach($items as [$href, $itemLabel, $external])
+                            <a href="{{ $href }}" @if($external) target="_blank" rel="noopener" @endif
+                               class="block rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-secondary-100 hover:text-accent-600 dark:hover:bg-secondary-700 dark:hover:text-accent-400">
+                                {{ $itemLabel }}
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
 
-                <li class="has-submenu parent-menu-item">
-                    <a href="javascript:void(0)">@lang('navigation.piloten.titel')</a><span class="menu-arrow"></span>
-                    <ul class="submenu">
-                        <li><a href="{{ route('redirect.knowledgebase.start-pilot') }}" class="sub-menu-item" target="_blank">@lang('navigation.piloten.erste-schritte')</a></li>
-                        <li><a href="{{ route('redirect.knowledgebase.training-pilot') }}" class="sub-menu-item" target="_blank">@lang('navigation.piloten.training')</a></li>
-                        <li><a href="{{ route('pilots.aerodromes.viewall') }}" class="sub-menu-item">@lang('navigation.piloten.flugplaetze')</a></li>
-                        <li><a href="{{ route('redirect.vatger-tours') }}" class="sub-menu-item">vatger Touren</a></li>
-                        <li><a href="{{ route('redirect.pmp') }}" class="sub-menu-item">Pilot Mentoring</a></li>
-                    </ul>
-                </li>
-
-                <li class="has-submenu parent-menu-item">
-                    <a href="javascript:void(0)">@lang('navigation.lotsen.titel')</a><span class="menu-arrow"></span>
-                    <ul class="submenu">
-                        <li><a href="{{ route('redirect.knowledgebase.start-atc') }}" target="_blank" class="sub-menu-item">@lang('navigation.lotsen.erste-schritte')</a></li>
-                        <li><a href="{{ route('controllers.booking') }}" class="sub-menu-item">@lang('navigation.user.booking')</a></li>
-                        <li><a href="{{ route('redirect.training-center') }}" target="_blank" class=" sub-menu-item">ATC Training</a></li>
-                        <li><a href="{{ route("redirect.sectorfiles") }}" target="_blank" class="sub-menu-item">Sectorfiles</a></li>
-                        <li><a href="{{ route("controllers.restricted") }}" class="sub-menu-item">Restricted Stations</a></li>
-                        <li><a href="{{ route("controllers.s1") }}" class="sub-menu-item">S1 Tower</a></li>
-                        <li><a href="{{ route("controllers.s1-stations") }}" class="sub-menu-item">S1 Stations</a></li>
-                        <li><a href="{{ route("controllers.required-courses") }}" class="sub-menu-item">Required courses</a></li>
-                        <li><a href="{{ route("redirect.support.feedback") }}" target="_blank" class="sub-menu-item">@lang('navigation.lotsen.feedback')</a></li>
-                    </ul>
-                </li>
-
-                <li class="has-submenu parent-menu-item">
-                    <a href="javascript:void(0)">@lang('navigation.community.titel')</a><span class="menu-arrow"></span>
-                    <ul class="submenu">
-                        <li><a href="{{ route('redirect.ts3') }}" class="sub-menu-item">@lang('navigation.community.teamspeak')</a></li>
-                        <li><a href="{{ route('redirect.board') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.forum')</a></li>
-                        <li><a href="{{ route('redirect.discord') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.discord')</a></li>
-                        <li><a href="{{ route('redirect.knowledgebase') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.wiki')</a></li>
-                        <li><a href="{{ route('redirect.moodle') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.moodle')</a></li>
-                        <li><a href="{{ route('redirect.spreadshop') }}" target="_blank" class="sub-menu-item">@lang('navigation.community.fan-shop')</a></li>
-                    </ul>
-                </li>
-
-                <li class="has-submenu parent-menu-item">
-                    <a href="javascript:void(0)">@lang('navigation.hilfe.titel')</a><span class="menu-arrow"></span>
-                    <ul class="submenu">
-                        <li><a href="{{ route('redirect.support') }}" class="sub-menu-item">@lang('navigation.hilfe.support')</a></li>
-                        <li><a href="{{ route('redirect.knowledgebase.contact') }}" target="_blank" class="sub-menu-item">@lang('navigation.hilfe.personal')</a></li>
-                    </ul>
-                </li>
-
-                <li class="has-submenu parent-menu-item">
-                    @auth
-                        <a href="javascript:void(0)">{{ Auth::user()->firstname }}</a><span class="menu-arrow"></span>
-                        <ul class="submenu">
-                            <li><a href="{{ route('member.profile') }}" class="sub-menu-item">@lang('navigation.user.profile')</a></li>
-                            @can('administration.access')
-                                <li><a href="{{ route('administration.dashboard') }}" class="sub-menu-item">@lang('navigation.user.administration')</a></li>
-                            @endcan
-                            <li><a href="{{ route('vatsim.authentication.connect.logout') }}" class="sub-menu-item"
-                                   style="color: #e43f52 !important;">@lang('navigation.user.logout')</a></li>
-                        </ul>
-                    @else
-                        <a href="{{ route('vatsim.authentication.connect.login') }}">@lang('navigation.user.login')</a>
-                    @endauth
-                </li>
+            <div class="relative" x-data="{ open: false }" @click.outside="open = false">
                 @auth
-                    <li class="parent-menu-item">
-                        <a href="{{ route('member.profile') }}?tab=notifications">
-                            <span class="">
-                                @if (count(Auth::user()->unreadNotifications) > 0)
-                                    <i class="fea fea-icon" data-feather="bell"></i><span> {{ count(Auth::user()->unreadNotifications) }} </span>
-                                @endif
-                            </span>
-                        </a>
-                    </li>
+                    <button type="button" @click="open = !open" :aria-expanded="open"
+                            class="inline-flex min-h-11 items-center gap-1 rounded-lg px-3 text-sm font-semibold uppercase tracking-wide hover:bg-secondary-100 dark:hover:bg-secondary-800">
+                        {{ Auth::user()->firstname }}
+                        <i data-feather="chevron-down" class="size-4"></i>
+                    </button>
+                    <div x-cloak x-show="open" x-transition.origin.top.right
+                         class="absolute right-0 top-full mt-2 w-56 rounded-xl border border-secondary-200 bg-white p-2 shadow-xl dark:border-secondary-700 dark:bg-secondary-800">
+                        <a href="{{ route('member.profile') }}" class="block rounded-lg px-3 py-2.5 text-sm hover:bg-secondary-100 dark:hover:bg-secondary-700">@lang('navigation.user.profile')</a>
+                        @can('administration.access')
+                            <a href="{{ route('administration.dashboard') }}" class="block rounded-lg px-3 py-2.5 text-sm hover:bg-secondary-100 dark:hover:bg-secondary-700">@lang('navigation.user.administration')</a>
+                        @endcan
+                        <a href="{{ route('vatsim.authentication.connect.logout') }}" class="block rounded-lg px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/50">@lang('navigation.user.logout')</a>
+                    </div>
+                @else
+                    <a href="{{ route('vatsim.authentication.connect.login') }}" class="btn btn-primary">@lang('navigation.user.login')</a>
                 @endauth
-            </ul>
-            <!--end navigation menu-->
-        </div>
-        <!--end navigation-->
+            </div>
+
+            @auth
+                <a href="{{ route('member.profile') }}?tab=notifications"
+                   class="relative inline-flex size-11 items-center justify-center rounded-lg hover:bg-secondary-100 dark:hover:bg-secondary-800"
+                   aria-label="@lang('navigation.user.notifications')">
+                    <i data-feather="bell" class="size-5"></i>
+                    @if(count(Auth::user()->unreadNotifications) > 0)
+                        <span class="absolute right-0 top-0 inline-flex min-w-5 items-center justify-center rounded-full bg-accent-500 px-1 text-xs font-bold text-white">{{ count(Auth::user()->unreadNotifications) }}</span>
+                    @endif
+                </a>
+            @endauth
+        </nav>
+
+        <button type="button" @click="mobile = !mobile" :aria-expanded="mobile"
+                class="inline-flex size-11 items-center justify-center rounded-lg border border-secondary-200 lg:hidden dark:border-secondary-700"
+                aria-controls="mobile-navigation" aria-label="Menu">
+            <span class="inline-flex" x-show="!mobile">
+                <i data-feather="menu" class="size-5" aria-hidden="true"></i>
+            </span>
+            <span class="inline-flex" x-cloak x-show="mobile">
+                <i data-feather="x" class="size-5" aria-hidden="true"></i>
+            </span>
+        </button>
     </div>
-    <!--end container-->
+
+    <nav id="mobile-navigation" x-cloak x-show="mobile" x-transition
+         class="site-container max-h-[calc(100vh-5rem)] overflow-y-auto border-t border-secondary-200 py-4 lg:hidden dark:border-secondary-800">
+        <div class="mb-3 flex items-center gap-2">
+            <x-preferences.language-switch />
+            <x-preferences.theme-switch />
+        </div>
+        @foreach($menus as $label => $items)
+            <details class="border-b border-secondary-200 py-2 dark:border-secondary-800">
+                <summary class="cursor-pointer py-2 font-semibold">{{ $label }}</summary>
+                <div class="grid gap-1 pb-2 pl-3">
+                    @foreach($items as [$href, $itemLabel, $external])
+                        <a href="{{ $href }}" @if($external) target="_blank" rel="noopener" @endif class="rounded-lg px-3 py-2 hover:bg-secondary-100 dark:hover:bg-secondary-800">{{ $itemLabel }}</a>
+                    @endforeach
+                </div>
+            </details>
+        @endforeach
+        <div class="grid gap-1 pt-3">
+            @auth
+                <a href="{{ route('member.profile') }}" class="rounded-lg px-3 py-2 hover:bg-secondary-100 dark:hover:bg-secondary-800">@lang('navigation.user.profile')</a>
+                @can('administration.access')
+                    <a href="{{ route('administration.dashboard') }}" class="rounded-lg px-3 py-2 hover:bg-secondary-100 dark:hover:bg-secondary-800">@lang('navigation.user.administration')</a>
+                @endcan
+                <a href="{{ route('vatsim.authentication.connect.logout') }}" class="rounded-lg px-3 py-2 text-red-600 dark:text-red-400">@lang('navigation.user.logout')</a>
+            @else
+                <a href="{{ route('vatsim.authentication.connect.login') }}" class="btn btn-primary">@lang('navigation.user.login')</a>
+            @endauth
+        </div>
+    </nav>
 </header>
-<!--end header-->
-<!-- Navbar End -->

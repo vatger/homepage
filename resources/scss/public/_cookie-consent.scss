@@ -1,0 +1,45 @@
+@layer components {
+  .lcc-backdrop {
+    @apply fixed inset-0 z-[80] bg-primary-900/70 backdrop-blur-sm;
+  }
+
+  .lcc-modal {
+    @apply fixed top-1/2 left-1/2 z-[81] max-h-[90vh] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border border-secondary-200 bg-white p-6 text-primary-900 shadow-2xl sm:p-8 dark:border-secondary-700 dark:bg-secondary-800 dark:text-secondary-50;
+  }
+
+  .lcc-modal__title {
+    @apply text-2xl font-bold tracking-tight;
+  }
+
+  .lcc-text {
+    @apply mt-3 text-sm leading-6 text-secondary-600 dark:text-secondary-300;
+  }
+
+  .lcc-modal__actions {
+    @apply mt-6 grid gap-2 sm:grid-cols-2;
+  }
+
+  .lcc-button {
+    @apply inline-flex min-h-11 items-center justify-center rounded-2xl border border-primary-900 bg-primary-900 px-4 py-2 text-sm font-semibold text-white hover:bg-primary-800;
+  }
+
+  .lcc-button--ghost {
+    @apply border-secondary-300 bg-white text-primary-900 hover:border-accent-500 hover:bg-secondary-50 dark:border-secondary-600 dark:bg-secondary-800 dark:text-secondary-50 dark:hover:bg-secondary-700;
+  }
+
+  .lcc-modal__close {
+    @apply absolute top-3 right-3 inline-flex size-9 items-center justify-center rounded-2xl text-2xl hover:bg-secondary-100 dark:hover:bg-secondary-700;
+  }
+
+  .lcc-modal__section {
+    @apply mt-6 border-t border-secondary-200 pt-5 dark:border-secondary-700;
+  }
+
+  .lcc-label {
+    @apply flex items-center gap-3 font-semibold;
+  }
+
+  .lcc-u-sr-only {
+    @apply sr-only;
+  }
+}
