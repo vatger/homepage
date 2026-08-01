@@ -1,0 +1,25 @@
+@layer base {
+  [x-cloak] {
+    display: none !important;
+  }
+
+  html {
+    @apply scroll-smooth bg-secondary-50 text-primary-900 antialiased dark:bg-secondary-900 dark:text-secondary-50;
+  }
+
+  body {
+    @apply min-h-screen bg-secondary-50 font-sans text-primary-900 dark:bg-secondary-900 dark:text-secondary-50;
+  }
+
+  a {
+    @apply transition-colors;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent-500;
+  }
+
+  ::selection {
+    @apply bg-primary-900 text-white;
+  }
+}

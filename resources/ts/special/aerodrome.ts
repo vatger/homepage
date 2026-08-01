@@ -1,8 +1,8 @@
 import mapboxgl from "mapbox-gl";
 import { find, forEach, isEmpty, uniq, filter } from "lodash";
-import { findLivewireComponent } from "../livewire.js";
+import { findLivewireComponent } from "../livewire-public.js";
 import { dayjs } from "../dayjs";
-import { getDarkmode } from "../template.js";
+import { getDarkmode } from "../preferences.js";
 import {
   map,
   Map,
@@ -30,8 +30,18 @@ window.setInterval(() => {
 
 let mymap: Map | null = null;
 
+async function getAerodromeComponent() {
+  for (let attempt = 0; attempt < 100; attempt++) {
+    const component = findLivewireComponent("aerodrome-page");
+    if (component) return component;
+    await new Promise((resolve) => window.setTimeout(resolve, 50));
+  }
+
+  throw new Error("The aerodrome Livewire component did not initialize.");
+}
+
 async function load_map(): Promise<void> {
-  const lwc = findLivewireComponent("aerodrome-page");
+  const lwc = await getAerodromeComponent();
   const aerodrome_data: Object = await lwc.$wire.load_aerodrome();
   const mapbox_username = "nikki2048";
   const mapbox_style_id_light = "ckyg6998m2ec515o86wkmkjnn";
@@ -65,7 +75,7 @@ let standstatus_data: Array<0> = [];
 let aircraftstatus_data: Array<0> = [];
 
 async function download_map() {
-  let lwc = findLivewireComponent("aerodrome-page");
+  const lwc = await getAerodromeComponent();
   standstatus_data = await lwc.$wire.load_stands();
   aircraftstatus_data = await lwc.$wire.load_aircraft();
 }
@@ -129,14 +139,14 @@ async function update_map() {
 }
 
 async function metar() {
-  let lwc = findLivewireComponent("aerodrome-page");
+  const lwc = await getAerodromeComponent();
   const metar_data: string = await lwc.$wire.load_metar();
   let metar_el = document.getElementById("metar-container");
   if (metar_el) metar_el.innerHTML = metar_data;
 }
 
 async function atis() {
-  let lwc = findLivewireComponent("aerodrome-page");
+  const lwc = await getAerodromeComponent();
   const atis_data: string = await lwc.$wire.load_atis();
   let atis_el = document.getElementById("atis-container");
   let atis_wid = document.getElementById("atis-widget");
@@ -164,7 +174,7 @@ async function atis() {
 }
 
 async function indicator() {
-  let lwc = findLivewireComponent("aerodrome-page");
+  const lwc = await getAerodromeComponent();
   const data: Array<0> = await lwc.$wire.load_indicators();
 
   function checkindicator(ending: string, element_id: string) {
@@ -253,7 +263,7 @@ type Event = {
 };
 
 async function event() {
-  let lwc = findLivewireComponent("aerodrome-page");
+  const lwc = await getAerodromeComponent();
   const data: Array<Event> = await lwc.$wire.load_events();
 
   const event_container = document.getElementById("event-container");

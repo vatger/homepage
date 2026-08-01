@@ -121,7 +121,7 @@
                                                 @foreach($category as $link)
                                                     @if(!preg_match("/^https:\/\/[a-zA-Z0-9_-]*\.?vatsim-germany\.org.*/", $link->url))
                                                         <a class="btn btn-secondary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#warning-{{ bin2hex($link->url) }}">
-                                                            {{ $link->name }}
+                                                            <span>{{ $link->name }}</span>
                                                             <i data-feather="external-link" class="ms-1 fea icon-sm"></i>
                                                         </a>
                                                     @else

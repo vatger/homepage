@@ -5,12 +5,14 @@ return [
         'events' => 'Events',
         'members' => 'Mitglieder',
         'policies' => 'Richtlinien',
+        'no-results' => 'Keine Ergebnisse',
         'loading' => 'Wird geladen …',
     ],
 
     'landing' => [
         'hero-fallback' => 'Virtueller Himmel, echte Leidenschaft!',
         'show-more-events' => 'Mehr Events anzeigen',
+        'no-events' => 'Derzeit gibt es keine bevorstehenden Events. Schau später noch einmal vorbei.',
         'community' => 'Gemeinschaft',
         'partners-title' => 'Unsere Partner',
         'partners-text' => 'Weitere Informationen findest du',
@@ -129,5 +131,8 @@ return [
         'frequency' => 'Frequenz',
         's1-tower' => 'S1-Tower',
         's1-theory' => 'S1-Theoriestationen',
+        'staffing-tool-title' => 'Darf ich diese Station besetzen?',
+        'staffing-tool-text' => 'Prüfe deine aktuellen Berechtigungen mit Can I Staff It.',
+        'staffing-tool-link' => 'Can I Staff It öffnen',
     ],
 ];

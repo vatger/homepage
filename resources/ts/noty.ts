@@ -10,37 +10,58 @@ export const showNoty = function (
   destination: string | undefined = undefined,
   onclick: (() => void) | undefined = undefined,
 ) {
-  let style = {
-    background: "linear-gradient(to right, #00b09b, #96c93d)",
+  const normalizedType = (() => {
+    switch (type.toLowerCase()) {
+      case "error":
+      case "alert":
+        return "error";
+      case "warning":
+        return "warning";
+      case "info":
+      case "information":
+        return "info";
+      default:
+        return "success";
+    }
+  })();
+
+  const iconByType = {
+    success: "✓",
+    warning: "!",
+    error: "!",
+    info: "i",
   };
-  switch (type) {
-    case "error":
-      style = {
-        background: "linear-gradient(to right, #C93D3D, #Bb1f1f)",
-      };
-      break;
-    case "warning":
-      style = {
-        background: "linear-gradient(to right, #bb9e1f, #b8a658)",
-      };
-      break;
-    case "":
-      style = {
-        background: "linear-gradient(to right, #C93D3D, #Bb1f1f)",
-      };
-      break;
-  }
+
+  const content = document.createElement("div");
+  content.className = "vatger-toast__content";
+
+  const icon = document.createElement("span");
+  icon.className = "vatger-toast__icon";
+  icon.setAttribute("aria-hidden", "true");
+  icon.textContent = iconByType[normalizedType];
+
+  const messageElement = document.createElement("span");
+  messageElement.className = "vatger-toast__message";
+  messageElement.textContent = message;
+
+  content.append(icon, messageElement);
+
   Toastify({
     text: message,
+    node: content,
     duration: timeout,
     destination: destination,
     newWindow: true,
     close: true,
-    gravity: "top", // `top` or `bottom`
-    position: "right", // `left`, `center` or `right`
-    stopOnFocus: true, // Prevents dismissing of toast on hover
-    style: style,
-    onClick: onclick, // Callback after click
+    gravity: "top",
+    position: "right",
+    stopOnFocus: true,
+    className: `vatger-toast vatger-toast--${normalizedType}`,
+    ariaLive:
+      normalizedType === "error" || normalizedType === "warning"
+        ? "assertive"
+        : "polite",
+    onClick: onclick,
   }).showToast();
 };
 

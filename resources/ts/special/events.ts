@@ -3,135 +3,88 @@ import { dayjs } from "@/ts/dayjs";
 import { zroute } from "@/ts/myziggy";
 
 const EVENT_QUERY_COUNT = 9;
-const API_URI = zroute("api.loadEvents", { count: EVENT_QUERY_COUNT }); //window.location.origin + "/web_api/queryevents/" + EVENT_QUERY_COUNT;
+const API_URI = zroute("api.loadEvents", { count: EVENT_QUERY_COUNT });
 
 type Event = {
   id: number;
   name: string;
-  description: string;
-  short_description: string;
   start_time: string;
-  end_time: string;
   banner: string;
-  link: string;
   type: string;
-  airports: Array<{ icao: string }>;
-  organisers: Array<{
-    region?: string;
-    division?: string;
-    subdivision?: string;
-    organised_by_vatsim: boolean;
-  }>;
-  vso_name?: string;
 };
 
 async function getEvents(): Promise<Event[]> {
-  return axios.get(API_URI).then((res: AxiosResponse) => {
-    const events: Array<Event> = res.data;
-
-    if (events == null || events.length == 0) {
-      throw new Error("No events found (len 0)");
-    }
-
+  return axios.get(API_URI).then((response: AxiosResponse) => {
+    const events: Event[] = response.data;
+    if (!events?.length) throw new Error("No events found");
     return events;
   });
 }
 
-function removeChildrenFromElement(el: HTMLElement | null) {
-  if (el == null) {
-    return;
-  }
-
-  while (el.lastChild) {
-    el.removeChild(el.lastChild);
-  }
+function clear(element: HTMLElement) {
+  element.replaceChildren();
 }
 
-getEvents()
-  .then(async (events: Array<Event>) => {
-    const event_container = document.getElementById("event-container");
-    removeChildrenFromElement(event_container);
+function eventMarkup(event: Event, index: number): string {
+  const cpt =
+    event.type === "CPT"
+      ? '<span class="badge mb-3">Controller Practical Test</span>'
+      : "";
 
-    events.forEach((e: Event, i: number) => {
-      event_container?.insertAdjacentHTML(
+  return `
+    <article class="${index > 5 ? "hide" : ""}" id="event-${index}">
+      <a class="block h-full" href="${window.location.origin}/events/view/${event.id}">
+        <div class="card landing-event-card">
+          <div class="card-img-top" style="background-image: url('${event.banner}')"></div>
+          <div class="card-body">
+            ${cpt}
+            <h3 class="text-lg font-semibold text-primary-900 dark:text-secondary-50">${event.name}</h3>
+            <p class="mt-3 text-sm text-secondary-500 dark:text-secondary-300">
+              ${dayjs.utc(event.start_time).format("DD.MM.YYYY HH:mm")}z
+            </p>
+          </div>
+        </div>
+      </a>
+    </article>
+  `;
+}
+
+const container = document.getElementById("event-container");
+
+if (container) {
+  getEvents()
+    .then((events) => {
+      clear(container);
+      events.forEach((event, index) =>
+        container.insertAdjacentHTML("beforeend", eventMarkup(event, index)),
+      );
+
+      container.insertAdjacentHTML(
         "beforeend",
-        `
-                <div class="col-lg-4 col-md-6 mb-4 pb-2 ${
-                  i > 5 ? "hide" : ""
-                }" id="event-${i}">
-                    <a href="${window.location.origin}/events/view/${e.id}">
-                        <div class="card blog landing-event-card border-0 overflow-hidden">
-                            <div class="position-relative">
-                                <div class="overlay rounded-top"></div>
-                                <div class="card-img-top loader-show overflow-hidden" id="event-banner-1" style="min-height: 200px; min-width: 356px; background: url('${
-                                  e.banner
-                                }') center; background-size: cover;"></div>
-                            </div>
-                            <div class="card-body content">
-                                <span class="badge rounded-pill bg-soft-primary mb-2 ${
-                                  e.type == "CPT" ? "" : "hide"
-                                }">
-                                    Controller Practical Test
-                                </span>
-                                <h5>
-                                    <span class="card-title title text-dark" id="event-title-1">${
-                                      e.name
-                                    }</span>
-                                </h5>
-                                <div class="post-meta d-flex justify-content-between mt-3">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="list-inline-item me-2 mb-0">
-                                            <span href="javascript:void(0)" class="text-muted" id="event-date-1">
-                                                ${
-                                                  dayjs
-                                                    .utc(e.start_time)
-                                                    .format(
-                                                      "DD.MM.YYYY HH:mm",
-                                                    ) + "z"
-                                                }
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            `,
+        `<div class="col-span-full mt-2 text-center" id="show-events-btn-container">
+          <button type="button" class="btn btn-primary" id="show-events-btn">
+            ${container.dataset.showMore ?? "Show more events"}
+          </button>
+        </div>`,
+      );
+
+      document
+        .getElementById("show-events-btn")
+        ?.addEventListener("click", () => {
+          container
+            .querySelectorAll(".hide")
+            .forEach((event) => event.classList.remove("hide"));
+          document.getElementById("show-events-btn-container")?.remove();
+        });
+    })
+    .catch((error) => {
+      console.error("Failed to load events: ", error.message);
+      clear(container);
+      container.insertAdjacentHTML(
+        "beforeend",
+        `<div class="alert alert-info col-span-full text-center" role="status">
+          ${container.dataset.empty ?? "There are currently no upcoming events."}
+        </div>`,
       );
     });
-
-    event_container?.insertAdjacentHTML(
-      "beforeend",
-      `
-            <div style="text-align: center" class="mt-4 mb-0 pb-0" id="show-events-btn-container">
-                <button type="button" class="btn btn-pills btn-primary" id="show-events-btn"> Show More</button>
-            </div>
-        `,
-    );
-
-    document
-      .getElementById("show-events-btn")
-      ?.addEventListener("click", () => {
-        for (let i = 0; i < events.length; i++) {
-          document.getElementById(`event-${i}`)?.classList.remove("hide");
-        }
-
-        document.getElementById("show-events-btn")?.remove();
-      });
-  })
-  .catch((err) => {
-    console.error("Failed to load events: ", err.message);
-
-    const event_container = document.getElementById("event-container");
-    removeChildrenFromElement(event_container);
-
-    event_container?.insertAdjacentHTML(
-      "beforeend",
-      `
-            <div class="alert alert-danger mt-2 text-center" role="alert">
-                Es gibt derzeit keine Events die geladen werden können. Schaue zu einem späteren Zeitpunkt noch mal vorbei.
-            </div>
-        `,
-    );
-  });
+}

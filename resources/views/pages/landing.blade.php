@@ -1,44 +1,26 @@
 @extends('layouts.master')
 
 @section('content')
-    <!-- Hero Start -->
-    <section class="landing-hero bg-half-260 d-table w-100" id="hero-section"
-             style="background: url('{{ iasset('images/hero-banners/hero_' . rand(1, 9) . '.png') }}') center center; background-size: cover">
-        <div class="bg-overlay landing-hero-overlay"></div>
-        <div class="container">
-            <div class="row align-items-center position-relative" style="z-index: 1;">
-                <div class="col-xl-7 col-lg-8 col-md-11">
-                    <div class="title-heading mt-4 text-center text-lg-start">
-                        <span class="landing-kicker">@lang('landing.welcome.badge-text')</span>
-                        <h1 class="heading landing-hero-title mt-4 mb-3 text-white">VATSIM Germany</h1>
-                        <p class="landing-hero-copy text-white-50" id="typewriter">@lang('pages.landing.hero-fallback')</p>
-                        <div class="mt-4 d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
-                            <a href="{{ route('redirect.knowledgebase.start') }}" class="btn btn-lg rounded-pill px-4 text-white">@lang('landing.join-now-button-content')</a>
-                            <a href="#welcome" class="btn btn-outline-white btn-lg rounded-pill px-4 text-white">@lang('landing.read-more-button-content')</a>
-                        </div>
-                    </div>
+    <section id="hero-section" class="landing-hero relative isolate flex items-center overflow-hidden bg-primary-900 bg-cover bg-center text-white"
+             style="background-image: url('{{ iasset('images/hero-banners/hero_' . rand(1, 9) . '.png') }}')">
+        <div class="absolute inset-0 -z-10 bg-primary-900/80"></div>
+        <div class="site-container py-24 sm:py-32">
+            <div class="max-w-3xl">
+                <span class="landing-kicker">@lang('landing.welcome.badge-text')</span>
+                <h1 class="mt-6 text-5xl font-bold tracking-tight text-white sm:text-6xl">VATSIM Germany</h1>
+                <p id="typewriter" class="mt-5 min-h-8 text-xl text-secondary-200 sm:text-2xl">@lang('pages.landing.hero-fallback')</p>
+                <div class="mt-8 flex flex-wrap gap-3">
+                    <a href="{{ route('redirect.knowledgebase.start') }}" class="btn btn-primary px-6">@lang('landing.join-now-button-content')</a>
+                    <a href="#welcome" class="btn border-white/30 bg-white/5 px-6 text-white hover:bg-white/15">@lang('landing.read-more-button-content')</a>
                 </div>
-                <!--end col-->
             </div>
-            <!--end row-->
         </div>
-        <!--end container-->
+        <div class="absolute inset-x-0 bottom-0 h-16 translate-y-8 -skew-y-2 bg-secondary-50 dark:bg-secondary-900"></div>
     </section>
-    <!--end section-->
-    <div class="position-relative landing-shape">
-        <div class="shape overflow-hidden">
-            <svg viewBox="0 0 2880 250" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M720 125L2160 0H2880V250H0V125H720Z" fill="currentColor"></path>
-            </svg>
-        </div>
-    </div>
-    <!-- Hero End -->
 
-    <x-landing.welcome></x-landing.welcome>
-
-    <x-landing.events></x-landing.events>
-
-    <x-landing.partners :partners="\App\Models\Partner::all()"></x-landing.partners>
+    <x-landing.welcome />
+    <x-landing.events />
+    <x-landing.partners :partners="\App\Models\Partner::all()" />
 @endsection
 
 @push('scripts')

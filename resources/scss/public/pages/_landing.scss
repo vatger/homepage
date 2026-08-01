@@ -1,0 +1,29 @@
+@layer components {
+  .landing-hero {
+    min-height: clamp(38rem, 78vh, 52rem);
+  }
+
+  .landing-kicker {
+    @apply inline-flex rounded-full border border-accent-500/40 bg-accent-500/10 px-5 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white backdrop-blur sm:text-sm;
+  }
+
+  .landing-section-label {
+    @apply text-xs font-bold uppercase tracking-[0.16em] text-accent-500;
+  }
+
+  .landing-event-card {
+    @apply h-full overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-xl;
+  }
+
+  .landing-event-card .card-img-top {
+    @apply min-h-52 bg-secondary-200 bg-cover bg-center dark:bg-secondary-700;
+  }
+
+  .event-loader-show {
+    @apply z-10 animate-pulse bg-secondary-200 dark:bg-secondary-700;
+  }
+
+  #event-container .hide {
+    @apply hidden;
+  }
+}

@@ -1,0 +1,15 @@
+.toastify.vatger-toast {
+  --toast-surface: #343941;
+  --toast-border: #414751;
+  --toast-text: #f0f1f3;
+  --toast-muted: #b8bec7;
+  --toast-status-bg: #282d35;
+  box-shadow: 0 18px 45px rgb(0 0 0 / 35%);
+}
+
+.toastify.vatger-toast--success,
+.toastify.vatger-toast--warning,
+.toastify.vatger-toast--error,
+.toastify.vatger-toast--info {
+  --toast-status-bg: #282d35;
+}

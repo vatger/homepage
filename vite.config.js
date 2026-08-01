@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
 import laravel from "laravel-vite-plugin";
 import { run } from "vite-plugin-run";
 import viteTsconfigPaths from "vite-tsconfig-paths";
@@ -24,12 +25,13 @@ export default defineConfig({
   },
 
   plugins: [
+    tailwindcss(),
     laravel([
-      "resources/scss/app.scss",
-      "resources/scss/app-dark.scss",
+      "resources/css/app-public.css",
       "resources/scss/app-admin.scss",
       "resources/scss/app-admin-dark.scss",
       "resources/scss/mail.scss",
+      "resources/ts/app-public.ts",
       "resources/ts/app.ts",
       "resources/ts/special/events.ts",
       "resources/ts/special/aerodrome.ts",

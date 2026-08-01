@@ -1,0 +1,13 @@
+@layer components {
+  .support-page :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+    @apply rounded-2xl border-secondary-200 bg-secondary-50 text-primary-900 dark:border-secondary-700 dark:bg-secondary-900 dark:text-secondary-50;
+  }
+
+  .support-page :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea):focus {
+    @apply border-primary-900 bg-white text-primary-900 ring-2 ring-primary-900/20 outline-none dark:border-primary-400 dark:bg-secondary-800 dark:text-secondary-50 dark:ring-primary-400/25;
+  }
+
+  .support-page option {
+    @apply bg-white text-primary-900 dark:bg-secondary-800 dark:text-secondary-50;
+  }
+}
