@@ -52,9 +52,6 @@
         </a>
 
         <nav class="hidden items-center gap-1 lg:flex" aria-label="@lang('navigation.navigation')">
-            <x-preferences.language-switch />
-            <x-preferences.theme-switch />
-
             @foreach($menus as $label => $items)
                 <div class="relative" x-data="{ open: false }" @click.outside="open = false">
                     <button type="button" @click="open = !open" :aria-expanded="open"
@@ -104,6 +101,11 @@
                     @endif
                 </a>
             @endauth
+
+            <div class="ml-2 flex items-center gap-1.5">
+                <x-preferences.language-switch />
+                <x-preferences.theme-switch />
+            </div>
         </nav>
 
         <button type="button" @click="mobile = !mobile" :aria-expanded="mobile"
