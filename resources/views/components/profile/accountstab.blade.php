@@ -1,4 +1,4 @@
-<div class="tab-pane profile-accounts-panel fade bg-white p-5 sm:p-8 rounded shadow active show" role="tabpanel" aria-labelledby="profile">
+<div class="tab-pane profile-accounts-panel fade active show p-5 sm:p-8" role="tabpanel" aria-labelledby="profile">
     <div class="border-bottom">
         <h5 class="text-md-start text-center">Forenaccount:</h5>
         @if($username)

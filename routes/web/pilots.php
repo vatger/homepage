@@ -20,8 +20,8 @@ Route::middleware('cookie.consent')->group(function () {
         ]);
 
         Route::group(['prefix' => 'aerodromes', 'as' => 'aerodromes.'], function () {
-            Route::get('/{icao}', AerodromePage::class)->name('view');
-            Route::get('/', AerodromeListPage::class)->name('viewall');
+            Route::livewire('/{icao}', AerodromePage::class)->name('view');
+            Route::livewire('/', AerodromeListPage::class)->name('viewall');
         });
     });
 });

@@ -1,22 +1,32 @@
 <p align="center">
-<img src="https://vatsim-germany.org/images/vacc_logo_white.png" width="400" alt="vatger"></img>
+<img src="https://vatsim-germany.org/images/brand/logo-email-dark.png" width="400" alt="vatger"></img>
 </p>
 
-## Useful documentation
+## Technology
 
-- Laravel https://laravel.com/docs
-- Template https://shreethemes.in/landrick/landing/index.html
-- Laravel Livewire https://livewire.laravel.com/docs/quickstart
+- PHP ^8.5, Laravel 13 and Livewire 4
+- Tailwind CSS 4 with Vite
+- TypeScript for interactive UI and page-specific integrations
+- Sass modules for public, administration and email styling
+
+The former Landrick and Bootstrap theme has been removed. Public and admin styles use separate Vite entry points while sharing the same branding tokens, components and locally bundled Vatger fonts.
+
+Useful documentation:
+
+- [Laravel](https://laravel.com/docs)
+- [Livewire](https://livewire.laravel.com/docs)
+- [Tailwind CSS](https://tailwindcss.com/docs)
+- [Vite](https://vite.dev/guide/)
 
 ## Installation
 
 1. Clone this git repo `git clone https://github.com/vatger/homepage.git`
 2. Install `php ^8.4`, `composer ^2`, `node`, `npm`
 3. Setup a mysql database (e.g. `mariadb`)
-4. copy `.env.example` to `.env` and edit its contents (maybe ask someone for the best settings)
-5. in your console run
-   1. `composer update`
-   2. `npm update`
+4. Copy `.env.example` to `.env` and configure it for your environment.
+5. In your console run
+   1. `composer install`
+   2. `npm install`
    3. `php artisan migrate`
    4. `php artisan db:seed`
    5. `npm run dev` or `npm run build`
@@ -24,9 +34,15 @@
    1. `php artisan serve --port=80`
    2. or set up your own php-fpm/cgi webserver according to the laravel documentation
 7. in local development it may be helpful to point some dns domains `*.vatger.test` to your local ip address
-8. the develop branch is auto published to https://dev.vatsim-germany.org/
-9. before committing to git please run `npm run format:write` to format the code or set up your IDE to auto format using prettier
+8. (the develop branch is auto published to https://dev.vatsim-germany.org/) (if avail)
+9. Before committing, run `npm run format:write`, `npm run build`, and `php artisan test`.
 
-### Other things
+## Frontend organization
 
-The vACC Germany Website Code is closed source, due to legal reasons.
+- `resources/css/app-public.css` — public Tailwind entry point
+- `resources/css/app-admin.css` — administration Tailwind entry point
+- `resources/scss/public/` — shared public components and page modules
+- `resources/scss/admin/` — administration shell and components
+- `resources/scss/mail.scss` — standalone email stylesheet
+- `resources/fonts/` — source-controlled fonts processed by Vite
+- `resources/ts/` — shared and page-specific TypeScript

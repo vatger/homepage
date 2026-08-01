@@ -16,6 +16,34 @@ function renderFeatherIcons() {
     });
 }
 
+let featherRenderQueued = false;
+
+function scheduleFeatherIcons() {
+  if (featherRenderQueued) return;
+  featherRenderQueued = true;
+  queueMicrotask(() => {
+    featherRenderQueued = false;
+    renderFeatherIcons();
+  });
+}
+
+function initializeFeatherObserver() {
+  const observer = new MutationObserver((mutations) => {
+    const hasNewIcons = mutations.some((mutation) =>
+      [...mutation.addedNodes].some(
+        (node) =>
+          node instanceof Element &&
+          (node.matches("[data-feather]") ||
+            node.querySelector("[data-feather]")),
+      ),
+    );
+
+    if (hasNewIcons) scheduleFeatherIcons();
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+}
+
 function selectorFromControl(control: HTMLElement): string | null {
   return control.getAttribute("data-bs-target") ?? control.getAttribute("href");
 }
@@ -216,7 +244,6 @@ export function initializePublicUi() {
   initializePersistentDetails();
   initializeLegacyControls();
   renderFeatherIcons();
-  window.addEventListener("featherReplace", () =>
-    queueMicrotask(renderFeatherIcons),
-  );
+  initializeFeatherObserver();
+  window.addEventListener("featherReplace", scheduleFeatherIcons);
 }

@@ -4,9 +4,10 @@
     'links' => [route('landing') => config('app.name')],
     'backgroundurl' => null,
     'backgroundshape' => 'bend',
+    'compact' => false,
 ])
 
-<section class="relative isolate flex min-h-80 items-center overflow-visible bg-primary-900 py-20 text-white"
+<section class="relative isolate flex items-center overflow-visible bg-primary-900 text-white {{ $compact ? 'min-h-56 py-12' : 'min-h-80 py-20' }}"
          style="background-image: linear-gradient(rgb(22 34 51 / 82%), rgb(22 34 51 / 88%)), url('{{ $backgroundurl ?? iasset('images/getstarted/getstarted_1.png') }}'); background-position: center; background-size: cover;">
     <div class="site-container text-center">
         <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">{{ $header }}</h1>

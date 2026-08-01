@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver as GdDriver;
+use Intervention\Image\Encoders\WebpEncoder;
 use Intervention\Image\ImageManager;
 
 class ImageHelperLibrary extends BaseLibrary
@@ -24,7 +25,7 @@ class ImageHelperLibrary extends BaseLibrary
                 'Host' => parse_url(config('app.url'), PHP_URL_HOST),
             ],
         ]);
-        $this->manager = ImageManager::withDriver(GdDriver::class);
+        $this->manager = new ImageManager(GdDriver::class);
     }
 
     public function get(string $filename, string $url, int $width = 1920, bool $fast = false): string
@@ -34,7 +35,7 @@ class ImageHelperLibrary extends BaseLibrary
             return Storage::url($filepath);
         }
         if ($fast) {
-            Storage::put($filepath, $this->manager->create(1, 1)->toWebp()->toString());
+            Storage::put($filepath, $this->manager->createImage(1, 1)->encode(new WebpEncoder)->toString());
             dispatch(new DownloadImageForCache($filepath, $url, $width));
 
             return Storage::url($filepath);
@@ -49,10 +50,10 @@ class ImageHelperLibrary extends BaseLibrary
             $response = $this->client->get($url);
             throw_if($response->getStatusCode() != 200, new \Exception);
             $data = $response->getBody()->getContents();
-            $image = $this->manager->read($data);
+            $image = $this->manager->decodeBinary($data);
             $image->scale(width: $width);
             Storage::delete($filepath);
-            Storage::put($filepath, $image->toWebp()->toString());
+            Storage::put($filepath, $image->encode(new WebpEncoder)->toString());
 
             return Storage::url($filepath);
         } catch (\Throwable $e) {
@@ -75,11 +76,11 @@ class ImageHelperLibrary extends BaseLibrary
             $response = $lib->client->get($url);
             throw_if($response->getStatusCode() != 200, new \Exception);
             $data = $response->getBody()->getContents();
-            $image = $lib->manager->read($data);
+            $image = $lib->manager->decodeBinary($data);
             if ($width != null) {
                 $image->scale(width: $width);
             }
-            Storage::put($filepath, $image->toWebp()->toString());
+            Storage::put($filepath, $image->encode(new WebpEncoder)->toString());
 
             return Storage::url($filepath);
         } catch (\Throwable $e) {
@@ -102,7 +103,7 @@ class ImageHelperLibrary extends BaseLibrary
         $lib = new self;
 
         try {
-            $image = $lib->manager->read(File::get(public_path($url)));
+            $image = $lib->manager->decodeBinary(File::get(public_path($url)));
 
             if ($width == null && $image->width() > 1920) {
                 $image->scale(1920);
@@ -111,7 +112,7 @@ class ImageHelperLibrary extends BaseLibrary
                 $image->scale(width: $width);
             }
 
-            Storage::put($filepath, $image->toWebp()->toString());
+            Storage::put($filepath, $image->encode(new WebpEncoder)->toString());
 
             return Storage::url($filepath);
         } catch (\Throwable $e) {

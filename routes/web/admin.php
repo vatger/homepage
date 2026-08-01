@@ -25,38 +25,38 @@ Route::prefix('administration')
     ->middleware(['cookie.redirect', 'auth', 'staff_data_protection'])
     ->group(function () {
         Route::get('/dashboard', [AdministrationPagesController::class, 'index'])->name('administration.dashboard');
-        Route::get('/membership/members', MemberListPage::class)->name('administration.members');
-        Route::get('/membership/members/{user}', MemberPage::class)->name('administration.member');
+        Route::livewire('/membership/members', MemberListPage::class)->name('administration.members');
+        Route::livewire('/membership/members/{user}', MemberPage::class)->name('administration.member');
 
-        Route::get('/membership/teams', TeamListPage::class)->name('administration.teams');
-        Route::get('/membership/teams/{team}', TeamPage::class)->name('administration.team');
+        Route::livewire('/membership/teams', TeamListPage::class)->name('administration.teams');
+        Route::livewire('/membership/teams/{team}', TeamPage::class)->name('administration.team');
 
-        Route::get('/survey', SurveyPage::class)->name('administration.survey');
-        Route::get('/email', EmailPage::class)->name('administration.email');
+        Route::livewire('/survey', SurveyPage::class)->name('administration.survey');
+        Route::livewire('/email', EmailPage::class)->name('administration.email');
 
         Route::prefix('navigation')->group(function () {
             Route::get('', function () {
                 return null;
             })->name('administration.navigation');
 
-            Route::get('stations', StationListPage::class)->name('administration.navigation.stations');
+            Route::livewire('stations', StationListPage::class)->name('administration.navigation.stations');
 
             Route::prefix('aerodromes')->group(function () {
-                Route::get('', AerodromeListPage::class)->name('administration.navigation.aerodromes');
-                Route::get('{aerodrome}', AerodromePage::class)->name('administration.navigation.aerodromes.view');
+                Route::livewire('', AerodromeListPage::class)->name('administration.navigation.aerodromes');
+                Route::livewire('{aerodrome}', AerodromePage::class)->name('administration.navigation.aerodromes.view');
             });
         });
 
         Route::prefix('tech')->group(function () {
-            Route::get('gdpr-log', GdprRemovalsLogPage::class)->name('administration.tech.gdpr');
+            Route::livewire('gdpr-log', GdprRemovalsLogPage::class)->name('administration.tech.gdpr');
 
-            Route::get('job-log', JoblogPage::class)->name('administration.tech.jobs');
+            Route::livewire('job-log', JoblogPage::class)->name('administration.tech.jobs');
 
-            Route::get('sys-log', SyslogPage::class)->name('administration.tech.syslog');
+            Route::livewire('sys-log', SyslogPage::class)->name('administration.tech.syslog');
 
-            Route::get('api-log', ApilogPage::class)->name('administration.tech.apilog');
+            Route::livewire('api-log', ApilogPage::class)->name('administration.tech.apilog');
 
-            Route::get('openid-connect', OpenIDConnectPage::class)->name('administration.tech.openidconnect');
+            Route::livewire('openid-connect', OpenIDConnectPage::class)->name('administration.tech.openidconnect');
         });
 
     });

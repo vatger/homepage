@@ -57,7 +57,7 @@
                     </thead>
                     <tbody>
                     @foreach ($logs as $log)
-                        <tr>
+                        <tr wire:key="syslog-{{ $log->id }}">
                             <td>{{ $log->created_at }}</td>
                             <td><small>{{ $log->id }}</small></td>
                             <td>{{ $log->type }}</td>
@@ -95,12 +95,16 @@
                                 <p><strong>Method:</strong> <span>{{ $sellog->method }}</span></p>
                                 <p><strong>Time:</strong> <span>{{ $sellog->created_at }}</span></p>
                                 @if(!empty($sellog->message))
-                                    <p><strong>Message:</strong>
-                                    <p>{!! str_replace("\n",'<br>', $log->message)  !!}</p>
+                                    <div class="mt-3">
+                                        <strong>Message:</strong>
+                                        <p class="mt-2 break-words">{!! nl2br(e($sellog->message)) !!}</p>
+                                    </div>
                                 @endif
                                 @if(!empty($sellog->stack_trace))
-                                    <p><strong>Stacktrace:</strong>
-                                    <p>{!! str_replace('#','<hr>#',$sellog->stack_trace) !!}</p>
+                                    <div class="mt-3">
+                                        <strong>Stacktrace:</strong>
+                                        <pre class="mt-2 max-h-[45vh] overflow-auto whitespace-pre-wrap rounded-2xl bg-secondary-100 p-4 text-xs dark:bg-secondary-950">{{ $sellog->stack_trace }}</pre>
+                                    </div>
                                 @endif
                             </div>
                         </div>

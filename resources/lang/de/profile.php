@@ -28,6 +28,14 @@ return [
         ],
 
         'notifications' => [
+            'title' => 'Benachrichtigungen',
+            'description' => 'Neuigkeiten und Hinweise zu deinem VATGER-Konto.',
+            'unread-only' => 'Nur ungelesene',
+            'read' => 'Gelesen',
+            'unread' => 'Ungelesen',
+            'mark-read' => 'Als gelesen markieren',
+            'mark-unread' => 'Als ungelesen markieren',
+            'empty' => 'Keine Benachrichtigungen vorhanden.',
             'settings-saved-successfully' => 'Settings saved successfully',
             'settings-saved-error' => 'There was an error saving your settings. Please try again later.',
         ],

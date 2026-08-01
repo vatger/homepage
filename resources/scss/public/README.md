@@ -11,5 +11,7 @@ Tailwind compiler entry; authored styles stay in these SCSS partials:
   their Blade templates are converted.
 - `pages/` contains page-specific styles only.
 
-The admin panel deliberately remains on `app-admin.scss` and the legacy
-JavaScript entry. Public templates must not import Bootstrap or Landrick.
+The public and administration areas use separate Tailwind entry points. Shared
+tokens and compatibility components live here; admin-only shell and component
+styles live in `resources/scss/admin/`. Bootstrap and Landrick are no longer
+part of either build.

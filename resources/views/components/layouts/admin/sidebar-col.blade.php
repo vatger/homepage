@@ -6,7 +6,7 @@
 
 @if($position == 'left')
     <div class="col-lg-4 col-md-12 col-sm-12 col-12 mt-4 order-1">
-        <div class="card border-0 rounded shadow p-4">
+        <div class="card p-5">
             <h5 class="mb-0">{{ $title }}:</h5>
             <div class="mt-4">
                 @foreach($items as $item)

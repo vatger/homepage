@@ -1,95 +1,73 @@
-<div class="tab-pane fade bg-white p-4 rounded shadow active show" role="tabpanel" aria-labelledby="notification">
-    <div>
-        <div class="d-flex align-items-center justify-content-between">
-            <h5 class="mb-0">Notifications:</h5>
+<div class="tab-pane profile-notifications-panel active show p-5 sm:p-8" role="tabpanel" aria-labelledby="notification">
+    <header class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex items-center gap-3">
+            <span class="profile-notifications-heading-icon">
+                <i data-feather="bell" class="size-5" aria-hidden="true"></i>
+            </span>
+            <div>
+                <h2 class="text-xl font-bold text-primary-900 dark:text-secondary-50">
+                    @lang('profile.profile.notifications.title')
+                </h2>
+                <p class="mt-1 text-sm text-secondary-500 dark:text-secondary-300">
+                    @lang('profile.profile.notifications.description')
+                </p>
+            </div>
         </div>
 
-        <div class="d-flex border-bottom align-items-center justify-content-between bg-light mt-4 p-3">
+        <label class="profile-notifications-filter" for="unread">
+            <input wire:model.live="unread" class="form-check-input" type="checkbox" id="unread">
+            <span>@lang('profile.profile.notifications.unread-only')</span>
+        </label>
+    </header>
 
-            <div class="form-check ps-0">
-                <div class="mb-0">
-                    <div class="form-check">
-                        <input wire:model.live="unread" class="form-check-input" type="checkbox" id="unread">
-                        <label class="form-check-label" for="unread">Unread only</label>
-                    </div>
-                </div>
-            </div>
-            {{--
+    <div class="mt-6 grid gap-3">
+        @forelse($notifications as $notification)
+            <article wire:key="profile-notification-{{ $notification->id }}"
+                     class="profile-notification-item {{ $notification->read_at ? 'is-read' : 'is-unread' }}">
+                <span class="profile-notification-status" title="{{ $notification->read_at ? __('profile.profile.notifications.read') : __('profile.profile.notifications.unread') }}">
+                    <i data-feather="{{ $notification->read_at ? 'check' : 'mail' }}" class="size-4" aria-hidden="true"></i>
+                    <span class="sr-only">{{ $notification->read_at ? __('profile.profile.notifications.read') : __('profile.profile.notifications.unread') }}</span>
+                </span>
 
-                        <div class="btn-group dropdown-primary me-2 mt-2">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Action
-                            </button>
-                            <div class="dropdown-menu">
-                                <a href="javascript:void(0)" class="dropdown-item">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="feather feather-eye-off fea icon-sm">
-                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                                        <line x1="1" y1="1" x2="23" y2="23"></line>
-                                    </svg>
-                                    Mark Unread</a>
-                                <a href="javascript:void(0)" class="dropdown-item">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="feather feather-corner-up-left fea icon-sm">
-                                        <polyline points="9 14 4 9 9 4"></polyline>
-                                        <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
-                                    </svg>
-                                    Reply</a>
-                                <a href="javascript:void(0)" class="dropdown-item">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="feather feather-corner-up-right fea icon-sm">
-                                        <polyline points="15 14 20 9 15 4"></polyline>
-                                        <path d="M4 20v-7a4 4 0 0 1 4-4h12"></path>
-                                    </svg>
-                                    Forward</a>
-                                <div class="dropdown-divider"></div>
-                                <a href="javascript:void(0)" class="dropdown-item text-danger">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                         stroke-linejoin="round" class="feather feather-trash-2 fea icon-sm">
-                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                    </svg>
-                                    Delete</a>
-                            </div>
+                <div class="min-w-0 flex-1">
+                    <div class="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <div class="min-w-0">
+                            <p class="profile-notification-source">{{ $notification->data['source_name'] }}</p>
+                            <h3 class="mt-1 font-semibold text-primary-900 dark:text-secondary-50">
+                                {{ $notification->data['title'] }}
+                            </h3>
                         </div>
-                        --}}
-        </div>
+                        <time class="shrink-0 text-xs text-secondary-500 dark:text-secondary-300"
+                              datetime="{{ $notification->created_at->toIso8601String() }}">
+                            {{ $notification->created_at->diffForHumans() }}
+                        </time>
+                    </div>
 
-        @foreach($notifications as $notification)
-            <div class="d-flex border-bottom p-3 {{ $loop->even ?  'bg-light' : ''}}">
-                <div class="form-check ps-0">
-                    <div class="mb-0">
-                        <i data-feather="{{ $notification->read_at ? 'check-circle' : 'circle' }}" class="fea text-muted me-3"></i>
+                    <div class="profile-notification-message mt-3">
+                        {!! $notification->data['message'] !!}
+                    </div>
+
+                    <div class="mt-4 flex justify-end">
+                        <button type="button" wire:click="notification_click('{{ $notification->id }}')" class="btn btn-sm btn-light">
+                            <i data-feather="{{ $notification->read_at ? 'mail' : 'check' }}" class="size-4" aria-hidden="true"></i>
+                            {{ $notification->read_at ? __('profile.profile.notifications.mark-unread') : __('profile.profile.notifications.mark-read') }}
+                        </button>
                     </div>
                 </div>
-                <div style="width: 100%">
-                    <div class="d-flex ms-2">
-                        {{--<img src="assets/images/client/01.jpg" class="avatar avatar-md-sm rounded-pill shadow" alt="">--}}
-                        <div class="flex-1 ms-3">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h8 class="text-dark">{{ $notification->data['source_name'] }}:</h8>
-                                    <h6 class="text-dark mt-1">{{ $notification->data['title'] }}</h6>
-                                </div>
-                                <div>
-                                    <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
-                                    <br>
-                                    <button wire:click="notification_click('{{ $notification->id }}')" class="btn btn-sm btn-soft-light">mark {{ $notification->read_at ? 'unread' : 'read' }}</button>
-                                </div>
-                            </div>
-
-                            <p class="text-muted mb-0">{!!$notification->data['message'] !!}</p>
-
-                        </div>
-                    </div>
-                </div>
+            </article>
+        @empty
+            <div class="rounded-2xl border border-dashed border-secondary-300 p-10 text-center dark:border-secondary-700">
+                <i data-feather="inbox" class="mx-auto size-7 text-secondary-400" aria-hidden="true"></i>
+                <p class="mt-3 text-sm text-secondary-500 dark:text-secondary-300">
+                    @lang('profile.profile.notifications.empty')
+                </p>
             </div>
-        @endforeach
+        @endforelse
+    </div>
 
-        <div class="d-flex align-items-center justify-content-between mt-4">
+    @if($notifications->hasPages())
+        <div class="mt-6 flex justify-center sm:justify-end">
             {{ $notifications->links() }}
         </div>
-    </div>
+    @endif
 </div>

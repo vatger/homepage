@@ -1,7 +1,6 @@
 import { showNoty } from "./noty.ts";
-import { Modal } from "bootstrap";
+import { hidePublicModal, showPublicModal } from "./public-ui";
 
-//for Livewire3
 import {
   Livewire,
   Alpine,
@@ -16,38 +15,9 @@ export function findLivewireComponent(name: string): Component {
 }
 
 export function loadLivewireExtensions() {
-  const cleanupModalBackdrop = () => {
-    document
-      .querySelectorAll(".modal-backdrop")
-      .forEach((backdrop) => backdrop.remove());
-    document.body.classList.remove("modal-open");
-    document.body.style.removeProperty("overflow");
-    document.body.style.removeProperty("padding-right");
-  };
-
-  Livewire.hook("commit", ({ component, commit, respond, succeed, fail }) => {
-    // Runs immediately before a commit's payload is sent to the server...
-
-    respond(() => {
-      // Runs after a response is received but before it's processed...
-    });
-
-    succeed(({ snapshot, effect }) => {
-      // Runs after a successful response is received and processed
-      // with a new snapshot and list of effects...
+  Livewire.interceptMessage(({ onSuccess }) => {
+    onSuccess(() => {
       window.dispatchEvent(new Event("featherReplace"));
-    });
-
-    fail(() => {
-      // Runs if some part of the request failed...
-    });
-  });
-
-  Livewire.hook("morph.updated", () => {
-    queueMicrotask(() => {
-      if (!document.querySelector(".modal.show")) {
-        cleanupModalBackdrop();
-      }
     });
   });
 
@@ -59,28 +29,14 @@ export function loadLivewireExtensions() {
   });
 
   Livewire.on("livewire_showModal", ({ event }) => {
-    let el = document.getElementById(event["detail"].dom_id);
-    if (el) {
-      let modal = Modal.getOrCreateInstance(el);
-      modal.show();
-    }
+    showPublicModal(event["detail"].dom_id);
   });
 
   Livewire.on("livewire_hideModal", ({ event }) => {
-    let el = document.getElementById(event["detail"].dom_id);
-    if (el) {
-      let modal = Modal.getOrCreateInstance(el);
-      modal.hide();
-    }
+    hidePublicModal(event["detail"].dom_id);
   });
 
   Livewire.on("profile_fir_changed", () => {
-    const el = document.getElementById("change-fir-modal");
-    if (el) {
-      Modal.getOrCreateInstance(el).hide();
-    }
-
-    cleanupModalBackdrop();
-    window.setTimeout(cleanupModalBackdrop, 350);
+    hidePublicModal("change-fir-modal");
   });
 }

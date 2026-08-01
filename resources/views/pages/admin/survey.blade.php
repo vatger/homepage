@@ -9,12 +9,21 @@
                 ]"
             ></x-layouts.admin.content>
 
+            @if(! $survey_available)
+                <div class="alert alert-danger" role="alert">
+                    LimeSurvey ist momentan nicht erreichbar. Die Verwaltung bleibt geöffnet und kann erneut geladen werden, sobald der Dienst wieder verfügbar ist.
+                </div>
+            @endif
+
             <div class="row">
                 <x-layouts.admin.sidebar-col position="left" title="Übersicht">
                     <div class="d-flex align-items-center mb-2">
                         <div class="flex-1">
                             <h6 class="text-primary mb-2">Ausgewählte Umfrage:</h6>
-                            <select wire:model.live="selected_survey" class="form-select form-control mt-2" aria-label="Ausgewählte Umfrage">
+                            <select wire:model.live="selected_survey" class="form-select mt-2" aria-label="Ausgewählte Umfrage" @disabled(! $survey_available)>
+                                @if(count($surveys) === 0)
+                                    <option value="">Keine Umfragen verfügbar</option>
+                                @endif
                                 @foreach($surveys as $s)
                                     <option value="{{$s->sid}}" @if($selected_survey == $s->sid) selected @endif>{{ '#' . $s->sid . ' '. $s->surveyls_title }}</option>
                                 @endforeach
@@ -36,7 +45,7 @@
                             <h6 class="text-primary mb-2">Keys generieren:</h6>
                             <p>Ausgewählte Umfrage: <code>{{ $selected_survey }}</code></p>
                             <p>Ausgewählte Gruppe: <code>{{ $selected_selection }}</code></p>
-                            <button wire:click="create_keys()" wire:loading.attr="disabled" class="btn btn-soft-success">
+                            <button wire:click="create_keys()" wire:loading.attr="disabled" class="btn btn-soft-success" @disabled(! $survey_available)>
                                 <i data-feather="plus" class="fea"></i>
                             </button>
                         </div>

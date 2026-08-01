@@ -1,8 +1,8 @@
-// Import custom Javascript
+import { initializeAdminUi } from "./admin-ui";
+import { initializePublicUi } from "./public-ui";
 
-import initTemplate from "./template";
-
-initTemplate();
+initializePublicUi();
+initializeAdminUi();
 
 import { loadLivewireExtensions } from "./livewire";
 

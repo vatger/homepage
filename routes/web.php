@@ -117,4 +117,4 @@ Route::group([
         })->name('landing');
 });
 
-Route::get('support', SupportPage::class)->name('redirect.support');
+Route::livewire('support', SupportPage::class)->name('redirect.support');

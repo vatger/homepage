@@ -1,6 +1,25 @@
 <?php
 
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Str;
+use VatsimData\DatafeedClasses\AtcRating;
+use VatsimData\DatafeedClasses\Atis;
+use VatsimData\DatafeedClasses\Controller;
+use VatsimData\DatafeedClasses\ControllerWithTransceivers;
+use VatsimData\DatafeedClasses\Facility;
+use VatsimData\DatafeedClasses\FlightPlan;
+use VatsimData\DatafeedClasses\General;
+use VatsimData\DatafeedClasses\MilitaryRating;
+use VatsimData\DatafeedClasses\Pilot;
+use VatsimData\DatafeedClasses\PilotRating;
+use VatsimData\DatafeedClasses\Prefile;
+use VatsimData\DatafeedClasses\Rating;
+use VatsimData\DatafeedClasses\RootObject;
+use VatsimData\DatafeedClasses\Server;
+use VatsimData\StatusClasses\Data;
+use VatsimData\TransceiverClasses\Transceiver;
+use VatsimData\TransceiverClasses\TransceiverOwner;
 
 return [
     /*
@@ -15,6 +34,32 @@ return [
     */
 
     'default' => env('CACHE_DRIVER', 'file'),
+
+    // VATSIM feed objects are intentionally cached and must remain serializable.
+    'serializable_classes' => [
+        Carbon::class,
+        CarbonImmutable::class,
+        stdClass::class,
+        AtcRating::class,
+        Atis::class,
+        Controller::class,
+        ControllerWithTransceivers::class,
+        Facility::class,
+        FlightPlan::class,
+        General::class,
+        MilitaryRating::class,
+        Pilot::class,
+        PilotRating::class,
+        Prefile::class,
+        Rating::class,
+        RootObject::class,
+        Server::class,
+        Data::class,
+        VatsimData\StatusClasses\RootObject::class,
+        VatsimData\TransceiverClasses\RootObject::class,
+        Transceiver::class,
+        TransceiverOwner::class,
+    ],
 
     /*
     |--------------------------------------------------------------------------

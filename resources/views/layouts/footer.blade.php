@@ -1,7 +1,7 @@
 <footer class="border-t border-secondary-100 bg-primary-900 text-white/70 dark:border-secondary-800">
     <div class="site-container grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-5">
         <div class="md:col-span-2">
-            <img src="{{ asset('images/brand/logo-dark.svg') }}" class="h-10 w-auto" alt="VATGER Logo">
+            <img src="{{ asset('images/brand/logo-dark.svg') }}" class="h-12 w-auto" alt="VATGER Logo">
             <p id="slogan_one" class="mt-5 max-w-md text-sm leading-6 text-secondary-300"></p>
             <div class="mt-6 flex flex-wrap gap-2">
                 @foreach([

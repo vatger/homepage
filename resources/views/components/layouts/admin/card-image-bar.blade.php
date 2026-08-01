@@ -7,11 +7,11 @@
 
 <div class="row mt-4">
     <div class="col-12">
-        <div class="bg-primary card border-0 shadow rounded overflow-hidden p-4"
+        <div class="card border-0 overflow-hidden p-4"
              style="background: url('{{ $bg_img ?? '' }}') center;background-size: cover;">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-8">
-                    <div class="text-center bg-white p-4 rounded">
+                    <div class="text-center bg-white p-4 rounded-2xl">
                         <img src="{{ $m_img }}" class="rounded-circle shadow avatar avatar-md-md"
                              alt="">
                         <h5 class="mt-3 mb-0">{{ $title }}</h5>

@@ -16,7 +16,10 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasBanConcern, HasFirConcern, HasGDPRConcern, HasRoles, HasTeamConcern, Notifiable;
+    use HasApiTokens, HasBanConcern, HasFirConcern, HasGDPRConcern, Notifiable;
+    use HasRoles, HasTeamConcern {
+        HasTeamConcern::teams insteadof HasRoles;
+    }
 
     protected $table = 'user_users';
 

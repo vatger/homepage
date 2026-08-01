@@ -12,12 +12,12 @@ use App\Http\Middleware\Membership\CheckGDPRMiddleware;
 use App\Http\Middleware\Membership\CheckHomepageBanned;
 use App\Http\Middleware\Membership\CheckSDPMiddleware;
 use App\Http\Middleware\Membership\CheckTermsMiddleware;
+use App\Http\Middleware\PreventRequestForgery;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SysLogMiddleware;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
-use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
@@ -65,7 +65,7 @@ class Kernel extends HttpKernel
             AddQueuedCookiesToResponse::class,
             AuthenticateSession::class,
             ShareErrorsFromSession::class,
-            VerifyCsrfToken::class,
+            PreventRequestForgery::class,
             SubstituteBindings::class,
             LocaleMiddleware::class,
             CookieConsentMiddleware::class,
@@ -106,7 +106,7 @@ class Kernel extends HttpKernel
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
-        'csrf' => VerifyCsrfToken::class,
+        'csrf' => PreventRequestForgery::class,
         'pending_removal' => CheckGDPRMiddleware::class,
         'banned' => CheckHomepageBanned::class,
         'check-terms' => CheckTermsMiddleware::class,

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver as GdDriver;
+use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 use Intervention\Image\ImageManager;
 
 class ImageHelperController extends Controller
@@ -13,9 +15,9 @@ class ImageHelperController extends Controller
     {
         if (! self::$manager) {
             try {
-                self::$manager = ImageManager::imagick();
-            } catch (\Exception $e) {
-                self::$manager = ImageManager::gd();
+                self::$manager = new ImageManager(ImagickDriver::class);
+            } catch (\Throwable) {
+                self::$manager = new ImageManager(GdDriver::class);
             }
         }
 
@@ -43,19 +45,20 @@ class ImageHelperController extends Controller
         // Use basename() function to return the base name of file
         $file_name = basename($url);
 
-        file_put_contents(Storage::path('public/images/'.$file_name), file_get_contents($url));
+        $downloadPath = Storage::path('public/images/'.$file_name);
+        file_put_contents($downloadPath, file_get_contents($url));
 
-        $image = self::manager()->read($img);
+        $image = self::manager()->decodePath($downloadPath);
 
         if ($sizeX == 0 && $sizeY == 0) {
-            $sizeX = $image->size()->width();
-            $sizeY = $image->size()->height();
+            $sizeX = $image->width();
+            $sizeY = $image->height();
         } elseif ($sizeX == 0) {
-            $scale = floatval($sizeY) / $image->size()->height();
-            $sizeX = (int) round($scale * $image->size()->width());
+            $scale = floatval($sizeY) / $image->height();
+            $sizeX = (int) round($scale * $image->width());
         } elseif ($sizeY == 0) {
-            $scale = floatval($sizeX) / $image->size()->width();
-            $sizeY = (int) round($scale * $image->size()->height());
+            $scale = floatval($sizeX) / $image->width();
+            $sizeY = (int) round($scale * $image->height());
         }
 
         $image->resize($sizeX, $sizeY);

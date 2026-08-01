@@ -50,9 +50,9 @@ class SyslogPage extends Component
         ]);
     }
 
-    public function view_log($log_id): void
+    public function view_log(int $log_id): void
     {
-        $this->log_id = $log_id;
+        $this->log_id = (string) $log_id;
     }
 
     public function close_log(): void
@@ -63,7 +63,8 @@ class SyslogPage extends Component
     public function delete_log(): void
     {
         if ($this->log_id) {
-            SysLog::find($this->log_id)->delete();
+            SysLog::find($this->log_id)?->delete();
+            $this->log_id = null;
         }
     }
 }

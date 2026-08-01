@@ -26,7 +26,7 @@ Route::group([
             ->name('vatsim.authentication.connect.logout');
     });
 
-    Route::get('check_terms', PolicyCheckPage::class)
+    Route::livewire('check_terms', PolicyCheckPage::class)
         ->name('check-terms')
         ->middleware('auth');
 

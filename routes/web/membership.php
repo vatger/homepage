@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('members')
     ->middleware(['auth', 'pending_removal', 'banned', 'check-terms', 'staff_data_protection'])
     ->group(function () {
-        Route::get('/profile', MembershipPage::class)->name('member.profile');
+        Route::livewire('/profile', MembershipPage::class)->name('member.profile');
         Route::get('/profile/notifications', function () {
             return redirect()->route('member.profile', ['tab' => 'notifications']);
         })->name('member.profile.notifications');
@@ -29,7 +29,7 @@ Route::prefix('members')
             ->withoutMiddleware('banned')
             ->name('member.refresh');
 
-        Route::get('/sdp', StaffDataProtection::class)
+        Route::livewire('/sdp', StaffDataProtection::class)
             ->withoutMiddleware(['staff_data_protection'])
             ->name('administration.sdp');
 

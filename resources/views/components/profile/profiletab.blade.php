@@ -1,4 +1,4 @@
-<div class="tab-pane profile-panel fade bg-white active show" id="profile-tab" role="tabpanel" aria-labelledby="profile">
+<div class="tab-pane profile-panel fade active show" id="profile-tab" role="tabpanel" aria-labelledby="profile">
     <div class="border-bottom profile-details-section">
         <div class="row g-4 profile-details-row">
             <div class="col-md-6 profile-details-column">

@@ -66,11 +66,11 @@
   }
 
   .preference-switch {
-    @apply inline-flex shrink-0 items-center gap-1 rounded-2xl bg-secondary-100 p-1 dark:bg-secondary-800;
+    @apply inline-flex shrink-0 items-center gap-0.5 rounded-xl bg-secondary-100 p-0.5 dark:bg-secondary-800;
   }
 
   .preference-switch-option {
-    @apply inline-flex size-9 items-center justify-center rounded-xl text-primary-700 transition hover:bg-white hover:text-primary-900 focus-visible:outline-primary-900 dark:text-secondary-300 dark:hover:bg-secondary-700 dark:hover:text-secondary-50 dark:focus-visible:outline-primary-400;
+    @apply inline-flex size-8 items-center justify-center rounded-lg text-primary-700 transition hover:bg-white hover:text-primary-900 focus-visible:outline-primary-900 dark:text-secondary-300 dark:hover:bg-secondary-700 dark:hover:text-secondary-50 dark:focus-visible:outline-primary-400;
   }
 
   .preference-switch-option.is-active {

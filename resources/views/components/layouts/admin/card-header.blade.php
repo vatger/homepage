@@ -6,7 +6,7 @@
 ])
 @if($position == 'left')
     <div class="col-lg-8 col-md-6 col-sm-12 mb-1">
-        <div class="features feature-primary d-flex justify-content-between align-items-center bg-white">
+        <div class="features feature-primary d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
                 <div class="icon text-center rounded-pill">
                     <i data-feather="{{ $icon ?? 'feather' }}" class="fea fs-4 mb-0"></i>
@@ -21,7 +21,7 @@
         </div>
     </div>
 @else
-    <div class="col-lg-4 col-md-6 col-sm-12 mt-2" style="text-align: right">
+    <div class="col-lg-4 col-md-6 col-sm-12 mt-2 text-end">
         {{ $slot }}
     </div>
 @endif
