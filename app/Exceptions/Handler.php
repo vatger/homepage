@@ -39,6 +39,13 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
+        // Passport throws its own authentication exception from the OAuth
+        // authorize endpoint. Unlike the application's auth middleware, that
+        // exception would otherwise be rendered as a plain 401 response.
+        if ($e instanceof \Laravel\Passport\Exceptions\AuthenticationException) {
+            return redirect()->guest(route('vatsim.authentication.connect.login'));
+        }
+
         $log = [
             'user_id' => Auth::check() ? Auth::user()->id : null,
             'type' => $this->isHttpException($e) ? 'http' : 'exception',
