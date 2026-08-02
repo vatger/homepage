@@ -46,7 +46,7 @@
 
     <div class="border-t border-secondary-800">
         <div class="site-container flex flex-col items-center justify-between gap-4 py-6 text-sm sm:flex-row">
-            <p>&copy; {{ now()->year }} VATSIM Germany</p>
+            <p>&copy; {{ now()->year }} vatger</p>
             <div class="flex items-center gap-2">
                 <x-preferences.language-switch />
                 <x-preferences.theme-switch />

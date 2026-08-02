@@ -102,10 +102,10 @@
         <div class="mt-5">
             <div class="profile-setting-row border-danger-200 dark:border-danger-900">
                 <div>
-                    <h3 class="font-semibold text-danger-900 dark:text-danger-200">VATSIM Germany Account</h3>
+                    <h3 class="font-semibold text-danger-900 dark:text-danger-200">vatger Account</h3>
                 </div>
                 <div class="profile-setting-actions">
-                    <button type="button" wire:click="call_delete_me" wire:confirm="I want to delete my VATSIM Germany account!"
+                    <button type="button" wire:click="call_delete_me" wire:confirm="I want to delete my vatger account!"
                         class="btn bg-danger-700 text-white hover:bg-danger-800">
                         <i data-feather="trash-2" class="size-4"></i> Delete account
                     </button>

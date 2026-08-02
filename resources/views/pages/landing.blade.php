@@ -7,7 +7,7 @@
         <div class="site-container py-24 sm:py-32">
             <div class="max-w-3xl">
                 <span class="landing-kicker">@lang('landing.welcome.badge-text')</span>
-                <h1 class="mt-6 text-5xl font-bold tracking-tight text-white sm:text-6xl">VATSIM Germany</h1>
+                <h1 class="mt-6 text-5xl font-bold tracking-tight text-white sm:text-6xl">vatger</h1>
                 <p id="typewriter" class="mt-5 min-h-8 text-xl text-secondary-200 sm:text-2xl">@lang('pages.landing.hero-fallback')</p>
                 <div class="mt-8 flex flex-wrap gap-3">
                     <a href="{{ route('redirect.knowledgebase.start') }}" class="btn btn-primary px-6">@lang('landing.join-now-button-content')</a>
@@ -19,6 +19,7 @@
     </section>
 
     <x-landing.welcome />
+    <x-landing.live-traffic :traffic="$traffic" />
     <x-landing.events />
     <x-landing.partners :partners="\App\Models\Partner::all()" />
 @endsection

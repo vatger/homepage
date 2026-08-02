@@ -23,6 +23,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('vatger:cleanup')->hourly();
         $schedule->command('vatger:start-removals')->everySixHours();
         $schedule->command('vatger:work-removals')->everyMinute();
+
+        $schedule->command('vatsimdata:refresh')->everyTwentySeconds();
     }
 
     /**

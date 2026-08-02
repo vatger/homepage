@@ -38,16 +38,16 @@
         x-data="{ mobile: false, scrolled: window.scrollY > 24 }"
         @scroll.window="scrolled = window.scrollY > 24"
         @keydown.escape.window="mobile = false">
-    <div class="site-container flex h-20 items-center justify-between gap-4 transition-[height] duration-200"
+    <div class="site-container flex h-22 items-center justify-between gap-4 transition-[height] duration-200"
          @if($isLandingPage) :class="scrolled ? 'h-20' : 'h-28'" @endif>
         <a href="{{ route('landing') }}" class="shrink-0" aria-label="{{ config('app.name') }}">
             <img src="{{ asset('images/brand/logo-light.svg') }}"
-                 class="w-auto transition-[height] duration-200 dark:hidden {{ $isLandingPage ? '' : 'h-16' }}"
-                 @if($isLandingPage) style="height: 6rem" :style="{ height: scrolled ? '3.5rem' : '6rem' }" @endif
+                 class="w-auto transition-[height] duration-200 dark:hidden {{ $isLandingPage ? '' : 'h-10' }}"
+                 @if($isLandingPage) style="height: 5.5rem" :style="{ height: scrolled ? '3.5rem' : '5.5rem' }" @endif
                  alt="VATGER Logo">
             <img src="{{ asset('images/brand/logo-dark.svg') }}"
-                 class="hidden w-auto transition-[height] duration-200 dark:block {{ $isLandingPage ? '' : 'h-16' }}"
-                 @if($isLandingPage) style="height: 6rem" :style="{ height: scrolled ? '3.5rem' : '6rem' }" @endif
+                 class="hidden w-auto transition-[height] duration-200 dark:block {{ $isLandingPage ? '' : 'h-10' }}"
+                 @if($isLandingPage) style="height: 5.5rem" :style="{ height: scrolled ? '3.5rem' : '5.5rem' }" @endif
                  alt="VATGER Logo">
         </a>
 
@@ -63,7 +63,7 @@
                          class="absolute right-0 top-full mt-2 w-64 rounded-xl border border-secondary-200 bg-white p-2 shadow-xl dark:border-secondary-700 dark:bg-secondary-800">
                         @foreach($items as [$href, $itemLabel, $external])
                             <a href="{{ $href }}" @if($external) target="_blank" rel="noopener" @endif
-                               class="block rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-secondary-100 hover:text-accent-600 dark:hover:bg-secondary-700 dark:hover:text-accent-400">
+                            class="block rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-secondary-100 hover:text-accent-600 dark:hover:bg-secondary-700 dark:hover:text-accent-400">
                                 {{ $itemLabel }}
                             </a>
                         @endforeach
@@ -82,9 +82,11 @@
                          class="absolute right-0 top-full mt-2 w-56 rounded-xl border border-secondary-200 bg-white p-2 shadow-xl dark:border-secondary-700 dark:bg-secondary-800">
                         <a href="{{ route('member.profile') }}" class="block rounded-lg px-3 py-2.5 text-sm hover:bg-secondary-100 dark:hover:bg-secondary-700">@lang('navigation.user.profile')</a>
                         @can('administration.access')
-                            <a href="{{ route('administration.dashboard') }}" class="block rounded-lg px-3 py-2.5 text-sm hover:bg-secondary-100 dark:hover:bg-secondary-700">@lang('navigation.user.administration')</a>
+                            <a href="{{ route('administration.dashboard') }}"
+                               class="block rounded-lg px-3 py-2.5 text-sm hover:bg-secondary-100 dark:hover:bg-secondary-700">@lang('navigation.user.administration')</a>
                         @endcan
-                        <a href="{{ route('vatsim.authentication.connect.logout') }}" class="block rounded-lg px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/50">@lang('navigation.user.logout')</a>
+                        <a href="{{ route('vatsim.authentication.connect.logout') }}"
+                           class="block rounded-lg px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/50">@lang('navigation.user.logout')</a>
                     </div>
                 @else
                     <a href="{{ route('vatsim.authentication.connect.login') }}" class="btn btn-primary">@lang('navigation.user.login')</a>

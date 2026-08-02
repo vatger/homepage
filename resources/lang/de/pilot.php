@@ -2,6 +2,8 @@
 
 return [
     'aerodromes' => [
+        'arrivals' => 'Ankünfte',
+        'departures' => 'Abflüge',
         'title' => 'Flugplätze',
         'view-airport-text' => 'Flugplatz anzeigen',
         'search-text' => 'Flugplätze durchsuchen',

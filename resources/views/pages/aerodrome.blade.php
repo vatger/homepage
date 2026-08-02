@@ -24,7 +24,7 @@
         <div class="container">
             <div class="row g-4">
                 <!-- BLog Start -->
-                <div class="col-lg-8 col-md-6">
+                <div class="col-lg-9 col-md-6">
                     <div class="card blog blog-detail aerodrome-panel">
                         <div class="card-body content">
                             <div class="w-100">
@@ -86,114 +86,84 @@
                         </div>
                     </div>
 
-                    <div class="card blog-detail aerodrome-panel mt-4">
-                        <div class="card-body content">
-                            <h4 class="text-dark">@lang('pilot.aerodromes.aerodrome.upcoming-event-title-text')</h4>
-                            <div wire:ignore class="w-100" id="event-container">
-                                <img src="" class="card-img-top loader-show overflow-hidden mt-3 w-100" id="event-banner" style="min-width: 100%">
-                                <h5 class="mt-3 text-muted" id="event-title">@lang('pilot.aerodromes.aerodrome.loading-event-text')</h5>
-                                <div class="mt-3 text-muted" id="event-text"></div>
-
-                                <div class="alert alert-light shadow" id="event-routes" role="alert" style="display: none"></div>
+                    <div class="mt-4 grid gap-4 lg:grid-cols-[minmax(0,.8fr)_minmax(0,1.2fr)]">
+                        <section class="surface overflow-hidden">
+                            <h2 class="aerodrome-dynamic-title">METAR</h2>
+                            <div class="p-5">
+                                <code wire:ignore class="aerodrome-weather" id="metar-container">@lang('pages.common.loading')</code>
                             </div>
-                        </div>
+                        </section>
+
+                        <section class="surface overflow-hidden" id="atis-widget" wire:ignore.self>
+                            <h2 class="aerodrome-dynamic-title">ATIS</h2>
+                            <div class="p-5">
+                                <code wire:ignore class="aerodrome-weather" id="atis-container"
+                                      data-empty-text="{{ __('pages.aerodrome.no-atis-available') }}">@lang('pages.common.loading')</code>
+                            </div>
+                        </section>
+
+                        <section class="surface overflow-hidden lg:col-span-2">
+                            <h2 class="aerodrome-dynamic-title">@lang('pages.aerodrome.active-atc')</h2>
+                            <div wire:ignore class="table-responsive" id="table-atc-container"
+                                 data-monitoring-text="{{ __('pages.aerodrome.monitoring') }}"
+                                 data-empty-text="{{ __('pages.aerodrome.no-atc-online') }}">
+                                <table class="table aerodrome-atc-table" id="table-active-atc">
+                                    <tbody id="loading-text-atc">
+                                    <tr>
+                                        <td class="text-center" colspan="2">@lang('pages.common.loading')</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <section class="surface overflow-hidden lg:col-span-2">
+                            <div class="aerodrome-dynamic-title flex items-center justify-between gap-4">
+                                <h2 class="text-base font-bold text-primary-900 dark:text-secondary-50">@lang('pages.aerodrome.aircraft')</h2>
+                                <span class="badge" id="aircraft-count">0</span>
+                            </div>
+                            <div wire:ignore class="aerodrome-aircraft-list" id="aircraft-container"
+                                 data-empty-text="{{ __('pages.aerodrome.no-aircraft') }}"
+                                 data-summary-template="{{ __('pages.aerodrome.aircraft-summary') }}">
+                                <p class="p-5 text-sm text-secondary-500 dark:text-secondary-300">@lang('pages.common.loading')</p>
+                            </div>
+                        </section>
                     </div>
                 </div>
                 <!-- BLog End -->
 
                 <!-- START SIDEBAR -->
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="card sidebar sticky-bar aerodrome-sidebar">
-                        <div class="card-body p-0">
-
-                            <div class="widget">
-                                <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0 text-dark">
-                                    @lang('pages.aerodrome.links')
-                                </span>
-
-                                <div class="mt-2 mb-2">
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex-1 ms-1">
-                                            @foreach($links as $category)
-                                                <span class="d-block text-center h6 mb-1 mt-2 text-dark">
-                                                    {{ $category[0]->category }}
-                                                </span>
-                                                @foreach($category as $link)
-                                                    @if(!preg_match("/^https:\/\/[a-zA-Z0-9_-]*\.?vatsim-germany\.org.*/", $link->url))
-                                                        <a class="btn btn-secondary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#warning-{{ bin2hex($link->url) }}">
-                                                            <span>{{ $link->name }}</span>
-                                                            <i data-feather="external-link" class="ms-1 fea icon-sm"></i>
-                                                        </a>
-                                                    @else
-                                                        <a href="{{ $link->url }}" class="btn btn-secondary w-100 mb-2">
-                                                            {{ $link->name }}
-                                                        </a>
-                                                    @endif
-                                                @endforeach
+                <div class="col-lg-3 col-md-6 col-12">
+                    <aside class="aerodrome-sidebar surface overflow-hidden">
+                        <section class="aerodrome-sidebar-section">
+                            <h2 class="aerodrome-sidebar-title">@lang('pages.aerodrome.links')</h2>
+                            <div class="space-y-5 p-4">
+                                @foreach($links as $category)
+                                    <div>
+                                        <h3 class="mb-2 px-1 text-sm font-bold text-primary-900 dark:text-secondary-50">{{ $category[0]->category }}</h3>
+                                        <div class="space-y-2">
+                                            @foreach($category as $link)
+                                                <a href="{{ $link->url }}" target="_blank" rel="noopener noreferrer" class="aerodrome-sidebar-link">
+                                                    <span>{{ $link->name }}</span>
+                                                    <i data-feather="external-link" class="size-4 shrink-0" aria-hidden="true"></i>
+                                                </a>
                                             @endforeach
                                         </div>
                                     </div>
+                                @endforeach
+                            </div>
+                        </section>
+
+                        <section class="aerodrome-sidebar-section">
+                            <h2 class="aerodrome-sidebar-title">@lang('pilot.aerodromes.aerodrome.upcoming-event-title-text')</h2>
+                            <div wire:ignore class="aerodrome-sidebar-events p-4" id="event-container">
+                                <div class="animate-pulse space-y-3">
+                                    <div class="h-32 rounded-2xl bg-secondary-100 dark:bg-secondary-700"></div>
+                                    <div class="h-4 w-3/4 rounded bg-secondary-100 dark:bg-secondary-700"></div>
                                 </div>
                             </div>
-
-
-                            <!-- RECENT POST -->
-                            <div class="widget mt-4">
-                                <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0 text-dark">
-                                    METAR
-                                </span>
-
-                                <div class="mt-2 mb-2">
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex-1 ms-3" style="margin-right: 1rem !important;">
-                                            <code wire:ignore class="d-block title text-dark" id="metar-container">@lang('pages.common.loading')</code>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- RECENT POST -->
-                            <!-- RECENT POST -->
-                            <div class="widget mt-4" id="atis-widget" wire:ignore.self>
-                                <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0 text-dark">
-                                    ATIS
-                                </span>
-
-                                <div class="mt-2 mb-2">
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex-1 ms-3" style="margin-right: 1rem !important;">
-                                            <code wire:ignore class="d-block title text-dark" id="atis-container">@lang('pages.common.loading')</code>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- RECENT POST -->
-
-                            <!-- RECENT POST -->
-                            <div class="widget mt-4">
-                                <span class="bg-light d-block py-2 rounded shadow text-center h6 mb-0 text-dark">
-                                    @lang('pages.aerodrome.active-atc')
-                                </span>
-
-                                <div class="mt-2">
-                                    <div class="d-flex align-items-center">
-                                        <div wire:ignore class="flex-1 ms-3 table-responsive" style="margin-right: 1rem !important;"
-                                             id="table-atc-container"
-                                             data-monitoring-text="{{ __('pages.aerodrome.monitoring') }}"
-                                             data-empty-text="{{ __('pages.aerodrome.no-atc-online') }}">
-                                            <table class="table table-center" id="table-active-atc">
-                                                <tbody id="loading-text-atc">
-                                                <tr>
-                                                    <td class="text-center" colspan="2">@lang('pages.common.loading')</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- RECENT POST -->
-                        </div>
-                    </div>
+                        </section>
+                    </aside>
                 </div>
                 <!--end col-->
                 <!-- END SIDEBAR -->

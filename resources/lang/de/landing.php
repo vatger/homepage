@@ -5,7 +5,7 @@ return [
     'read-more-button-content' => 'Read More',
 
     'welcome' => [
-        'title' => 'Willkommen bei <span class="text-primary">vatger</span>',
+        'title' => 'Willkommen bei <span class="text-accent-500">vatger</span>',
         'text' => [
             '<p class="sub">
                 Auf diesen Seiten findest du alles rund um das virtuelle Lotsen und Fliegen im deutschen Luftraum auf VATSIM.
@@ -30,5 +30,22 @@ return [
     'partner' => [
         'title' => 'Partner',
         'text' => 'Schau dir unsere Partner an',
+    ],
+
+    'traffic' => [
+        'label' => 'Live-Netzwerk',
+        'title' => 'Deutschland ist online',
+        'text' => 'Sieh die aktuell meistfrequentierten Flugplätze, besetzten Stationen und den Live-Verkehr über Deutschland.',
+        'map-alt' => 'Live-VATSIM-Verkehrskarte von Deutschland',
+        'aerodromes' => 'Beliebte Flugplätze',
+        'stations' => 'Besetzte Stationen',
+        'departures' => 'Abflüge',
+        'arrivals' => 'Ankünfte',
+        'departures-count' => ':count Abflüge',
+        'arrivals-count' => ':count Ankünfte',
+        'controllers-count' => ':count Lotsen online',
+        'atis-count' => ':count ATIS online',
+        'empty-aerodromes' => 'Zurzeit gibt es keine Live-Aktivität an Flugplätzen.',
+        'empty-stations' => 'Zurzeit sind keine lokalen ATC-Stationen online.',
     ],
 ];

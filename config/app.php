@@ -79,7 +79,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'VATSIM Germany'),
+    'name' => env('APP_NAME', 'vatger'),
 
     'version' => env('APP_VERSION', '3.0'),
 

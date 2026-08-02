@@ -5,7 +5,7 @@ return [
     'read-more-button-content' => 'Read More',
 
     'welcome' => [
-        'title' => 'Welcome to <span class="text-primary">vatger</span>',
+        'title' => 'Welcome to <span class="text-accent-500">vatger</span>',
         'text' => [
             '<p class="sub">
                 On these pages you will find everyting you need to know about controlling or flying in the German airspace on VATSIM.
@@ -31,5 +31,22 @@ return [
     'partner' => [
         'title' => 'Partners',
         'text' => 'Take a look at our partners',
+    ],
+
+    'traffic' => [
+        'label' => 'Live network',
+        'title' => 'Germany is online',
+        'text' => 'See the currently busiest aerodromes, staffed stations and live traffic across Germany.',
+        'map-alt' => 'Live VATSIM traffic map of Germany',
+        'aerodromes' => 'Hot aerodromes',
+        'stations' => 'Staffed stations',
+        'departures' => 'Departures',
+        'arrivals' => 'Arrivals',
+        'departures-count' => ':count departures',
+        'arrivals-count' => ':count arrivals',
+        'controllers-count' => ':count controllers',
+        'atis-count' => ':count ATIS online',
+        'empty-aerodromes' => 'No live aerodrome activity at the moment.',
+        'empty-stations' => 'No local ATC stations are currently online.',
     ],
 ];

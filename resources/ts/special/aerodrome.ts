@@ -1,4 +1,3 @@
-import mapboxgl from "mapbox-gl";
 import { find, forEach, isEmpty, uniq, filter } from "lodash";
 import { findLivewireComponent } from "../livewire-public.js";
 import { dayjs } from "../dayjs";
@@ -7,9 +6,9 @@ import {
   map,
   Map,
   tileLayer,
-  icon,
+  divIcon,
   marker,
-  circleMarker,
+  polyline,
   layerGroup,
   LayerGroup,
   Marker,
@@ -21,12 +20,20 @@ document.addEventListener("DOMContentLoaded", () => {
   atis().then();
   indicator().then();
   event().then();
-  download_map().then(() => update_map());
+  download_map().then(() => {
+    update_map();
+    updateAircraftList();
+  });
 });
 
 window.setInterval(() => {
-  download_map().then(() => update_map());
+  download_map().then(() => {
+    update_map();
+    updateAircraftList();
+  });
 }, 10000);
+
+window.setInterval(() => updatePredictedPaths(), 1000);
 
 let mymap: Map | null = null;
 
@@ -65,14 +72,76 @@ async function load_map(): Promise<void> {
   );
   const mytilelayer = tileLayer(mapbox_link, {
     attribution: `© <a href="https://www.mapbox.com/about/maps">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://apps.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>`,
-    maxZoom: 17,
+    maxZoom: 21,
   }).addTo(mymap);
 
   mymap.on("zoomend", () => update_map());
 }
 
+type AerodromeAircraft = {
+  callsign: string;
+  type?: string;
+  departure?: string;
+  arrival?: string;
+  altitude: number;
+  groundspeed: number;
+  latitude: number;
+  longitude: number;
+  heading: number;
+  groundstate: string;
+  gate?: string | null;
+  track: AerodromeTrackPoint[];
+};
+
+type AerodromeTrackPoint = {
+  latitude: number;
+  longitude: number;
+  heading: number;
+  recorded_at: string;
+  predicted: boolean;
+};
+
 let standstatus_data: Array<0> = [];
-let aircraftstatus_data: Array<0> = [];
+let aircraftstatus_data: AerodromeAircraft[] = [];
+
+const aircraftAssetPath = "/images/brand/aircraft";
+const predictedPathHorizonMs = 16_000;
+const aircraftSimulationDelayMs = 9_000;
+
+function createGateIcon(
+  occupied: boolean,
+  standId: string,
+  showLabel: boolean,
+) {
+  const asset = occupied ? "plane-gate-occupied.svg" : "plane-gate-empty.svg";
+  const markerSize = 16;
+
+  return divIcon({
+    className: "aerodrome-gate-icon",
+    html: `<span class="aerodrome-gate-marker aerodrome-gate-marker--${occupied ? "occupied" : "empty"}">
+      ${showLabel ? `<span class="aerodrome-gate-label">${escapeHtml(standId)}</span>` : ""}
+      <img src="${aircraftAssetPath}/${asset}" alt="" aria-hidden="true" style="width: ${markerSize}px !important; height: ${markerSize}px !important;" />
+    </span>`,
+    iconSize: [markerSize, showLabel ? 30 : markerSize],
+    iconAnchor: [markerSize / 2, showLabel ? 15 : markerSize / 2],
+  });
+}
+
+function createAircraftIcon(heading: number) {
+  const aircraftTransform = `translate(-50%, -50%) rotate(${heading - 90}deg)`;
+  // Gate symbols are rendered at 16px high. Use that same visible size for
+  // moving aircraft so both marker types remain visually consistent.
+  const markerSize = 16;
+
+  return divIcon({
+    className: "aerodrome-aircraft-icon",
+    html: `<span class="aerodrome-aircraft-marker" style="width: ${markerSize}px !important; height: ${markerSize}px !important;">
+      <img class="aerodrome-aircraft-plane-image" src="${aircraftAssetPath}/plane-taxi.svg" alt="" aria-hidden="true" style="width: ${markerSize}px !important; height: ${markerSize}px !important; transform: ${aircraftTransform}" />
+    </span>`,
+    iconSize: [markerSize, markerSize],
+    iconAnchor: [markerSize / 2, markerSize / 2],
+  });
+}
 
 async function download_map() {
   const lwc = await getAerodromeComponent();
@@ -80,36 +149,309 @@ async function download_map() {
   aircraftstatus_data = await lwc.$wire.load_aircraft();
 }
 
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (character) => {
+    const entities: Record<string, string> = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;",
+    };
+
+    return entities[character];
+  });
+}
+
+function formatGroundstate(groundstate: string): string {
+  return groundstate
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function interpolateHeading(
+  from: number,
+  to: number,
+  progress: number,
+): number {
+  const delta = ((to - from + 540) % 360) - 180;
+
+  return (from + delta * progress + 360) % 360;
+}
+
+function smoothTrack(points: AerodromeTrackPoint[]): [number, number][] {
+  if (points.length < 3) {
+    return points.map((point) => [point.latitude, point.longitude]);
+  }
+
+  const smoothed: [number, number][] = [];
+  const subdivisions = 8;
+
+  for (let index = 0; index < points.length - 1; index++) {
+    const p0 = points[Math.max(0, index - 1)];
+    const p1 = points[index];
+    const p2 = points[index + 1];
+    const p3 = points[Math.min(points.length - 1, index + 2)];
+
+    for (let step = 0; step < subdivisions; step++) {
+      const t = step / subdivisions;
+      const t2 = t * t;
+      const t3 = t2 * t;
+      const interpolate = (a: number, b: number, c: number, d: number) =>
+        0.5 *
+        (2 * b +
+          (-a + c) * t +
+          (2 * a - 5 * b + 4 * c - d) * t2 +
+          (-a + 3 * b - 3 * c + d) * t3);
+
+      smoothed.push([
+        interpolate(p0.latitude, p1.latitude, p2.latitude, p3.latitude),
+        interpolate(p0.longitude, p1.longitude, p2.longitude, p3.longitude),
+      ]);
+    }
+  }
+
+  const last = points[points.length - 1];
+  smoothed.push([last.latitude, last.longitude]);
+
+  return smoothed;
+}
+
+function interpolateTrackPoint(
+  track: AerodromeTrackPoint[],
+  timestamp: number,
+): AerodromeTrackPoint | null {
+  const timedTrack = track
+    .map((point) => ({ point, time: Date.parse(point.recorded_at) }))
+    .filter(({ time }) => Number.isFinite(time))
+    .sort((first, second) => first.time - second.time);
+
+  if (timedTrack.length === 0) return null;
+
+  let previous = timedTrack[0];
+  let next = timedTrack[timedTrack.length - 1];
+
+  for (let index = 1; index < timedTrack.length; index++) {
+    if (timedTrack[index].time >= timestamp) {
+      next = timedTrack[index];
+      previous = timedTrack[index - 1];
+      break;
+    }
+  }
+
+  const duration = Math.max(1, next.time - previous.time);
+  const progress = Math.min(
+    1,
+    Math.max(0, (timestamp - previous.time) / duration),
+  );
+
+  return {
+    latitude:
+      previous.point.latitude +
+      (next.point.latitude - previous.point.latitude) * progress,
+    longitude:
+      previous.point.longitude +
+      (next.point.longitude - previous.point.longitude) * progress,
+    heading: interpolateHeading(
+      previous.point.heading,
+      next.point.heading,
+      progress,
+    ),
+    recorded_at: new Date(timestamp).toISOString(),
+    predicted: timestamp > previous.time,
+  };
+}
+
+function updateAircraftList() {
+  const container = document.getElementById("aircraft-container");
+  const count = document.getElementById("aircraft-count");
+  if (!container || !count) return;
+
+  count.textContent = String(aircraftstatus_data.length);
+
+  if (isEmpty(aircraftstatus_data)) {
+    container.innerHTML = `<p class="p-5 text-sm text-secondary-500 dark:text-secondary-300">${container.dataset.emptyText ?? "No aircraft are currently moving around this aerodrome."}</p>`;
+    return;
+  }
+
+  container.innerHTML = aircraftstatus_data
+    .map(
+      (aircraft) => `
+        <div class="aerodrome-aircraft-row">
+          <div class="min-w-0">
+            <p class="truncate font-semibold text-primary-900 dark:text-secondary-50">${escapeHtml(aircraft.callsign)}</p>
+            <p class="truncate text-sm text-secondary-500 dark:text-secondary-300">${escapeHtml(aircraft.departure || "—")} → ${escapeHtml(aircraft.arrival || "—")}</p>
+            <p class="mt-0.5 text-xs text-secondary-400 dark:text-secondary-400">${escapeHtml(aircraft.type || "—")} · ${Math.round(aircraft.groundspeed)} kt · ${Math.round(aircraft.altitude)} ft</p>
+            <div class="mt-1 flex flex-wrap gap-1.5">
+              <span class="badge">${escapeHtml(formatGroundstate(aircraft.groundstate))} ${aircraft.gate ? escapeHtml(aircraft.gate) : ""}</span>
+            </div>
+          </div>
+        </div>
+      `,
+    )
+    .join("");
+}
+
 let mymarker: LayerGroup | null = null;
+let predictedPathLayer: LayerGroup | null = null;
+let aircraftAnimationToken = 0;
+
+function animateAircraftMarker(
+  aircraftMarker: Marker,
+  track: AerodromeTrackPoint[],
+  token: number,
+): void {
+  if (track.length < 2) return;
+
+  const timedTrack = track
+    .map((point) => ({
+      point,
+      time: Date.parse(point.recorded_at),
+    }))
+    .filter(({ time }) => Number.isFinite(time))
+    .sort((first, second) => first.time - second.time);
+
+  if (timedTrack.length < 2) return;
+
+  const markerElement = aircraftMarker
+    .getElement()
+    ?.querySelector<HTMLElement>(".aerodrome-aircraft-plane-image");
+
+  const animate = (): void => {
+    if (token !== aircraftAnimationToken) return;
+
+    const now = Date.now() - aircraftSimulationDelayMs;
+    let previous = timedTrack[0];
+    let next = timedTrack[timedTrack.length - 1];
+
+    for (let index = 1; index < timedTrack.length; index++) {
+      if (timedTrack[index].time >= now) {
+        next = timedTrack[index];
+        previous = timedTrack[index - 1];
+        break;
+      }
+    }
+
+    const duration = Math.max(1, next.time - previous.time);
+    const progress = Math.min(1, Math.max(0, (now - previous.time) / duration));
+    const latitude =
+      previous.point.latitude +
+      (next.point.latitude - previous.point.latitude) * progress;
+    const longitude =
+      previous.point.longitude +
+      (next.point.longitude - previous.point.longitude) * progress;
+
+    aircraftMarker.setLatLng([latitude, longitude]);
+    if (markerElement) {
+      const heading = interpolateHeading(
+        previous.point.heading,
+        next.point.heading,
+        progress,
+      );
+      markerElement.style.transform = `translate(-50%, -50%) rotate(${heading - 90}deg)`;
+    }
+
+    if (now < next.time || next !== timedTrack[timedTrack.length - 1]) {
+      window.requestAnimationFrame(animate);
+    }
+  };
+
+  window.requestAnimationFrame(animate);
+}
+
+function updatePredictedPaths(): void {
+  if (!mymap) return;
+
+  if (predictedPathLayer) {
+    predictedPathLayer.clearLayers();
+  } else {
+    predictedPathLayer = layerGroup().addTo(mymap);
+  }
+
+  const now = Date.now() - aircraftSimulationDelayMs;
+
+  forEach(aircraftstatus_data, (aircraft) => {
+    if (aircraft.gate) return;
+
+    const predictedTrack = aircraft.track
+      .filter((point) => point.predicted)
+      .filter((point) => {
+        const time = Date.parse(point.recorded_at);
+
+        return (
+          Number.isFinite(time) &&
+          time > now &&
+          time <= now + predictedPathHorizonMs
+        );
+      })
+      .sort(
+        (first, second) =>
+          Date.parse(first.recorded_at) - Date.parse(second.recorded_at),
+      );
+
+    if (predictedTrack.length === 0 || !predictedPathLayer) return;
+
+    const currentPoint = interpolateTrackPoint(aircraft.track, now) ?? {
+      latitude: aircraft.latitude,
+      longitude: aircraft.longitude,
+      heading: aircraft.heading,
+      recorded_at: new Date(now).toISOString(),
+      predicted: false,
+    };
+
+    polyline(smoothTrack([currentPoint, ...predictedTrack]), {
+      color: "#f59e0b",
+      dashArray: "7 8",
+      weight: 3,
+      opacity: 0.9,
+      smoothFactor: 1,
+    }).addTo(predictedPathLayer);
+  });
+}
 
 async function update_map() {
+  aircraftAnimationToken++;
+
+  if (predictedPathLayer) {
+    predictedPathLayer.remove();
+    predictedPathLayer = null;
+  }
+
   if (mymarker) {
     mymarker.remove();
   }
   mymarker = layerGroup();
+  const map_zoom = mymap?.getZoom();
+  if (!map_zoom) return;
+  const showGateLabels = map_zoom >= 16;
   forEach(standstatus_data, (stand) => {
     if (mymap == null || mymarker == null) return;
     const stand_lat = stand["latitude"];
     const stand_lon = stand["longitude"];
-    let stand_text =
-      "<div style='text-align: center;'>Stand <strong>" +
-      stand["id"] +
-      "</strong></div>";
-    let stand_color = "rgba(0, 128, 0, 0.5)";
-    let stand_border = "rgba(0, 128, 0, 0.8)";
-    if (!isEmpty(stand["occupier"])) {
-      stand_text += `${stand["occupier"]}`;
-      stand_color = "rgba(204, 7, 7, 0.5)";
-      stand_border = "rgba(204, 7, 7, 0.8)";
-    }
+    const standId = String(stand["id"]);
+    const gateAircraft = aircraftstatus_data.find(
+      (aircraft) => aircraft.gate === standId,
+    );
+    const occupied = gateAircraft !== undefined || !isEmpty(stand["occupier"]);
+    const aircraftInfo = gateAircraft
+      ? `<div class="aerodrome-map-popup-heading">
+          <strong>${escapeHtml(gateAircraft.callsign)}</strong>
+          <span class="aerodrome-map-popup-status">${escapeHtml(formatGroundstate(gateAircraft.groundstate))}</span>
+        </div>
+        <span class="aerodrome-map-popup-route">${escapeHtml(`${gateAircraft.departure || "—"} → ${gateAircraft.arrival || "—"}`)}</span>
+        <span class="aerodrome-map-popup-meta">${escapeHtml(gateAircraft.type || "Unknown type")} · ${Math.round(gateAircraft.groundspeed)} kt · ${Math.round(gateAircraft.altitude)} ft</span>`
+      : "";
+    const stand_text = `<div class="aerodrome-map-popup aerodrome-map-popup--stand">
+      <span class="aerodrome-map-popup-kicker">Stand</span>
+      <strong>${escapeHtml(standId)}</strong>
+      ${aircraftInfo || `<span class="aerodrome-map-popup-meta">${occupied ? escapeHtml(String(stand["occupier"])) : "Available"}</span>`}
+    </div>`;
 
-    const circle_ = circleMarker([stand_lat, stand_lon], {
-      color: stand_border,
-      fillColor: stand_color,
-      fillOpacity: 0.5,
-      radius: 4.5,
+    const gateMarker = marker([stand_lat, stand_lon], {
+      icon: createGateIcon(occupied, standId, showGateLabels),
     }).addTo(mymarker);
-    circle_.bindPopup(stand_text);
+    gateMarker.bindPopup(stand_text);
   });
 
   if (mymap == null) return;
@@ -117,25 +459,55 @@ async function update_map() {
 
   forEach(aircraftstatus_data, (aircraft) => {
     if (mymap == null || mymarker == null) return;
+    if (aircraft.gate) return;
     const aircraft_lat = aircraft["latitude"];
     const aircraft_lon = aircraft["longitude"];
     const aircraft_callsign = aircraft["callsign"];
     const aircraft_heading = aircraft["heading"];
-    const icon_ = icon({
-      iconUrl: "/images/plane.png",
-      iconSize: [16, 16], // size of the icon
-      iconAnchor: [8, 8], // point of the icon which will correspond to marker's location
-      popupAnchor: [0, 0],
-    });
+    const actualTrack = aircraft.track.filter((point) => !point.predicted);
+    const simulationNow = Date.now() - aircraftSimulationDelayMs;
+    const simulatedPoint = interpolateTrackPoint(aircraft.track, simulationNow);
+    const visibleActualTrack = actualTrack.filter(
+      (point) => Date.parse(point.recorded_at) <= simulationNow,
+    );
+
+    if (visibleActualTrack.length > 1 || simulatedPoint) {
+      polyline(
+        smoothTrack(
+          simulatedPoint
+            ? [...visibleActualTrack, simulatedPoint]
+            : visibleActualTrack,
+        ),
+        {
+          color: "#8faecc",
+          weight: 3,
+          opacity: 0.72,
+          smoothFactor: 1,
+        },
+      ).addTo(mymarker);
+    }
+
     const marker_: Marker = marker([aircraft_lat, aircraft_lon], {
-      icon: icon_,
+      icon: createAircraftIcon(aircraft_heading),
     }).addTo(mymarker);
-    marker_.bindPopup(aircraft_callsign);
-    const el = marker_.getElement();
-    if (el == null) return;
-    el.style.transformOrigin = "50% 50%";
-    el.style.transform += ` rotate(${aircraft_heading}deg)`;
+    const route = `${aircraft.departure || "—"} → ${aircraft.arrival || "—"}`;
+    marker_.bindPopup(
+      `<div class="aerodrome-map-popup aerodrome-map-popup--aircraft">
+      <div class="aerodrome-map-popup-heading">
+        <strong>${escapeHtml(aircraft_callsign)}</strong>
+        <span class="aerodrome-map-popup-status">${escapeHtml(formatGroundstate(aircraft.groundstate))}</span>
+      </div>
+      <span class="aerodrome-map-popup-route">${escapeHtml(route)}</span>
+      <span class="aerodrome-map-popup-meta">${escapeHtml(aircraft.type || "Unknown type")} · ${Math.round(aircraft.groundspeed)} kt · ${Math.round(aircraft.altitude)} ft</span>
+    </div>`,
+      {
+        className: "aerodrome-map-popup-container",
+      },
+    );
+    animateAircraftMarker(marker_, aircraft.track, aircraftAnimationToken);
   });
+
+  updatePredictedPaths();
 }
 
 async function metar() {
@@ -147,14 +519,20 @@ async function metar() {
 
 async function atis() {
   const lwc = await getAerodromeComponent();
-  const atis_data: string = await lwc.$wire.load_atis();
+  const atis_data: Array<0> = await lwc.$wire.load_atis();
   let atis_el = document.getElementById("atis-container");
   let atis_wid = document.getElementById("atis-widget");
-  if (!atis_el || !atis_wid || !atis_data) {
-    if (atis_wid) atis_wid.style.display = "none";
+  if (!atis_el || !atis_wid) {
     return;
   }
-  atis_wid.style.display = "block";
+
+  if (isEmpty(atis_data)) {
+    atis_el.textContent =
+      atis_el.dataset.emptyText ??
+      "No ATIS is currently available for this aerodrome.";
+    return;
+  }
+
   let string = "";
   forEach(atis_data, (atis_obj) => {
     string +=
@@ -235,7 +613,7 @@ async function indicator() {
   });
 
   if (isEmpty(data)) {
-    tableContainer.innerHTML = `<p style="text-align: center">${emptyText}</p>`;
+    tableContainer.innerHTML = `<p class="p-6 text-center text-sm text-secondary-500 dark:text-secondary-300">${emptyText}</p>`;
     return;
   }
 
@@ -275,45 +653,24 @@ async function event() {
     event_container?.insertAdjacentHTML(
       "beforeend",
       `
-                <div class="col-12 mt-4 pb-2 ${
-                  i > 5 ? "hide" : ""
-                }" id="event-${i}">
-                    <a href="${window.location.origin}/events/view/${e.id}">
-                        <div class="card blog rounded border-0 shadow overflow-hidden">
-                            <div class="position-relative">
-                                <div class="overlay rounded-top"></div>
-                                <div class="card-img-top loader-show overflow-hidden" id="event-banner-1" style="min-height: 200px; min-width: 356px; background: url('${
-                                  e.banner
-                                }') center; background-size: cover;"></div>
-                            </div>
-                            <div class="card-body content">
-                                <span class="badge rounded-pill bg-soft-primary mb-2 ${
-                                  e.type == "CPT" ? "" : "hide"
-                                }">
-                                    Controller Practical Test
-                                </span>
-                                <h5>
-                                    <span class="card-title title text-dark" id="event-title-1">${
-                                      e.name
-                                    }</span>
-                                </h5>
-                                <div class="post-meta d-flex justify-content-between mt-3">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="list-inline-item me-2 mb-0">
-                                            <span href="javascript:void(0)" class="text-muted" id="event-date-1">
-                                                ${
-                                                  dayjs(e.start_time).format(
-                                                    "DD.MM.YYYY HH:mm",
-                                                  ) + "z"
-                                                }
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+        <article class="${i > 5 ? "hide" : ""}" id="event-${i}">
+          <a class="block" href="${window.location.origin}/events/view/${e.id}">
+            <div class="card">
+              <div class="card-img-top" style="background-image: url('${e.banner}')"></div>
+              <div class="card-body">
+                ${
+                  e.type === "CPT"
+                    ? '<span class="badge mb-2">Controller Practical Test</span>'
+                    : ""
+                }
+                <h3 class="font-semibold text-primary-900 dark:text-secondary-50">${e.name}</h3>
+                <p class="mt-2 text-sm text-secondary-500 dark:text-secondary-300">${dayjs(
+                  e.start_time,
+                ).format("DD.MM.YYYY HH:mm")}z</p>
+              </div>
+            </div>
+          </a>
+        </article>
             `,
     );
   });

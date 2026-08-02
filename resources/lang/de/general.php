@@ -3,9 +3,6 @@
 return [
     'gdpr' => 'GDPR',
 
-    'cookie-consent' => 'Diese Webseite verwendet "Kekse" um eine komfortable Nutzung der Seite zu ermöglichen. Mit dem Aufruf werden unsere <a href="javascript:void(0)" target="_blank" class="text-primary h6">Nutzungsregeln</a> akzeptiert.',
-    'cookie-error' => 'Bitte bestätige die Verwendung von "Keksen".',
-
     'faq' => 'Häufig Gestellte Fragen',
 
     'vatger' => [

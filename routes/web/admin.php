@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
  * via web interface / guard here
  */
 Route::prefix('administration')
-    ->middleware(['cookie.redirect', 'auth', 'staff_data_protection'])
+    ->middleware(['auth', 'staff_data_protection'])
     ->group(function () {
         Route::get('/dashboard', [AdministrationPagesController::class, 'index'])->name('administration.dashboard');
         Route::livewire('/membership/members', MemberListPage::class)->name('administration.members');

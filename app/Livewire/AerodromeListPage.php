@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Libraries\VATSIM\DataFeedLibrary;
 use App\Livewire\Helpers\PaginationTrait;
 use App\Livewire\Helpers\SearchTrait;
 use App\Models\Navigation\Aerodrome;
@@ -24,12 +25,15 @@ class AerodromeListPage extends Component
     #[Layout('layouts.master')]
     public function render()
     {
-        $aerodromes = Aerodrome::query();
+        $aerodromes = Aerodrome::query()->with('stations');
         $this->searchQueryModifier($aerodromes, $this->search);
         $aerodromes->orderBy('selection', direction: 'desc');
 
+        $aerodromes = $aerodromes->get()->paginate(perPage: 21)->onEachSide(0);
+
         return view('pages.aerodromes')->with([
-            'aerodromes' => $aerodromes->get()->paginate(perPage: 21)->onEachSide(0),
+            'aerodromes' => $aerodromes,
+            'aerodrome_summaries' => DataFeedLibrary::AerodromeSummaries($aerodromes->getCollection()),
             'firs' => Fir::all(),
         ]);
     }

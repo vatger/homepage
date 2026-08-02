@@ -13,15 +13,12 @@ class PolicyCheckPage extends Component
 {
     private array $policies = [];
 
-    private ?UserSetting $userSetting;
-
     #[Url]
     public ?string $url = null;
 
     public function boot(): void
     {
         $this->policies = UserSetting::getPolicies(true);
-        $this->userSetting = Auth::user()?->settings;
     }
 
     #[Layout('layouts.master')]
@@ -29,27 +26,32 @@ class PolicyCheckPage extends Component
     {
         return view('pages.policy_check')->with([
             'polices' => $this->policies,
-            'user_settings' => $this->userSetting,
+            'user_settings' => $this->settings(),
             'en' => Session::get('language', 'de') == 'en',
         ]);
     }
 
-    public function accept(string $policy_id): void
+    public function acceptPolicy(string $policyId): void
     {
-        $this->userSetting->agreeTo($policy_id);
+        $this->settings()->agreeTo($policyId);
     }
 
-    public function decline(string $policy_id): void
+    public function declinePolicy(string $policyId): void
     {
-        $this->userSetting->agreeTo($policy_id, true);
+        $this->settings()->agreeTo($policyId, true);
     }
 
-    public function continue()
+    public function continueToApplication()
     {
         if ($this?->url) {
             return redirect()->intended(urldecode($this->url));
         }
 
         return redirect()->intended(route('landing'));
+    }
+
+    private function settings(): UserSetting
+    {
+        return UserSetting::query()->firstOrCreate(['user_id' => Auth::id()]);
     }
 }

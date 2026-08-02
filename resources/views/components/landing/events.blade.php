@@ -1,12 +1,12 @@
 <section class="section bg-secondary-100 dark:bg-secondary-800/40">
     <div class="site-container">
         <div class="mx-auto max-w-2xl text-center">
-            <span class="landing-section-label">VATSIM Germany</span>
+            <span class="landing-section-label">vatger</span>
             <h2 class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">@lang('landing.events.title')</h2>
             <p class="mt-4 text-secondary-600 dark:text-secondary-300">@lang('landing.events.text')</p>
         </div>
 
-        <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="event-container"
+        <div class="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4" id="event-container"
             data-show-more="{{ __('pages.landing.show-more-events') }}"
             data-empty="{{ __('pages.landing.no-events') }}">
             @for ($i = 0; $i < 9; $i++)

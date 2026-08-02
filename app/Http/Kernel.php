@@ -4,7 +4,6 @@ namespace App\Http;
 
 use App\Http\Middleware\ApiJsonResponse;
 use App\Http\Middleware\ApiOptionalAuthenticate;
-use App\Http\Middleware\CookieChecker;
 use App\Http\Middleware\Cors;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\LocaleMiddleware;
@@ -33,7 +32,6 @@ use Illuminate\Routing\Middleware\ValidateSignature;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Statikbe\CookieConsent\CookieConsentMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -68,7 +66,6 @@ class Kernel extends HttpKernel
             PreventRequestForgery::class,
             SubstituteBindings::class,
             LocaleMiddleware::class,
-            CookieConsentMiddleware::class,
             PreventRequestsDuringMaintenance::class,
             SysLogMiddleware::class,
             'check-terms',
@@ -111,8 +108,6 @@ class Kernel extends HttpKernel
         'banned' => CheckHomepageBanned::class,
         'check-terms' => CheckTermsMiddleware::class,
         'staff_data_protection' => CheckSDPMiddleware::class,
-        'cookie.consent' => CookieConsentMiddleware::class,
-        'cookie.redirect' => CookieChecker::class,
         'cors' => Cors::class,
     ];
 }

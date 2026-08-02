@@ -1,6 +1,5 @@
 @layer components {
-  .aerodrome-page .aerodrome-panel,
-  .aerodrome-sidebar {
+  .aerodrome-page .aerodrome-panel {
     @apply border-secondary-200 bg-white dark:border-secondary-700 dark:bg-secondary-800;
   }
 
@@ -8,39 +7,62 @@
     @apply w-full lg:sticky lg:top-24;
   }
 
-  .aerodrome-sidebar .card-body {
+  .aerodrome-sidebar-section + .aerodrome-sidebar-section {
+    @apply border-t border-secondary-200 dark:border-secondary-700;
+  }
+
+  .aerodrome-sidebar-title {
+    @apply bg-secondary-100 px-5 py-3 text-base font-bold text-primary-900 dark:bg-secondary-900 dark:text-secondary-50;
+  }
+
+  .aerodrome-dynamic-title {
+    @apply m-0 block w-full bg-secondary-100 px-5 py-3 text-base font-bold text-primary-900 dark:bg-secondary-900 dark:text-secondary-50;
+  }
+
+  .aerodrome-sidebar-link {
+    @apply flex min-h-11 items-center justify-between gap-3 rounded-2xl border border-secondary-200 bg-white px-4 py-3 text-sm font-semibold text-primary-900 transition-colors hover:border-primary-400 hover:bg-primary-50 dark:border-secondary-700 dark:bg-secondary-900 dark:text-secondary-50 dark:hover:border-primary-500 dark:hover:bg-secondary-800;
+  }
+
+  .aerodrome-weather {
+    @apply block whitespace-pre-wrap break-words font-mono text-sm leading-6 text-primary-900 dark:text-secondary-50;
+  }
+
+  .aerodrome-sidebar-events {
+    @apply grid gap-3;
+  }
+
+  .aerodrome-sidebar-events .card {
+    @apply overflow-hidden shadow-none;
+  }
+
+  .aerodrome-sidebar-events .card-img-top {
+    @apply min-h-32 bg-cover bg-center;
+  }
+
+  .aerodrome-sidebar-events .card-body {
     @apply p-4;
   }
 
-  .aerodrome-sidebar .widget > span {
-    @apply block rounded-lg bg-secondary-100 px-3 py-2 text-center font-semibold text-primary-900 shadow-none dark:bg-secondary-900 dark:text-secondary-50;
+  .aerodrome-aircraft-list {
+    @apply grid gap-px bg-secondary-200 dark:bg-secondary-700;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   }
 
-  .aerodrome-sidebar .btn-secondary {
-    @apply min-h-12 w-full justify-between whitespace-normal rounded-2xl border-secondary-200 bg-white px-4 py-3 text-left leading-5 text-primary-900 hover:border-accent-500 hover:bg-secondary-50 hover:text-accent-600 dark:border-secondary-700 dark:bg-secondary-900 dark:text-secondary-50;
+  .aerodrome-aircraft-row {
+    @apply min-w-0 bg-white px-5 py-3.5 dark:bg-secondary-800;
   }
 
-  .aerodrome-sidebar .btn-secondary span {
-    @apply min-w-0 flex-1 text-center;
-  }
-
-  .aerodrome-sidebar .btn-secondary svg {
-    @apply size-4 shrink-0;
-  }
-
-  .aerodrome-sidebar code,
   .aerodrome-panel h4,
   .aerodrome-panel h5 {
     @apply text-primary-900 dark:text-secondary-50;
   }
 
-  #table-active-atc td {
-    @apply text-primary-900 dark:text-secondary-50;
+  .aerodrome-atc-table td {
+    @apply px-6 py-4 text-primary-900 dark:text-secondary-50;
   }
 
-  #metar-container,
-  #atis-container {
-    @apply whitespace-pre-wrap break-words font-mono text-sm leading-6;
+  .aerodrome-atc-table td:first-child {
+    @apply w-2/5;
   }
 
   .aerodrome-link-modal code {
@@ -49,6 +71,136 @@
 
   #map {
     @apply relative z-0 w-full overflow-hidden rounded-2xl;
+  }
+
+  .aerodrome-aircraft-icon {
+    background: transparent;
+    border: 0;
+  }
+
+  .aerodrome-aircraft-marker {
+    @apply relative block;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .aerodrome-aircraft-plane-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 1rem;
+    height: auto;
+    object-fit: contain;
+    transform-origin: 50% 50%;
+    filter: drop-shadow(0 1px 2px rgb(15 23 42 / 0.45));
+    transition: transform 120ms linear;
+  }
+
+  .aerodrome-gate-icon {
+    background: transparent;
+    border: 0;
+  }
+
+  .aerodrome-gate-marker {
+    @apply relative flex h-5 w-11 items-center justify-center;
+  }
+
+  .aerodrome-gate-label {
+    @apply pointer-events-none absolute -top-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap text-[0.6rem] font-bold leading-none text-primary-900 dark:text-secondary-50;
+    text-shadow: 0 1px 2px rgb(255 255 255 / 0.95), 0 0 3px rgb(255 255 255 / 0.85);
+  }
+
+  [data-theme="dark"] .aerodrome-gate-label {
+    text-shadow: 0 1px 2px rgb(15 23 42 / 0.95), 0 0 3px rgb(15 23 42 / 0.9);
+  }
+
+  .aerodrome-gate-marker img {
+    display: block;
+    width: 2.75rem;
+    height: 1rem;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 1px rgb(15 23 42 / 0.4));
+  }
+
+  .aerodrome-gate-marker--empty {
+    opacity: 0.9;
+  }
+
+  .aerodrome-gate-marker--occupied {
+    opacity: 1;
+  }
+
+  .aerodrome-map-popup-container .leaflet-popup-content-wrapper,
+  .aerodrome-map-popup-container .leaflet-popup-tip {
+    @apply border border-secondary-200 bg-white text-primary-900 shadow-xl;
+  }
+
+  .aerodrome-map-popup-container .leaflet-popup-content-wrapper,
+  .aerodrome-map-popup-container .aerodrome-map-popup,
+  .aerodrome-map-popup-container .aerodrome-map-popup strong {
+    color: #2b3f55 !important;
+  }
+
+  html[data-theme="dark"] .aerodrome-map-popup-container .leaflet-popup-content-wrapper,
+  html[data-theme="dark"] .aerodrome-map-popup-container .leaflet-popup-tip {
+    @apply border-secondary-700 bg-secondary-900 text-secondary-50;
+  }
+
+  html[data-theme="dark"] .aerodrome-map-popup-container .leaflet-popup-close-button {
+    @apply text-secondary-300 hover:text-white;
+  }
+
+  .aerodrome-map-popup-container .leaflet-popup-content {
+    @apply m-0 min-w-52;
+  }
+
+  .aerodrome-map-popup-container .aerodrome-map-popup,
+  .aerodrome-map-popup-container .aerodrome-map-popup strong {
+    @apply text-primary-900;
+  }
+
+  html[data-theme="dark"] .aerodrome-map-popup-container .aerodrome-map-popup,
+  html[data-theme="dark"] .aerodrome-map-popup-container .aerodrome-map-popup strong {
+    @apply text-secondary-50;
+  }
+
+  .aerodrome-map-popup {
+    @apply flex flex-col gap-1 px-1 py-0.5 text-sm;
+  }
+
+  .aerodrome-map-popup-kicker {
+    @apply text-[0.65rem] font-bold uppercase tracking-[0.14em] text-accent-600 dark:text-accent-400;
+  }
+
+  .aerodrome-map-popup-heading {
+    @apply flex items-center justify-between gap-3;
+  }
+
+  .aerodrome-map-popup-status {
+    @apply rounded-full bg-accent-50 px-2 py-0.5 text-[0.65rem] font-bold text-accent-700;
+  }
+
+  html[data-theme="dark"] .aerodrome-map-popup-status {
+    @apply bg-accent-950 text-accent-300;
+  }
+
+  .aerodrome-map-popup-route {
+    @apply font-semibold text-primary-700;
+    color: #345f87 !important;
+  }
+
+  html[data-theme="dark"] .aerodrome-map-popup-route {
+    @apply text-secondary-100;
+  }
+
+  .aerodrome-map-popup-meta {
+    @apply text-xs text-secondary-500;
+    color: #64748b !important;
+  }
+
+  html[data-theme="dark"] .aerodrome-map-popup-meta {
+    @apply text-secondary-300;
   }
 
   .aerodrome-panel #map-container {

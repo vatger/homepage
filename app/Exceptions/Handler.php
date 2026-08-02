@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use App\Models\Tech\SysLog;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Passport\Exceptions\AuthenticationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -42,7 +43,7 @@ class Handler extends ExceptionHandler
         // Passport throws its own authentication exception from the OAuth
         // authorize endpoint. Unlike the application's auth middleware, that
         // exception would otherwise be rendered as a plain 401 response.
-        if ($e instanceof \Laravel\Passport\Exceptions\AuthenticationException) {
+        if ($e instanceof AuthenticationException) {
             return redirect()->guest(route('vatsim.authentication.connect.login'));
         }
 

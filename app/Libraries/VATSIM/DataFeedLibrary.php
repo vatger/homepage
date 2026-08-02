@@ -4,7 +4,6 @@ namespace App\Libraries\VATSIM;
 
 use App\Models\Navigation\Aerodrome;
 use App\Models\Navigation\Station;
-use Illuminate\Support\Str;
 use VatsimData\Datafeed;
 use VatsimData\DatafeedClasses\Controller;
 use VatsimData\DatafeedClasses\ControllerWithTransceivers;
@@ -14,24 +13,43 @@ use VatsimData\DatafeedClasses\ControllerWithTransceivers;
  */
 class DataFeedLibrary
 {
+    /**
+     * Build the live ATC and traffic summary shown on aerodrome list cards.
+     *
+     * @param  iterable<Aerodrome>  $aerodromes
+     * @return array<int, array{roles: array<string, bool>, departures: int, arrivals: int}>
+     */
+    public static function AerodromeSummaries(iterable $aerodromes): array
+    {
+        $aerodromes = collect($aerodromes);
+        $summariesByIcao = Datafeed::AerodromeSummaries($aerodromes->pluck('icao'));
+        $summaries = [];
+
+        foreach ($aerodromes as $aerodrome) {
+            $summary = $summariesByIcao[strtoupper($aerodrome->icao)];
+            $summaries[$aerodrome->id] = [
+                'roles' => $summary->roles,
+                'departures' => $summary->departures,
+                'arrivals' => $summary->arrivals,
+            ];
+        }
+
+        return $summaries;
+    }
+
     public static function ControllersAerodrome(Aerodrome $aerodrome): array
     {
-        $all_controllers = Datafeed::ControllersLocal();
-
         $matched_controllers = [];
 
-        foreach ($all_controllers as $controller) {
-            $aerodrome_station = $aerodrome
-                ->stations()
-                ->where('ident', 'LIKE', Str::substr($controller?->callsign, 0, 4).'%')
-                ->where('frequency', '=', floatval($controller?->frequency))
-                ->first();
-            if ($aerodrome_station) {
-                $controller = new ControllerWithTransceivers($controller);
-                $controller->station = $aerodrome_station;
-                $matched_controllers[] = $controller;
-
+        foreach ($aerodrome->stations as $station) {
+            $match = Datafeed::ControllerForStation($station->ident, $station->frequency);
+            if (! $match) {
+                continue;
             }
+
+            $controller = new ControllerWithTransceivers($match->controller);
+            $controller->station = $station;
+            $matched_controllers[] = $controller;
         }
 
         return $matched_controllers;
@@ -39,12 +57,6 @@ class DataFeedLibrary
 
     public static function Controller(Station $station): ?Controller
     {
-        $all_controllers = Datafeed::ControllersLocal();
-
-        $callable = fn ($controller) => Str::substr($controller->callsign, 0, 4) == Str::substr($station->ident, 0, 4) &&
-            Str::substr($controller->callsign, -3, 3) == Str::substr($station->ident, -3, 3) &&
-            floatval($controller->frequency) == $station->frequency;
-
-        return array_find($all_controllers, $callable);
+        return Datafeed::ControllerForStation($station->ident, $station->frequency)?->controller;
     }
 }

@@ -2,6 +2,8 @@
 
 return [
     'aerodromes' => [
+        'arrivals' => 'Arrivals',
+        'departures' => 'Departures',
         'title' => 'Aerodromes',
         'breadcrumb' => [
             "<li class='breadcrumb-item'>Pilots</li>

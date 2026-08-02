@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Administration\Content\MediaController;
 use App\Http\Controllers\Administration\Content\ShortLinkController;
+use App\Http\Controllers\LandingTrafficMapController;
 use App\Http\Controllers\OpenIdConnectController;
 use App\Livewire\SupportPage;
+use App\Services\LandingTrafficService;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -108,13 +110,14 @@ Route::get('language/{lang?}', function ($lang = 'de') {
 // ###########################
 
 Route::group([
-    'middleware' => ['cookie.consent'],
     'excluded_middleware' => ['check-terms'],
 ], function () {
     Route::get(
-        '/', function () {
-            return view('pages.landing');
+        '/', function (LandingTrafficService $traffic) {
+            return view('pages.landing', ['traffic' => $traffic->snapshot()]);
         })->name('landing');
 });
+
+Route::get('live-traffic.svg', LandingTrafficMapController::class)->name('landing.traffic-map');
 
 Route::livewire('support', SupportPage::class)->name('redirect.support');

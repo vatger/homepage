@@ -15,8 +15,57 @@
     @apply h-full overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-xl;
   }
 
+  .landing-event-card .card-body {
+    @apply p-5;
+  }
+
+  .landing-traffic-map {
+    @apply relative overflow-hidden rounded-3xl bg-primary-900 p-2 shadow-xl shadow-primary-900/15 dark:shadow-black/30 xl:flex xl:h-full xl:items-center xl:justify-center;
+  }
+
+  .landing-traffic-map::after {
+    @apply pointer-events-none absolute inset-x-8 bottom-0 h-20 bg-gradient-to-t from-primary-900/45 to-transparent;
+    content: '';
+  }
+
+  .landing-traffic-map img {
+    @apply relative block aspect-[4/3] w-full rounded-[1.35rem] object-contain object-center xl:h-auto xl:w-auto xl:max-h-full xl:max-w-full xl:aspect-auto;
+  }
+
+  .landing-traffic-panel {
+    @apply overflow-hidden rounded-3xl border border-secondary-200 bg-white shadow-sm dark:border-secondary-700 dark:bg-secondary-800;
+  }
+
+  .landing-traffic-panel-heading {
+    @apply flex items-center justify-between border-b border-secondary-200 px-5 py-4 dark:border-secondary-700;
+  }
+
+  .landing-traffic-panel-heading h3 {
+    @apply font-bold text-primary-900 dark:text-secondary-50;
+  }
+
+  .landing-traffic-row {
+    @apply flex items-center justify-between gap-3 px-5 py-3.5 transition-colors hover:bg-secondary-50 dark:hover:bg-secondary-700/50;
+  }
+
+  .landing-traffic-row + .landing-traffic-row {
+    @apply border-t border-secondary-100 dark:border-secondary-700;
+  }
+
+  .landing-traffic-list-scroll {
+    @apply max-h-[28.75rem] overflow-y-auto;
+  }
+
+  .landing-traffic-stat {
+    @apply inline-flex items-center gap-1 rounded-full bg-secondary-100 px-2 py-1 text-xs font-semibold text-primary-700 dark:bg-secondary-700 dark:text-secondary-100;
+  }
+
+  .landing-traffic-atc {
+    @apply inline-flex items-center rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-200;
+  }
+
   .landing-event-card .card-img-top {
-    @apply min-h-52 bg-secondary-200 bg-cover bg-center dark:bg-secondary-700;
+    @apply min-h-44 bg-secondary-200 bg-cover bg-center dark:bg-secondary-700;
   }
 
   .event-loader-show {
