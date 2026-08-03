@@ -43,15 +43,15 @@ class AerodromePage extends Component
     }
 
     #[Renderless]
-    public function load_stands(): array
+    public function load_stands(?string $since = null): array
     {
-        return StandStatusLibrary::standstatus($this->aerodrome);
+        return $this->timestampedResponse($since, Datafeed::UpdatedAt(), fn () => StandStatusLibrary::standstatus($this->aerodrome));
     }
 
     #[Renderless]
-    public function load_aircraft(): array
+    public function load_aircraft(?string $since = null): array
     {
-        return StandStatusLibrary::aircraftstatus($this->aerodrome);
+        return $this->timestampedResponse($since, Datafeed::UpdatedAt(), fn () => StandStatusLibrary::aircraftstatus($this->aerodrome));
     }
 
     #[Renderless]
@@ -61,26 +61,44 @@ class AerodromePage extends Component
     }
 
     #[Renderless]
-    public function load_metar(): ?string
+    public function load_metar(?string $since = null): array
     {
-        return Metar::get($this->icao) ?? null;
+        return $this->timestampedResponse($since, Metar::FetchedAt($this->icao), fn () => Metar::get($this->icao));
     }
 
     #[Renderless]
-    public function load_indicators(): array
+    public function load_indicators(?string $since = null): array
     {
-        return DataFeedLibrary::ControllersAerodrome($this->aerodrome);
+        return $this->timestampedResponse($since, Datafeed::UpdatedAt(), fn () => DataFeedLibrary::ControllersAerodrome($this->aerodrome));
     }
 
     #[Renderless]
-    public function load_atis(): array
+    public function load_atis(?string $since = null): array
     {
-        return Datafeed::AtisAerodrome($this->icao);
+        return $this->timestampedResponse($since, Datafeed::UpdatedAt(), fn () => Datafeed::AtisAerodrome($this->icao));
     }
 
     #[Renderless]
     public function load_events(): array
     {
         return EventLibrary::getAerodromeEvents($this->aerodrome->icao, 3);
+    }
+
+    private function timestampedResponse(?string $since, ?\DateTimeImmutable $updatedAt, \Closure $loader): array
+    {
+        $updatedAtString = $updatedAt?->format(\DateTimeImmutable::ATOM);
+
+        if ($updatedAtString !== null && $since !== null && $since === $updatedAtString) {
+            return [
+                'updated_at' => $updatedAtString,
+                'unchanged' => true,
+            ];
+        }
+
+        return [
+            'updated_at' => $updatedAtString,
+            'unchanged' => false,
+            'data' => $loader(),
+        ];
     }
 }

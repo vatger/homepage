@@ -5,6 +5,7 @@ import { getDarkmode } from "../preferences.js";
 import {
   map,
   Map,
+  canvas,
   tileLayer,
   divIcon,
   marker,
@@ -25,13 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateAircraftList();
   });
 });
-
-window.setInterval(() => {
-  download_map().then(() => {
-    update_map();
-    updateAircraftList();
-  });
-}, 10000);
 
 window.setInterval(() => updatePredictedPaths(), 1000);
 
@@ -66,13 +60,16 @@ async function load_map(): Promise<void> {
     "/tiles/256/{z}/{x}/{y}?access_token=" +
     mapbox_access_token;
 
-  mymap = map("map").setView(
-    [aerodrome_data["latitude"], aerodrome_data["longitude"]],
-    13,
-  );
+  mymap = map("map", {
+    preferCanvas: true,
+    renderer: canvas(),
+  }).setView([aerodrome_data["latitude"], aerodrome_data["longitude"]], 13);
   const mytilelayer = tileLayer(mapbox_link, {
     attribution: `© <a href="https://www.mapbox.com/about/maps">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://apps.mapbox.com/feedback/" target="_blank">Improve this map</a></strong>`,
     maxZoom: 21,
+    updateWhenIdle: true,
+    updateWhenZooming: false,
+    keepBuffer: 2,
   }).addTo(mymap);
 
   mymap.on("zoomend", () => update_map());
@@ -103,10 +100,14 @@ type AerodromeTrackPoint = {
 
 let standstatus_data: Array<0> = [];
 let aircraftstatus_data: AerodromeAircraft[] = [];
+let standsUpdatedAt: string | null = null;
+let aircraftUpdatedAt: string | null = null;
+let mapPollInFlight = false;
+const mapPollDelayMs = 4_000;
 
 const aircraftAssetPath = "/images/brand/aircraft";
-const predictedPathHorizonMs = 16_000;
-const aircraftSimulationDelayMs = 9_000;
+const predictedPathHorizonMs = 20_000;
+const aircraftSimulationDelayMs = 25_000;
 
 function createGateIcon(
   occupied: boolean,
@@ -143,10 +144,52 @@ function createAircraftIcon(heading: number) {
   });
 }
 
-async function download_map() {
-  const lwc = await getAerodromeComponent();
-  standstatus_data = await lwc.$wire.load_stands();
-  aircraftstatus_data = await lwc.$wire.load_aircraft();
+type TimestampedResponse<T> = {
+  updated_at: string | null;
+  unchanged: boolean;
+  data?: T;
+};
+
+async function download_map(): Promise<boolean> {
+  if (mapPollInFlight) return false;
+
+  mapPollInFlight = true;
+  let changed = false;
+
+  try {
+    const lwc = await getAerodromeComponent();
+    const standsResponse = (await lwc.$wire.load_stands(
+      standsUpdatedAt,
+    )) as TimestampedResponse<Array<0>>;
+
+    standsUpdatedAt = standsResponse.updated_at;
+    if (!standsResponse.unchanged && standsResponse.data) {
+      standstatus_data = standsResponse.data;
+      changed = true;
+    }
+
+    const aircraftResponse = (await lwc.$wire.load_aircraft(
+      aircraftUpdatedAt,
+    )) as TimestampedResponse<AerodromeAircraft[]>;
+
+    aircraftUpdatedAt = aircraftResponse.updated_at;
+    if (!aircraftResponse.unchanged && aircraftResponse.data) {
+      aircraftstatus_data = aircraftResponse.data;
+      changed = true;
+    }
+  } finally {
+    mapPollInFlight = false;
+    window.setTimeout(() => {
+      download_map().then((mapChanged) => {
+        if (mapChanged) {
+          update_map();
+          updateAircraftList();
+        }
+      });
+    }, mapPollDelayMs);
+  }
+
+  return changed;
 }
 
 function escapeHtml(value: string): string {
@@ -294,13 +337,22 @@ function updateAircraftList() {
 }
 
 let mymarker: LayerGroup | null = null;
+let actualPathLayer: LayerGroup | null = null;
 let predictedPathLayer: LayerGroup | null = null;
+let actualPathLines: Record<string, ReturnType<typeof polyline>> = {};
+let predictedPathLines: Record<string, ReturnType<typeof polyline>> = {};
 let aircraftAnimationToken = 0;
+const aircraftDisplayState: Record<
+  string,
+  { latitude: number; longitude: number; heading: number }
+> = {};
+const aircraftDataTransitionMs = 5_000;
 
 function animateAircraftMarker(
   aircraftMarker: Marker,
   track: AerodromeTrackPoint[],
   token: number,
+  callsign: string,
 ): void {
   if (track.length < 2) return;
 
@@ -317,6 +369,8 @@ function animateAircraftMarker(
   const markerElement = aircraftMarker
     .getElement()
     ?.querySelector<HTMLElement>(".aerodrome-aircraft-plane-image");
+  const previousDisplayState = aircraftDisplayState[callsign];
+  const transitionStartedAt = performance.now();
 
   const animate = (): void => {
     if (token !== aircraftAnimationToken) return;
@@ -342,14 +396,45 @@ function animateAircraftMarker(
       previous.point.longitude +
       (next.point.longitude - previous.point.longitude) * progress;
 
-    aircraftMarker.setLatLng([latitude, longitude]);
+    const linearTransitionProgress = previousDisplayState
+      ? Math.min(
+          1,
+          (performance.now() - transitionStartedAt) / aircraftDataTransitionMs,
+        )
+      : 1;
+    const transitionProgress =
+      linearTransitionProgress *
+      linearTransitionProgress *
+      (3 - 2 * linearTransitionProgress);
+    const displayedLatitude = previousDisplayState
+      ? previousDisplayState.latitude +
+        (latitude - previousDisplayState.latitude) * transitionProgress
+      : latitude;
+    const displayedLongitude = previousDisplayState
+      ? previousDisplayState.longitude +
+        (longitude - previousDisplayState.longitude) * transitionProgress
+      : longitude;
+    const targetHeading = interpolateHeading(
+      previous.point.heading,
+      next.point.heading,
+      progress,
+    );
+    const displayedHeading = previousDisplayState
+      ? interpolateHeading(
+          previousDisplayState.heading,
+          targetHeading,
+          transitionProgress,
+        )
+      : targetHeading;
+
+    aircraftMarker.setLatLng([displayedLatitude, displayedLongitude]);
+    aircraftDisplayState[callsign] = {
+      latitude: displayedLatitude,
+      longitude: displayedLongitude,
+      heading: displayedHeading,
+    };
     if (markerElement) {
-      const heading = interpolateHeading(
-        previous.point.heading,
-        next.point.heading,
-        progress,
-      );
-      markerElement.style.transform = `translate(-50%, -50%) rotate(${heading - 90}deg)`;
+      markerElement.style.transform = `translate(-50%, -50%) rotate(${displayedHeading - 90}deg) translateX(-0.65rem)`;
     }
 
     if (now < next.time || next !== timedTrack[timedTrack.length - 1]) {
@@ -360,12 +445,58 @@ function animateAircraftMarker(
   window.requestAnimationFrame(animate);
 }
 
+function updateActualPaths(): void {
+  if (!mymap) return;
+
+  if (!actualPathLayer) {
+    actualPathLayer = layerGroup().addTo(mymap);
+  }
+
+  const activeCalls = new Set<string>();
+  const simulationNow = Date.now() - aircraftSimulationDelayMs;
+
+  forEach(aircraftstatus_data, (aircraft) => {
+    if (aircraft.gate) return;
+
+    const actualTrack = aircraft.track
+      .filter((point) => !point.predicted)
+      .filter((point) => Date.parse(point.recorded_at) <= simulationNow);
+    const simulatedPoint = interpolateTrackPoint(aircraft.track, simulationNow);
+
+    if (actualTrack.length <= 1 && !simulatedPoint) return;
+
+    activeCalls.add(aircraft.callsign);
+    const path = smoothTrack(
+      simulatedPoint ? [...actualTrack, simulatedPoint] : actualTrack,
+    );
+    const existingLine = actualPathLines[aircraft.callsign];
+
+    if (existingLine) {
+      existingLine.setLatLngs(path);
+    } else {
+      actualPathLines[aircraft.callsign] = polyline(path, {
+        color: "#8faecc",
+        weight: 3,
+        opacity: 0.72,
+        smoothFactor: 1,
+      }).addTo(actualPathLayer);
+    }
+  });
+
+  Object.keys(actualPathLines).forEach((callsign) => {
+    if (!activeCalls.has(callsign)) {
+      actualPathLines[callsign].remove();
+      delete actualPathLines[callsign];
+    }
+  });
+}
+
 function updatePredictedPaths(): void {
   if (!mymap) return;
 
-  if (predictedPathLayer) {
-    predictedPathLayer.clearLayers();
-  } else {
+  updateActualPaths();
+
+  if (!predictedPathLayer) {
     predictedPathLayer = layerGroup().addTo(mymap);
   }
 
@@ -400,23 +531,41 @@ function updatePredictedPaths(): void {
       predicted: false,
     };
 
-    polyline(smoothTrack([currentPoint, ...predictedTrack]), {
-      color: "#f59e0b",
-      dashArray: "7 8",
-      weight: 3,
-      opacity: 0.9,
-      smoothFactor: 1,
-    }).addTo(predictedPathLayer);
+    const path = smoothTrack([currentPoint, ...predictedTrack]);
+    const existingLine = predictedPathLines[aircraft.callsign];
+
+    if (existingLine) {
+      existingLine.setLatLngs(path);
+    } else {
+      predictedPathLines[aircraft.callsign] = polyline(path, {
+        color: "#f59e0b",
+        dashArray: "7 8",
+        weight: 3,
+        opacity: 0.9,
+        smoothFactor: 1,
+      }).addTo(predictedPathLayer);
+    }
   });
 }
 
 async function update_map() {
   aircraftAnimationToken++;
 
+  const openPopup = (mymap as
+    | (Map & {
+        _popup?: { _source?: { popupIdentity?: string } };
+      })
+    | null)?._popup as
+    | { _source?: { popupIdentity?: string } }
+    | undefined;
+  const openPopupIdentity = openPopup?._source?.popupIdentity;
+  let popupToRestore: Marker | null = null;
+
   if (predictedPathLayer) {
     predictedPathLayer.remove();
     predictedPathLayer = null;
   }
+  predictedPathLines = {};
 
   if (mymarker) {
     mymarker.remove();
@@ -451,7 +600,11 @@ async function update_map() {
     const gateMarker = marker([stand_lat, stand_lon], {
       icon: createGateIcon(occupied, standId, showGateLabels),
     }).addTo(mymarker);
+    Object.assign(gateMarker, { popupIdentity: `stand:${standId}` });
     gateMarker.bindPopup(stand_text);
+    if (openPopupIdentity === `stand:${standId}`) {
+      popupToRestore = gateMarker;
+    }
   });
 
   if (mymap == null) return;
@@ -464,32 +617,17 @@ async function update_map() {
     const aircraft_lon = aircraft["longitude"];
     const aircraft_callsign = aircraft["callsign"];
     const aircraft_heading = aircraft["heading"];
-    const actualTrack = aircraft.track.filter((point) => !point.predicted);
-    const simulationNow = Date.now() - aircraftSimulationDelayMs;
-    const simulatedPoint = interpolateTrackPoint(aircraft.track, simulationNow);
-    const visibleActualTrack = actualTrack.filter(
-      (point) => Date.parse(point.recorded_at) <= simulationNow,
-    );
-
-    if (visibleActualTrack.length > 1 || simulatedPoint) {
-      polyline(
-        smoothTrack(
-          simulatedPoint
-            ? [...visibleActualTrack, simulatedPoint]
-            : visibleActualTrack,
-        ),
-        {
-          color: "#8faecc",
-          weight: 3,
-          opacity: 0.72,
-          smoothFactor: 1,
-        },
-      ).addTo(mymarker);
-    }
-
-    const marker_: Marker = marker([aircraft_lat, aircraft_lon], {
-      icon: createAircraftIcon(aircraft_heading),
-    }).addTo(mymarker);
+    const displayState = aircraftDisplayState[aircraft_callsign];
+    const marker_: Marker = marker(
+      [
+        displayState?.latitude ?? aircraft_lat,
+        displayState?.longitude ?? aircraft_lon,
+      ],
+      {
+        icon: createAircraftIcon(displayState?.heading ?? aircraft_heading),
+      },
+    ).addTo(mymarker);
+    Object.assign(marker_, { popupIdentity: `aircraft:${aircraft_callsign}` });
     const route = `${aircraft.departure || "—"} → ${aircraft.arrival || "—"}`;
     marker_.bindPopup(
       `<div class="aerodrome-map-popup aerodrome-map-popup--aircraft">
@@ -504,22 +642,37 @@ async function update_map() {
         className: "aerodrome-map-popup-container",
       },
     );
-    animateAircraftMarker(marker_, aircraft.track, aircraftAnimationToken);
+    if (openPopupIdentity === `aircraft:${aircraft_callsign}`) {
+      popupToRestore = marker_;
+    }
+    animateAircraftMarker(
+      marker_,
+      aircraft.track,
+      aircraftAnimationToken,
+      aircraft_callsign,
+    );
   });
 
   updatePredictedPaths();
+  popupToRestore?.openPopup();
 }
 
 async function metar() {
   const lwc = await getAerodromeComponent();
-  const metar_data: string = await lwc.$wire.load_metar();
+  const metarResponse = (await lwc.$wire.load_metar()) as TimestampedResponse<
+    string | null
+  >;
+  const metar_data = metarResponse.data ?? null;
   let metar_el = document.getElementById("metar-container");
   if (metar_el) metar_el.innerHTML = metar_data;
 }
 
 async function atis() {
   const lwc = await getAerodromeComponent();
-  const atis_data: Array<0> = await lwc.$wire.load_atis();
+  const atisResponse = (await lwc.$wire.load_atis()) as TimestampedResponse<
+    Array<0>
+  >;
+  const atis_data = atisResponse.data ?? [];
   let atis_el = document.getElementById("atis-container");
   let atis_wid = document.getElementById("atis-widget");
   if (!atis_el || !atis_wid) {
@@ -553,7 +706,9 @@ async function atis() {
 
 async function indicator() {
   const lwc = await getAerodromeComponent();
-  const data: Array<0> = await lwc.$wire.load_indicators();
+  const indicatorsResponse =
+    (await lwc.$wire.load_indicators()) as TimestampedResponse<Array<0>>;
+  const data = indicatorsResponse.data ?? [];
 
   function checkindicator(ending: string, element_id: string) {
     if (

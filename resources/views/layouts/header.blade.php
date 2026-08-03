@@ -43,11 +43,11 @@
         <a href="{{ route('landing') }}" class="shrink-0" aria-label="{{ config('app.name') }}">
             <img src="{{ asset('images/brand/logo-light.svg') }}"
                  class="w-auto transition-[height] duration-200 dark:hidden {{ $isLandingPage ? '' : 'h-10' }}"
-                 @if($isLandingPage) style="height: 5.5rem" :style="{ height: scrolled ? '3.5rem' : '5.5rem' }" @endif
+                 @if($isLandingPage) style="height: 5.5rem" :style="{ height: scrolled ? '3.5rem' : '5.5rem' }" @else style="height: 2.5rem" @endif
                  alt="VATGER Logo">
             <img src="{{ asset('images/brand/logo-dark.svg') }}"
                  class="hidden w-auto transition-[height] duration-200 dark:block {{ $isLandingPage ? '' : 'h-10' }}"
-                 @if($isLandingPage) style="height: 5.5rem" :style="{ height: scrolled ? '3.5rem' : '5.5rem' }" @endif
+                 @if($isLandingPage) style="height: 5.5rem" :style="{ height: scrolled ? '3.5rem' : '5.5rem' }" @else style="height: 2.5rem" @endif
                  alt="VATGER Logo">
         </a>
 
