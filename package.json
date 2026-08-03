@@ -51,6 +51,6 @@
     "test": "tests"
   },
   "author": "Sebastian Kramer, Paul Hollmann, Nikolas Görlitz",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module"
 }

@@ -9,7 +9,17 @@
 - TypeScript for interactive UI and page-specific integrations
 - Sass modules for public, administration and email styling
 
-The former Landrick and Bootstrap theme has been removed. Public and admin styles use separate Vite entry points while sharing the same branding tokens, components and locally bundled Vatger fonts.
+## License
+
+The original software code in this repository is licensed under the [MIT
+License](LICENSE).
+
+The website's text, documentation content, logos, trademarks, names, visual
+identity, fonts, photographs, illustrations, maps, and other media or
+branding assets are not covered by the MIT License. Unless a separate license
+or permission says otherwise, those materials remain reserved by their
+respective rights holders and may not be copied, modified, or redistributed
+without prior written permission.
 
 Useful documentation:
 

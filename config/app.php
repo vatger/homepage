@@ -81,7 +81,7 @@ return [
 
     'name' => env('APP_NAME', 'vatger'),
 
-    'version' => env('APP_VERSION', '3.0'),
+    'version' => env('APP_VERSION', '4'),
 
     /*
     |--------------------------------------------------------------------------

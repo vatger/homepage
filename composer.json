@@ -6,7 +6,7 @@
     "vatger",
     "vatsim"
   ],
-  "license": "none",
+  "license": "MIT",
   "repositories": [
     {
       "type": "vcs",
