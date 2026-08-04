@@ -35,6 +35,14 @@ return [
         'no-atis-available' => 'No ATIS is currently available for this aerodrome.',
         'monitoring' => 'monitoring',
         'no-atc-online' => 'No ATC is currently online.',
+        'map-legend' => 'Map legend',
+        'map-past-path' => 'Past path',
+        'map-predicted-path' => 'Predicted path',
+        'map-aircraft' => 'Aircraft',
+        'map-empty-stand' => 'Empty stand',
+        'map-occupied-stand' => 'Occupied stand',
+        'map-click-hint' => 'Click a stand or aircraft for more information.',
+        'map-zoom-hint' => 'Zoom in to see stand labels.',
     ],
 
     'event' => [

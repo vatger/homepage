@@ -35,6 +35,14 @@ return [
         'no-atis-available' => 'Derzeit ist keine ATIS für diesen Flugplatz verfügbar.',
         'monitoring' => 'überwacht',
         'no-atc-online' => 'Derzeit ist kein ATC online.',
+        'map-legend' => 'Kartenlegende',
+        'map-past-path' => 'Zurückgelegter Weg',
+        'map-predicted-path' => 'Voraussichtlicher Weg',
+        'map-aircraft' => 'Flugzeug',
+        'map-empty-stand' => 'Freier Stand',
+        'map-occupied-stand' => 'Belegter Stand',
+        'map-click-hint' => 'Klicke auf einen Stand oder ein Flugzeug für weitere Informationen.',
+        'map-zoom-hint' => 'Zoome hinein, um die Standnummern zu sehen.',
     ],
 
     'event' => [

@@ -207,6 +207,46 @@
     @apply w-full overflow-hidden rounded-2xl;
   }
 
+  .aerodrome-map-legend {
+    @apply flex flex-wrap items-center gap-x-5 gap-y-2 px-1 pt-3 text-xs text-secondary-500 dark:text-secondary-300;
+  }
+
+  .aerodrome-map-legend-item {
+    @apply inline-flex items-center gap-1.5 whitespace-nowrap;
+  }
+
+  .aerodrome-map-legend-line {
+    display: inline-block;
+    width: 1.5rem;
+    height: 0.2rem;
+    border-radius: 9999px;
+  }
+
+  .aerodrome-map-legend-line--past {
+    background-color: #8faecc;
+  }
+
+  .aerodrome-map-legend-line--predicted {
+    background: repeating-linear-gradient(
+      to right,
+      #f59e0b 0,
+      #f59e0b 0.45rem,
+      transparent 0.45rem,
+      transparent 0.7rem
+    );
+  }
+
+  .aerodrome-map-legend-item img {
+    display: block;
+    width: 1.65rem;
+    height: 0.8rem;
+    object-fit: contain;
+  }
+
+  .aerodrome-map-legend-hint {
+    @apply basis-full text-secondary-400 dark:text-secondary-400;
+  }
+
   @media (max-width: 767px) {
     .aerodrome-sidebar .card-body {
       @apply p-3;

@@ -82,6 +82,29 @@
                                 <div wire:ignore id="map" class="w-100 mt-3 rounded" style="height: 500px">
                                     <h5 class="mt-3 text-muted" id="event-title">@lang('pilot.aerodromes.aerodrome.loading-event-text')</h5>
                                 </div>
+                                <div class="aerodrome-map-legend" aria-label="{{ __('pages.aerodrome.map-legend') }}">
+                                    <span class="aerodrome-map-legend-item">
+                                        <span class="aerodrome-map-legend-line aerodrome-map-legend-line--past" aria-hidden="true"></span>
+                                        <span>@lang('pages.aerodrome.map-past-path')</span>
+                                    </span>
+                                    <span class="aerodrome-map-legend-item">
+                                        <span class="aerodrome-map-legend-line aerodrome-map-legend-line--predicted" aria-hidden="true"></span>
+                                        <span>@lang('pages.aerodrome.map-predicted-path')</span>
+                                    </span>
+                                    <span class="aerodrome-map-legend-item">
+                                        <img src="{{ asset('images/brand/aircraft/plane-taxi.svg') }}" alt="" aria-hidden="true">
+                                        <span>@lang('pages.aerodrome.map-aircraft')</span>
+                                    </span>
+                                    <span class="aerodrome-map-legend-item">
+                                        <img src="{{ asset('images/brand/aircraft/plane-gate-empty.svg') }}" alt="" aria-hidden="true">
+                                        <span>@lang('pages.aerodrome.map-empty-stand')</span>
+                                    </span>
+                                    <span class="aerodrome-map-legend-item">
+                                        <img src="{{ asset('images/brand/aircraft/plane-gate-occupied.svg') }}" alt="" aria-hidden="true">
+                                        <span>@lang('pages.aerodrome.map-occupied-stand')</span>
+                                    </span>
+                                    <span class="aerodrome-map-legend-hint">@lang('pages.aerodrome.map-click-hint')&nbsp; @lang('pages.aerodrome.map-zoom-hint')</span>
+                                </div>
                             </div>
                         </div>
                     </div>

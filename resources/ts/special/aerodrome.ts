@@ -16,20 +16,22 @@ import {
 } from "leaflet";
 
 document.addEventListener("DOMContentLoaded", () => {
-  load_map().then();
-  metar().then();
-  atis().then();
-  indicator().then();
-  event().then();
-  download_map().then(() => {
-    update_map();
-    updateAircraftList();
-  });
+  initializeAerodromePage().catch((error) => console.error(error));
 });
 
-window.setInterval(() => updatePredictedPaths(), 1000);
-
 let mymap: Map | null = null;
+
+async function initializeAerodromePage(): Promise<void> {
+  await load_map();
+  await download_map();
+  update_map();
+  updateAircraftList();
+
+  await metar();
+  await atis();
+  await indicator();
+  await event();
+}
 
 async function getAerodromeComponent() {
   for (let attempt = 0; attempt < 100; attempt++) {
@@ -106,8 +108,10 @@ let mapPollInFlight = false;
 const mapPollDelayMs = 4_000;
 
 const aircraftAssetPath = "/images/brand/aircraft";
-const predictedPathHorizonMs = 20_000;
-const aircraftSimulationDelayMs = 25_000;
+const predictedPathHorizonMs = 31_000;
+
+window.setInterval(() => updatePredictedPaths(), mapPollDelayMs);
+const aircraftSimulationDelayMs = 30_000;
 
 function createGateIcon(
   occupied: boolean,
@@ -551,14 +555,21 @@ function updatePredictedPaths(): void {
 async function update_map() {
   aircraftAnimationToken++;
 
-  const openPopup = (mymap as
-    | (Map & {
-        _popup?: { _source?: { popupIdentity?: string } };
-      })
-    | null)?._popup as
-    | { _source?: { popupIdentity?: string } }
+  const openPopup = (
+    mymap as
+      | (Map & {
+          _popup?: { _source?: { popupIdentity?: string } };
+        })
+      | null
+  )?._popup as
+    | {
+        isOpen?: () => boolean;
+        _source?: { popupIdentity?: string };
+      }
     | undefined;
-  const openPopupIdentity = openPopup?._source?.popupIdentity;
+  const openPopupIdentity = openPopup?.isOpen?.()
+    ? openPopup._source?.popupIdentity
+    : undefined;
   let popupToRestore: Marker | null = null;
 
   if (predictedPathLayer) {
