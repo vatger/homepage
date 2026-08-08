@@ -433,6 +433,10 @@ class XenForoLibrary extends BaseLibrary
             case 'C3':
                 $groups[] = self::find_group('_rating_atc_c1');
                 break;
+            case 'I1':
+            case 'I3':
+                $groups[] = self::find_group('_rating_atc_ins');
+                break;
             case 'SUP':
             case 'ADM':
                 $groups[] = self::find_group('_rating_atc_sup');
