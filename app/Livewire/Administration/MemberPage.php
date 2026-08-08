@@ -92,6 +92,7 @@ class MemberPage extends Component
             'user' => $this->user,
             'acting_user' => Auth::user(),
             'discord' => DiscordUser::where('user_id', $this->user->id)->first(),
+            'external_groups' => $this->user->external_groups(),
         ]);
     }
 

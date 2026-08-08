@@ -73,7 +73,7 @@
 
                 <x-layouts.admin.sidebar-col position="right">
                     <x-layouts.admin.card>
-                        <x-layouts.admin.card-header position="left" title="Mitglieder" :subtitle="$team->role->users->count()" />
+                        <x-layouts.admin.card-header position="left" title="Mitglieder" :subtitle="$team->users->count()" />
                         <x-layouts.admin.card-header position="right">
                             <li class="list-inline-item" style="width: 100%">
                                 <div class="row">
@@ -94,12 +94,12 @@
                                 </tr>
                                 </thead>
                                 <tbody id="member-list-content">
-                                @if ($team->role->users->count() == 0)
+                                @if ($team->users->count() == 0)
                                     <tr class="text-center">
                                         <td colspan="3" class="text-muted text-center">Keine Benutzer in dieser Gruppe</td>
                                     </tr>
                                 @else
-                                    @foreach ($team->role->users as $u)
+                                    @foreach ($team->users as $u)
                                         <tr class="text-center" id="user-{{ $u->id }}">
                                             <td>{{ $u->id }}</td>
                                             <td>{{ $u->username }}</td>
@@ -120,27 +120,38 @@
 
             @can('membership.teams.edit')
                 <div class="row">
-                    <x-layouts.admin.sidebar-col position="left" title="Service Roles">
-                        <div class="row table-responsive">
-                            <table class="table table-center bg-white mb-0">
+                    <x-layouts.admin.sidebar-col position="left" title="External Groups">
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            @foreach ($external_service_statuses as $status)
+                                <span class="badge rounded-pill {{ $status['available'] ? 'bg-success' : 'bg-danger' }}">
+                                    {{ $status['label'] }}:
+                                    {{ $status['available'] ? 'Available' : 'Unavailable' }}
+                                </span>
+                            @endforeach
+                        </div>
+                        <div class="table-responsive overflow-hidden">
+                            <table class="table table-center bg-white mb-0 w-100" style="table-layout: fixed;">
                                 <thead>
                                 <tr class="text-center">
-                                    <th>Type</th>
-                                    <th>Role</th>
-                                    <th></th>
+                                    <th style="width: 25%;">Service</th>
+                                    <th>External group</th>
+                                    <th style="width: 72px;"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($service_roles as $r)
+                                @foreach ($external_groups as $r)
                                     <tr class="text-center">
-                                        <td>{{ $r->service_type }}</td>
-                                        <td>{{ $r->service_role }}
-                                            @if($r->service_role_name)
-                                                <small>({{ $r->service_role_name }})</small>
+                                        <td class="text-break">
+                                            {{ str($r->external_group_type->name)->headline() }}
+                                        </td>
+                                        <td class="text-break">
+                                            <span>{{ $r->external_group }}</span>
+                                            @if($r->external_group_name)
+                                                <small class="d-block">({{ $r->external_group_name }})</small>
                                             @endif
                                         </td>
-                                        <td>
-                                            <button wire:click="removeServiceRole({{ $r->id }})" class="btn btn-sm btn-soft-danger">
+                                        <td class="text-nowrap">
+                                            <button wire:click="removeExternalGroup({{ $r->id }})" class="btn btn-sm btn-soft-danger">
                                                 <i data-feather="trash" class="fea icon-sm"></i>
                                             </button>
                                         </td>
@@ -148,19 +159,17 @@
                                 @endforeach
                                 <tr>
                                     <td>
-                                        <select wire:model="selected_service_role_type" class="form-select form-control-sm form-control" aria-label="">
-                                            @foreach(App\Models\Groups\ServiceRoleType::cases() as $type)
-                                                <option value="{{ $type->value }}">{{ $type->name }}</option>
+                                        <select wire:model="selected_external_group_type" class="form-select form-control-sm form-control" aria-label="External group service">
+                                            @foreach(App\Models\Groups\TeamExternalGroupType::cases() as $type)
+                                                <option value="{{ $type->value }}">{{ str($type->name)->headline() }}</option>
                                             @endforeach
                                         </select>
                                     </td>
                                     <td>
-                                        <label>
-                                            <input wire:model="selected_service_role" class="form-control-sm form-control" />
-                                        </label>
+                                        <input wire:model="selected_external_group" class="form-control-sm form-control" aria-label="External group identifier" />
                                     </td>
                                     <td>
-                                        <button wire:click="addServiceRole" class="btn btn-sm btn-soft-success"><i data-feather="plus" class="fea icon-sm"></i></button>
+                                        <button wire:click="addExternalGroup" class="btn btn-sm btn-soft-success"><i data-feather="plus" class="fea icon-sm"></i></button>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -174,7 +183,7 @@
 
                     <x-layouts.admin.sidebar-col position="right">
                         <x-layouts.admin.card>
-                            <x-layouts.admin.card-header position="left" title="Permissions" :subtitle="$team->role->permissions->count()" icon="lock" />
+                            <x-layouts.admin.card-header position="left" title="Permissions" :subtitle="$team->permissions->count()" icon="lock" />
                             <x-layouts.admin.card-header position="right" />
                             <div class="row pt-4 ps-4 table-responsive">
                                 <table class="table table-center bg-white mb-0">
@@ -191,7 +200,7 @@
                                             <td>{{ $p->id }}</td>
                                             <td>{{ $p->name }}</td>
                                             <td>
-                                                @if ($team->role->hasPermissionTo($p))
+                                                @if ($team->hasPermissionTo($p))
                                                     <button wire:click="changePermission({{$p->id}}, false)" class="btn btn-sm btn-soft-danger">
                                                         Entfernen
                                                     </button>

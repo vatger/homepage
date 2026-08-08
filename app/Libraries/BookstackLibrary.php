@@ -2,7 +2,7 @@
 
 namespace App\Libraries;
 
-use App\Models\Groups\ServiceRoleType;
+use App\Models\Groups\TeamExternalGroupType;
 use App\Models\Membership\User;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
@@ -43,7 +43,7 @@ class BookstackLibrary extends BaseLibrary
         if (empty($user_data)) {
             return;
         }
-        $roles = $user->service_role_ids(ServiceRoleType::BookstackGroup, true);
+        $roles = $user->external_group_ids(TeamExternalGroupType::BookstackGroup, true);
         $roles[] = config('bookstack.public_role');
 
         self::_user_update($user->id, $user->email, $roles);

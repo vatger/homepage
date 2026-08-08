@@ -4,9 +4,10 @@ namespace App\Livewire\Administration;
 
 use App\Libraries\MembershipLibrary;
 use App\Livewire\Helpers\NotyTrait;
-use App\Models\Groups\ServiceRole;
-use App\Models\Groups\ServiceRoleType;
+use App\Models\Groups\Permission;
 use App\Models\Groups\Team;
+use App\Models\Groups\TeamExternalGroup;
+use App\Models\Groups\TeamExternalGroupType;
 use App\Models\Membership\User;
 use App\Models\Membership\UserStaffDetail;
 use Carbon\Carbon;
@@ -14,7 +15,6 @@ use Illuminate\Support\Facades\Redirect;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
-use Spatie\Permission\Models\Permission;
 
 class TeamPage extends Component
 {
@@ -27,9 +27,9 @@ class TeamPage extends Component
 
     public int $selected_superteam;
 
-    public string $selected_service_role_type = ServiceRoleType::ForumGroup->value;
+    public string $selected_external_group_type = TeamExternalGroupType::ForumGroup->value;
 
-    public string $selected_service_role = '';
+    public string $selected_external_group = '';
 
     public function mount()
     {
@@ -44,10 +44,26 @@ class TeamPage extends Component
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
+        $external_groups = $this->team->external_groups;
+        $external_service_statuses = $external_groups
+            ->groupBy(fn (TeamExternalGroup $group): string => $group->external_group_type->value)
+            ->map(function ($groups, string $type): array {
+                $groupType = TeamExternalGroupType::from($type);
+                $available = $groups->contains(function (TeamExternalGroup $group): bool {
+                    return filled($group->external_group_name) && $group->external_group_name !== '?';
+                });
+
+                return [
+                    'label' => str($groupType->name)->headline(),
+                    'available' => $available,
+                ];
+            });
+
         return view('pages.admin.team')->with([
             'team' => $this->team,
             'subteams' => $this->team->subteams,
-            'service_roles' => $this->team->service_roles,
+            'external_groups' => $external_groups,
+            'external_service_statuses' => $external_service_statuses,
             'permissions' => Permission::all(),
         ]);
     }
@@ -72,9 +88,9 @@ class TeamPage extends Component
         $this->authorize('membership.teams.edit');
         $permission = Permission::findOrFail($permission_id);
         if ($add) {
-            $this->team->role->givePermissionTo($permission);
+            $this->team->givePermissionTo($permission);
         } else {
-            $this->team->role->revokePermissionTo($permission);
+            $this->team->revokePermissionTo($permission);
         }
     }
 
@@ -82,7 +98,7 @@ class TeamPage extends Component
     {
         $this->authorize('membership.teams.edit.members.subteam-check', $this->team);
         $user = User::findOrFail($user_id);
-        $user->removeRole($this->team->role);
+        $user->removeRole($this->team);
         MembershipLibrary::update($user);
         if (count($user->roles) == 0) {
             $user->staffDetails->leaving_staff_at = Carbon::now()->addDays(30);
@@ -113,7 +129,7 @@ class TeamPage extends Component
             }
         }
 
-        $user->assignRole($this->team->role);
+        $user->assignRole($this->team);
         MembershipLibrary::update($user);
     }
 
@@ -125,20 +141,20 @@ class TeamPage extends Component
         return Redirect::route('administration.teams')->with('success', 'Team gelöscht');
     }
 
-    public function removeServiceRole(int $id): void
+    public function removeExternalGroup(int $id): void
     {
         $this->authorize('membership.teams.edit');
-        ServiceRole::findOrFail($id)->delete();
+        TeamExternalGroup::findOrFail($id)->delete();
     }
 
-    public function addServiceRole(): void
+    public function addExternalGroup(): void
     {
         $this->authorize('membership.teams.edit');
         try {
-            $r = new ServiceRole;
+            $r = new TeamExternalGroup;
             $r->team_id = $this->team->id;
-            $r->service_type = $this->selected_service_role_type;
-            $r->service_role = $this->selected_service_role;
+            $r->external_group_type = $this->selected_external_group_type;
+            $r->external_group = $this->selected_external_group;
             $r->save();
             $this->showNoty('Rolle hinzugefügt', 'success');
         } catch (\Exception $e) {

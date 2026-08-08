@@ -25,7 +25,12 @@ class BaseLibrary
     protected static function constructClient(array $config = []): Client
     {
         $config['headers'] = array_merge($config['headers'] ?? [], ['User-Agent' => 'VATGER/3']);
-        $config['timeout'] = $config['timeout'] ?? 20;
+        // Keep unavailable integrations from blocking web requests. The
+        // connection timeout is intentionally shorter than PHP's max
+        // execution time, especially for local development environments.
+        $config['timeout'] = $config['timeout'] ?? config('api_sync.http_timeout', 5);
+        $config['connect_timeout'] = $config['connect_timeout'] ?? config('api_sync.http_connect_timeout', 2);
+        $config['read_timeout'] = $config['read_timeout'] ?? config('api_sync.http_read_timeout', 5);
 
         return new Client($config);
     }

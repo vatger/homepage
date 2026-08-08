@@ -2,7 +2,7 @@
 
 namespace App\Libraries;
 
-use App\Models\Groups\ServiceRoleType;
+use App\Models\Groups\TeamExternalGroupType;
 use App\Models\Membership\User;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
@@ -32,8 +32,14 @@ class NextcloudLibrary extends BaseLibrary
                 return $client->request($method, $uri, ['form_params' => $data]);
             }
         } catch (GuzzleException $e) {
-            echo $e->getMessage();
-            Log::info($e->getMessage());
+            // Never echo integration failures: this method is also called
+            // while rendering admin pages. Log the failure and let callers
+            // render the service as unavailable instead.
+            Log::warning('Nextcloud request failed', [
+                'method' => $method,
+                'endpoint' => $endpoint,
+                'message' => $e->getMessage(),
+            ]);
 
             return false;
         }
@@ -97,7 +103,7 @@ class NextcloudLibrary extends BaseLibrary
     public static function check_user(User $user): bool
     {
         // Neue Benutzergruppen ermitteln
-        $newgroups = $user->service_role_ids(ServiceRoleType::NextcloudGroup);
+        $newgroups = $user->external_group_ids(TeamExternalGroupType::NextcloudGroup);
 
         // Existiert User?
         $username = "$user->id";

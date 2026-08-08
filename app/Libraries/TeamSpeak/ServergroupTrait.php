@@ -2,8 +2,8 @@
 
 namespace App\Libraries\TeamSpeak;
 
-use App\Models\Groups\ServiceRole;
-use App\Models\Groups\ServiceRoleType;
+use App\Models\Groups\TeamExternalGroup;
+use App\Models\Groups\TeamExternalGroupType;
 use App\Models\TeamspeakRegistration;
 use Illuminate\Support\Facades\Cache;
 
@@ -58,13 +58,13 @@ trait ServergroupTrait
         return self::_servergroupdelclient($clientdbid, $serverGroupId);
     }
 
-    public static function listAvailServiceRoleId(): array
+    public static function listAvailableExternalGroupIds(): array
     {
-        return ServiceRole::query()
-            ->where('service_type', 'LIKE', ServiceRoleType::TeamspeakServergroup)
-            ->select('service_role')
+        return TeamExternalGroup::query()
+            ->where('external_group_type', 'LIKE', TeamExternalGroupType::TeamspeakServergroup->value)
+            ->select('external_group')
             ->get()
-            ->map(fn ($sr) => intval($sr->service_role))
+            ->map(fn ($sr) => intval($sr->external_group))
             ->unique()
             ->values()
             ->toArray();

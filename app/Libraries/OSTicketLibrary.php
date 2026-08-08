@@ -2,7 +2,7 @@
 
 namespace App\Libraries;
 
-use App\Models\Groups\ServiceRoleType;
+use App\Models\Groups\TeamExternalGroupType;
 use App\Models\Membership\User;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
@@ -63,7 +63,7 @@ class OSTicketLibrary extends BaseLibrary
 
     public static function check_user(User $user): bool
     {
-        $roles = $user->service_role_ids(ServiceRoleType::SupportGroup, cast_to_int: true);
+        $roles = $user->external_group_ids(TeamExternalGroupType::SupportGroup, cast_to_int: true);
 
         $result = self::send('POST', 'user/syncUserGroups', [
             'user_id' => strval($user->id),

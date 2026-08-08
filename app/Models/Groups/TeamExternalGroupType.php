@@ -2,7 +2,7 @@
 
 namespace App\Models\Groups;
 
-enum ServiceRoleType: string
+enum TeamExternalGroupType: string
 {
     case TeamspeakServergroup = 'ts.servergroup';
     case ForumGroup = 'board.group';

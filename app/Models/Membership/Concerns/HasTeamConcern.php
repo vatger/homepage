@@ -2,11 +2,10 @@
 
 namespace App\Models\Membership\Concerns;
 
-use App\Models\Groups\ServiceRole;
-use App\Models\Groups\ServiceRoleType;
 use App\Models\Groups\Team;
+use App\Models\Groups\TeamExternalGroup;
+use App\Models\Groups\TeamExternalGroupType;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 trait HasTeamConcern
 {
@@ -15,27 +14,27 @@ trait HasTeamConcern
         return Team::whereIntegerInRaw('id', $this->team_ids())->get();
     }
 
-    public function service_roles(?ServiceRoleType $service_type = null): array|Collection|ServiceRole
+    public function external_groups(?TeamExternalGroupType $external_group_type = null): array|Collection|TeamExternalGroup
     {
-        if (! $service_type) {
-            return ServiceRole::whereIntegerInRaw('team_id', $this->team_ids())->get();
+        if (! $external_group_type) {
+            return TeamExternalGroup::whereIntegerInRaw('team_id', $this->team_ids())->get();
         }
 
-        return ServiceRole::whereIntegerInRaw('team_id', $this->team_ids())
-            ->where('service_type', 'LIKE', $service_type->value)
+        return TeamExternalGroup::whereIntegerInRaw('team_id', $this->team_ids())
+            ->where('external_group_type', 'LIKE', $external_group_type->value)
             ->get();
     }
 
-    public function service_role_ids(ServiceRoleType $service_type, bool $cast_to_int = false): array
+    public function external_group_ids(TeamExternalGroupType $external_group_type, bool $cast_to_int = false): array
     {
         if (! $this->staffDetails || $this->staffDetails?->accepted_data_protection_at || ! config('api_sync_active.sdp_enforce')) {
-            return $this->service_roles($service_type)
+            return $this->external_groups($external_group_type)
                 ->map(function ($r) use ($cast_to_int) {
                     if ($cast_to_int) {
-                        return intval($r->service_role);
+                        return intval($r->external_group);
                     }
 
-                    return $r->service_role;
+                    return $r->external_group;
                 })
                 ->unique()
                 ->values()
@@ -47,15 +46,9 @@ trait HasTeamConcern
 
     private function team_ids(): array
     {
-        return DB::table('teams')
-            ->join('roles', 'teams.role_id', '=', 'roles.id')
-            ->join('model_has_roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->where('model_has_roles.model_id', '=', $this->id)
-            ->select('teams.id')
-            ->get()
-            ->map(function ($team) {
-                return $team->id;
-            })
+        return $this->roles()
+            ->wherePivot('model_type', self::class)
+            ->pluck((new Team)->getTable().'.id')
             ->toArray();
     }
 }

@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Groups\Permission;
 use App\Models\Groups\Team;
 use App\Models\Membership\User;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Throwable;
 
 class PermissionSeeder extends Seeder
@@ -89,7 +88,7 @@ class PermissionSeeder extends Seeder
                 }
             }
             if ($delete) {
-                foreach (Role::all() as $role) {
+                foreach (Team::all() as $role) {
                     $role->revokePermissionTo($permission);
                 }
                 $this->command->getOutput()->writeln("Deleted $permission->name");
@@ -105,12 +104,12 @@ class PermissionSeeder extends Seeder
         $team->name = 'Tech Leitung';
         $team->save();
 
-        $team->role->givePermissionTo(Permission::all());
+        $team->givePermissionTo(Permission::all());
 
         // IF WE ARE IN DEVELOPMENT ASSIGN TESTUSER WEB10 TO THE ADMIN-ROLE
         if (config('app.env') != 'production') {
             $user = User::first();
-            $user?->assignRole($team->role);
+            $user?->assignRole($team);
         }
 
         $this->command->getOutput()->writeln('Finished seeding.');

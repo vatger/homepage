@@ -2,7 +2,7 @@
 
 namespace App\Libraries\TeamSpeak;
 
-use App\Models\Groups\ServiceRoleType;
+use App\Models\Groups\TeamExternalGroupType;
 use App\Models\Membership\User;
 use App\Models\TeamspeakRegistration;
 use Carbon\Carbon;
@@ -115,18 +115,18 @@ class TeamSpeakWebQuery
         }
 
         // group assignment
-        $service_role_ids = $user->service_role_ids(ServiceRoleType::TeamspeakServergroup, true);
+        $external_group_ids = $user->external_group_ids(TeamExternalGroupType::TeamspeakServergroup, true);
 
-        $all_server_groups = self::listAvailServiceRoleId();
+        $all_server_groups = self::listAvailableExternalGroupIds();
         // so we don't remove the default role
 
-        $del_server_groups = array_diff($all_server_groups, $service_role_ids);
+        $del_server_groups = array_diff($all_server_groups, $external_group_ids);
         foreach ($registrations as $registration) {
-            foreach ($service_role_ids as $service_role_id) {
-                self::addToServergroup($registration, $service_role_id);
+            foreach ($external_group_ids as $external_group_id) {
+                self::addToServergroup($registration, $external_group_id);
             }
-            foreach ($del_server_groups as $service_role_id) {
-                self::delFromServergroup($registration, $service_role_id);
+            foreach ($del_server_groups as $external_group_id) {
+                self::delFromServergroup($registration, $external_group_id);
             }
         }
     }
