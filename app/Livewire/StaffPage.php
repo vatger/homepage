@@ -17,7 +17,7 @@ class StaffPage extends Component
             ->where('show', true)
             ->with([
                 'users' => function (BelongsToMany $users): void {
-                $users->wherePivot('show', true);
+                    $users->wherePivot('show', true);
                 },
                 'users.staffDetails.user',
             ])
