@@ -108,7 +108,7 @@ class PermissionSeeder extends Seeder
 
         // IF WE ARE IN DEVELOPMENT ASSIGN TESTUSER WEB10 TO THE ADMIN-ROLE
         if (config('app.env') != 'production') {
-            $user = User::first();
+            $user = User::orderByDesc('id')->first();
             $user?->assignRole($team);
         }
 

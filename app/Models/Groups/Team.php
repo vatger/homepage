@@ -12,7 +12,19 @@ class Team extends SpatieRole
 {
     protected $table = 'group_teams';
 
-    protected $fillable = ['super_team_id'];
+    protected $fillable = [
+        'super_team_id',
+        'title_de',
+        'title_en',
+        'show',
+        'order',
+        'email',
+    ];
+
+    protected $casts = [
+        'show' => 'boolean',
+        'order' => 'integer',
+    ];
 
     public function __construct(array $attributes = [])
     {
@@ -43,6 +55,9 @@ class Team extends SpatieRole
             config('permission.table_names.model_has_roles'),
             config('permission.column_names.role_pivot_key', 'role_id'),
             config('permission.column_names.model_morph_key', 'model_id'),
-        )->using(TeamMembership::class);
+        )
+            ->using(TeamMembership::class)
+            ->withPivot(['order', 'title_de', 'title_en', 'show'])
+            ->orderByPivot('order');
     }
 }

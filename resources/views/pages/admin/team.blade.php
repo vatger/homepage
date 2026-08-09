@@ -9,13 +9,6 @@
                 ]"
             ></x-layouts.admin.content>
 
-            <x-layouts.admin.card-image-bar
-                    :bg_img="asset('images/profile/profile_1.png')"
-                    :m_img="asset('/images/profile/avatar_placeholder.png')"
-                    :title="$team->name"
-                    :subtitle="'Erstellt am: ' . $team->created_at->format('d.m.Y')"
-            ></x-layouts.admin.card-image-bar>
-
             <div class="row">
                 <x-layouts.admin.sidebar-col position="left" title="Übersicht">
                     <div class="d-flex align-items-center mb">
@@ -55,6 +48,37 @@
                         </div>
                     </div>
 
+                    @can('membership.teams.edit')
+                        <div class="border-top pt-3 mt-3">
+                            <h6 class="text-primary mb-3">Team-Anzeige</h6>
+                            <div class="mb-2">
+                                <label class="form-label" for="team-title-de">Titel Deutsch</label>
+                                <input id="team-title-de" wire:model="team_title_de" class="form-control form-control-sm" type="text">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="team-title-en">Titel Englisch</label>
+                                <input id="team-title-en" wire:model="team_title_en" class="form-control form-control-sm" type="text">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="team-email">Team-E-Mail</label>
+                                <input id="team-email" wire:model="team_email" class="form-control form-control-sm" type="email" placeholder="team@example.org">
+                            </div>
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <label class="form-label" for="team-order">Reihenfolge</label>
+                                    <input id="team-order" wire:model="team_order" class="form-control form-control-sm" type="number" min="0">
+                                </div>
+                                <div class="col-6 d-flex align-items-end">
+                                    <div class="form-check mb-1">
+                                        <input id="team-show" wire:model="team_show" class="form-check-input" type="checkbox">
+                                        <label class="form-check-label" for="team-show">Anzeigen</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button wire:click="saveTeamDisplaySettings" class="btn btn-sm btn-soft-primary" type="button">Speichern</button>
+                        </div>
+                    @endcan
+
                     <div class="d-flex align-items-center pt-3 mt-3 border-top">
                         <button class="btn btn-sm btn-soft-danger" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">Gruppe
                             Löschen
@@ -88,15 +112,19 @@
                             <table class="table table-center bg-white mb-0">
                                 <thead>
                                 <tr class="text-center">
-                                    <th class="border-bottom" style="width: 33%">CID</th>
-                                    <th class="border-bottom" style="width: 33%">Name</th>
-                                    <th class="border-bottom" style="width: 33%">Aktion</th>
+                                    <th class="border-bottom">CID</th>
+                                    <th class="border-bottom">Name</th>
+                                    <th class="border-bottom">Titel DE</th>
+                                    <th class="border-bottom">Titel EN</th>
+                                    <th class="border-bottom">Anzeigen</th>
+                                    <th class="border-bottom">Reihenfolge</th>
+                                    <th class="border-bottom">Aktion</th>
                                 </tr>
                                 </thead>
                                 <tbody id="member-list-content">
                                 @if ($team->users->count() == 0)
                                     <tr class="text-center">
-                                        <td colspan="3" class="text-muted text-center">Keine Benutzer in dieser Gruppe</td>
+                                        <td colspan="7" class="text-muted text-center">Keine Benutzer in dieser Gruppe</td>
                                     </tr>
                                 @else
                                     @foreach ($team->users as $u)
@@ -104,7 +132,16 @@
                                             <td>{{ $u->id }}</td>
                                             <td>{{ $u->username }}</td>
                                             <td>
-                                                <button wire:click="removeUser({{$u->id}})" class="btn btn-sm btn-soft-danger">Entfernen
+                                                <input wire:model="member_settings.{{ $u->id }}.title_de" list="member-title-de-options" class="form-control form-control-sm" type="text" aria-label="Titel Deutsch">
+                                            </td>
+                                            <td>
+                                                <input wire:model="member_settings.{{ $u->id }}.title_en" list="member-title-en-options" class="form-control form-control-sm" type="text" aria-label="Titel Englisch">
+                                            </td>
+                                            <td><input wire:model="member_settings.{{ $u->id }}.show" class="form-check-input" type="checkbox" aria-label="Anzeigen"></td>
+                                            <td><input wire:model="member_settings.{{ $u->id }}.order" class="form-control form-control-sm" type="number" min="0" aria-label="Reihenfolge"></td>
+                                            <td class="text-nowrap">
+                                                <button wire:click="saveMemberDisplaySettings({{ $u->id }})" class="btn btn-sm btn-soft-primary mb-1" type="button">Speichern</button>
+                                                <button wire:confirm="Soll dieses Mitglied wirklich aus dem Team entfernt werden?" wire:click="removeUser({{$u->id}})" class="btn btn-sm btn-soft-danger">Entfernen
                                                 </button>
                                             </td>
                                         </tr>
@@ -113,6 +150,16 @@
                                 </tbody>
                             </table>
                         </div>
+                        <datalist id="member-title-de-options">
+                            @foreach($member_title_recommendations['de'] as $title)
+                                <option value="{{ $title }}"></option>
+                            @endforeach
+                        </datalist>
+                        <datalist id="member-title-en-options">
+                            @foreach($member_title_recommendations['en'] as $title)
+                                <option value="{{ $title }}"></option>
+                            @endforeach
+                        </datalist>
                     </x-layouts.admin.card>
                 </x-layouts.admin.sidebar-col>
             </div>
@@ -151,7 +198,7 @@
                                             @endif
                                         </td>
                                         <td class="text-nowrap">
-                                            <button wire:click="removeExternalGroup({{ $r->id }})" class="btn btn-sm btn-soft-danger">
+                                            <button wire:confirm="Soll diese externe Gruppe wirklich entfernt werden?" wire:click="removeExternalGroup({{ $r->id }})" class="btn btn-sm btn-soft-danger">
                                                 <i data-feather="trash" class="fea icon-sm"></i>
                                             </button>
                                         </td>

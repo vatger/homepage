@@ -7,4 +7,16 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
 class TeamMembership extends MorphPivot
 {
     protected $table = 'group_team_memberships';
+
+    protected $fillable = [
+        'title_de',
+        'title_en',
+        'show',
+        'order',
+    ];
+
+    protected $casts = [
+        'show' => 'boolean',
+        'order' => 'integer',
+    ];
 }

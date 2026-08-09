@@ -6,6 +6,7 @@ use App\Libraries\MembershipLibrary;
 use App\Livewire\Helpers\NotyTrait;
 use App\Models\Groups\Permission;
 use App\Models\Groups\Team;
+use App\Models\Groups\TeamMembership;
 use App\Models\Groups\TeamExternalGroup;
 use App\Models\Groups\TeamExternalGroupType;
 use App\Models\Membership\User;
@@ -31,9 +32,30 @@ class TeamPage extends Component
 
     public string $selected_external_group = '';
 
+    public string $team_title_de = '';
+
+    public string $team_title_en = '';
+
+    public bool $team_show = true;
+
+    public int $team_order = 0;
+
+    public string $team_email = '';
+
+    public array $member_settings = [];
+
     public function mount()
     {
         $this->selected_superteam = $this->team->super_team_id ?? -1;
+        $this->team_title_de = $this->team->title_de ?? '';
+        $this->team_title_en = $this->team->title_en ?? '';
+        $this->team_show = (bool) ($this->team->show ?? true);
+        $this->team_order = (int) ($this->team->order ?? 0);
+        $this->team_email = $this->team->email ?? '';
+
+        foreach ($this->team->users as $user) {
+            $this->member_settings[$user->id] = $this->settingsFromPivot($user->pivot);
+        }
     }
 
     public function boot()
@@ -65,6 +87,20 @@ class TeamPage extends Component
             'external_groups' => $external_groups,
             'external_service_statuses' => $external_service_statuses,
             'permissions' => Permission::all(),
+            'member_title_recommendations' => [
+                'de' => TeamMembership::query()
+                    ->whereNotNull('title_de')
+                    ->where('title_de', '<>', '')
+                    ->distinct()
+                    ->orderBy('title_de')
+                    ->pluck('title_de'),
+                'en' => TeamMembership::query()
+                    ->whereNotNull('title_en')
+                    ->where('title_en', '<>', '')
+                    ->distinct()
+                    ->orderBy('title_en')
+                    ->pluck('title_en'),
+            ],
         ]);
     }
 
@@ -92,6 +128,36 @@ class TeamPage extends Component
         } else {
             $this->team->revokePermissionTo($permission);
         }
+    }
+
+    public function saveTeamDisplaySettings(): void
+    {
+        $this->authorize('membership.teams.edit');
+
+        $this->team->update([
+            'title_de' => $this->team_title_de ?: null,
+            'title_en' => $this->team_title_en ?: null,
+            'show' => $this->team_show,
+            'order' => max(0, $this->team_order),
+            'email' => $this->team_email ?: null,
+        ]);
+
+        $this->showNoty('Team-Anzeige gespeichert', 'success');
+    }
+
+    public function saveMemberDisplaySettings(int $userId): void
+    {
+        $this->authorize('membership.teams.edit');
+
+        $settings = $this->member_settings[$userId] ?? [];
+        $this->team->users()->updateExistingPivot($userId, [
+            'title_de' => ($settings['title_de'] ?? '') ?: null,
+            'title_en' => ($settings['title_en'] ?? '') ?: null,
+            'show' => (bool) ($settings['show'] ?? true),
+            'order' => max(0, (int) ($settings['order'] ?? 0)),
+        ]);
+
+        $this->showNoty('Mitgliedsanzeige gespeichert', 'success');
     }
 
     public function removeUser(int $user_id): void
@@ -130,6 +196,7 @@ class TeamPage extends Component
         }
 
         $user->assignRole($this->team);
+        $this->member_settings[$user->id] = $this->settingsFromPivot($this->team->users()->whereKey($user->id)->first()?->pivot);
         MembershipLibrary::update($user);
     }
 
@@ -160,5 +227,15 @@ class TeamPage extends Component
         } catch (\Exception $e) {
             $this->showNoty('Rolle konnte nicht hinzugefügt werden', 'error');
         }
+    }
+
+    private function settingsFromPivot(?object $pivot): array
+    {
+        return [
+            'title_de' => $pivot?->title_de ?? '',
+            'title_en' => $pivot?->title_en ?? '',
+            'show' => (bool) ($pivot?->show ?? true),
+            'order' => (int) ($pivot?->order ?? 0),
+        ];
     }
 }

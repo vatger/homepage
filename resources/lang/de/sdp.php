@@ -9,4 +9,9 @@ Darüber hinaus werde ich die VATSIM Data Protection and Handling Policy einhalt
 Mir ist bekannt, dass die Nichteinhaltung dieser Bedingungen disziplinarische und rechtliche Konsequenzen nach sich ziehen kann.<br><br>
 Ferner ist mir der Verhaltenskodex für den erweiterten vatger Staff bekannt und ich werde diesen einhalten.',
     'text-accept' => 'Ich habe die oben stehenden Bedingungen verstanden und akzeptiere diese.',
+    'name-format' => 'Namensformat sichtbar für eingeloggte User',
+    'name-format-help' => 'Wähle aus, wie dein Name in Stafflisten angezeigt wird.',
+    'name-format-initials' => 'Initialen',
+    'name-format-firstname_lastname_initial' => 'Vorname + Anfangsbuchstabe des Nachnamens',
+    'name-format-fullname' => 'Vollständiger Name',
 ];
