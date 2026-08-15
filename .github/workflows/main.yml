@@ -37,3 +37,65 @@ jobs:
 
       - name: Run format check
         run: npm run format:check
+
+  tests:
+    name: Laravel tests
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: homepage_testing
+          MYSQL_USER: homepage
+          MYSQL_PASSWORD: homepage
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: curl, ctype, dom, fileinfo, gd, mbstring, pdo_mysql, simplexml, xml
+          tools: composer
+          coverage: none
+
+      - name: Configure GitHub token for Composer
+        run: composer config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install PHP dependencies
+        run: composer install --no-progress --no-interaction --prefer-dist
+
+      - name: Prepare Laravel application
+        env:
+          APP_ENV: testing
+          APP_KEY: base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: homepage_testing
+          DB_USERNAME: homepage
+          DB_PASSWORD: homepage
+        run: php artisan migrate --force
+
+      - name: Run PHPUnit
+        env:
+          APP_ENV: testing
+          APP_KEY: base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: homepage_testing
+          DB_USERNAME: homepage
+          DB_PASSWORD: homepage
+        run: php artisan test --without-tty

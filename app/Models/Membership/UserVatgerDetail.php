@@ -3,12 +3,22 @@
 namespace App\Models\Membership;
 
 use Carbon\Carbon;
+use Database\Factories\UserVatgerDetailFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserVatgerDetail extends Model
 {
+    use HasFactory;
+
     protected $primaryKey = 'user_id';
+
+    protected static function newFactory(): Factory
+    {
+        return UserVatgerDetailFactory::new();
+    }
 
     protected $table = 'user_vatger_details';
 

@@ -3,8 +3,11 @@
 namespace App\Models\Navigation;
 
 use App\Models\AtcBooking;
+use Database\Factories\StationFactory;
 use Illuminate\Contracts\Database\Eloquent\Builder as DBuilder;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,7 +15,14 @@ use Illuminate\Database\Query\Builder as QBuilder;
 
 class Station extends Model
 {
+    use HasFactory;
+
     protected $table = 'nav_stations';
+
+    protected static function newFactory(): Factory
+    {
+        return StationFactory::new();
+    }
 
     protected $fillable = ['name', 'ident', 'frequency', 'active'];
 

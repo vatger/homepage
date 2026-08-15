@@ -3,12 +3,22 @@
 namespace App\Models\Membership;
 
 use Carbon\Carbon;
+use Database\Factories\UserBanFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserBan extends Model
 {
+    use HasFactory;
+
     protected $table = 'user_bans';
+
+    protected static function newFactory(): Factory
+    {
+        return UserBanFactory::new();
+    }
 
     protected $appends = ['permanent'];
 
@@ -21,6 +31,8 @@ class UserBan extends Model
     protected $fillable = [
         'user_id',
         'author_id',
+        'type',
+        'starts_at',
         'ends_at',
         'homepage',
         'forum',

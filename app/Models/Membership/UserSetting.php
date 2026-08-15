@@ -3,7 +3,10 @@
 namespace App\Models\Membership;
 
 use Carbon\Carbon;
+use Database\Factories\UserSettingFactory;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\File;
@@ -11,7 +14,14 @@ use JsonException;
 
 class UserSetting extends Model
 {
+    use HasFactory;
+
     protected $primaryKey = 'user_id';
+
+    protected static function newFactory(): Factory
+    {
+        return UserSettingFactory::new();
+    }
 
     protected $table = 'user_settings';
 

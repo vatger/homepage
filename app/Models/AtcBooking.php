@@ -6,6 +6,7 @@ use App\Models\Membership\User;
 use App\Models\Navigation\Station;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\Builder as DBuilder;
@@ -17,6 +18,8 @@ use Illuminate\Database\Query\Builder as DBuilder;
  */
 class AtcBooking extends Model
 {
+    use HasFactory;
+
     protected $table = 'booking_bookings';
 
     protected $fillable = ['station_id', 'controller_id', 'starts_at', 'ends_at', 'voice', 'training', 'exam', 'event'];

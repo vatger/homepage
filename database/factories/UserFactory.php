@@ -2,38 +2,53 @@
 
 namespace Database\Factories;
 
+use App\Models\Membership\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
+    protected $model = User::class;
+
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
+            'id' => $this->faker->unique()->numberBetween(10000000, 99999999),
+            'firstname' => $this->faker->firstName(),
+            'lastname' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'email_backup' => null,
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     *
-     * @return Factory
-     */
-    public function unverified()
+    public function german(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'email_verified_at' => null,
-            ];
+        return $this->afterCreating(fn (User $user) => $user->settings()->update(['language' => 'de']));
+    }
+
+    public function english(): static
+    {
+        return $this->afterCreating(fn (User $user) => $user->settings()->update(['language' => 'en']));
+    }
+
+    public function vatgerMember(): static
+    {
+        return $this->afterCreating(function (User $user): void {
+            $user->vatgerDetails()->update([
+                'vatger_member_at' => Carbon::now()->subYear(),
+                'active_vatger_member_at' => Carbon::now()->subMonths(6),
+                'active_member_at' => Carbon::now()->subMonths(6),
+            ]);
         });
+    }
+
+    public function inactive(): static
+    {
+        return $this->afterCreating(fn (User $user) => $user->vatgerDetails()->update([
+            'inactive_at' => Carbon::now()->subDays(10),
+        ]));
     }
 }

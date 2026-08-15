@@ -55,6 +55,55 @@
                 </div>
                 <!--end col-->
             </div>
+
+            <div class="card border-0 shadow rounded mt-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h5 class="mb-1">External services</h5>
+                            <p class="text-muted mb-0">Live connectivity status of configured integrations.</p>
+                        </div>
+                        <i class="mdi mdi-connection fs-4 text-muted"></i>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-nowrap mb-0 align-middle">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Service</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col" class="text-end">Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($externalServices as $service)
+                                    @php
+                                        $statusClass = match ($service['state']) {
+                                            'up' => 'success',
+                                            'not_configured' => 'secondary',
+                                            default => 'danger',
+                                        };
+                                        $statusLabel = match ($service['state']) {
+                                            'up' => 'Working',
+                                            'not_configured' => 'Not configured',
+                                            default => 'Unavailable',
+                                        };
+                                    @endphp
+                                    <tr>
+                                        <td class="fw-semibold">{{ $service['name'] }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ $statusClass }}-subtle text-{{ $statusClass }}">
+                                                <i class="mdi mdi-circle-small"></i> {{ $statusLabel }}
+                                            </span>
+                                        </td>
+                                        <td class="text-end text-muted">{{ $service['detail'] }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

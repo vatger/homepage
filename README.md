@@ -47,6 +47,32 @@ Useful documentation:
 8. (the develop branch is auto published to https://dev.vatsim-germany.org/) (if avail)
 9. Before committing, run `npm run format:write`, `npm run build`, and `php artisan test`.
 
+### Local or Docker demo data
+
+The normal `db:seed` path creates the application’s required reference data.
+Synthetic homepage data is opt-in and is never created when `APP_ENV=production`.
+After the database has been migrated, run:
+
+```sh
+php artisan db:seed --class=DemoDataSeeder
+```
+
+For a Docker Compose installation, run the same command inside the PHP/Laravel
+container (replace `app` with the service name used by your Compose file):
+
+```sh
+docker compose exec app php artisan migrate
+docker compose exec app php artisan db:seed
+docker compose exec app php artisan db:seed --class=DemoDataSeeder
+```
+
+The seeder creates synthetic partners, users, FIR memberships, team-role
+assignments, aerodrome links, and upcoming ATC bookings. Airports and stations
+are deliberately read from the navigation data imported by the normal seeders;
+the demo seeder does not invent operational ICAOs or frequencies. It uses the
+model factories in `database/factories`, so tests can reuse the same data
+definitions without loading demo records into a shared or production database.
+
 ## Frontend organization
 
 - `resources/css/app-public.css` — public Tailwind entry point

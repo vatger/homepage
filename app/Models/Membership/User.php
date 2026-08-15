@@ -7,6 +7,9 @@ use App\Models\Membership\Concerns\HasFirConcern;
 use App\Models\Membership\Concerns\HasGDPRConcern;
 use App\Models\Membership\Concerns\HasTeamConcern;
 use App\Models\TeamspeakRegistration;
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -17,7 +20,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements OAuthenticatable
 {
-    use HasApiTokens, HasBanConcern, HasFirConcern, HasGDPRConcern, Notifiable;
+    use HasApiTokens, HasBanConcern, HasFactory, HasFirConcern, HasGDPRConcern, Notifiable;
     use HasRoles, HasTeamConcern {
         HasTeamConcern::teams insteadof HasRoles;
     }
@@ -32,13 +35,18 @@ class User extends Authenticatable implements OAuthenticatable
 
     protected $appends = ['username', 'username_short'];
 
+    protected static function newFactory(): Factory
+    {
+        return UserFactory::new();
+    }
+
     public $incrementing = false;
 
     protected static function booted(): void
     {
         static::saved(function (self $user) {
             $user->passwords()->updateOrCreate(['user_id' => $user->id]);
-            $user->settings()->updateOrCreate(['user_id' => $user->id]);
+            $user->settings()->firstOrCreate(['user_id' => $user->id], ['language' => 'de']);
             $user->vatgerDetails()->updateOrCreate(['user_id' => $user->id]);
             $user->vatsimDetails()->updateOrCreate(['user_id' => $user->id]);
         });

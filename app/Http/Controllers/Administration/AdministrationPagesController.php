@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Administration;
 
 use App\Http\Controllers\Controller;
+use App\Services\ExternalServiceHealthService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
@@ -15,10 +16,10 @@ class AdministrationPagesController extends Controller
         parent::__construct();
     }
 
-    public function index(Request $request)
+    public function index(Request $request, ExternalServiceHealthService $services)
     {
         $this->authorize('administration.access');
 
-        return view('pages.admin.landing');
+        return view('pages.admin.landing', ['externalServices' => $services->check()]);
     }
 }

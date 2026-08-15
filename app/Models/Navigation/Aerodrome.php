@@ -2,7 +2,10 @@
 
 namespace App\Models\Navigation;
 
+use Database\Factories\AerodromeFactory;
 use Illuminate\Database\Eloquent\Builder as EBuilder;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,7 +16,14 @@ use Illuminate\Support\Str;
 
 class Aerodrome extends Model
 {
+    use HasFactory;
+
     protected $table = 'nav_aerodromes';
+
+    protected static function newFactory(): Factory
+    {
+        return AerodromeFactory::new();
+    }
 
     protected $fillable = ['*'];
 
