@@ -49,7 +49,7 @@ class MembershipController extends Controller
         $user = Auth::user();
         $success = GDPRLibrary::cancel_deletion($user);
         if (! $success) {
-            edirect(route('member.profile'))->with('error', 'GDPR removal locked. Contact support.');
+            redirect(route('member.profile'))->with('error', 'GDPR removal locked. Contact support.');
         }
 
         return redirect(route('member.profile'))->with('success', 'GDPR removal cancelled.');

@@ -104,7 +104,10 @@ class ConnectController extends Controller
             return redirect()->route('check-terms');
         }
 
-        MembershipLibrary::update($user);
+        // External membership synchronizations can involve several services
+        // and must not block the OAuth callback/redirect. Queue the work so a
+        // slow integration cannot cause a 504 and can be retried separately.
+        dispatch(fn () => MembershipLibrary::update($user));
 
         return redirect()->intended(route('member.profile'))->with('success', 'Logged in successfully');
     }
