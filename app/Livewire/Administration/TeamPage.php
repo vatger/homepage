@@ -4,9 +4,11 @@ namespace App\Livewire\Administration;
 
 use App\Libraries\MembershipLibrary;
 use App\Livewire\Helpers\NotyTrait;
-use App\Models\Groups\ServiceRole;
-use App\Models\Groups\ServiceRoleType;
+use App\Models\Groups\Permission;
 use App\Models\Groups\Team;
+use App\Models\Groups\TeamExternalGroup;
+use App\Models\Groups\TeamExternalGroupType;
+use App\Models\Groups\TeamMembership;
 use App\Models\Membership\User;
 use App\Models\Membership\UserStaffDetail;
 use Carbon\Carbon;
@@ -14,7 +16,6 @@ use Illuminate\Support\Facades\Redirect;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
-use Spatie\Permission\Models\Permission;
 
 class TeamPage extends Component
 {
@@ -27,13 +28,34 @@ class TeamPage extends Component
 
     public int $selected_superteam;
 
-    public string $selected_service_role_type = ServiceRoleType::ForumGroup->value;
+    public string $selected_external_group_type = TeamExternalGroupType::ForumGroup->value;
 
-    public string $selected_service_role = '';
+    public string $selected_external_group = '';
+
+    public string $team_title_de = '';
+
+    public string $team_title_en = '';
+
+    public bool $team_show = true;
+
+    public int $team_order = 0;
+
+    public string $team_email = '';
+
+    public array $member_settings = [];
 
     public function mount()
     {
         $this->selected_superteam = $this->team->super_team_id ?? -1;
+        $this->team_title_de = $this->team->title_de ?? '';
+        $this->team_title_en = $this->team->title_en ?? '';
+        $this->team_show = (bool) ($this->team->show ?? true);
+        $this->team_order = (int) ($this->team->order ?? 0);
+        $this->team_email = $this->team->email ?? '';
+
+        foreach ($this->team->users as $user) {
+            $this->member_settings[$user->id] = $this->settingsFromPivot($user->pivot);
+        }
     }
 
     public function boot()
@@ -44,11 +66,41 @@ class TeamPage extends Component
     #[Layout('layouts.admin.admin-master')]
     public function render()
     {
+        $external_groups = $this->team->external_groups;
+        $external_service_statuses = $external_groups
+            ->groupBy(fn (TeamExternalGroup $group): string => $group->external_group_type->value)
+            ->map(function ($groups, string $type): array {
+                $groupType = TeamExternalGroupType::from($type);
+                $available = $groups->contains(function (TeamExternalGroup $group): bool {
+                    return filled($group->external_group_name) && $group->external_group_name !== '?';
+                });
+
+                return [
+                    'label' => str($groupType->name)->headline(),
+                    'available' => $available,
+                ];
+            });
+
         return view('pages.admin.team')->with([
             'team' => $this->team,
             'subteams' => $this->team->subteams,
-            'service_roles' => $this->team->service_roles,
+            'external_groups' => $external_groups,
+            'external_service_statuses' => $external_service_statuses,
             'permissions' => Permission::all(),
+            'member_title_recommendations' => [
+                'de' => TeamMembership::query()
+                    ->whereNotNull('title_de')
+                    ->where('title_de', '<>', '')
+                    ->distinct()
+                    ->orderBy('title_de')
+                    ->pluck('title_de'),
+                'en' => TeamMembership::query()
+                    ->whereNotNull('title_en')
+                    ->where('title_en', '<>', '')
+                    ->distinct()
+                    ->orderBy('title_en')
+                    ->pluck('title_en'),
+            ],
         ]);
     }
 
@@ -72,17 +124,47 @@ class TeamPage extends Component
         $this->authorize('membership.teams.edit');
         $permission = Permission::findOrFail($permission_id);
         if ($add) {
-            $this->team->role->givePermissionTo($permission);
+            $this->team->givePermissionTo($permission);
         } else {
-            $this->team->role->revokePermissionTo($permission);
+            $this->team->revokePermissionTo($permission);
         }
+    }
+
+    public function saveTeamDisplaySettings(): void
+    {
+        $this->authorize('membership.teams.edit');
+
+        $this->team->update([
+            'title_de' => $this->team_title_de ?: null,
+            'title_en' => $this->team_title_en ?: null,
+            'show' => $this->team_show,
+            'order' => max(0, $this->team_order),
+            'email' => $this->team_email ?: null,
+        ]);
+
+        $this->showNoty('Team-Anzeige gespeichert', 'success');
+    }
+
+    public function saveMemberDisplaySettings(int $userId): void
+    {
+        $this->authorize('membership.teams.edit');
+
+        $settings = $this->member_settings[$userId] ?? [];
+        $this->team->users()->updateExistingPivot($userId, [
+            'title_de' => ($settings['title_de'] ?? '') ?: null,
+            'title_en' => ($settings['title_en'] ?? '') ?: null,
+            'show' => (bool) ($settings['show'] ?? true),
+            'order' => max(0, (int) ($settings['order'] ?? 0)),
+        ]);
+
+        $this->showNoty('Mitgliedsanzeige gespeichert', 'success');
     }
 
     public function removeUser(int $user_id): void
     {
         $this->authorize('membership.teams.edit.members.subteam-check', $this->team);
         $user = User::findOrFail($user_id);
-        $user->removeRole($this->team->role);
+        $user->removeRole($this->team);
         MembershipLibrary::update($user);
         if (count($user->roles) == 0) {
             $user->staffDetails->leaving_staff_at = Carbon::now()->addDays(30);
@@ -113,7 +195,8 @@ class TeamPage extends Component
             }
         }
 
-        $user->assignRole($this->team->role);
+        $user->assignRole($this->team);
+        $this->member_settings[$user->id] = $this->settingsFromPivot($this->team->users()->whereKey($user->id)->first()?->pivot);
         MembershipLibrary::update($user);
     }
 
@@ -125,24 +208,34 @@ class TeamPage extends Component
         return Redirect::route('administration.teams')->with('success', 'Team gelöscht');
     }
 
-    public function removeServiceRole(int $id): void
+    public function removeExternalGroup(int $id): void
     {
         $this->authorize('membership.teams.edit');
-        ServiceRole::findOrFail($id)->delete();
+        TeamExternalGroup::findOrFail($id)->delete();
     }
 
-    public function addServiceRole(): void
+    public function addExternalGroup(): void
     {
         $this->authorize('membership.teams.edit');
         try {
-            $r = new ServiceRole;
+            $r = new TeamExternalGroup;
             $r->team_id = $this->team->id;
-            $r->service_type = $this->selected_service_role_type;
-            $r->service_role = $this->selected_service_role;
+            $r->external_group_type = $this->selected_external_group_type;
+            $r->external_group = $this->selected_external_group;
             $r->save();
             $this->showNoty('Rolle hinzugefügt', 'success');
         } catch (\Exception $e) {
             $this->showNoty('Rolle konnte nicht hinzugefügt werden', 'error');
         }
+    }
+
+    private function settingsFromPivot(?object $pivot): array
+    {
+        return [
+            'title_de' => $pivot?->title_de ?? '',
+            'title_en' => $pivot?->title_en ?? '',
+            'show' => (bool) ($pivot?->show ?? true),
+            'order' => (int) ($pivot?->order ?? 0),
+        ];
     }
 }

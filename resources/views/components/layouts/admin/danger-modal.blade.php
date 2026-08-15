@@ -22,6 +22,7 @@
                             <p class="text-muted">{{ $text }}</p>
                         @endif
                         {{ $slot ?? '' }}
+                        <button type="button" class="btn btn-light btn-sm mt-3" data-bs-dismiss="modal">Abbrechen</button>
                     </div>
                 </div>
             </div>

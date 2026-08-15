@@ -2,21 +2,39 @@
 
 namespace App\Models\Groups;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Membership\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\Permission\Models\Role as SpatieRole;
 
-class Team extends Model
+class Team extends SpatieRole
 {
-    use HasRoleTrait;
+    protected $table = 'group_teams';
 
-    protected $table = 'teams';
+    protected $fillable = [
+        'super_team_id',
+        'title_de',
+        'title_en',
+        'show',
+        'order',
+        'email',
+    ];
 
-    protected $fillable = ['super_team_id', 'role_id'];
+    protected $casts = [
+        'show' => 'boolean',
+        'order' => 'integer',
+    ];
 
-    public function super_team(): HasOne|Team
+    public function __construct(array $attributes = [])
     {
-        return $this->hasOne(Team::class, 'id', 'super_team_id');
+        parent::__construct($attributes);
+        $this->table = 'group_teams';
+    }
+
+    public function super_team(): BelongsTo|Team|null
+    {
+        return $this->belongsTo(Team::class, 'super_team_id');
     }
 
     public function subteams(): HasMany|Team
@@ -24,8 +42,22 @@ class Team extends Model
         return $this->hasMany(Team::class, 'super_team_id', 'id');
     }
 
-    public function service_roles(): HasMany|ServiceRole
+    public function external_groups(): HasMany|TeamExternalGroup
     {
-        return $this->hasMany(ServiceRole::class, 'team_id', 'id');
+        return $this->hasMany(TeamExternalGroup::class, 'team_id', 'id');
+    }
+
+    public function users(): BelongsToMany
+    {
+        return $this->morphedByMany(
+            User::class,
+            'model',
+            config('permission.table_names.model_has_roles'),
+            config('permission.column_names.role_pivot_key', 'role_id'),
+            config('permission.column_names.model_morph_key', 'model_id'),
+        )
+            ->using(TeamMembership::class)
+            ->withPivot(['order', 'title_de', 'title_en', 'show'])
+            ->orderByPivot('order');
     }
 }

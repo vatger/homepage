@@ -2,7 +2,7 @@
 
 namespace App\Libraries;
 
-use App\Models\Groups\ServiceRoleType;
+use App\Models\Groups\TeamExternalGroupType;
 use App\Models\Membership\User;
 use App\Models\Membership\UserVatsimDetail;
 use GuzzleHttp\Exception\GuzzleException;
@@ -104,7 +104,7 @@ class XenForoLibrary extends BaseLibrary
         $secondaryGroups = [];
 
         // Get all forum groups the user has through assigned groups
-        $secondaryGroups = array_merge($secondaryGroups, $user->service_role_ids(ServiceRoleType::ForumGroup, true));
+        $secondaryGroups = array_merge($secondaryGroups, $user->external_group_ids(TeamExternalGroupType::ForumGroup, true));
 
         $secondaryGroups = array_merge($secondaryGroups, self::map_vatsim_ratings($user->vatsimDetails));
 
@@ -142,7 +142,7 @@ class XenForoLibrary extends BaseLibrary
     public static function updateModerators(User $user): bool
     {
         $forum_user_id = $user->settings?->forum_id;
-        $is_moderator = ! empty($user->service_role_ids(ServiceRoleType::ForumModerator));
+        $is_moderator = ! empty($user->external_group_ids(TeamExternalGroupType::ForumModerator));
 
         if ($is_moderator) {
             $data = json_decode(File::get(storage_path('app/configurations/board_moderator_permissions.json')));

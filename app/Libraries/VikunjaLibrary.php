@@ -2,7 +2,7 @@
 
 namespace App\Libraries;
 
-use App\Models\Groups\ServiceRoleType;
+use App\Models\Groups\TeamExternalGroupType;
 use App\Models\Membership\User;
 use App\Notifications\BasicNotification;
 use Carbon\Carbon;
@@ -60,7 +60,7 @@ class VikunjaLibrary extends BaseLibrary
 
     public function check_user(User $user): bool
     {
-        $new_teams = $user->service_role_ids(ServiceRoleType::VikunjaGroup, cast_to_int: true);
+        $new_teams = $user->external_group_ids(TeamExternalGroupType::VikunjaGroup, cast_to_int: true);
         $result = $this->send('GET', "users?s=$user->id");
         $result_data = json_decode($result?->getBody()?->getContents());
         if ($result_data == null) {

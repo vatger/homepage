@@ -2,7 +2,7 @@
 
 namespace App\Libraries;
 
-use App\Models\Groups\ServiceRoleType;
+use App\Models\Groups\TeamExternalGroupType;
 use App\Models\Membership\User;
 
 class GithubLibrary extends BaseGithubLibrary
@@ -17,7 +17,7 @@ class GithubLibrary extends BaseGithubLibrary
 
     private static function check_user_nav(User $user): bool
     {
-        $roles = $user->service_role_ids(ServiceRoleType::GitHubGroup, cast_to_int: false);
+        $roles = $user->external_group_ids(TeamExternalGroupType::GitHubGroup, cast_to_int: false);
 
         $roles = collect($roles)
             ->filter(fn ($role) => str_starts_with($role, 'vatger-nav.'))
@@ -52,7 +52,7 @@ class GithubLibrary extends BaseGithubLibrary
 
     private static function check_user_vatger(User $user): bool
     {
-        $roles = $user->service_role_ids(ServiceRoleType::GitHubGroup, cast_to_int: false);
+        $roles = $user->external_group_ids(TeamExternalGroupType::GitHubGroup, cast_to_int: false);
         $roles = collect($roles)
             ->filter(fn ($role) => str_starts_with($role, 'vatger.'))
             ->map(fn ($role) => str_replace('vatger.', '', $role))

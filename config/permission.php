@@ -1,7 +1,7 @@
 <?php
 
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+use App\Models\Groups\Permission;
+use App\Models\Groups\Team;
 
 return [
     'models' => [
@@ -25,7 +25,7 @@ return [
          * `Spatie\Permission\Contracts\Role` contract.
          */
 
-        'role' => Role::class,
+        'role' => Team::class,
     ],
 
     'table_names' => [
@@ -59,7 +59,7 @@ return [
          * basic default value but you may easily change it to any table you like.
          */
 
-        'model_has_roles' => 'model_has_roles',
+        'model_has_roles' => 'group_team_memberships',
 
         /*
          * When using the "HasRoles" trait from this package, we need to know which

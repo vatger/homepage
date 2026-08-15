@@ -36,10 +36,10 @@ class AuthServiceProvider extends ServiceProvider
             if (! $user->hasPermissionTo('membership.teams.edit.members.subteam')) {
                 return false;
             }
-            if (empty($team->super_team) || ! $user->hasRole($team->super_team->role)) {
+            if (empty($team->super_team) || ! $user->hasRole($team->super_team)) {
                 return false;
             }
-            if ($team->super_team->role->hasPermissionTo('membership.teams.edit.members.subteam')) {
+            if ($team->super_team->hasPermissionTo('membership.teams.edit.members.subteam')) {
                 return true;
             }
 

@@ -31,6 +31,6 @@ class AddTeamMember extends Command
         $user = User::findOrFail($user_id);
         $team_name = $this->ask('team_name?');
         $team = Team::where('name', 'LIKE', $team_name)->firstOrFail();
-        $user->assignRole($team->role);
+        $user->assignRole($team);
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Models\Groups;
 
-use App\Models\Membership\User;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -14,13 +12,6 @@ trait HasRoleTrait
     public function role(): HasOne|Role
     {
         return $this->hasOne(Role::class, 'id', 'role_id');
-    }
-
-    public function members(): BelongsToMany|User
-    {
-        $g = $this->role()->first();
-
-        return $g->belongsToMany(User::class, 'model_has_roles', 'role_id', 'model_id');
     }
 
     protected static function booted(): void

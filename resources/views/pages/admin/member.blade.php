@@ -37,8 +37,8 @@
                         <div class="col-lg-12">
                             <ul class="nav nav-pills nav-justified flex-column flex-sm-row" id="pills-tab" role="tablist">
                                 <li class="nav-item">
-                                    <a wire:ignore.self class="nav-link active" id="pills-cloud-tab" data-bs-toggle="pill" href="#activity-pill" role="tab"
-                                       aria-controls="pills-cloud" aria-selected="false">
+                                    <a wire:ignore.self class="nav-link active" id="activity-tab" data-bs-toggle="pill" href="#activity-pill" role="tab"
+                                       aria-controls="activity-pill" aria-selected="true">
                                         <div class="text-center py-1">
                                             <h6 class="mb-0">Aktivität</h6>
                                         </div>
@@ -48,8 +48,8 @@
                                 <!--end nav item-->
 
                                 <li class="nav-item">
-                                    <a wire:ignore.self class="nav-link" id="pills-apps-tab" data-bs-toggle="pill" href="#ts-board-pill" role="tab"
-                                       aria-controls="pills-apps" aria-selected="false">
+                                    <a wire:ignore.self class="nav-link" id="accounts-tab" data-bs-toggle="pill" href="#ts-board-pill" role="tab"
+                                       aria-controls="ts-board-pill" aria-selected="false">
                                         <div class="text-center py-1">
                                             <h6 class="mb-0">Linked Accounts</h6>
                                         </div>
@@ -60,8 +60,8 @@
 
 
                                 <li class="nav-item">
-                                    <a wire:ignore.self class="nav-link" id="pills-apps-tab" data-bs-toggle="pill" href="#bans-pill" role="tab"
-                                       aria-controls="pills-apps" aria-selected="false">
+                                    <a wire:ignore.self class="nav-link" id="bans-tab" data-bs-toggle="pill" href="#bans-pill" role="tab"
+                                       aria-controls="bans-pill" aria-selected="false">
                                         <div class="text-center py-1">
                                             <h6 class="mb-0">Sperren</h6>
                                         </div>
@@ -71,8 +71,8 @@
                                 <!--end nav item-->
 
                                 <li class="nav-item">
-                                    <a wire:ignore.self class="nav-link" id="pills-apps-tab" data-bs-toggle="pill" href="#staff-pill" role="tab"
-                                       aria-controls="pills-apps" aria-selected="false">
+                                    <a wire:ignore.self class="nav-link" id="staff-tab" data-bs-toggle="pill" href="#staff-pill" role="tab"
+                                       aria-controls="staff-pill" aria-selected="false">
                                         <div class="text-center py-1">
                                             <h6 class="mb-0">Staff</h6>
                                         </div>
@@ -82,8 +82,8 @@
                                 <!--end nav item-->
 
                                 <li class="nav-item">
-                                    <a wire:ignore.self class="nav-link" id="pills-apps-tab" data-bs-toggle="pill" href="#danger-pill" role="tab"
-                                       aria-controls="pills-apps" aria-selected="false">
+                                    <a wire:ignore.self class="nav-link" id="danger-tab" data-bs-toggle="pill" href="#danger-pill" role="tab"
+                                       aria-controls="danger-pill" aria-selected="false">
                                         <div class="text-center py-1">
                                             <h6 class="mb-0">Gefahrenzone</h6>
                                         </div>
@@ -98,7 +98,7 @@
 
                         <div class="col-12">
                             <div class="tab-content" id="pills-tabContent">
-                                <div wire:ignore.self class="tab-pane fade show active" id="activity-pill" role="tabpanel" aria-labelledby="activity-pill">
+                                <div wire:ignore.self class="tab-pane fade show active" id="activity-pill" role="tabpanel" aria-labelledby="activity-tab">
                                     <h4 class="card-title">Membership data:</h4>
                                     <ul>
                                         <li>last_seen_at: {{ $user->vatgerDetails->last_seen_at }}</li>
@@ -152,7 +152,7 @@
                                 <!--end teb pane-->
 
 
-                                <div wire:ignore.self class="tab-pane fade" id="ts-board-pill" role="tabpanel" aria-labelledby="teamspeak-pill">
+                                <div wire:ignore.self class="tab-pane fade" id="ts-board-pill" role="tabpanel" aria-labelledby="accounts-tab">
                                     <h4 class="card-title">Teamspeak:</h4>
 
                                     @if(count($user->teamspeakRegistrations) > 0)
@@ -207,12 +207,7 @@
                                 </div>
                                 <!--end teb pane-->
 
-                                <div wire:ignore.self class="tab-pane fade" id="forum-pill" role="tabpanel" aria-labelledby="forum-pill">
-
-                                </div>
-                                <!--end teb pane-->
-
-                                <div wire:ignore.self class="tab-pane fade" id="bans-pill" role="tabpanel" aria-labelledby="bans-pill">
+                                <div wire:ignore.self class="tab-pane fade" id="bans-pill" role="tabpanel" aria-labelledby="bans-tab">
                                     <button type="button" class="mb-3 btn btn-sm btn-danger" data-bs-target="#suspension-modal" data-bs-toggle="modal">Sperre Hinzufügen</button>
 
                                     <table class="table mb-0 table-center">
@@ -249,29 +244,31 @@
                                 </div>
                                 <!--end teb pane-->
 
-                                <div wire:ignore class="tab-pane fade" id="staff-pill" role="tabpanel" aria-labelledby="danger-pill">
-                                    <h4 class="card-title">Staff service accounts:</h4>
-                                    @if(count($user->service_roles()) > 0)
-                                        <table class="table mb-0 table-center">
+                                <div wire:ignore.self class="tab-pane fade" id="staff-pill" role="tabpanel" aria-labelledby="staff-tab">
+                                    <h4 class="card-title">Staff external groups:</h4>
+                                    @if($external_groups->isNotEmpty())
+                                        <div class="table-responsive">
+                                        <table class="table mb-0 table-center align-middle">
                                             <thead>
                                             <tr>
-                                                <th>service_type</th>
-                                                <th>service_role</th>
-                                                <th>service_role_name</th>
-                                                <th>via team_id</th>
+                                                <th>Service</th>
+                                                <th>External group</th>
+                                                <th>Name</th>
+                                                <th>Via team</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach($user->service_roles() as $s)
+                                            @foreach($external_groups as $s)
                                                 <tr>
-                                                    <td>{{ $s->service_type }}</td>
-                                                    <td>{{ $s->service_role }}</td>
-                                                    <td>{{ $s->service_role_name }}</td>
-                                                    <td>{{ $s->team_id }}</td>
+                                                    <td>{{ str($s->external_group_type->name)->headline() }}</td>
+                                                    <td>{{ $s->external_group }}</td>
+                                                    <td class="text-break">{{ $s->external_group_name ?? 'Unavailable' }}</td>
+                                                    <td>{{ $s->team?->name ?? $s->team_id }}</td>
                                                 </tr>
                                             @endforeach
                                             </tbody>
                                         </table>
+                                        </div>
                                     @else
                                         <p class="text-muted mb-0">
                                             The user does not have an account.
@@ -280,7 +277,7 @@
                                 </div>
                                 <!--end teb pane-->
 
-                                <div wire:ignore class="tab-pane fade" id="danger-pill" role="tabpanel" aria-labelledby="danger-pill">
+                                <div wire:ignore.self class="tab-pane fade" id="danger-pill" role="tabpanel" aria-labelledby="danger-tab">
                                     <div class="mt-4">
                                         <button class="btn btn-sm btn-primary" wire:click="pull_member_api()">Download via API</button>
                                         <p class="text-muted mt-2">

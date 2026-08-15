@@ -29,7 +29,7 @@
         ],
         __('navigation.hilfe.titel') => [
             [route('redirect.support'), __('navigation.hilfe.support'), false],
-            [route('redirect.knowledgebase.contact'), __('navigation.hilfe.personal'), true],
+            [route('staff'), __('navigation.hilfe.personal'), false],
         ],
     ];
 @endphp

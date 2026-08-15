@@ -4,6 +4,7 @@ use App\Http\Controllers\Administration\Content\MediaController;
 use App\Http\Controllers\Administration\Content\ShortLinkController;
 use App\Http\Controllers\LandingTrafficMapController;
 use App\Http\Controllers\OpenIdConnectController;
+use App\Livewire\StaffPage;
 use App\Livewire\SupportPage;
 use App\Services\LandingTrafficService;
 use Illuminate\Support\Facades\Route;
@@ -121,3 +122,4 @@ Route::group([
 Route::get('live-traffic.svg', LandingTrafficMapController::class)->name('landing.traffic-map');
 
 Route::livewire('support', SupportPage::class)->name('redirect.support');
+Route::livewire('staff', StaffPage::class)->name('staff');

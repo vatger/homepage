@@ -9,13 +9,6 @@
                 ]"
             ></x-layouts.admin.content>
 
-            <x-layouts.admin.card-image-bar
-                    :bg_img="asset('images/profile/profile_1.png')"
-                    :m_img="asset('/images/profile/avatar_placeholder.png')"
-                    :title="$team->name"
-                    :subtitle="'Erstellt am: ' . $team->created_at->format('d.m.Y')"
-            ></x-layouts.admin.card-image-bar>
-
             <div class="row">
                 <x-layouts.admin.sidebar-col position="left" title="Übersicht">
                     <div class="d-flex align-items-center mb">
@@ -55,6 +48,37 @@
                         </div>
                     </div>
 
+                    @can('membership.teams.edit')
+                        <div class="border-top pt-3 mt-3">
+                            <h6 class="text-primary mb-3">Team-Anzeige</h6>
+                            <div class="mb-2">
+                                <label class="form-label" for="team-title-de">Titel Deutsch</label>
+                                <input id="team-title-de" wire:model="team_title_de" class="form-control form-control-sm" type="text">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="team-title-en">Titel Englisch</label>
+                                <input id="team-title-en" wire:model="team_title_en" class="form-control form-control-sm" type="text">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="team-email">Team-E-Mail</label>
+                                <input id="team-email" wire:model="team_email" class="form-control form-control-sm" type="email" placeholder="team@example.org">
+                            </div>
+                            <div class="row g-2 mb-2">
+                                <div class="col-6">
+                                    <label class="form-label" for="team-order">Reihenfolge</label>
+                                    <input id="team-order" wire:model="team_order" class="form-control form-control-sm" type="number" min="0">
+                                </div>
+                                <div class="col-6 d-flex align-items-end">
+                                    <div class="form-check mb-1">
+                                        <input id="team-show" wire:model="team_show" class="form-check-input" type="checkbox">
+                                        <label class="form-check-label" for="team-show">Anzeigen</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button wire:click="saveTeamDisplaySettings" class="btn btn-sm btn-soft-primary" type="button">Speichern</button>
+                        </div>
+                    @endcan
+
                     <div class="d-flex align-items-center pt-3 mt-3 border-top">
                         <button class="btn btn-sm btn-soft-danger" data-bs-toggle="modal" data-bs-target="#deleteGroupModal">Gruppe
                             Löschen
@@ -73,7 +97,7 @@
 
                 <x-layouts.admin.sidebar-col position="right">
                     <x-layouts.admin.card>
-                        <x-layouts.admin.card-header position="left" title="Mitglieder" :subtitle="$team->role->users->count()" />
+                        <x-layouts.admin.card-header position="left" title="Mitglieder" :subtitle="$team->users->count()" />
                         <x-layouts.admin.card-header position="right">
                             <li class="list-inline-item" style="width: 100%">
                                 <div class="row">
@@ -88,23 +112,36 @@
                             <table class="table table-center bg-white mb-0">
                                 <thead>
                                 <tr class="text-center">
-                                    <th class="border-bottom" style="width: 33%">CID</th>
-                                    <th class="border-bottom" style="width: 33%">Name</th>
-                                    <th class="border-bottom" style="width: 33%">Aktion</th>
+                                    <th class="border-bottom">CID</th>
+                                    <th class="border-bottom">Name</th>
+                                    <th class="border-bottom">Titel DE</th>
+                                    <th class="border-bottom">Titel EN</th>
+                                    <th class="border-bottom">Anzeigen</th>
+                                    <th class="border-bottom">Reihenfolge</th>
+                                    <th class="border-bottom">Aktion</th>
                                 </tr>
                                 </thead>
                                 <tbody id="member-list-content">
-                                @if ($team->role->users->count() == 0)
+                                @if ($team->users->count() == 0)
                                     <tr class="text-center">
-                                        <td colspan="3" class="text-muted text-center">Keine Benutzer in dieser Gruppe</td>
+                                        <td colspan="7" class="text-muted text-center">Keine Benutzer in dieser Gruppe</td>
                                     </tr>
                                 @else
-                                    @foreach ($team->role->users as $u)
+                                    @foreach ($team->users as $u)
                                         <tr class="text-center" id="user-{{ $u->id }}">
                                             <td>{{ $u->id }}</td>
                                             <td>{{ $u->username }}</td>
                                             <td>
-                                                <button wire:click="removeUser({{$u->id}})" class="btn btn-sm btn-soft-danger">Entfernen
+                                                <input wire:model="member_settings.{{ $u->id }}.title_de" list="member-title-de-options" class="form-control form-control-sm" type="text" aria-label="Titel Deutsch">
+                                            </td>
+                                            <td>
+                                                <input wire:model="member_settings.{{ $u->id }}.title_en" list="member-title-en-options" class="form-control form-control-sm" type="text" aria-label="Titel Englisch">
+                                            </td>
+                                            <td><input wire:model="member_settings.{{ $u->id }}.show" class="form-check-input" type="checkbox" aria-label="Anzeigen"></td>
+                                            <td><input wire:model="member_settings.{{ $u->id }}.order" class="form-control form-control-sm" type="number" min="0" aria-label="Reihenfolge"></td>
+                                            <td class="text-nowrap">
+                                                <button wire:click="saveMemberDisplaySettings({{ $u->id }})" class="btn btn-sm btn-soft-primary mb-1" type="button">Speichern</button>
+                                                <button wire:confirm="Soll dieses Mitglied wirklich aus dem Team entfernt werden?" wire:click="removeUser({{$u->id}})" class="btn btn-sm btn-soft-danger">Entfernen
                                                 </button>
                                             </td>
                                         </tr>
@@ -113,6 +150,16 @@
                                 </tbody>
                             </table>
                         </div>
+                        <datalist id="member-title-de-options">
+                            @foreach($member_title_recommendations['de'] as $title)
+                                <option value="{{ $title }}"></option>
+                            @endforeach
+                        </datalist>
+                        <datalist id="member-title-en-options">
+                            @foreach($member_title_recommendations['en'] as $title)
+                                <option value="{{ $title }}"></option>
+                            @endforeach
+                        </datalist>
                     </x-layouts.admin.card>
                 </x-layouts.admin.sidebar-col>
             </div>
@@ -120,27 +167,38 @@
 
             @can('membership.teams.edit')
                 <div class="row">
-                    <x-layouts.admin.sidebar-col position="left" title="Service Roles">
-                        <div class="row table-responsive">
-                            <table class="table table-center bg-white mb-0">
+                    <x-layouts.admin.sidebar-col position="left" title="External Groups">
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            @foreach ($external_service_statuses as $status)
+                                <span class="badge rounded-pill {{ $status['available'] ? 'bg-success' : 'bg-danger' }}">
+                                    {{ $status['label'] }}:
+                                    {{ $status['available'] ? 'Available' : 'Unavailable' }}
+                                </span>
+                            @endforeach
+                        </div>
+                        <div class="table-responsive overflow-hidden">
+                            <table class="table table-center bg-white mb-0 w-100" style="table-layout: fixed;">
                                 <thead>
                                 <tr class="text-center">
-                                    <th>Type</th>
-                                    <th>Role</th>
-                                    <th></th>
+                                    <th style="width: 25%;">Service</th>
+                                    <th>External group</th>
+                                    <th style="width: 72px;"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($service_roles as $r)
+                                @foreach ($external_groups as $r)
                                     <tr class="text-center">
-                                        <td>{{ $r->service_type }}</td>
-                                        <td>{{ $r->service_role }}
-                                            @if($r->service_role_name)
-                                                <small>({{ $r->service_role_name }})</small>
+                                        <td class="text-break">
+                                            {{ str($r->external_group_type->name)->headline() }}
+                                        </td>
+                                        <td class="text-break">
+                                            <span>{{ $r->external_group }}</span>
+                                            @if($r->external_group_name)
+                                                <small class="d-block">({{ $r->external_group_name }})</small>
                                             @endif
                                         </td>
-                                        <td>
-                                            <button wire:click="removeServiceRole({{ $r->id }})" class="btn btn-sm btn-soft-danger">
+                                        <td class="text-nowrap">
+                                            <button wire:confirm="Soll diese externe Gruppe wirklich entfernt werden?" wire:click="removeExternalGroup({{ $r->id }})" class="btn btn-sm btn-soft-danger">
                                                 <i data-feather="trash" class="fea icon-sm"></i>
                                             </button>
                                         </td>
@@ -148,19 +206,17 @@
                                 @endforeach
                                 <tr>
                                     <td>
-                                        <select wire:model="selected_service_role_type" class="form-select form-control-sm form-control" aria-label="">
-                                            @foreach(App\Models\Groups\ServiceRoleType::cases() as $type)
-                                                <option value="{{ $type->value }}">{{ $type->name }}</option>
+                                        <select wire:model="selected_external_group_type" class="form-select form-control-sm form-control" aria-label="External group service">
+                                            @foreach(App\Models\Groups\TeamExternalGroupType::cases() as $type)
+                                                <option value="{{ $type->value }}">{{ str($type->name)->headline() }}</option>
                                             @endforeach
                                         </select>
                                     </td>
                                     <td>
-                                        <label>
-                                            <input wire:model="selected_service_role" class="form-control-sm form-control" />
-                                        </label>
+                                        <input wire:model="selected_external_group" class="form-control-sm form-control" aria-label="External group identifier" />
                                     </td>
                                     <td>
-                                        <button wire:click="addServiceRole" class="btn btn-sm btn-soft-success"><i data-feather="plus" class="fea icon-sm"></i></button>
+                                        <button wire:click="addExternalGroup" class="btn btn-sm btn-soft-success"><i data-feather="plus" class="fea icon-sm"></i></button>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -174,7 +230,7 @@
 
                     <x-layouts.admin.sidebar-col position="right">
                         <x-layouts.admin.card>
-                            <x-layouts.admin.card-header position="left" title="Permissions" :subtitle="$team->role->permissions->count()" icon="lock" />
+                            <x-layouts.admin.card-header position="left" title="Permissions" :subtitle="$team->permissions->count()" icon="lock" />
                             <x-layouts.admin.card-header position="right" />
                             <div class="row pt-4 ps-4 table-responsive">
                                 <table class="table table-center bg-white mb-0">
@@ -191,7 +247,7 @@
                                             <td>{{ $p->id }}</td>
                                             <td>{{ $p->name }}</td>
                                             <td>
-                                                @if ($team->role->hasPermissionTo($p))
+                                                @if ($team->hasPermissionTo($p))
                                                     <button wire:click="changePermission({{$p->id}}, false)" class="btn btn-sm btn-soft-danger">
                                                         Entfernen
                                                     </button>

@@ -71,7 +71,7 @@ class GDPRLibrary extends BaseLibrary
 
         // we can safely kick him from all teams
         foreach (Team::all() as $t) {
-            $user->removeRole($t->role);
+            $user->removeRole($t);
         }
     }
 

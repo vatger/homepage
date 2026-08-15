@@ -77,12 +77,16 @@ class StandStatusLibrary
         }
 
         $flightStatuses = $status->flightStatuses();
-        $pilotTracks = Datafeed::PilotTracks();
+        $aircraft = $status->allAircraft();
+        $pilotTracks = Datafeed::PilotTracksForCids(array_map(
+            static fn ($aircraft): int => (int) $aircraft->cid,
+            $aircraft,
+        ));
         $standIds = collect($status->allStands())
             ->mapWithKeys(fn ($stand) => [$stand->getName() => true])
             ->all();
 
-        return collect($status->allAircraft())
+        return collect($aircraft)
             ->map(function ($aircraft) use ($flightStatuses, $pilotTracks, $standIds) {
                 $groundstate = $flightStatuses[$aircraft->callsign]?->value ?? 'unknown';
                 $standIndex = $aircraft->getStandIndex();
