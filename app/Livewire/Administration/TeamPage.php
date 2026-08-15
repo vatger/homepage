@@ -38,7 +38,7 @@ class TeamPage extends Component
 
     public bool $team_show = true;
 
-    public int $team_order = 0;
+    public string|int $team_order = 0;
 
     public string $team_email = '';
 
@@ -138,7 +138,7 @@ class TeamPage extends Component
             'title_de' => $this->team_title_de ?: null,
             'title_en' => $this->team_title_en ?: null,
             'show' => $this->team_show,
-            'order' => max(0, $this->team_order),
+            'order' => max(0, (int) ($this->team_order ?: 0)),
             'email' => $this->team_email ?: null,
         ]);
 
