@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\BoardController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\DiscordApiController;
+use App\Http\Controllers\Api\EventBookingController;
 use App\Http\Controllers\Api\MoodleController;
 use App\Http\Controllers\Api\SolosApiController;
 use App\Http\Controllers\Api\TeamspeakApiController;
@@ -23,6 +24,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('booking/ical/{id}/{token}/calendar.ics', [BookingController::class, 'ical'])->withoutMiddleware(ApiJsonResponse::class)->name('api.booking.ical');
+// has to stay in front of the booking/{start?}/{end?} route below
+Route::get('booking/event', [EventBookingController::class, 'index']);
+Route::post('booking/event', [EventBookingController::class, 'store']);
+Route::delete('booking/event', [EventBookingController::class, 'destroy']);
 Route::get('booking/{start?}/{end?}', [BookingController::class, 'index']);
 
 Route::get('teamspeak/{cid}', [TeamspeakApiController::class, 'ids']);
