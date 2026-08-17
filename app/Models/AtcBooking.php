@@ -19,7 +19,7 @@ class AtcBooking extends Model
 {
     protected $table = 'booking_bookings';
 
-    protected $fillable = ['station_id', 'controller_id', 'starts_at', 'ends_at', 'voice', 'training', 'exam', 'event'];
+    protected $fillable = ['station_id', 'controller_id', 'starts_at', 'ends_at', 'voice', 'training', 'exam', 'event', 'vatger_event', 'event_reference'];
 
     /**
      * The attributes that should be cast.
@@ -110,6 +110,23 @@ class AtcBooking extends Model
     public function scopeForStation($query, $id)
     {
         return $query->where('station_id', $id);
+    }
+
+    /**
+     * Only bookings that were created as a vatger event booking
+     */
+    public function scopeVatgerEvent(DBuilder|EBuilder $query): DBuilder|EBuilder
+    {
+        return $query->where('vatger_event', true);
+    }
+
+    /**
+     * All bookings that belong to an external reference, e.g. an
+     * event of the vatger event manager
+     */
+    public function scopeForEventReference(DBuilder|EBuilder $query, string $reference): DBuilder|EBuilder
+    {
+        return $query->where('event_reference', $reference);
     }
 
     /**
